@@ -1,0 +1,82 @@
+"use client";
+
+import { useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
+import { contacts } from "@/lib/content";
+import { WhatsApp, Telegram, Plus } from "@/components/ui/icons";
+
+const EASE = [0.16, 1, 0.3, 1] as const;
+
+export function FloatingContacts() {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <div className="fixed bottom-5 left-5 z-[70] flex flex-col items-start gap-3">
+      <AnimatePresence>
+        {open && (
+          <motion.div
+            className="flex flex-col gap-3"
+            initial="hidden"
+            animate="show"
+            exit="hidden"
+            variants={{
+              hidden: { transition: { staggerChildren: 0.04, staggerDirection: -1 } },
+              show: { transition: { staggerChildren: 0.07 } },
+            }}
+          >
+            <ContactPill
+              href={contacts.whatsapp.href}
+              label={`WhatsApp · ${contacts.whatsapp.label}`}
+              icon={<WhatsApp className="h-5 w-5" />}
+            />
+            <ContactPill
+              href={contacts.telegram.href}
+              label={`Telegram · ${contacts.telegram.label}`}
+              icon={<Telegram className="h-5 w-5" />}
+            />
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      <button
+        onClick={() => setOpen((o) => !o)}
+        aria-expanded={open}
+        aria-label={open ? "Сховати контакти" : "Звʼязатися"}
+        className="group relative grid h-12 w-12 place-items-center rounded-full bg-gold text-oncontrast shadow-[0_14px_30px_-12px_rgb(var(--c-gold)/0.7)] transition-transform duration-500 ease-lux hover:scale-105"
+      >
+        <span className="absolute inset-0 -z-10 rounded-full bg-gold/40 animate-pulse-ring" />
+        <motion.span animate={{ rotate: open ? 45 : 0 }} transition={{ duration: 0.4, ease: EASE }}>
+          <Plus className="h-6 w-6" strokeWidth={1.8} />
+        </motion.span>
+      </button>
+    </div>
+  );
+}
+
+function ContactPill({
+  href,
+  label,
+  icon,
+}: {
+  href: string;
+  label: string;
+  icon: React.ReactNode;
+}) {
+  return (
+    <motion.a
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
+      variants={{
+        hidden: { opacity: 0, x: -12, scale: 0.9 },
+        show: { opacity: 1, x: 0, scale: 1, transition: { duration: 0.4, ease: EASE } },
+      }}
+      className="surface flex items-center gap-3 rounded-full py-2 pl-3 pr-4 text-sm text-ink shadow-[var(--shadow-lux)] transition-colors hover:text-gold"
+    >
+      <span className="grid h-8 w-8 place-items-center rounded-full bg-gold/12 text-gold">
+        {icon}
+      </span>
+      <span className="whitespace-nowrap">{label}</span>
+    </motion.a>
+  );
+}
