@@ -52,7 +52,8 @@ const jetbrains = JetBrains_Mono({
 });
 
 const SITE_URL =
-  process.env.NEXT_PUBLIC_SITE_URL || "https://pan-partners.up.railway.app";
+  process.env.NEXT_PUBLIC_SITE_URL ||
+  "https://pan-partners-production.up.railway.app";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
