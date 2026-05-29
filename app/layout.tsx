@@ -6,6 +6,7 @@ import {
   Source_Sans_3,
   Manrope,
   JetBrains_Mono,
+  Cormorant,
 } from "next/font/google";
 import "./globals.css";
 
@@ -48,6 +49,13 @@ const manrope = Manrope({
 const jetbrains = JetBrains_Mono({
   subsets: ["latin", "latin-ext", "cyrillic"],
   variable: "--font-jetbrains",
+  display: "swap",
+});
+const cormorant = Cormorant({
+  subsets: ["latin", "latin-ext", "cyrillic"],
+  weight: ["400", "500", "600", "700"],
+  style: ["normal", "italic"],
+  variable: "--font-cormorant",
   display: "swap",
 });
 
@@ -116,7 +124,7 @@ export default function RootLayout({
     <html
       lang="uk"
       data-concept={DEFAULT_CONCEPT}
-      className={`${spectral.variable} ${inter.variable} ${playfair.variable} ${sourceSans.variable} ${manrope.variable} ${jetbrains.variable}`}
+      className={`${spectral.variable} ${inter.variable} ${playfair.variable} ${sourceSans.variable} ${manrope.variable} ${jetbrains.variable} ${cormorant.variable}`}
       suppressHydrationWarning
     >
       <body>

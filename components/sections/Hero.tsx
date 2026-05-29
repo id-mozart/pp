@@ -9,7 +9,7 @@ import { ArrowRight, ArrowUpRight, Check } from "@/components/ui/icons";
 const EASE = [0.16, 1, 0.3, 1] as const;
 
 const EMBER_BG = "/brand/Tania1-3.webp";
-const PORTRAIT = "/brand/1M6A0522.webp";
+const PORTRAIT = "/brand/tania-portrait.jpg";
 
 function emphasize(text: string, phrase: string) {
   const i = text.indexOf(phrase);
@@ -93,6 +93,60 @@ const headlineMotion = {
 
 export function Hero() {
   const { concept } = useConcept();
+  const reduce = useReducedMotion();
+  const hm = reduce
+    ? { initial: { opacity: 0 }, animate: { opacity: 1 } }
+    : headlineMotion;
+
+  /* ----------------------------- SOLARIS ----------------------------- */
+  if (concept === "solaris") {
+    return (
+      <section className="relative grain min-h-[92vh] overflow-hidden pb-16 pt-36">
+        <HeroAmbient />
+        <div className="container-shell relative flex flex-col items-center gap-7 text-center">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.9, ease: EASE }}
+            className="relative h-24 w-24 overflow-hidden rounded-full shadow-[var(--shadow-lux)] ring-1 ring-gold/40"
+          >
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={PORTRAIT}
+              alt="Тетяна Пан"
+              className="h-full w-full object-cover object-top"
+            />
+          </motion.div>
+          <span className="eyebrow">{hero.eyebrow}</span>
+          <motion.h1
+            {...hm}
+            transition={{ duration: 1, ease: EASE, delay: 0.05 }}
+            className="max-w-4xl text-[clamp(2.7rem,6.2vw,5.6rem)] leading-[1.05] text-ink"
+          >
+            {emphasize(hero.title, "B2B-клієнтами")}
+          </motion.h1>
+          <p className="max-w-2xl text-lg leading-relaxed text-muted">{hero.lead}</p>
+          <div className="flex w-full justify-center">
+            <CTAs />
+          </div>
+        </div>
+
+        <div className="container-shell relative mx-auto mt-14 grid max-w-4xl gap-5 sm:grid-cols-3">
+          {hero.bullets.map((b, i) => (
+            <div key={b} className="surface flex items-center gap-3 p-5 text-left">
+              <span className="font-display text-3xl text-gradient-gold">0{i + 1}</span>
+              <span className="text-sm leading-snug text-ink">{b}</span>
+            </div>
+          ))}
+        </div>
+
+        <div className="container-shell relative mt-10">
+          <div className="hairline" />
+          <p className="py-5 text-center text-sm text-muted">{hero.trust}</p>
+        </div>
+      </section>
+    );
+  }
 
   /* ---------------------------- CHAMPAGNE ---------------------------- */
   if (concept === "champagne") {
@@ -103,7 +157,7 @@ export function Hero() {
           <Eyebrow />
           <div className="mt-7 grid items-end gap-12 lg:grid-cols-12">
             <motion.h1
-              {...headlineMotion}
+              {...hm}
               transition={{ duration: 0.9, ease: EASE, delay: 0.05 }}
               className="text-[clamp(2.6rem,6.4vw,5.4rem)] leading-[1.02] text-ink lg:col-span-8"
             >
@@ -154,7 +208,7 @@ export function Hero() {
             <div className="flex flex-col gap-8 lg:col-span-7">
               <Eyebrow />
               <motion.h1
-                {...headlineMotion}
+                {...hm}
                 transition={{ duration: 0.9, ease: EASE, delay: 0.05 }}
                 className="text-[clamp(2.5rem,6vw,5rem)] uppercase leading-[0.96] text-ink"
               >

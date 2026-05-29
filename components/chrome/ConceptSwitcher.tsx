@@ -50,7 +50,7 @@ export function ConceptSwitcher() {
       )
         return;
       if (e.metaKey || e.ctrlKey || e.altKey) return;
-      const idx = ["1", "2", "3"].indexOf(e.key);
+      const idx = ["1", "2", "3", "4"].indexOf(e.key);
       if (idx > -1 && CONCEPTS[idx]) {
         setConcept(CONCEPTS[idx].id);
         setOpen(true);
@@ -83,7 +83,7 @@ export function ConceptSwitcher() {
               <span className="font-mono text-[0.62rem] uppercase tracking-[0.2em] text-faint">
                 Концепція дизайну
               </span>
-              <span className="font-mono text-[0.62rem] text-faint">1 · 2 · 3</span>
+              <span className="font-mono text-[0.62rem] text-faint">1 · 2 · 3 · 4</span>
             </div>
             {CONCEPTS.map((c) => {
               const isActive = c.id === concept;

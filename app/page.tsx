@@ -3,7 +3,7 @@ import { About } from "@/components/sections/About";
 import { Requests } from "@/components/sections/Requests";
 import { Formats } from "@/components/sections/Formats";
 import { Clients } from "@/components/sections/Clients";
-import { Cases } from "@/components/sections/Cases";
+import { Testimonials } from "@/components/sections/Testimonials";
 import { ContactForm } from "@/components/sections/ContactForm";
 
 const jsonLd = {
@@ -30,7 +30,7 @@ export default function HomePage() {
       <Requests />
       <Formats />
       <Clients />
-      <Cases />
+      <Testimonials />
       <ContactForm />
     </>
   );

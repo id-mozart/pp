@@ -67,6 +67,7 @@ export function SiteHeader() {
                 <Link
                   key={item.href}
                   href={item.href}
+                  aria-current={active ? "page" : undefined}
                   className={`relative text-sm transition-colors ${
                     active ? "text-gold" : "text-ink/85 hover:text-gold"
                   }`}

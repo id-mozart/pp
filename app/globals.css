@@ -23,7 +23,7 @@
   --c-ember: 181 86 42;
   --c-action: 201 150 46;
   --c-action-ink: 14 11 9;
-  --c-oncontrast: 242 233 220;
+  --c-oncontrast: 14 11 9;
 
   --font-display: var(--font-spectral);
   --font-body: var(--font-inter);
@@ -46,7 +46,7 @@
   --c-line: 211 197 173;
   --c-ink: 28 23 20;
   --c-muted: 107 94 78;
-  --c-faint: 150 136 116;
+  --c-faint: 124 108 86;
   --c-gold: 154 115 34;
   --c-gold-soft: 176 134 52;
   --c-ember: 122 74 43;
@@ -81,7 +81,7 @@
   --c-ember: 194 112 61;
   --c-action: 201 168 106;
   --c-action-ink: 30 34 41;
-  --c-oncontrast: 236 230 219;
+  --c-oncontrast: 30 34 41;
 
   --font-display: var(--font-manrope);
   --font-body: var(--font-manrope);
@@ -94,6 +94,53 @@
   --grain-opacity: 0.04;
   --shadow-lux: 0 30px 80px -34px rgb(0 0 0 / 0.6);
   color-scheme: dark;
+}
+
+[data-concept="solaris"] {
+  /* IV — Solaris · warm espresso, living amber→copper gradient, glass + couture serif */
+  --c-canvas: 26 18 11;
+  --c-surface: 42 30 20;
+  --c-raised: 54 40 27;
+  --c-line: 96 72 46;
+  --c-ink: 245 235 222;
+  --c-muted: 198 172 142;
+  --c-faint: 150 124 98;
+  --c-gold: 224 164 59;
+  --c-gold-soft: 245 204 128;
+  --c-ember: 198 112 58;
+  --c-action: 224 164 59;
+  --c-action-ink: 26 18 11;
+  --c-oncontrast: 26 18 11;
+
+  --font-display: var(--font-cormorant);
+  --font-body: var(--font-manrope);
+  --font-mono: var(--font-jetbrains);
+  --display-weight: 600;
+  --display-tracking: -0.005em;
+
+  --glow-a: rgb(224 164 59 / 0.24);
+  --glow-b: rgb(198 112 58 / 0.2);
+  --grain-opacity: 0.05;
+  --shadow-lux: 0 30px 80px -26px rgb(0 0 0 / 0.72);
+  color-scheme: dark;
+}
+
+/* Solaris: a living warm glow washes the whole page */
+[data-concept="solaris"] body {
+  background-image:
+    radial-gradient(1100px 620px at 82% -8%, rgb(224 164 59 / 0.16), transparent 60%),
+    radial-gradient(900px 600px at -5% 105%, rgb(198 112 58 / 0.14), transparent 55%),
+    radial-gradient(700px 500px at 50% 50%, rgb(120 70 30 / 0.1), transparent 70%);
+  background-attachment: fixed;
+}
+
+/* Solaris surfaces read as frosted glass */
+[data-concept="solaris"] .surface {
+  background: rgb(var(--c-surface) / 0.62);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-color: rgb(var(--c-gold) / 0.18);
+  border-radius: 22px;
 }
 
 /* ==================================================================
