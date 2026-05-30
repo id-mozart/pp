@@ -21,7 +21,10 @@ export type ConceptId =
   | "story"
   | "console"
   | "dialogue"
-  | "diagnostic";
+  | "diagnostic"
+  | "canvas"
+  | "desktop"
+  | "cinematic";
 
 export interface Concept {
   id: ConceptId;
@@ -194,6 +197,27 @@ export const CONCEPTS: Concept[] = [
     name: "Diagnostic",
     tagline: "Інтерактив · діагностика-квіз",
     swatch: { canvas: "#14120F", gold: "#DDA23C", ink: "#F0E9DD" },
+  },
+  {
+    id: "canvas",
+    numeral: "XXIV",
+    name: "Canvas",
+    tagline: "Простір · перетягуване полотно",
+    swatch: { canvas: "#E9E4D9", gold: "#9A7020", ink: "#1C1813" },
+  },
+  {
+    id: "desktop",
+    numeral: "XXV",
+    name: "Desktop",
+    tagline: "Простір · вікна та док",
+    swatch: { canvas: "#E0D2C0", gold: "#96681C", ink: "#1C1610" },
+  },
+  {
+    id: "cinematic",
+    numeral: "XXVI",
+    name: "Cinematic",
+    tagline: "Скрол-кіно · сцена морфиться",
+    swatch: { canvas: "#0C0A08", gold: "#D69E46", ink: "#F4EADE" },
   },
 ];
 

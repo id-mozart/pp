@@ -770,6 +770,93 @@
   color-scheme: dark;
 }
 
+[data-concept="canvas"] {
+  /* XXIV — Canvas · draggable spatial board (design-tool light) */
+  --c-canvas: 233 228 219;
+  --c-surface: 251 247 239;
+  --c-raised: 255 253 248;
+  --c-line: 210 198 180;
+  --c-ink: 28 24 19;
+  --c-muted: 98 88 74;
+  --c-faint: 138 124 106;
+  --c-gold: 154 112 32;
+  --c-gold-soft: 184 142 58;
+  --c-ember: 150 80 44;
+  --c-action: 28 24 19;
+  --c-action-ink: 251 247 239;
+  --c-oncontrast: 251 247 239;
+  --font-display: var(--font-manrope);
+  --font-body: var(--font-inter);
+  --font-mono: var(--font-jetbrains);
+  --display-weight: 700;
+  --display-tracking: -0.02em;
+  --glow-a: transparent;
+  --glow-b: transparent;
+  --grain-opacity: 0.02;
+  --shadow-lux: 0 18px 40px -22px rgb(40 30 16 / 0.3);
+  color-scheme: light;
+}
+
+[data-concept="desktop"] {
+  /* XXV — Desktop · windowed OS, warm wallpaper, light app windows */
+  --c-canvas: 224 210 192;
+  --c-surface: 251 248 242;
+  --c-raised: 255 253 249;
+  --c-line: 208 194 174;
+  --c-ink: 28 22 16;
+  --c-muted: 98 86 70;
+  --c-faint: 136 122 104;
+  --c-gold: 150 104 28;
+  --c-gold-soft: 182 134 54;
+  --c-ember: 168 70 38;
+  --c-action: 28 22 16;
+  --c-action-ink: 251 248 242;
+  --c-oncontrast: 251 248 242;
+  --font-display: var(--font-manrope);
+  --font-body: var(--font-inter);
+  --font-mono: var(--font-jetbrains);
+  --display-weight: 700;
+  --display-tracking: -0.02em;
+  --glow-a: transparent;
+  --glow-b: transparent;
+  --grain-opacity: 0.02;
+  --shadow-lux: 0 24px 60px -26px rgb(40 26 14 / 0.45);
+  color-scheme: light;
+}
+[data-concept="desktop"] body {
+  background-image:
+    radial-gradient(1000px 720px at 76% 6%, rgb(216 152 72 / 0.3), transparent 60%),
+    radial-gradient(900px 720px at 8% 94%, rgb(182 118 86 / 0.24), transparent 55%);
+  background-attachment: fixed;
+}
+
+[data-concept="cinematic"] {
+  /* XXVI — Cinematic · dark scroll-driven scene, Spectral */
+  --c-canvas: 12 10 8;
+  --c-surface: 24 20 16;
+  --c-raised: 34 28 22;
+  --c-line: 66 58 48;
+  --c-ink: 244 234 222;
+  --c-muted: 184 170 154;
+  --c-faint: 126 114 100;
+  --c-gold: 214 158 70;
+  --c-gold-soft: 240 196 124;
+  --c-ember: 214 110 56;
+  --c-action: 214 158 70;
+  --c-action-ink: 12 10 8;
+  --c-oncontrast: 12 10 8;
+  --font-display: var(--font-spectral);
+  --font-body: var(--font-inter);
+  --font-mono: var(--font-jetbrains);
+  --display-weight: 500;
+  --display-tracking: -0.02em;
+  --glow-a: rgb(214 158 70 / 0.18);
+  --glow-b: rgb(214 110 56 / 0.14);
+  --grain-opacity: 0.05;
+  --shadow-lux: 0 30px 80px -30px rgb(0 0 0 / 0.75);
+  color-scheme: dark;
+}
+
 /* ==================================================================
    BASE
    ================================================================== */

@@ -8,6 +8,9 @@ import { StoryHome } from "@/components/compositions/StoryHome";
 import { ConsoleHome } from "@/components/compositions/ConsoleHome";
 import { DialogueHome } from "@/components/compositions/DialogueHome";
 import { DiagnosticHome } from "@/components/compositions/DiagnosticHome";
+import { CanvasHome } from "@/components/compositions/CanvasHome";
+import { DesktopHome } from "@/components/compositions/DesktopHome";
+import { CinematicHome } from "@/components/compositions/CinematicHome";
 import type { ConceptId } from "@/lib/concepts";
 
 /**
@@ -21,6 +24,9 @@ const COMPOSITIONS: Partial<Record<ConceptId, () => JSX.Element>> = {
   console: ConsoleHome,
   dialogue: DialogueHome,
   diagnostic: DiagnosticHome,
+  canvas: CanvasHome,
+  desktop: DesktopHome,
+  cinematic: CinematicHome,
 };
 
 export function HomeRouter() {
