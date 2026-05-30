@@ -18,7 +18,10 @@ export type ConceptId =
   | "construct"
   | "bento"
   | "deck"
-  | "story";
+  | "story"
+  | "console"
+  | "dialogue"
+  | "diagnostic";
 
 export interface Concept {
   id: ConceptId;
@@ -170,6 +173,27 @@ export const CONCEPTS: Concept[] = [
     name: "Story",
     tagline: "Інша КОМПОЗИЦІЯ · лонгрід",
     swatch: { canvas: "#F4EDE1", gold: "#9A7322", ink: "#1C1714" },
+  },
+  {
+    id: "console",
+    numeral: "XXI",
+    name: "Console",
+    tagline: "Інтерактив · термінал-REPL",
+    swatch: { canvas: "#080806", gold: "#FFB000", ink: "#E8D2A8" },
+  },
+  {
+    id: "dialogue",
+    numeral: "XXII",
+    name: "Dialogue",
+    tagline: "Інтерактив · чат із Тетяною",
+    swatch: { canvas: "#EBE5DB", gold: "#B07A1E", ink: "#1E1A14" },
+  },
+  {
+    id: "diagnostic",
+    numeral: "XXIII",
+    name: "Diagnostic",
+    tagline: "Інтерактив · діагностика-квіз",
+    swatch: { canvas: "#14120F", gold: "#DDA23C", ink: "#F0E9DD" },
   },
 ];
 

@@ -5,6 +5,9 @@ import { StandardHome } from "@/components/compositions/StandardHome";
 import { BentoHome } from "@/components/compositions/BentoHome";
 import { DeckHome } from "@/components/compositions/DeckHome";
 import { StoryHome } from "@/components/compositions/StoryHome";
+import { ConsoleHome } from "@/components/compositions/ConsoleHome";
+import { DialogueHome } from "@/components/compositions/DialogueHome";
+import { DiagnosticHome } from "@/components/compositions/DiagnosticHome";
 import type { ConceptId } from "@/lib/concepts";
 
 /**
@@ -15,6 +18,9 @@ const COMPOSITIONS: Partial<Record<ConceptId, () => JSX.Element>> = {
   bento: BentoHome,
   deck: DeckHome,
   story: StoryHome,
+  console: ConsoleHome,
+  dialogue: DialogueHome,
+  diagnostic: DiagnosticHome,
 };
 
 export function HomeRouter() {
