@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useConcept } from "@/components/providers/ConceptProvider";
 import { CONCEPTS } from "@/lib/concepts";
@@ -8,9 +8,11 @@ import { CONCEPTS } from "@/lib/concepts";
 const EASE = [0.16, 1, 0.3, 1] as const;
 
 export function ConceptSwitcher() {
-  const { concept, setConcept } = useConcept();
+  const { concept, setConcept, cycle, cyclePrev } = useConcept();
   const [open, setOpen] = useState(false);
   const [hint, setHint] = useState(false);
+  const [toast, setToast] = useState(false);
+  const firstRender = useRef(true);
 
   // Gentle one-time discovery hint
   useEffect(() => {
@@ -50,6 +52,14 @@ export function ConceptSwitcher() {
       )
         return;
       if (e.metaKey || e.ctrlKey || e.altKey) return;
+      if (e.key === "[") {
+        cyclePrev();
+        return;
+      }
+      if (e.key === "]") {
+        cycle();
+        return;
+      }
       let idx = -1;
       if (e.key === "0") idx = 9;
       else if (e.key.length === 1) {
@@ -65,7 +75,18 @@ export function ConceptSwitcher() {
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [setConcept]);
+  }, [setConcept, cycle, cyclePrev]);
+
+  // Brief toast announcing the active concept on switch (great for live demos)
+  useEffect(() => {
+    if (firstRender.current) {
+      firstRender.current = false;
+      return;
+    }
+    setToast(true);
+    const t = setTimeout(() => setToast(false), 1500);
+    return () => clearTimeout(t);
+  }, [concept]);
 
   const active = CONCEPTS.find((c) => c.id === concept) ?? CONCEPTS[0];
 
@@ -75,6 +96,30 @@ export function ConceptSwitcher() {
       onMouseEnter={() => setOpen(true)}
       onMouseLeave={() => setOpen(false)}
     >
+      <AnimatePresence>
+        {toast && (
+          <motion.div
+            initial={{ opacity: 0, y: 18, x: "-50%" }}
+            animate={{ opacity: 1, y: 0, x: "-50%" }}
+            exit={{ opacity: 0, y: 18, x: "-50%" }}
+            transition={{ duration: 0.4, ease: EASE }}
+            className="surface fixed bottom-6 left-1/2 flex items-center gap-3 rounded-full px-5 py-3 shadow-[var(--shadow-lux)] backdrop-blur-xl"
+          >
+            <span
+              className="grid h-6 w-6 place-items-center rounded-[5px] border"
+              style={{ background: active.swatch.canvas, borderColor: active.swatch.gold }}
+            >
+              <span
+                className="h-2.5 w-2.5 rounded-full"
+                style={{ background: active.swatch.gold }}
+              />
+            </span>
+            <span className="font-mono text-xs text-faint">{active.numeral}</span>
+            <span className="text-sm text-ink">{active.name}</span>
+            <span className="hidden text-xs text-muted sm:inline">{active.tagline}</span>
+          </motion.div>
+        )}
+      </AnimatePresence>
       <AnimatePresence>
         {open && (
           <motion.div

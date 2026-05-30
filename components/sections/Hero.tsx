@@ -545,7 +545,7 @@ export function Hero() {
               className="relative text-[clamp(2.3rem,5.6vw,4.8rem)] uppercase leading-[0.98]"
             >
               <span
-                className="absolute inset-0 translate-x-[3px] translate-y-[3px] text-gold/80"
+                className="absolute inset-0 translate-x-[5px] translate-y-[5px] text-gold/85"
                 aria-hidden
               >
                 {hero.title}
@@ -600,6 +600,165 @@ export function Hero() {
               <CTAs />
             </div>
           </div>
+        </div>
+      </section>
+    );
+  }
+
+  /* ----------------------------- MAXIMAL ----------------------------- */
+  if (concept === "maximal") {
+    const tags = [
+      { t: "B2B", cls: "bg-gold text-oncontrast rotate-2" },
+      { t: "Переговори", cls: "border border-ink text-ink -rotate-1" },
+      { t: "+20% → ×5", cls: "bg-ember text-oncontrast -rotate-2 font-mono" },
+      { t: "Без тиску", cls: "border border-gold text-gold rotate-1" },
+      { t: "Конверсія ×2", cls: "bg-surface text-ink rotate-1 font-mono" },
+    ];
+    return (
+      <section className="relative grain min-h-[92vh] overflow-hidden pb-12 pt-28">
+        <HeroAmbient />
+        <div className="container-shell relative">
+          <span className="eyebrow">{hero.eyebrow}</span>
+          <motion.h1
+            {...hm}
+            transition={{ duration: 0.9, ease: EASE, delay: 0.05 }}
+            className="mt-5 text-[clamp(2.6rem,7vw,6rem)] leading-[0.94] text-ink"
+          >
+            {emphasize(hero.title, "B2B-клієнтами")}
+          </motion.h1>
+          <div className="mt-7 flex flex-wrap items-center gap-3">
+            {tags.map((x) => (
+              <span
+                key={x.t}
+                className={`inline-flex rounded-full px-4 py-1.5 text-sm ${x.cls}`}
+              >
+                {x.t}
+              </span>
+            ))}
+          </div>
+          <div className="mt-10 grid items-end gap-8 lg:grid-cols-12">
+            <div className="lg:col-span-7">
+              <p className="max-w-xl text-lg leading-relaxed text-muted">{hero.lead}</p>
+              <div className="mt-7">
+                <CTAs />
+              </div>
+            </div>
+            <div className="lg:col-span-5">
+              <div className="relative ml-auto w-fit">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={EDITION_PORTRAIT}
+                  alt="Тетяна Пан"
+                  className="w-56 -rotate-2 rounded-sm object-cover shadow-[var(--shadow-lux)] sm:w-64"
+                />
+                <span className="absolute -left-4 top-6 -rotate-6 bg-ink px-3 py-1 font-mono text-xs text-oncontrast">
+                  Тетяна Пан
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  /* ----------------------------- GAZETTE ----------------------------- */
+  if (concept === "gazette") {
+    const firstLetter = hero.lead.charAt(0);
+    const leadRest = hero.lead.slice(1);
+    return (
+      <section className="relative grain overflow-hidden pb-12 pt-28">
+        <div className="container-shell relative">
+          <div className="border-y-2 border-ink py-4 text-center">
+            <div className="flex items-center justify-center gap-3 font-mono text-[0.58rem] uppercase tracking-[0.2em] text-muted">
+              <span>Засн. 2001</span>
+              <span className="h-px w-8 bg-ink/40" />
+              <span>Київ</span>
+              <span className="h-px w-8 bg-ink/40" />
+              <span>Випуск I · 2026</span>
+            </div>
+            <h2 className="mt-2 font-display text-[clamp(2.4rem,6vw,5rem)] leading-none text-ink">
+              Pan<span className="text-gold">&amp;</span>Partners
+            </h2>
+            <p className="mt-2 font-mono text-[0.6rem] uppercase tracking-[0.2em] text-muted">
+              Продажі · Переговори · B2B-консалтинг
+            </p>
+          </div>
+          <div className="mt-8 grid gap-8 lg:grid-cols-12">
+            <div className="lg:col-span-8 lg:border-r lg:border-ink/20 lg:pr-8">
+              <span className="eyebrow">{hero.eyebrow}</span>
+              <motion.h1
+                {...hm}
+                transition={{ duration: 0.9, ease: EASE, delay: 0.05 }}
+                className="mt-3 text-[clamp(2rem,4.4vw,3.6rem)] leading-[1.03] text-ink"
+              >
+                {emphasize(hero.title, "B2B-клієнтами")}
+              </motion.h1>
+              <div className="mt-5 gap-7 text-pretty text-base leading-relaxed text-muted sm:columns-2 [&>p]:mb-3">
+                <p>
+                  <span className="float-left mr-2 font-display text-6xl leading-[0.7] text-ink">
+                    {firstLetter}
+                  </span>
+                  {leadRest}
+                </p>
+                <p>{hero.formats}</p>
+              </div>
+              <div className="mt-6">
+                <CTAs />
+              </div>
+            </div>
+            <aside className="lg:col-span-4">
+              <div className="border-t-2 border-ink pt-3">
+                <p className="font-mono text-[0.6rem] uppercase tracking-[0.18em] text-gold">
+                  Цифри номера
+                </p>
+                <div className="mt-3 flex flex-col divide-y divide-ink/15">
+                  {[
+                    { v: "25+", l: "років досвіду" },
+                    { v: "×5", l: "зростання продажів" },
+                    { v: "90%", l: "утримання клієнтів" },
+                  ].map((s) => (
+                    <div key={s.l} className="flex items-baseline justify-between py-2.5">
+                      <span className="font-display text-3xl text-ink">{s.v}</span>
+                      <span className="text-xs text-muted">{s.l}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </aside>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  /* --------------------------- CONSTRUCTIVIST ------------------------ */
+  if (concept === "construct") {
+    return (
+      <section className="relative grain min-h-[92vh] overflow-hidden pt-28">
+        <div className="pointer-events-none absolute inset-0 overflow-hidden">
+          <div className="absolute -right-24 -top-10 h-[150%] w-40 rotate-[22deg] bg-gold/90" />
+          <div className="absolute right-2 -top-10 h-[150%] w-14 rotate-[22deg] bg-ink" />
+          <div className="absolute left-[34%] top-8 hidden h-2.5 w-40 -rotate-[8deg] bg-gold md:block" />
+        </div>
+        <div className="container-shell relative grid min-h-[calc(92vh-7rem)] items-center">
+          <div className="max-w-3xl">
+            <span className="eyebrow">{hero.eyebrow}</span>
+            <motion.h1
+              {...hm}
+              transition={{ duration: 0.9, ease: EASE, delay: 0.05 }}
+              className="mt-4 text-[clamp(2.6rem,6.5vw,5.6rem)] leading-[0.92] text-ink"
+            >
+              {emphasize(hero.title, "B2B-клієнтами")}
+            </motion.h1>
+            <p className="mt-6 max-w-xl text-lg leading-relaxed text-muted">{hero.lead}</p>
+            <div className="mt-8">
+              <CTAs />
+            </div>
+          </div>
+        </div>
+        <div className="pointer-events-none absolute bottom-6 right-8 font-display text-[8rem] leading-none text-gold/25 sm:text-[12rem]">
+          ↗
         </div>
       </section>
     );

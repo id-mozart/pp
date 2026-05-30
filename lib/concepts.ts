@@ -12,7 +12,10 @@ export type ConceptId =
   | "vapor"
   | "terminal"
   | "riso"
-  | "bauhaus";
+  | "bauhaus"
+  | "maximal"
+  | "gazette"
+  | "construct";
 
 export interface Concept {
   id: ConceptId;
@@ -122,6 +125,27 @@ export const CONCEPTS: Concept[] = [
     name: "Bauhaus",
     tagline: "Геометрія · конструктив",
     swatch: { canvas: "#ECE5D5", gold: "#E0A21C", ink: "#16150F" },
+  },
+  {
+    id: "maximal",
+    numeral: "XV",
+    name: "Maximal",
+    tagline: "Колаж · максимум",
+    swatch: { canvas: "#1E1410", gold: "#E8893A", ink: "#F3E7D8" },
+  },
+  {
+    id: "gazette",
+    numeral: "XVI",
+    name: "Gazette",
+    tagline: "Газета · колонки",
+    swatch: { canvas: "#EAE5D8", gold: "#9A6B1E", ink: "#1A1814" },
+  },
+  {
+    id: "construct",
+    numeral: "XVII",
+    name: "Constructivist",
+    tagline: "Агіт · діагональ",
+    swatch: { canvas: "#ECE4D2", gold: "#D23B16", ink: "#14110D" },
   },
 ];
 

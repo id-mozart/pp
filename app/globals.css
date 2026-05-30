@@ -445,8 +445,8 @@
   --c-ink: 28 26 20;
   --c-muted: 92 86 70;
   --c-faint: 128 120 100;
-  --c-gold: 230 112 14;
-  --c-gold-soft: 244 148 58;
+  --c-gold: 206 92 8;
+  --c-gold-soft: 236 132 40;
   --c-ember: 206 66 28;
   --c-action: 28 26 20;
   --c-action-ink: 240 232 216;
@@ -482,8 +482,8 @@
   --c-ink: 22 21 15;
   --c-muted: 90 86 72;
   --c-faint: 128 122 104;
-  --c-gold: 224 162 28;
-  --c-gold-soft: 240 188 70;
+  --c-gold: 166 114 12;
+  --c-gold-soft: 214 156 44;
   --c-ember: 181 70 42;
   --c-action: 22 21 15;
   --c-action-ink: 236 229 213;
@@ -498,6 +498,101 @@
   --grain-opacity: 0.04;
   --shadow-lux: 0 22px 50px -32px rgb(40 30 10 / 0.4);
   color-scheme: light;
+}
+
+[data-concept="maximal"] {
+  /* XV — Maximal · dark warm editorial collage */
+  --c-canvas: 30 20 16;
+  --c-surface: 44 30 24;
+  --c-raised: 56 38 30;
+  --c-line: 102 76 60;
+  --c-ink: 243 231 216;
+  --c-muted: 192 172 154;
+  --c-faint: 132 114 100;
+  --c-gold: 232 137 58;
+  --c-gold-soft: 248 178 112;
+  --c-ember: 224 86 52;
+  --c-action: 232 137 58;
+  --c-action-ink: 30 20 16;
+  --c-oncontrast: 30 20 16;
+  --font-display: var(--font-manrope);
+  --font-body: var(--font-manrope);
+  --font-mono: var(--font-jetbrains);
+  --display-weight: 800;
+  --display-tracking: -0.03em;
+  --glow-a: rgb(232 137 58 / 0.2);
+  --glow-b: rgb(224 86 52 / 0.16);
+  --grain-opacity: 0.06;
+  --shadow-lux: 0 28px 70px -28px rgb(0 0 0 / 0.7);
+  color-scheme: dark;
+}
+
+[data-concept="gazette"] {
+  /* XVI — Gazette · newsprint broadsheet, Playfair masthead, serif columns */
+  --c-canvas: 234 229 216;
+  --c-surface: 242 238 228;
+  --c-raised: 248 245 237;
+  --c-line: 26 24 20;
+  --c-ink: 26 24 20;
+  --c-muted: 84 78 66;
+  --c-faint: 120 112 96;
+  --c-gold: 146 104 28;
+  --c-gold-soft: 176 136 58;
+  --c-ember: 176 54 30;
+  --c-action: 26 24 20;
+  --c-action-ink: 234 229 216;
+  --c-oncontrast: 234 229 216;
+  --font-display: var(--font-playfair);
+  --font-body: var(--font-spectral);
+  --font-mono: var(--font-jetbrains);
+  --display-weight: 700;
+  --display-tracking: -0.01em;
+  --glow-a: transparent;
+  --glow-b: transparent;
+  --grain-opacity: 0.05;
+  --shadow-lux: 0 22px 48px -34px rgb(30 26 18 / 0.4);
+  color-scheme: light;
+}
+[data-concept="gazette"] .eyebrow {
+  font-family: var(--font-mono);
+  letter-spacing: 0.16em;
+}
+
+[data-concept="construct"] {
+  /* XVII — Constructivist · red+black agit-poster, diagonal, condensed Oswald */
+  --c-canvas: 236 228 210;
+  --c-surface: 244 237 222;
+  --c-raised: 249 244 232;
+  --c-line: 20 17 13;
+  --c-ink: 20 17 13;
+  --c-muted: 86 80 66;
+  --c-faint: 122 114 98;
+  --c-gold: 210 59 22;
+  --c-gold-soft: 230 96 50;
+  --c-ember: 224 162 28;
+  --c-action: 20 17 13;
+  --c-action-ink: 236 228 210;
+  --c-oncontrast: 236 228 210;
+  --font-display: var(--font-oswald);
+  --font-body: var(--font-inter);
+  --font-mono: var(--font-jetbrains);
+  --display-weight: 700;
+  --display-tracking: 0.01em;
+  --glow-a: transparent;
+  --glow-b: transparent;
+  --grain-opacity: 0.05;
+  --shadow-lux: 5px 5px 0 rgb(20 17 13);
+  color-scheme: light;
+}
+[data-concept="construct"] h1,
+[data-concept="construct"] h2,
+[data-concept="construct"] h3 {
+  text-transform: uppercase;
+}
+[data-concept="construct"] .eyebrow {
+  font-family: var(--font-mono);
+  letter-spacing: 0.14em;
+  color: rgb(var(--c-gold));
 }
 
 /* ==================================================================

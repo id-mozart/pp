@@ -19,6 +19,7 @@ interface ConceptContextValue {
   concept: ConceptId;
   setConcept: (c: ConceptId) => void;
   cycle: () => void;
+  cyclePrev: () => void;
 }
 
 const ConceptContext = createContext<ConceptContextValue | null>(null);
@@ -67,8 +68,18 @@ export function ConceptProvider({ children }: { children: React.ReactNode }) {
     });
   }, []);
 
+  const cyclePrev = useCallback(() => {
+    setConceptState((prev) => {
+      const i = CONCEPT_IDS.indexOf(prev);
+      const next =
+        CONCEPT_IDS[(i - 1 + CONCEPT_IDS.length) % CONCEPT_IDS.length];
+      apply(next);
+      return next;
+    });
+  }, []);
+
   return (
-    <ConceptContext.Provider value={{ concept, setConcept, cycle }}>
+    <ConceptContext.Provider value={{ concept, setConcept, cycle, cyclePrev }}>
       {children}
     </ConceptContext.Provider>
   );
