@@ -8,7 +8,11 @@ export type ConceptId =
   | "noir"
   | "kinetik"
   | "dossier"
-  | "aurora";
+  | "aurora"
+  | "vapor"
+  | "terminal"
+  | "riso"
+  | "bauhaus";
 
 export interface Concept {
   id: ConceptId;
@@ -90,6 +94,34 @@ export const CONCEPTS: Concept[] = [
     name: "Aurora",
     tagline: "М'яке світло · повітря",
     swatch: { canvas: "#F6EFE6", gold: "#C67834", ink: "#281E18" },
+  },
+  {
+    id: "vapor",
+    numeral: "XI",
+    name: "Vapor",
+    tagline: "Неон-скло · градієнт",
+    swatch: { canvas: "#16100E", gold: "#F2A33C", ink: "#F4E7DB" },
+  },
+  {
+    id: "terminal",
+    numeral: "XII",
+    name: "Terminal",
+    tagline: "CLI · бурштин на чорному",
+    swatch: { canvas: "#0A0A08", gold: "#FFB000", ink: "#E8D2A8" },
+  },
+  {
+    id: "riso",
+    numeral: "XIII",
+    name: "Risograph",
+    tagline: "Друк · зерно · оверпринт",
+    swatch: { canvas: "#F0E8D8", gold: "#E8730F", ink: "#1C1A14" },
+  },
+  {
+    id: "bauhaus",
+    numeral: "XIV",
+    name: "Bauhaus",
+    tagline: "Геометрія · конструктив",
+    swatch: { canvas: "#ECE5D5", gold: "#E0A21C", ink: "#16150F" },
   },
 ];
 

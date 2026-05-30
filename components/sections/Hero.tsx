@@ -447,6 +447,164 @@ export function Hero() {
     );
   }
 
+  /* ------------------------------ VAPOR ------------------------------ */
+  if (concept === "vapor") {
+    const stats = [
+      { v: "25+", l: "років у продажах" },
+      { v: "×5", l: "зростання продажів" },
+      { v: "90%", l: "утримання клієнтів" },
+    ];
+    return (
+      <section className="relative grain min-h-[92vh] overflow-hidden pb-12 pt-28">
+        <HeroAmbient />
+        <div className="container-shell relative grid min-h-[calc(92vh-9rem)] items-center gap-8 lg:grid-cols-12">
+          <div className="surface relative flex flex-col gap-6 p-8 sm:p-10 lg:col-span-7">
+            <span className="eyebrow">{hero.eyebrow}</span>
+            <motion.h1
+              {...hm}
+              transition={{ duration: 1, ease: EASE, delay: 0.05 }}
+              className="text-[clamp(2.3rem,5.4vw,4.8rem)] leading-[1.03] text-ink"
+            >
+              {emphasize(hero.title, "B2B-клієнтами")}
+            </motion.h1>
+            <p className="max-w-xl text-lg leading-relaxed text-muted">{hero.lead}</p>
+            <div>
+              <CTAs />
+            </div>
+          </div>
+          <div className="flex flex-col gap-4 lg:col-span-5">
+            {stats.map((s) => (
+              <div key={s.l} className="surface flex items-center gap-4 p-5">
+                <span className="stat-number text-4xl">{s.v}</span>
+                <span className="text-sm text-muted">{s.l}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  /* ----------------------------- TERMINAL ---------------------------- */
+  if (concept === "terminal") {
+    return (
+      <section className="relative grain min-h-[92vh] overflow-hidden pb-12 pt-28">
+        <div className="container-shell relative">
+          <div className="surface overflow-hidden">
+            <div className="flex items-center gap-2 border-b border-line/60 bg-raised px-4 py-3">
+              <span className="h-3 w-3 rounded-full bg-ember" />
+              <span className="h-3 w-3 rounded-full bg-gold" />
+              <span className="h-3 w-3 rounded-full bg-muted/40" />
+              <span className="ml-3 text-xs text-muted">
+                pan@partners — продажі та переговори
+              </span>
+            </div>
+            <div className="p-6 text-sm leading-relaxed sm:p-10 sm:text-base">
+              <p className="text-muted">
+                <span className="text-gold">pan@partners</span>:~$ ./train --segment=b2b
+              </p>
+              <motion.h1
+                {...hm}
+                transition={{ duration: 0.8, ease: EASE, delay: 0.05 }}
+                className="mt-5 text-[clamp(1.7rem,4.2vw,3.2rem)] leading-tight text-ink"
+              >
+                {emphasize(hero.title, "B2B-клієнтами")}
+                <span className="ml-1 inline-block h-[0.95em] w-[0.5em] translate-y-[0.12em] animate-pulse bg-gold" />
+              </motion.h1>
+              <p className="mt-6 text-muted"># {hero.lead}</p>
+              <p className="mt-5 text-gold">→ results[]:</p>
+              <div className="space-y-1 text-muted">
+                {hero.bullets.map((b) => (
+                  <p key={b}>
+                    {"  "}
+                    <span className="text-gold">✓</span> {b}
+                  </p>
+                ))}
+              </div>
+              <div className="mt-8">
+                <CTAs />
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  /* ------------------------------ RISO ------------------------------- */
+  if (concept === "riso") {
+    return (
+      <section className="relative overflow-hidden pb-12 pt-28">
+        <div className="grain pointer-events-none absolute inset-0" />
+        <div className="container-shell relative grid items-center gap-10 lg:grid-cols-12">
+          <div className="flex flex-col gap-6 lg:col-span-7">
+            <span className="eyebrow">{hero.eyebrow}</span>
+            <motion.h1
+              {...hm}
+              transition={{ duration: 0.8, ease: EASE, delay: 0.05 }}
+              className="relative text-[clamp(2.3rem,5.6vw,4.8rem)] uppercase leading-[0.98]"
+            >
+              <span
+                className="absolute inset-0 translate-x-[3px] translate-y-[3px] text-gold/80"
+                aria-hidden
+              >
+                {hero.title}
+              </span>
+              <span className="relative text-ink">{hero.title}</span>
+            </motion.h1>
+            <p className="max-w-xl text-lg leading-relaxed text-muted">{hero.lead}</p>
+            <div>
+              <CTAs />
+            </div>
+          </div>
+          <div className="lg:col-span-5">
+            <div className="relative overflow-hidden rounded-sm">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={PORTRAIT}
+                alt="Тетяна Пан"
+                className="aspect-[4/5] w-full object-cover object-top grayscale contrast-[1.15]"
+              />
+              <div className="absolute inset-0 bg-gold opacity-90 mix-blend-multiply" />
+              <div className="grain absolute inset-0 opacity-20" />
+            </div>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  /* ----------------------------- BAUHAUS ----------------------------- */
+  if (concept === "bauhaus") {
+    return (
+      <section className="relative grain min-h-[92vh] overflow-hidden pt-28">
+        <div className="pointer-events-none absolute inset-0 overflow-hidden">
+          <div className="absolute right-[6%] top-[13%] h-36 w-36 rounded-full bg-gold sm:h-56 sm:w-56" />
+          <div className="absolute right-[26%] bottom-[14%] hidden h-40 w-40 bg-ink md:block" />
+          <div className="absolute right-[5%] bottom-[3%] h-0 w-0 border-b-[140px] border-l-[80px] border-b-ember border-l-transparent sm:border-b-[210px] sm:border-l-[120px]" />
+          <div className="absolute left-[36%] top-[7%] hidden h-2.5 w-44 bg-ember md:block" />
+          <div className="absolute right-[13%] top-[46%] hidden h-24 w-24 rounded-full border-[10px] border-ink lg:block" />
+        </div>
+        <div className="container-shell relative grid min-h-[calc(92vh-7rem)] items-center">
+          <div className="max-w-3xl">
+            <span className="eyebrow">{hero.eyebrow}</span>
+            <motion.h1
+              {...hm}
+              transition={{ duration: 0.9, ease: EASE, delay: 0.05 }}
+              className="mt-5 text-[clamp(2.5rem,6vw,5.2rem)] leading-[0.98] text-ink"
+            >
+              {emphasize(hero.title, "B2B-клієнтами")}
+            </motion.h1>
+            <p className="mt-6 max-w-xl text-lg leading-relaxed text-muted">{hero.lead}</p>
+            <div className="mt-8">
+              <CTAs />
+            </div>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
   /* ---------------------------- CHAMPAGNE ---------------------------- */
   if (concept === "champagne") {
     return (

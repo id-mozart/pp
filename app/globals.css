@@ -355,6 +355,151 @@
   border-radius: 26px;
 }
 
+[data-concept="vapor"] {
+  /* XI — Vapor · neon glass, amber→coral gradient mesh, Unbounded */
+  --c-canvas: 22 16 14;
+  --c-surface: 38 28 24;
+  --c-raised: 50 37 32;
+  --c-line: 96 72 60;
+  --c-ink: 244 233 224;
+  --c-muted: 190 170 158;
+  --c-faint: 128 112 102;
+  --c-gold: 242 163 60;
+  --c-gold-soft: 255 192 112;
+  --c-ember: 255 107 61;
+  --c-action: 242 163 60;
+  --c-action-ink: 22 16 14;
+  --c-oncontrast: 22 16 14;
+  --font-display: var(--font-unbounded);
+  --font-body: var(--font-manrope);
+  --font-mono: var(--font-jetbrains);
+  --display-weight: 700;
+  --display-tracking: -0.03em;
+  --glow-a: rgb(242 163 60 / 0.26);
+  --glow-b: rgb(255 107 61 / 0.22);
+  --grain-opacity: 0.05;
+  --shadow-lux: 0 30px 80px -26px rgb(0 0 0 / 0.75);
+  color-scheme: dark;
+}
+[data-concept="vapor"] body {
+  background-image:
+    radial-gradient(900px 700px at 78% -8%, rgb(242 163 60 / 0.26), transparent 60%),
+    radial-gradient(820px 700px at -8% 100%, rgb(255 107 61 / 0.22), transparent 55%),
+    radial-gradient(700px 600px at 50% 122%, rgb(176 84 200 / 0.12), transparent 60%);
+  background-attachment: fixed;
+}
+[data-concept="vapor"] .surface {
+  background: linear-gradient(135deg, rgb(var(--c-surface) / 0.55), rgb(var(--c-raised) / 0.32));
+  backdrop-filter: blur(18px) saturate(1.2);
+  -webkit-backdrop-filter: blur(18px) saturate(1.2);
+  border: 1px solid rgb(var(--c-gold) / 0.28);
+  border-radius: 24px;
+  box-shadow: 0 20px 60px -24px rgb(0 0 0 / 0.7), inset 0 1px 0 rgb(255 255 255 / 0.08);
+}
+
+[data-concept="terminal"] {
+  /* XII — Terminal · amber-on-black CLI, all-monospace */
+  --c-canvas: 10 10 8;
+  --c-surface: 18 17 13;
+  --c-raised: 25 23 18;
+  --c-line: 84 66 30;
+  --c-ink: 232 210 168;
+  --c-muted: 176 150 104;
+  --c-faint: 128 108 72;
+  --c-gold: 255 176 0;
+  --c-gold-soft: 255 202 84;
+  --c-ember: 255 120 40;
+  --c-action: 255 176 0;
+  --c-action-ink: 10 10 8;
+  --c-oncontrast: 10 10 8;
+  --font-display: var(--font-jetbrains);
+  --font-body: var(--font-jetbrains);
+  --font-mono: var(--font-jetbrains);
+  --display-weight: 700;
+  --display-tracking: 0em;
+  --glow-a: rgb(255 176 0 / 0.12);
+  --glow-b: transparent;
+  --grain-opacity: 0.05;
+  --shadow-lux: 0 24px 60px -30px rgb(0 0 0 / 0.8);
+  color-scheme: dark;
+}
+[data-concept="terminal"] .surface {
+  border-radius: 0;
+  border-color: rgb(var(--c-gold) / 0.32);
+}
+[data-concept="terminal"] .btn {
+  border-radius: 0;
+}
+[data-concept="terminal"] h1,
+[data-concept="terminal"] h2,
+[data-concept="terminal"] h3 {
+  letter-spacing: 0;
+}
+
+[data-concept="riso"] {
+  /* XIII — Risograph · warm paper, heavy grain, amber overprint, condensed Oswald */
+  --c-canvas: 240 232 216;
+  --c-surface: 246 239 226;
+  --c-raised: 250 244 233;
+  --c-line: 28 26 20;
+  --c-ink: 28 26 20;
+  --c-muted: 92 86 70;
+  --c-faint: 128 120 100;
+  --c-gold: 230 112 14;
+  --c-gold-soft: 244 148 58;
+  --c-ember: 206 66 28;
+  --c-action: 28 26 20;
+  --c-action-ink: 240 232 216;
+  --c-oncontrast: 240 232 216;
+  --font-display: var(--font-oswald);
+  --font-body: var(--font-inter);
+  --font-mono: var(--font-jetbrains);
+  --display-weight: 700;
+  --display-tracking: 0.01em;
+  --glow-a: transparent;
+  --glow-b: transparent;
+  --grain-opacity: 0.14;
+  --shadow-lux: 4px 4px 0 rgb(230 112 14);
+  color-scheme: light;
+}
+[data-concept="riso"] h1,
+[data-concept="riso"] h2,
+[data-concept="riso"] h3 {
+  text-transform: uppercase;
+}
+[data-concept="riso"] .eyebrow {
+  font-family: var(--font-mono);
+  letter-spacing: 0.14em;
+  color: rgb(var(--c-gold));
+}
+
+[data-concept="bauhaus"] {
+  /* XIV — Bauhaus · cream, geometric primaries, Manrope */
+  --c-canvas: 236 229 213;
+  --c-surface: 245 240 229;
+  --c-raised: 250 246 237;
+  --c-line: 22 21 15;
+  --c-ink: 22 21 15;
+  --c-muted: 90 86 72;
+  --c-faint: 128 122 104;
+  --c-gold: 224 162 28;
+  --c-gold-soft: 240 188 70;
+  --c-ember: 181 70 42;
+  --c-action: 22 21 15;
+  --c-action-ink: 236 229 213;
+  --c-oncontrast: 236 229 213;
+  --font-display: var(--font-manrope);
+  --font-body: var(--font-manrope);
+  --font-mono: var(--font-jetbrains);
+  --display-weight: 800;
+  --display-tracking: -0.025em;
+  --glow-a: transparent;
+  --glow-b: transparent;
+  --grain-opacity: 0.04;
+  --shadow-lux: 0 22px 50px -32px rgb(40 30 10 / 0.4);
+  color-scheme: light;
+}
+
 /* ==================================================================
    BASE
    ================================================================== */
