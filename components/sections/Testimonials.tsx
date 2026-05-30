@@ -1,3 +1,5 @@
+"use client";
+
 import { testimonials, credibility, cases, about } from "@/lib/content";
 import { Reveal, RevealGroup, RevealItem } from "@/components/ui/Reveal";
 import { Quote, Play, Star, ArrowUpRight } from "@/components/ui/icons";

@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import { formats } from "@/lib/content";
 import { Reveal, RevealGroup, RevealItem } from "@/components/ui/Reveal";

@@ -1,3 +1,5 @@
+"use client";
+
 import { clients } from "@/lib/content";
 import { Reveal } from "@/components/ui/Reveal";
 

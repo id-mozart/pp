@@ -1,3 +1,5 @@
+"use client";
+
 import { about } from "@/lib/content";
 import { Reveal } from "@/components/ui/Reveal";
 import { Check } from "@/components/ui/icons";

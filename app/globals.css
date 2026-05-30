@@ -595,6 +595,96 @@
   color: rgb(var(--c-gold));
 }
 
+[data-concept="bento"] {
+  /* XVIII — Bento · modular tile-grid composition, graphite + gold */
+  --c-canvas: 18 19 15;
+  --c-surface: 28 30 25;
+  --c-raised: 38 40 35;
+  --c-line: 70 74 66;
+  --c-ink: 239 235 226;
+  --c-muted: 180 176 164;
+  --c-faint: 122 118 108;
+  --c-gold: 216 162 63;
+  --c-gold-soft: 240 196 120;
+  --c-ember: 214 120 60;
+  --c-action: 216 162 63;
+  --c-action-ink: 18 19 15;
+  --c-oncontrast: 18 19 15;
+  --font-display: var(--font-manrope);
+  --font-body: var(--font-inter);
+  --font-mono: var(--font-jetbrains);
+  --display-weight: 800;
+  --display-tracking: -0.03em;
+  --glow-a: rgb(216 162 63 / 0.16);
+  --glow-b: rgb(214 120 60 / 0.12);
+  --grain-opacity: 0.04;
+  --shadow-lux: 0 26px 60px -30px rgb(0 0 0 / 0.7);
+  color-scheme: dark;
+}
+[data-concept="bento"] .surface {
+  border-radius: 20px;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s ease;
+}
+[data-concept="bento"] .surface:hover {
+  transform: translateY(-4px);
+  border-color: rgb(var(--c-gold) / 0.4);
+}
+
+[data-concept="deck"] {
+  /* XIX — Deck · full-screen scroll-snap slides, Spectral, high contrast */
+  --c-canvas: 14 14 12;
+  --c-surface: 24 24 21;
+  --c-raised: 33 33 29;
+  --c-line: 66 64 58;
+  --c-ink: 242 238 230;
+  --c-muted: 176 170 158;
+  --c-faint: 118 112 102;
+  --c-gold: 232 163 58;
+  --c-gold-soft: 250 196 116;
+  --c-ember: 222 110 58;
+  --c-action: 232 163 58;
+  --c-action-ink: 14 14 12;
+  --c-oncontrast: 14 14 12;
+  --font-display: var(--font-spectral);
+  --font-body: var(--font-inter);
+  --font-mono: var(--font-jetbrains);
+  --display-weight: 500;
+  --display-tracking: -0.02em;
+  --glow-a: rgb(232 163 58 / 0.16);
+  --glow-b: transparent;
+  --grain-opacity: 0.04;
+  --shadow-lux: 0 30px 80px -30px rgb(0 0 0 / 0.7);
+  color-scheme: dark;
+  scroll-snap-type: y proximity;
+}
+
+[data-concept="story"] {
+  /* XX — Story · long-form editorial article, cream + serif */
+  --c-canvas: 244 237 225;
+  --c-surface: 251 247 239;
+  --c-raised: 255 253 248;
+  --c-line: 211 197 173;
+  --c-ink: 28 23 20;
+  --c-muted: 96 84 70;
+  --c-faint: 138 122 104;
+  --c-gold: 150 112 32;
+  --c-gold-soft: 182 140 56;
+  --c-ember: 150 80 44;
+  --c-action: 28 23 20;
+  --c-action-ink: 244 237 225;
+  --c-oncontrast: 244 237 225;
+  --font-display: var(--font-playfair);
+  --font-body: var(--font-spectral);
+  --font-mono: var(--font-jetbrains);
+  --display-weight: 600;
+  --display-tracking: -0.01em;
+  --glow-a: transparent;
+  --glow-b: transparent;
+  --grain-opacity: 0.03;
+  --shadow-lux: 0 26px 60px -34px rgb(60 40 16 / 0.35);
+  color-scheme: light;
+}
+
 /* ==================================================================
    BASE
    ================================================================== */

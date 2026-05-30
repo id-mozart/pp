@@ -1,10 +1,4 @@
-import { Hero } from "@/components/sections/Hero";
-import { About } from "@/components/sections/About";
-import { Requests } from "@/components/sections/Requests";
-import { Formats } from "@/components/sections/Formats";
-import { Clients } from "@/components/sections/Clients";
-import { Testimonials } from "@/components/sections/Testimonials";
-import { ContactForm } from "@/components/sections/ContactForm";
+import { HomeRouter } from "@/components/compositions/HomeRouter";
 
 const jsonLd = {
   "@context": "https://schema.org",
@@ -25,13 +19,7 @@ export default function HomePage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <Hero />
-      <About />
-      <Requests />
-      <Formats />
-      <Clients />
-      <Testimonials />
-      <ContactForm />
+      <HomeRouter />
     </>
   );
 }

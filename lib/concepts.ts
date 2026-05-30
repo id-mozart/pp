@@ -15,7 +15,10 @@ export type ConceptId =
   | "bauhaus"
   | "maximal"
   | "gazette"
-  | "construct";
+  | "construct"
+  | "bento"
+  | "deck"
+  | "story";
 
 export interface Concept {
   id: ConceptId;
@@ -146,6 +149,27 @@ export const CONCEPTS: Concept[] = [
     name: "Constructivist",
     tagline: "Агіт · діагональ",
     swatch: { canvas: "#ECE4D2", gold: "#D23B16", ink: "#14110D" },
+  },
+  {
+    id: "bento",
+    numeral: "XVIII",
+    name: "Bento",
+    tagline: "Інша КОМПОЗИЦІЯ · сітка плиток",
+    swatch: { canvas: "#12130F", gold: "#D8A23F", ink: "#EFEBE2" },
+  },
+  {
+    id: "deck",
+    numeral: "XIX",
+    name: "Deck",
+    tagline: "Інша КОМПОЗИЦІЯ · слайди",
+    swatch: { canvas: "#0E0E0C", gold: "#E8A33A", ink: "#F2EEE6" },
+  },
+  {
+    id: "story",
+    numeral: "XX",
+    name: "Story",
+    tagline: "Інша КОМПОЗИЦІЯ · лонгрід",
+    swatch: { canvas: "#F4EDE1", gold: "#9A7322", ink: "#1C1714" },
   },
 ];
 

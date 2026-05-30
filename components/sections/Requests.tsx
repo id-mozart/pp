@@ -1,3 +1,5 @@
+"use client";
+
 import { requests } from "@/lib/content";
 import { Reveal, RevealGroup, RevealItem } from "@/components/ui/Reveal";
 import { Asterisk } from "@/components/ui/icons";
