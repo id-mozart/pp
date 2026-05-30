@@ -10,6 +10,7 @@ const EASE = [0.16, 1, 0.3, 1] as const;
 
 const EMBER_BG = "/brand/Tania1-3.webp";
 const PORTRAIT = "/brand/tania-portrait.jpg";
+const EDITION_PORTRAIT = "/brand/Tania2.jpg";
 
 function emphasize(text: string, phrase: string) {
   const i = text.indexOf(phrase);
@@ -143,6 +144,135 @@ export function Hero() {
         <div className="container-shell relative mt-10">
           <div className="hairline" />
           <p className="py-5 text-center text-sm text-muted">{hero.trust}</p>
+        </div>
+      </section>
+    );
+  }
+
+  /* ----------------------------- ÉDITION ----------------------------- */
+  if (concept === "edition") {
+    return (
+      <section className="relative grain overflow-hidden pt-28">
+        <div className="container-shell relative border-b-2 border-ink pb-4 pt-6">
+          <div className="flex items-baseline justify-between gap-4">
+            <span className="font-display text-[clamp(1.6rem,3vw,2.4rem)] leading-none text-ink">
+              Pan<span className="text-gold">&amp;</span>Partners
+            </span>
+            <span className="font-mono text-[0.62rem] uppercase tracking-[0.2em] text-muted">
+              B2B · вип. 01 · 2026 · Київ
+            </span>
+          </div>
+        </div>
+
+        <div className="container-shell relative grid items-center gap-10 py-10 lg:grid-cols-12">
+          <div className="flex flex-col gap-6 lg:col-span-7">
+            <span className="eyebrow">{hero.eyebrow}</span>
+            <motion.h1
+              {...hm}
+              transition={{ duration: 1, ease: EASE, delay: 0.05 }}
+              className="text-[clamp(2.6rem,6vw,5.4rem)] leading-[1.0] text-ink"
+            >
+              {emphasize(hero.title, "B2B-клієнтами")}
+            </motion.h1>
+            <p className="max-w-xl text-lg leading-relaxed text-muted">{hero.lead}</p>
+            <div className="flex">
+              <CTAs />
+            </div>
+          </div>
+          <div className="lg:col-span-5">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.97 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 1, ease: EASE, delay: 0.15 }}
+              className="relative"
+            >
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={EDITION_PORTRAIT}
+                alt="Тетяна Пан"
+                className="w-full rounded-sm object-cover"
+              />
+              <div className="absolute -left-3 top-8 -rotate-3 bg-gold px-4 py-2 font-mono text-[0.7rem] uppercase tracking-wider text-oncontrast shadow-[var(--shadow-lux)]">
+                Експертка з B2B-продажів
+              </div>
+            </motion.div>
+          </div>
+        </div>
+
+        <div className="container-shell relative border-t-2 border-ink">
+          <div className="grid sm:grid-cols-3">
+            {hero.bullets.map((b, i) => (
+              <div
+                key={b}
+                className="flex items-baseline gap-3 py-5 sm:border-line sm:px-5 sm:[&:not(:first-child)]:border-l"
+              >
+                <span className="font-display text-2xl text-gold">
+                  {String(i + 1).padStart(2, "0")}
+                </span>
+                <span className="text-sm leading-snug text-ink">{b}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  /* ------------------------------ BRUT ------------------------------- */
+  if (concept === "brut") {
+    return (
+      <section className="relative grain overflow-hidden pb-12 pt-28">
+        <div className="container-shell relative">
+          <div className="grid grid-cols-2 border-2 border-ink lg:grid-cols-12">
+            <div className="col-span-2 flex items-center justify-between border-b-2 border-ink px-5 py-3 lg:col-span-12">
+              <span className="eyebrow">{hero.eyebrow}</span>
+              <span className="font-mono text-xs text-muted">01 — 06</span>
+            </div>
+            <div className="col-span-2 border-b-2 border-ink px-5 py-8 lg:col-span-8 lg:border-r-2">
+              <motion.h1
+                {...hm}
+                transition={{ duration: 0.9, ease: EASE, delay: 0.05 }}
+                className="text-[clamp(2.4rem,6vw,5rem)] leading-[0.92] text-ink"
+              >
+                {emphasize(hero.title, "B2B-клієнтами")}
+              </motion.h1>
+            </div>
+            <div className="col-span-2 border-b-2 border-ink lg:col-span-4">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={PORTRAIT}
+                alt="Тетяна Пан"
+                className="h-64 w-full object-cover object-top lg:h-full"
+              />
+            </div>
+            <div className="col-span-2 border-b-2 border-ink px-5 py-6 lg:col-span-7 lg:border-b-0 lg:border-r-2">
+              <p className="text-lg leading-relaxed text-muted">{hero.lead}</p>
+              <div className="mt-6">
+                <CTAs />
+              </div>
+            </div>
+            <div className="col-span-2 grid grid-cols-2 lg:col-span-5">
+              {[
+                { v: "25+", l: "років" },
+                { v: "17+", l: "навчання" },
+                { v: "×5", l: "продажі" },
+                { v: "6", l: "галузей" },
+              ].map((s, i) => (
+                <div
+                  key={s.l}
+                  className={`border-ink px-5 py-5 ${i % 2 === 0 ? "border-r-2" : ""} ${i < 2 ? "border-b-2" : ""}`}
+                >
+                  <div className="font-display text-3xl text-gold">{s.v}</div>
+                  <div className="font-mono text-[0.6rem] uppercase tracking-wider text-muted">
+                    {s.l}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+          <p className="mt-6 font-mono text-xs uppercase tracking-[0.16em] text-muted">
+            {hero.trust}
+          </p>
         </div>
       </section>
     );

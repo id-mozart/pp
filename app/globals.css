@@ -143,6 +143,97 @@
   border-radius: 22px;
 }
 
+[data-concept="edition"] {
+  /* V — Édition · warm blush magazine cover, terracotta accent, Prata fashion serif */
+  --c-canvas: 239 226 212;
+  --c-surface: 248 239 229;
+  --c-raised: 253 247 239;
+  --c-line: 206 184 160;
+  --c-ink: 36 23 18;
+  --c-muted: 104 84 70;
+  --c-faint: 138 116 98;
+  --c-gold: 188 74 24;
+  --c-gold-soft: 214 116 56;
+  --c-ember: 158 60 22;
+  --c-action: 36 23 18;
+  --c-action-ink: 248 239 229;
+  --c-oncontrast: 248 239 229;
+
+  --font-display: var(--font-prata);
+  --font-body: var(--font-manrope);
+  --font-mono: var(--font-jetbrains);
+  --display-weight: 400;
+  --display-tracking: -0.01em;
+
+  --glow-a: rgb(188 74 24 / 0.1);
+  --glow-b: rgb(158 60 22 / 0.08);
+  --grain-opacity: 0.04;
+  --shadow-lux: 0 26px 60px -34px rgb(80 40 20 / 0.45);
+  color-scheme: light;
+}
+
+[data-concept="brut"] {
+  /* VI — Brut · bone paper, electric amber, condensed Oswald, exposed grid, zero radius */
+  --c-canvas: 233 227 214;
+  --c-surface: 224 217 202;
+  --c-raised: 215 207 190;
+  --c-line: 50 45 35;
+  --c-ink: 22 20 15;
+  --c-muted: 78 72 60;
+  --c-faint: 112 104 88;
+  --c-gold: 194 92 8;
+  --c-gold-soft: 222 124 30;
+  --c-ember: 184 58 14;
+  --c-action: 22 20 15;
+  --c-action-ink: 233 227 214;
+  --c-oncontrast: 233 227 214;
+
+  --font-display: var(--font-oswald);
+  --font-body: var(--font-inter);
+  --font-mono: var(--font-jetbrains);
+  --display-weight: 600;
+  --display-tracking: 0.005em;
+
+  --glow-a: transparent;
+  --glow-b: transparent;
+  --grain-opacity: 0.07;
+  --shadow-lux: 6px 6px 0 rgb(22 20 15);
+  color-scheme: light;
+}
+
+/* Brut: exposed grid, hard borders, uppercase, mono eyebrows, hard offset shadows */
+[data-concept="brut"] .surface {
+  border-radius: 0;
+  border-width: 2px;
+  border-color: rgb(var(--c-ink));
+  background: rgb(var(--c-surface));
+  box-shadow: none;
+}
+[data-concept="brut"] .btn {
+  border-radius: 0;
+  text-transform: uppercase;
+}
+[data-concept="brut"] .btn-primary {
+  box-shadow: 4px 4px 0 rgb(var(--c-ink));
+}
+[data-concept="brut"] .btn-primary:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 7px 7px 0 rgb(var(--c-ink));
+}
+[data-concept="brut"] h1,
+[data-concept="brut"] h2,
+[data-concept="brut"] h3 {
+  text-transform: uppercase;
+}
+[data-concept="brut"] .eyebrow {
+  font-family: var(--font-mono);
+  letter-spacing: 0.14em;
+  color: rgb(var(--c-ink));
+}
+[data-concept="brut"] .eyebrow::before {
+  background: rgb(var(--c-ink));
+}
+
 /* ==================================================================
    BASE
    ================================================================== */

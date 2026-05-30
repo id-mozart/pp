@@ -7,6 +7,8 @@ import {
   Manrope,
   JetBrains_Mono,
   Cormorant,
+  Prata,
+  Oswald,
 } from "next/font/google";
 import "./globals.css";
 
@@ -56,6 +58,18 @@ const cormorant = Cormorant({
   weight: ["400", "500", "600", "700"],
   style: ["normal", "italic"],
   variable: "--font-cormorant",
+  display: "swap",
+});
+const prata = Prata({
+  subsets: ["latin", "cyrillic"],
+  weight: ["400"],
+  variable: "--font-prata",
+  display: "swap",
+});
+const oswald = Oswald({
+  subsets: ["latin", "latin-ext", "cyrillic"],
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-oswald",
   display: "swap",
 });
 
@@ -124,7 +138,7 @@ export default function RootLayout({
     <html
       lang="uk"
       data-concept={DEFAULT_CONCEPT}
-      className={`${spectral.variable} ${inter.variable} ${playfair.variable} ${sourceSans.variable} ${manrope.variable} ${jetbrains.variable} ${cormorant.variable}`}
+      className={`${spectral.variable} ${inter.variable} ${playfair.variable} ${sourceSans.variable} ${manrope.variable} ${jetbrains.variable} ${cormorant.variable} ${prata.variable} ${oswald.variable}`}
       suppressHydrationWarning
     >
       <body>

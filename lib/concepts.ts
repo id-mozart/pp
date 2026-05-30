@@ -1,4 +1,10 @@
-export type ConceptId = "ember" | "champagne" | "bronze" | "solaris";
+export type ConceptId =
+  | "ember"
+  | "champagne"
+  | "bronze"
+  | "solaris"
+  | "edition"
+  | "brut";
 
 export interface Concept {
   id: ConceptId;
@@ -38,6 +44,20 @@ export const CONCEPTS: Concept[] = [
     name: "Solaris",
     tagline: "Тепле сяйво · couture",
     swatch: { canvas: "#1A120B", gold: "#E0A43B", ink: "#F5EBDE" },
+  },
+  {
+    id: "edition",
+    numeral: "V",
+    name: "Édition",
+    tagline: "Обкладинка · fashion",
+    swatch: { canvas: "#EFE2D4", gold: "#C8521B", ink: "#241712" },
+  },
+  {
+    id: "brut",
+    numeral: "VI",
+    name: "Brut",
+    tagline: "Ґрід · електрик",
+    swatch: { canvas: "#E9E3D6", gold: "#E2780A", ink: "#16140F" },
   },
 ];
 
