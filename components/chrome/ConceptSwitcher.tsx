@@ -50,8 +50,12 @@ export function ConceptSwitcher() {
       )
         return;
       if (e.metaKey || e.ctrlKey || e.altKey) return;
-      const n = parseInt(e.key, 10);
-      const idx = e.key.length === 1 && n >= 1 && n <= 9 ? n - 1 : -1;
+      let idx = -1;
+      if (e.key === "0") idx = 9;
+      else if (e.key.length === 1) {
+        const n = parseInt(e.key, 10);
+        if (n >= 1 && n <= 9) idx = n - 1;
+      }
       if (idx > -1 && CONCEPTS[idx]) {
         setConcept(CONCEPTS[idx].id);
         setOpen(true);
@@ -78,14 +82,16 @@ export function ConceptSwitcher() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 14, scale: 0.96 }}
             transition={{ duration: 0.42, ease: EASE }}
-            className="surface mb-3 w-72 overflow-hidden p-2 shadow-[var(--shadow-lux)] backdrop-blur-xl"
+            className="surface mb-3 max-h-[74vh] w-72 overflow-y-auto p-2 shadow-[var(--shadow-lux)] backdrop-blur-xl"
           >
             <div className="flex items-center justify-between px-3 py-2">
               <span className="font-mono text-[0.62rem] uppercase tracking-[0.2em] text-faint">
                 Концепція дизайну
               </span>
               <span className="font-mono text-[0.62rem] text-faint">
-                клавіші 1–{CONCEPTS.length}
+                {CONCEPTS.length > 9
+                  ? "клавіші 1–9 · 0"
+                  : `клавіші 1–${CONCEPTS.length}`}
               </span>
             </div>
             {CONCEPTS.map((c) => {
@@ -137,7 +143,7 @@ export function ConceptSwitcher() {
               exit={{ opacity: 0, x: 8 }}
               className="surface absolute bottom-1 right-14 whitespace-nowrap rounded-full px-3 py-1.5 text-xs text-muted shadow-[var(--shadow-lux)]"
             >
-              Спробуйте 3 дизайни →
+              {CONCEPTS.length} дизайнів — спробуйте →
             </motion.div>
           )}
         </AnimatePresence>
@@ -148,19 +154,14 @@ export function ConceptSwitcher() {
           aria-expanded={open}
           className="group flex items-center gap-2 rounded-full border border-line/70 bg-surface/80 px-3 py-2.5 shadow-[var(--shadow-lux)] backdrop-blur-xl transition-all duration-500 ease-lux hover:border-gold/50"
         >
-          <span className="flex items-center gap-1.5">
-            {CONCEPTS.map((c) => (
-              <span
-                key={c.id}
-                className="h-2 w-2 rounded-full transition-all duration-300"
-                style={{
-                  background: c.swatch.gold,
-                  outline: c.id === concept ? "2px solid rgb(var(--c-gold))" : "none",
-                  outlineOffset: "2px",
-                  opacity: c.id === concept ? 1 : 0.55,
-                }}
-              />
-            ))}
+          <span
+            className="grid h-4 w-4 place-items-center overflow-hidden rounded-[4px] border transition-colors duration-300"
+            style={{ background: active.swatch.canvas, borderColor: active.swatch.gold }}
+          >
+            <span
+              className="h-2 w-2 rounded-full"
+              style={{ background: active.swatch.gold }}
+            />
           </span>
           <span className="font-mono text-[0.62rem] uppercase tracking-[0.16em] text-faint">
             {active.numeral}

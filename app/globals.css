@@ -234,6 +234,127 @@
   background: rgb(var(--c-ink));
 }
 
+[data-concept="noir"] {
+  /* VII — Noir · obsidian gallery, gold-foil, Playfair, type-and-void */
+  --c-canvas: 9 9 8;
+  --c-surface: 19 18 16;
+  --c-raised: 28 26 23;
+  --c-line: 70 64 52;
+  --c-ink: 237 232 223;
+  --c-muted: 165 156 142;
+  --c-faint: 112 105 94;
+  --c-gold: 203 164 90;
+  --c-gold-soft: 226 196 140;
+  --c-ember: 176 120 60;
+  --c-action: 203 164 90;
+  --c-action-ink: 9 9 8;
+  --c-oncontrast: 9 9 8;
+  --font-display: var(--font-playfair);
+  --font-body: var(--font-inter);
+  --font-mono: var(--font-jetbrains);
+  --display-weight: 500;
+  --display-tracking: -0.01em;
+  --glow-a: rgb(203 164 90 / 0.1);
+  --glow-b: rgb(176 120 60 / 0.07);
+  --grain-opacity: 0.05;
+  --shadow-lux: 0 30px 90px -30px rgb(0 0 0 / 0.85);
+  color-scheme: dark;
+}
+
+[data-concept="kinetik"] {
+  /* VIII — Kinetik · near-black mono, electric brand-orange, Unbounded, kinetic type */
+  --c-canvas: 12 12 11;
+  --c-surface: 22 22 20;
+  --c-raised: 31 31 28;
+  --c-line: 64 64 58;
+  --c-ink: 240 240 236;
+  --c-muted: 158 158 150;
+  --c-faint: 106 106 100;
+  --c-gold: 255 122 0;
+  --c-gold-soft: 255 162 72;
+  --c-ember: 230 88 16;
+  --c-action: 255 122 0;
+  --c-action-ink: 12 12 11;
+  --c-oncontrast: 12 12 11;
+  --font-display: var(--font-unbounded);
+  --font-body: var(--font-inter);
+  --font-mono: var(--font-jetbrains);
+  --display-weight: 700;
+  --display-tracking: -0.03em;
+  --glow-a: rgb(255 122 0 / 0.18);
+  --glow-b: rgb(230 88 16 / 0.14);
+  --grain-opacity: 0.06;
+  --shadow-lux: 0 30px 80px -30px rgb(0 0 0 / 0.7);
+  color-scheme: dark;
+}
+
+[data-concept="dossier"] {
+  /* IX — Dossier · cool report paper, ruled grids, Spectral + mono data */
+  --c-canvas: 237 236 230;
+  --c-surface: 245 244 239;
+  --c-raised: 251 250 246;
+  --c-line: 198 196 186;
+  --c-ink: 26 26 22;
+  --c-muted: 92 90 82;
+  --c-faint: 130 128 118;
+  --c-gold: 148 118 42;
+  --c-gold-soft: 176 144 64;
+  --c-ember: 150 86 40;
+  --c-action: 26 26 22;
+  --c-action-ink: 245 244 239;
+  --c-oncontrast: 245 244 239;
+  --font-display: var(--font-spectral);
+  --font-body: var(--font-inter);
+  --font-mono: var(--font-jetbrains);
+  --display-weight: 500;
+  --display-tracking: -0.015em;
+  --glow-a: rgb(148 118 42 / 0.08);
+  --glow-b: transparent;
+  --grain-opacity: 0.03;
+  --shadow-lux: 0 24px 50px -34px rgb(40 38 26 / 0.4);
+  color-scheme: light;
+}
+[data-concept="dossier"] .eyebrow {
+  font-family: var(--font-mono);
+  letter-spacing: 0.16em;
+}
+
+[data-concept="aurora"] {
+  /* X — Aurora · soft warm light gradient, airy, Manrope, rounded glass */
+  --c-canvas: 246 239 230;
+  --c-surface: 252 247 240;
+  --c-raised: 255 252 247;
+  --c-line: 224 208 188;
+  --c-ink: 40 30 24;
+  --c-muted: 116 98 84;
+  --c-faint: 150 132 116;
+  --c-gold: 196 116 48;
+  --c-gold-soft: 226 156 94;
+  --c-ember: 192 96 60;
+  --c-action: 40 30 24;
+  --c-action-ink: 252 247 240;
+  --c-oncontrast: 252 247 240;
+  --font-display: var(--font-manrope);
+  --font-body: var(--font-manrope);
+  --font-mono: var(--font-jetbrains);
+  --display-weight: 800;
+  --display-tracking: -0.035em;
+  --glow-a: rgb(226 156 94 / 0.32);
+  --glow-b: rgb(255 196 150 / 0.26);
+  --grain-opacity: 0.025;
+  --shadow-lux: 0 30px 70px -34px rgb(150 90 50 / 0.35);
+  color-scheme: light;
+}
+[data-concept="aurora"] body {
+  background-image:
+    radial-gradient(900px 620px at 82% -5%, rgb(226 156 94 / 0.36), transparent 60%),
+    radial-gradient(820px 600px at -5% 102%, rgb(255 196 150 / 0.3), transparent 55%);
+  background-attachment: fixed;
+}
+[data-concept="aurora"] .surface {
+  border-radius: 26px;
+}
+
 /* ==================================================================
    BASE
    ================================================================== */
@@ -490,6 +611,15 @@
   .mask-fade-r {
     -webkit-mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
     mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
+  }
+
+  .text-outline {
+    color: transparent;
+    -webkit-text-stroke: 1.5px rgb(var(--c-ink) / 0.55);
+  }
+  .text-outline-gold {
+    color: transparent;
+    -webkit-text-stroke: 1.5px rgb(var(--c-gold));
   }
 }
 

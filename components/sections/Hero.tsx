@@ -278,6 +278,175 @@ export function Hero() {
     );
   }
 
+  /* ------------------------------ NOIR ------------------------------- */
+  if (concept === "noir") {
+    return (
+      <section className="relative grain grid min-h-[94vh] place-items-center overflow-hidden pt-24">
+        <div className="pointer-events-none absolute inset-4 border border-gold/25 sm:inset-8" />
+        <HeroAmbient />
+        <div className="container-shell relative flex max-w-4xl flex-col items-center gap-8 text-center">
+          <span className="eyebrow">{hero.eyebrow}</span>
+          <motion.h1
+            {...hm}
+            transition={{ duration: 1.1, ease: EASE, delay: 0.05 }}
+            className="text-[clamp(2.6rem,6.2vw,5.6rem)] leading-[1.06] text-ink"
+          >
+            {emphasize(hero.title, "B2B-клієнтами")}
+          </motion.h1>
+          <p className="max-w-xl text-lg leading-relaxed text-muted">{hero.lead}</p>
+          <div className="flex justify-center">
+            <CTAs />
+          </div>
+        </div>
+        <div className="absolute left-6 top-6 font-mono text-[0.62rem] uppercase tracking-[0.2em] text-faint sm:left-10 sm:top-10">
+          Pan&amp;Partners
+        </div>
+        <div className="absolute bottom-6 right-6 font-mono text-[0.62rem] uppercase tracking-[0.2em] text-faint sm:bottom-10 sm:right-10">
+          B2B · Київ
+        </div>
+      </section>
+    );
+  }
+
+  /* ----------------------------- KINETIK ----------------------------- */
+  if (concept === "kinetik") {
+    const words = ["Продажі", "Переговори", "B2B", "Результат", "Зростання"];
+    const Strip = ({ reverse }: { reverse?: boolean }) => (
+      <div className="relative overflow-hidden mask-fade-r">
+        <div
+          className={`flex w-max animate-marquee items-center ${reverse ? "[animation-direction:reverse]" : ""}`}
+          style={{ ["--marquee-dur" as string]: "32s" }}
+        >
+          {[...words, ...words].map((w, i) => (
+            <span
+              key={i}
+              className={`flex items-center whitespace-nowrap font-display text-[clamp(2.4rem,7vw,5.6rem)] uppercase leading-none ${
+                i % 2 ? "text-outline-gold" : "text-gold"
+              }`}
+            >
+              {w}
+              <span className="px-5 text-ink/25">/</span>
+            </span>
+          ))}
+        </div>
+      </div>
+    );
+    return (
+      <section className="relative grain flex min-h-[92vh] flex-col justify-center gap-9 overflow-hidden pt-24">
+        <HeroAmbient />
+        <Strip />
+        <div className="container-shell relative flex flex-col gap-6">
+          <span className="eyebrow">{hero.eyebrow}</span>
+          <motion.h1
+            {...hm}
+            transition={{ duration: 0.9, ease: EASE, delay: 0.05 }}
+            className="max-w-4xl text-[clamp(2rem,4.6vw,3.7rem)] leading-[1.02] text-ink"
+          >
+            {emphasize(hero.title, "B2B-клієнтами")}
+          </motion.h1>
+          <p className="max-w-xl text-lg leading-relaxed text-muted">{hero.lead}</p>
+          <div>
+            <CTAs />
+          </div>
+        </div>
+        <Strip reverse />
+      </section>
+    );
+  }
+
+  /* ----------------------------- DOSSIER ----------------------------- */
+  if (concept === "dossier") {
+    const metrics = [
+      { label: "Конверсія", from: "5%", to: "20–30%", pct: 82 },
+      { label: "Зростання продажів", from: "+20%", to: "×5", pct: 96 },
+      { label: "Утримання клієнтів", from: "—", to: "90%", pct: 90 },
+    ];
+    return (
+      <section className="relative grain overflow-hidden pb-16 pt-32">
+        <div className="container-shell relative">
+          <div className="flex items-center justify-between border-b border-ink/30 pb-3 font-mono text-[0.65rem] uppercase tracking-[0.18em] text-muted">
+            <span>Pan&amp;Partners — Dossier</span>
+            <span>2026 / B2B / UA</span>
+          </div>
+          <div className="mt-12 grid gap-12 lg:grid-cols-12">
+            <div className="flex flex-col gap-6 lg:col-span-7">
+              <span className="eyebrow">{hero.eyebrow}</span>
+              <motion.h1
+                {...hm}
+                transition={{ duration: 1, ease: EASE, delay: 0.05 }}
+                className="text-[clamp(2.4rem,5vw,4.4rem)] leading-[1.05] text-ink"
+              >
+                {emphasize(hero.title, "B2B-клієнтами")}
+              </motion.h1>
+              <p className="max-w-xl text-lg leading-relaxed text-muted">{hero.lead}</p>
+              <div>
+                <CTAs />
+              </div>
+            </div>
+            <div className="lg:col-span-5">
+              <div className="surface p-6">
+                <p className="font-mono text-[0.65rem] uppercase tracking-[0.16em] text-faint">
+                  Показники · до → після
+                </p>
+                <div className="mt-5 flex flex-col gap-5">
+                  {metrics.map((m) => (
+                    <div key={m.label}>
+                      <div className="flex items-baseline justify-between text-sm">
+                        <span className="text-ink">{m.label}</span>
+                        <span className="font-mono text-muted">
+                          {m.from} → <span className="text-gold">{m.to}</span>
+                        </span>
+                      </div>
+                      <div className="mt-2 h-1.5 w-full overflow-hidden rounded-full bg-line/50">
+                        <div className="h-full rounded-full bg-gold" style={{ width: `${m.pct}%` }} />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  /* ------------------------------ AURORA ----------------------------- */
+  if (concept === "aurora") {
+    return (
+      <section className="relative grain min-h-[92vh] overflow-hidden pt-28">
+        <HeroAmbient />
+        <div className="container-shell relative grid min-h-[calc(92vh-7rem)] items-center gap-12 lg:grid-cols-2">
+          <div className="flex flex-col gap-7">
+            <span className="eyebrow">{hero.eyebrow}</span>
+            <motion.h1
+              {...hm}
+              transition={{ duration: 1, ease: EASE, delay: 0.05 }}
+              className="text-[clamp(2.6rem,6vw,5rem)] leading-[1.03] text-ink"
+            >
+              {emphasize(hero.title, "B2B-клієнтами")}
+            </motion.h1>
+            <p className="max-w-xl text-lg leading-relaxed text-muted">{hero.lead}</p>
+            <Bullets />
+            <div>
+              <CTAs />
+            </div>
+          </div>
+          <div className="relative">
+            <div className="relative mx-auto aspect-[4/5] w-full max-w-md overflow-hidden rounded-[40px] shadow-[var(--shadow-lux)] ring-1 ring-gold/25">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/brand/Tania4.webp"
+                alt="Тетяна Пан"
+                className="h-full w-full object-cover object-top"
+              />
+            </div>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
   /* ---------------------------- CHAMPAGNE ---------------------------- */
   if (concept === "champagne") {
     return (

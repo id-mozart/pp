@@ -4,7 +4,11 @@ export type ConceptId =
   | "bronze"
   | "solaris"
   | "edition"
-  | "brut";
+  | "brut"
+  | "noir"
+  | "kinetik"
+  | "dossier"
+  | "aurora";
 
 export interface Concept {
   id: ConceptId;
@@ -58,6 +62,34 @@ export const CONCEPTS: Concept[] = [
     name: "Brut",
     tagline: "Ґрід · електрик",
     swatch: { canvas: "#E9E3D6", gold: "#E2780A", ink: "#16140F" },
+  },
+  {
+    id: "noir",
+    numeral: "VII",
+    name: "Noir",
+    tagline: "Обсидіан · золота фольга",
+    swatch: { canvas: "#090908", gold: "#CBA45A", ink: "#EDE8DF" },
+  },
+  {
+    id: "kinetik",
+    numeral: "VIII",
+    name: "Kinetik",
+    tagline: "Кінетика · електрик",
+    swatch: { canvas: "#0C0C0B", gold: "#FF7A00", ink: "#F0F0EC" },
+  },
+  {
+    id: "dossier",
+    numeral: "IX",
+    name: "Dossier",
+    tagline: "Звіт · дані",
+    swatch: { canvas: "#EDECE6", gold: "#96782C", ink: "#1A1A16" },
+  },
+  {
+    id: "aurora",
+    numeral: "X",
+    name: "Aurora",
+    tagline: "М'яке світло · повітря",
+    swatch: { canvas: "#F6EFE6", gold: "#C67834", ink: "#281E18" },
   },
 ];
 
