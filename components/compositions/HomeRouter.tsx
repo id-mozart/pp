@@ -12,6 +12,9 @@ import { CanvasHome } from "@/components/compositions/CanvasHome";
 import { DesktopHome } from "@/components/compositions/DesktopHome";
 import { CinematicHome } from "@/components/compositions/CinematicHome";
 import { MethodHome } from "@/components/compositions/MethodHome";
+import { FunnelHome } from "@/components/compositions/FunnelHome";
+import { CalculatorHome } from "@/components/compositions/CalculatorHome";
+import { NegotiationHome } from "@/components/compositions/NegotiationHome";
 import type { ConceptId } from "@/lib/concepts";
 
 /**
@@ -29,6 +32,9 @@ const COMPOSITIONS: Partial<Record<ConceptId, () => JSX.Element>> = {
   desktop: DesktopHome,
   cinematic: CinematicHome,
   method: MethodHome,
+  funnel: FunnelHome,
+  calc: CalculatorHome,
+  nego: NegotiationHome,
 };
 
 export function HomeRouter() {

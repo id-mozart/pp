@@ -890,6 +890,87 @@
   background-size: 64px 64px;
 }
 
+[data-concept="funnel"] {
+  /* XXVIII — Воронка · form = content (the page is a sales funnel) */
+  --c-canvas: 16 15 12;
+  --c-surface: 26 24 20;
+  --c-raised: 36 33 27;
+  --c-line: 70 64 52;
+  --c-ink: 240 233 222;
+  --c-muted: 178 168 152;
+  --c-faint: 122 113 100;
+  --c-gold: 206 162 78;
+  --c-gold-soft: 234 196 130;
+  --c-ember: 214 96 70;
+  --c-action: 206 162 78;
+  --c-action-ink: 16 15 12;
+  --c-oncontrast: 16 15 12;
+  --font-display: var(--font-manrope);
+  --font-body: var(--font-inter);
+  --font-mono: var(--font-jetbrains);
+  --display-weight: 700;
+  --display-tracking: -0.02em;
+  --glow-a: transparent;
+  --glow-b: transparent;
+  --grain-opacity: 0.05;
+  --shadow-lux: 0 26px 60px -30px rgb(0 0 0 / 0.7);
+  color-scheme: dark;
+}
+
+[data-concept="calc"] {
+  /* XXIX — Калькулятор · interactive loss calculator (provocation) */
+  --c-canvas: 18 17 13;
+  --c-surface: 28 26 21;
+  --c-raised: 38 35 28;
+  --c-line: 74 68 56;
+  --c-ink: 240 233 222;
+  --c-muted: 180 170 154;
+  --c-faint: 124 114 100;
+  --c-gold: 214 168 80;
+  --c-gold-soft: 240 200 132;
+  --c-ember: 224 92 64;
+  --c-action: 214 168 80;
+  --c-action-ink: 18 17 13;
+  --c-oncontrast: 18 17 13;
+  --font-display: var(--font-manrope);
+  --font-body: var(--font-inter);
+  --font-mono: var(--font-jetbrains);
+  --display-weight: 700;
+  --display-tracking: -0.03em;
+  --glow-a: rgb(224 92 64 / 0.12);
+  --glow-b: transparent;
+  --grain-opacity: 0.04;
+  --shadow-lux: 0 26px 60px -30px rgb(0 0 0 / 0.7);
+  color-scheme: dark;
+}
+
+[data-concept="nego"] {
+  /* XXX — Переговори · playable negotiation simulator */
+  --c-canvas: 17 16 14;
+  --c-surface: 28 26 22;
+  --c-raised: 38 35 29;
+  --c-line: 74 68 58;
+  --c-ink: 240 234 224;
+  --c-muted: 180 170 156;
+  --c-faint: 124 116 102;
+  --c-gold: 210 168 86;
+  --c-gold-soft: 236 198 134;
+  --c-ember: 220 96 66;
+  --c-action: 210 168 86;
+  --c-action-ink: 17 16 14;
+  --c-oncontrast: 17 16 14;
+  --font-display: var(--font-manrope);
+  --font-body: var(--font-inter);
+  --font-mono: var(--font-jetbrains);
+  --display-weight: 700;
+  --display-tracking: -0.02em;
+  --glow-a: transparent;
+  --glow-b: transparent;
+  --grain-opacity: 0.04;
+  --shadow-lux: 0 26px 60px -30px rgb(0 0 0 / 0.7);
+  color-scheme: dark;
+}
+
 /* ==================================================================
    BASE
    ================================================================== */

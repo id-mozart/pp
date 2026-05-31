@@ -25,7 +25,10 @@ export type ConceptId =
   | "canvas"
   | "desktop"
   | "cinematic"
-  | "method";
+  | "method"
+  | "funnel"
+  | "calc"
+  | "nego";
 
 export interface Concept {
   id: ConceptId;
@@ -226,6 +229,27 @@ export const CONCEPTS: Concept[] = [
     name: "Метод",
     tagline: "НОВА ІДЕЯ · система-методологія",
     swatch: { canvas: "#100F0C", gold: "#CBA24E", ink: "#F0E9DD" },
+  },
+  {
+    id: "funnel",
+    numeral: "XXVIII",
+    name: "Воронка",
+    tagline: "Форма = зміст · сторінка-воронка",
+    swatch: { canvas: "#100F0C", gold: "#CEA24E", ink: "#F0E9DD" },
+  },
+  {
+    id: "calc",
+    numeral: "XXIX",
+    name: "Калькулятор",
+    tagline: "Провокація · рахує ваші втрати",
+    swatch: { canvas: "#12110D", gold: "#D6A850", ink: "#F0E9DD" },
+  },
+  {
+    id: "nego",
+    numeral: "XXX",
+    name: "Переговори",
+    tagline: "Гра · відстій ціну",
+    swatch: { canvas: "#11100E", gold: "#D2A856", ink: "#F0EAE0" },
   },
 ];
 
