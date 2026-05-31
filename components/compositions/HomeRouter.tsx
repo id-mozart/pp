@@ -11,6 +11,7 @@ import { DiagnosticHome } from "@/components/compositions/DiagnosticHome";
 import { CanvasHome } from "@/components/compositions/CanvasHome";
 import { DesktopHome } from "@/components/compositions/DesktopHome";
 import { CinematicHome } from "@/components/compositions/CinematicHome";
+import { MethodHome } from "@/components/compositions/MethodHome";
 import type { ConceptId } from "@/lib/concepts";
 
 /**
@@ -27,6 +28,7 @@ const COMPOSITIONS: Partial<Record<ConceptId, () => JSX.Element>> = {
   canvas: CanvasHome,
   desktop: DesktopHome,
   cinematic: CinematicHome,
+  method: MethodHome,
 };
 
 export function HomeRouter() {

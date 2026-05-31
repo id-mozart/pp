@@ -857,6 +857,39 @@
   color-scheme: dark;
 }
 
+[data-concept="method"] {
+  /* XXVII — Метод · dark architectural "blueprint", methodology brand */
+  --c-canvas: 16 15 12;
+  --c-surface: 26 24 20;
+  --c-raised: 36 33 27;
+  --c-line: 70 64 52;
+  --c-ink: 240 233 222;
+  --c-muted: 178 168 152;
+  --c-faint: 122 113 100;
+  --c-gold: 203 162 78;
+  --c-gold-soft: 232 196 130;
+  --c-ember: 206 120 60;
+  --c-action: 203 162 78;
+  --c-action-ink: 16 15 12;
+  --c-oncontrast: 16 15 12;
+  --font-display: var(--font-spectral);
+  --font-body: var(--font-inter);
+  --font-mono: var(--font-jetbrains);
+  --display-weight: 500;
+  --display-tracking: -0.02em;
+  --glow-a: rgb(203 162 78 / 0.12);
+  --glow-b: transparent;
+  --grain-opacity: 0.05;
+  --shadow-lux: 0 30px 80px -30px rgb(0 0 0 / 0.7);
+  color-scheme: dark;
+}
+[data-concept="method"] body {
+  background-image:
+    linear-gradient(rgb(var(--c-line) / 0.16) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(var(--c-line) / 0.16) 1px, transparent 1px);
+  background-size: 64px 64px;
+}
+
 /* ==================================================================
    BASE
    ================================================================== */

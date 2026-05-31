@@ -24,7 +24,8 @@ export type ConceptId =
   | "diagnostic"
   | "canvas"
   | "desktop"
-  | "cinematic";
+  | "cinematic"
+  | "method";
 
 export interface Concept {
   id: ConceptId;
@@ -218,6 +219,13 @@ export const CONCEPTS: Concept[] = [
     name: "Cinematic",
     tagline: "Скрол-кіно · сцена морфиться",
     swatch: { canvas: "#0C0A08", gold: "#D69E46", ink: "#F4EADE" },
+  },
+  {
+    id: "method",
+    numeral: "XXVII",
+    name: "Метод",
+    tagline: "НОВА ІДЕЯ · система-методологія",
+    swatch: { canvas: "#100F0C", gold: "#CBA24E", ink: "#F0E9DD" },
   },
 ];
 
