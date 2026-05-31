@@ -10,6 +10,7 @@ import {
   Prata,
   Oswald,
   Unbounded,
+  Caveat,
 } from "next/font/google";
 import "./globals.css";
 
@@ -79,6 +80,12 @@ const unbounded = Unbounded({
   variable: "--font-unbounded",
   display: "swap",
 });
+const caveat = Caveat({
+  subsets: ["latin", "cyrillic"],
+  weight: ["400", "600", "700"],
+  variable: "--font-caveat",
+  display: "swap",
+});
 
 const SITE_URL =
   process.env.NEXT_PUBLIC_SITE_URL ||
@@ -145,7 +152,7 @@ export default function RootLayout({
     <html
       lang="uk"
       data-concept={DEFAULT_CONCEPT}
-      className={`${spectral.variable} ${inter.variable} ${playfair.variable} ${sourceSans.variable} ${manrope.variable} ${jetbrains.variable} ${cormorant.variable} ${prata.variable} ${oswald.variable} ${unbounded.variable}`}
+      className={`${spectral.variable} ${inter.variable} ${playfair.variable} ${sourceSans.variable} ${manrope.variable} ${jetbrains.variable} ${cormorant.variable} ${prata.variable} ${oswald.variable} ${unbounded.variable} ${caveat.variable}`}
       suppressHydrationWarning
     >
       <body>

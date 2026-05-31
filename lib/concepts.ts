@@ -28,7 +28,10 @@ export type ConceptId =
   | "method"
   | "funnel"
   | "calc"
-  | "nego";
+  | "nego"
+  | "lookbook"
+  | "wall"
+  | "journal";
 
 export interface Concept {
   id: ConceptId;
@@ -250,6 +253,27 @@ export const CONCEPTS: Concept[] = [
     name: "Переговори",
     tagline: "Гра · відстій ціну",
     swatch: { canvas: "#11100E", gold: "#D2A856", ink: "#F0EAE0" },
+  },
+  {
+    id: "lookbook",
+    numeral: "XXXI",
+    name: "Lookbook",
+    tagline: "Фото-first · фешн-едиторіал",
+    swatch: { canvas: "#0A0A09", gold: "#D6A856", ink: "#F4F0E8" },
+  },
+  {
+    id: "wall",
+    numeral: "XXXII",
+    name: "Стіна відмов",
+    tagline: "Концепт · пробий стіну «НІ»",
+    swatch: { canvas: "#0E0D0C", gold: "#DCAA54", ink: "#EEE8DE" },
+  },
+  {
+    id: "journal",
+    numeral: "XXXIII",
+    name: "Щоденник",
+    tagline: "Скрапбук · полароїди + рукопис",
+    swatch: { canvas: "#ECE6DA", gold: "#967020", ink: "#261E16" },
   },
 ];
 
