@@ -1053,6 +1053,87 @@
   color-scheme: light;
 }
 
+[data-concept="vhs"] {
+  /* XXXIV — Ефір / VHS · retro broadcast (scanlines, REC, channels) */
+  --c-canvas: 8 8 8;
+  --c-surface: 20 19 16;
+  --c-raised: 30 28 24;
+  --c-line: 60 56 48;
+  --c-ink: 232 222 202;
+  --c-muted: 170 160 142;
+  --c-faint: 116 110 98;
+  --c-gold: 222 172 84;
+  --c-gold-soft: 246 204 132;
+  --c-ember: 230 86 70;
+  --c-action: 222 172 84;
+  --c-action-ink: 8 8 8;
+  --c-oncontrast: 8 8 8;
+  --font-display: var(--font-manrope);
+  --font-body: var(--font-inter);
+  --font-mono: var(--font-jetbrains);
+  --display-weight: 700;
+  --display-tracking: -0.02em;
+  --glow-a: transparent;
+  --glow-b: transparent;
+  --grain-opacity: 0.05;
+  --shadow-lux: 0 26px 60px -30px rgb(0 0 0 / 0.8);
+  color-scheme: dark;
+}
+
+[data-concept="feed"] {
+  /* XXXV — Стрічка · social feed (profile, stories, photo grid) */
+  --c-canvas: 240 237 230;
+  --c-surface: 252 250 245;
+  --c-raised: 255 254 250;
+  --c-line: 218 210 196;
+  --c-ink: 30 26 20;
+  --c-muted: 110 100 86;
+  --c-faint: 150 138 120;
+  --c-gold: 158 116 32;
+  --c-gold-soft: 188 146 60;
+  --c-ember: 176 80 44;
+  --c-action: 30 26 20;
+  --c-action-ink: 252 250 245;
+  --c-oncontrast: 252 250 245;
+  --font-display: var(--font-manrope);
+  --font-body: var(--font-inter);
+  --font-mono: var(--font-jetbrains);
+  --display-weight: 700;
+  --display-tracking: -0.02em;
+  --glow-a: transparent;
+  --glow-b: transparent;
+  --grain-opacity: 0.02;
+  --shadow-lux: 0 22px 50px -30px rgb(40 28 14 / 0.32);
+  color-scheme: light;
+}
+
+[data-concept="typewriter"] {
+  /* XXXVI — Друкарка · self-typing manifesto on paper (monospace) */
+  --c-canvas: 238 233 222;
+  --c-surface: 248 244 235;
+  --c-raised: 253 250 243;
+  --c-line: 210 198 178;
+  --c-ink: 36 30 22;
+  --c-muted: 104 92 78;
+  --c-faint: 144 130 112;
+  --c-gold: 150 110 30;
+  --c-gold-soft: 182 138 54;
+  --c-ember: 168 80 44;
+  --c-action: 36 30 22;
+  --c-action-ink: 248 244 235;
+  --c-oncontrast: 248 244 235;
+  --font-display: var(--font-jetbrains);
+  --font-body: var(--font-jetbrains);
+  --font-mono: var(--font-jetbrains);
+  --display-weight: 500;
+  --display-tracking: 0em;
+  --glow-a: transparent;
+  --glow-b: transparent;
+  --grain-opacity: 0.05;
+  --shadow-lux: 0 22px 50px -28px rgb(40 28 14 / 0.36);
+  color-scheme: light;
+}
+
 /* ==================================================================
    BASE
    ================================================================== */

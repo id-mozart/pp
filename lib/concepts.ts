@@ -31,7 +31,10 @@ export type ConceptId =
   | "nego"
   | "lookbook"
   | "wall"
-  | "journal";
+  | "journal"
+  | "vhs"
+  | "feed"
+  | "typewriter";
 
 export interface Concept {
   id: ConceptId;
@@ -274,6 +277,27 @@ export const CONCEPTS: Concept[] = [
     name: "Щоденник",
     tagline: "Скрапбук · полароїди + рукопис",
     swatch: { canvas: "#ECE6DA", gold: "#967020", ink: "#261E16" },
+  },
+  {
+    id: "vhs",
+    numeral: "XXXIV",
+    name: "Ефір / VHS",
+    tagline: "Ретро-ефір · сканлайни, REC",
+    swatch: { canvas: "#080808", gold: "#DEAC54", ink: "#E8DECA" },
+  },
+  {
+    id: "feed",
+    numeral: "XXXV",
+    name: "Стрічка",
+    tagline: "Соцлента · сторіс + grid",
+    swatch: { canvas: "#F0EDE6", gold: "#9E7420", ink: "#1E1A14" },
+  },
+  {
+    id: "typewriter",
+    numeral: "XXXVI",
+    name: "Друкарка",
+    tagline: "Маніфест друкується сам",
+    swatch: { canvas: "#EEE9DE", gold: "#966E1E", ink: "#241E16" },
   },
 ];
 
