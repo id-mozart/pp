@@ -36,7 +36,8 @@ export type ConceptId =
   | "feed"
   | "typewriter"
   | "maison"
-  | "movement";
+  | "movement"
+  | "maisonnoir";
 
 export interface Concept {
   id: ConceptId;
@@ -314,6 +315,13 @@ export const CONCEPTS: Concept[] = [
     name: "Movement",
     tagline: "За мотивами BossBabe · рух",
     swatch: { canvas: "#F3EBE0", gold: "#C2601E", ink: "#171310" },
+  },
+  {
+    id: "maisonnoir",
+    numeral: "XXXIX",
+    name: "Maison Noir",
+    tagline: "Мікс · Ember × Maison",
+    swatch: { canvas: "#0E0B09", gold: "#C9962E", ink: "#F2E9DC" },
   },
 ];
 

@@ -23,6 +23,7 @@ import { FeedHome } from "@/components/compositions/FeedHome";
 import { TypewriterHome } from "@/components/compositions/TypewriterHome";
 import { MaisonHome } from "@/components/compositions/MaisonHome";
 import { MovementHome } from "@/components/compositions/MovementHome";
+import { MaisonNoirHome } from "@/components/compositions/MaisonNoirHome";
 import type { ConceptId } from "@/lib/concepts";
 
 /**
@@ -51,6 +52,7 @@ const COMPOSITIONS: Partial<Record<ConceptId, () => JSX.Element>> = {
   typewriter: TypewriterHome,
   maison: MaisonHome,
   movement: MovementHome,
+  maisonnoir: MaisonNoirHome,
 };
 
 export function HomeRouter() {
