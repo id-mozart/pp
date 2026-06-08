@@ -8,7 +8,7 @@ import {
   useState,
 } from "react";
 import {
-  CONCEPT_IDS,
+  VISIBLE_CONCEPT_IDS,
   DEFAULT_CONCEPT,
   DEFAULT_MODE,
   MODE_STORAGE_KEY,
@@ -93,8 +93,9 @@ export function ConceptProvider({ children }: { children: React.ReactNode }) {
 
   const cycle = useCallback(() => {
     setConceptState((prev) => {
-      const next =
-        CONCEPT_IDS[(CONCEPT_IDS.indexOf(prev) + 1) % CONCEPT_IDS.length];
+      const ids = VISIBLE_CONCEPT_IDS;
+      const i = ids.indexOf(prev);
+      const next = ids[(i + 1 + ids.length) % ids.length];
       apply(next);
       return next;
     });
@@ -102,9 +103,9 @@ export function ConceptProvider({ children }: { children: React.ReactNode }) {
 
   const cyclePrev = useCallback(() => {
     setConceptState((prev) => {
-      const i = CONCEPT_IDS.indexOf(prev);
-      const next =
-        CONCEPT_IDS[(i - 1 + CONCEPT_IDS.length) % CONCEPT_IDS.length];
+      const ids = VISIBLE_CONCEPT_IDS;
+      const i = ids.indexOf(prev);
+      const next = ids[(i - 1 + ids.length) % ids.length];
       apply(next);
       return next;
     });

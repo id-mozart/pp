@@ -12,11 +12,14 @@ export function About() {
           {/* Portrait */}
           <Reveal className="lg:col-span-5">
             <div className="relative lg:sticky lg:top-28">
-              <div className="relative overflow-hidden rounded-[28px] border border-gold/20 shadow-[var(--shadow-lux)]">
+              <div
+                className="relative overflow-hidden rounded-[28px] border border-gold/20 shadow-[var(--shadow-lux)]"
+                style={{ background: "#0c0a08" }}
+              >
                 <img
                   src={about.image}
                   alt={about.name}
-                  className="aspect-[4/5] w-full object-cover object-top"
+                  className="aspect-[3/5] w-full object-contain object-center"
                 />
               </div>
               <div className="mt-5 flex items-center justify-between">

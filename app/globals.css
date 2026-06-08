@@ -1271,6 +1271,36 @@
 }
 
 /* ==================================================================
+   EMBER COLOURS EVERYWHERE — the visible variants share the one warm
+   Ember palette; only their layout & typography stay unique.
+   ================================================================== */
+[data-concept="edition"],
+[data-concept="brut"],
+[data-concept="noir"],
+[data-concept="kinetik"],
+[data-concept="method"],
+[data-concept="vhs"] {
+  --c-canvas: 23 16 11;
+  --c-surface: 35 26 18;
+  --c-raised: 46 34 24;
+  --c-line: 86 68 48;
+  --c-ink: 245 233 215;
+  --c-muted: 184 163 134;
+  --c-faint: 130 113 90;
+  --c-gold: 216 162 74;
+  --c-gold-soft: 233 196 134;
+  --c-ember: 197 101 49;
+  --c-action: 216 162 74;
+  --c-action-ink: 23 16 11;
+  --c-oncontrast: 23 16 11;
+  --glow-a: rgb(216 162 74 / 0.18);
+  --glow-b: rgb(197 101 49 / 0.14);
+  --grain-opacity: 0.05;
+  --shadow-lux: 0 30px 80px -30px rgb(0 0 0 / 0.7);
+  color-scheme: dark;
+}
+
+/* ==================================================================
    BASE
    ================================================================== */
 

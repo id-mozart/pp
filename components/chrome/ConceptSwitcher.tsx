@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useConcept } from "@/components/providers/ConceptProvider";
-import { CONCEPTS } from "@/lib/concepts";
+import { VISIBLE_CONCEPTS as CONCEPTS } from "@/lib/concepts";
 
 const EASE = [0.16, 1, 0.3, 1] as const;
 

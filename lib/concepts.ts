@@ -94,14 +94,14 @@ export const CONCEPTS: Concept[] = [
     numeral: "V",
     name: "Édition",
     tagline: "Обкладинка · fashion",
-    swatch: { canvas: "#EFE2D4", gold: "#C8521B", ink: "#241712" },
+    swatch: { canvas: "#17100B", gold: "#D8A24A", ink: "#F5E9D7" },
   },
   {
     id: "brut",
     numeral: "VI",
     name: "Brut",
-    tagline: "Ґрід · електрик",
-    swatch: { canvas: "#E9E3D6", gold: "#E2780A", ink: "#16140F" },
+    tagline: "Ґрід · структура",
+    swatch: { canvas: "#17100B", gold: "#D8A24A", ink: "#F5E9D7" },
   },
   {
     id: "noir",
@@ -246,9 +246,9 @@ export const CONCEPTS: Concept[] = [
   {
     id: "method",
     numeral: "XXVII",
-    name: "Метод",
-    tagline: "НОВА ІДЕЯ · система-методологія",
-    swatch: { canvas: "#100F0C", gold: "#CBA24E", ink: "#F0E9DD" },
+    name: "Система",
+    tagline: "Система продажів · методологія",
+    swatch: { canvas: "#1A140E", gold: "#D8A654", ink: "#F5EAD8" },
   },
   {
     id: "funnel",
@@ -339,6 +339,21 @@ export const CONCEPTS: Concept[] = [
 export const DEFAULT_CONCEPT: ConceptId = "concept";
 export const CONCEPT_IDS = CONCEPTS.map((c) => c.id) as ConceptId[];
 export const STORAGE_KEY = "pp-concept";
+
+/** Curated set shown in the switcher (others remain reachable via storage). */
+export const VISIBLE_CONCEPT_IDS: ConceptId[] = [
+  "concept",
+  "ember",
+  "edition",
+  "brut",
+  "noir",
+  "kinetik",
+  "method",
+  "vhs",
+];
+export const VISIBLE_CONCEPTS: Concept[] = VISIBLE_CONCEPT_IDS.map(
+  (id) => CONCEPTS.find((c) => c.id === id) as Concept,
+);
 
 export function isConceptId(v: unknown): v is ConceptId {
   return typeof v === "string" && (CONCEPT_IDS as string[]).includes(v);
