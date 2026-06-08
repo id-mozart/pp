@@ -1,4 +1,5 @@
 export type ConceptId =
+  | "concept"
   | "ember"
   | "champagne"
   | "bronze"
@@ -47,9 +48,19 @@ export interface Concept {
   tagline: string;
   /** Tiny swatch used by the switcher */
   swatch: { canvas: string; gold: string; ink: string };
+  /** Ships both light & dark token sets — reveals the day/night toggle. */
+  modes?: boolean;
 }
 
 export const CONCEPTS: Concept[] = [
+  {
+    id: "concept",
+    numeral: "0",
+    name: "Concept",
+    tagline: "Робоча версія · слайдшоу + день/ніч",
+    swatch: { canvas: "#0E0B09", gold: "#C9962E", ink: "#F2E9DC" },
+    modes: true,
+  },
   {
     id: "ember",
     numeral: "I",
@@ -325,10 +336,20 @@ export const CONCEPTS: Concept[] = [
   },
 ];
 
-export const DEFAULT_CONCEPT: ConceptId = "ember";
+export const DEFAULT_CONCEPT: ConceptId = "concept";
 export const CONCEPT_IDS = CONCEPTS.map((c) => c.id) as ConceptId[];
 export const STORAGE_KEY = "pp-concept";
 
 export function isConceptId(v: unknown): v is ConceptId {
   return typeof v === "string" && (CONCEPT_IDS as string[]).includes(v);
+}
+
+/* ---------- Light / dark mode (per-concept opt-in via `modes`) ---------- */
+export type Mode = "light" | "dark";
+export const MODES: Mode[] = ["dark", "light"];
+export const DEFAULT_MODE: Mode = "dark";
+export const MODE_STORAGE_KEY = "pp-mode";
+
+export function isMode(v: unknown): v is Mode {
+  return v === "light" || v === "dark";
 }

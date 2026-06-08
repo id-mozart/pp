@@ -10,9 +10,13 @@ import {
 import {
   CONCEPT_IDS,
   DEFAULT_CONCEPT,
+  DEFAULT_MODE,
+  MODE_STORAGE_KEY,
   STORAGE_KEY,
   isConceptId,
+  isMode,
   type ConceptId,
+  type Mode,
 } from "@/lib/concepts";
 
 interface ConceptContextValue {
@@ -20,6 +24,9 @@ interface ConceptContextValue {
   setConcept: (c: ConceptId) => void;
   cycle: () => void;
   cyclePrev: () => void;
+  mode: Mode;
+  setMode: (m: Mode) => void;
+  toggleMode: () => void;
 }
 
 const ConceptContext = createContext<ConceptContextValue | null>(null);
@@ -33,8 +40,18 @@ function apply(c: ConceptId) {
   }
 }
 
+function applyMode(m: Mode) {
+  document.documentElement.setAttribute("data-mode", m);
+  try {
+    localStorage.setItem(MODE_STORAGE_KEY, m);
+  } catch {
+    /* ignore */
+  }
+}
+
 export function ConceptProvider({ children }: { children: React.ReactNode }) {
   const [concept, setConceptState] = useState<ConceptId>(DEFAULT_CONCEPT);
+  const [mode, setModeState] = useState<Mode>(DEFAULT_MODE);
 
   // Sync from the value the no-flash script already applied / localStorage.
   useEffect(() => {
@@ -52,6 +69,21 @@ export function ConceptProvider({ children }: { children: React.ReactNode }) {
         : DEFAULT_CONCEPT;
     setConceptState(initial);
     document.documentElement.setAttribute("data-concept", initial);
+
+    const modeFromDom = document.documentElement.getAttribute("data-mode");
+    let storedMode: string | null = null;
+    try {
+      storedMode = localStorage.getItem(MODE_STORAGE_KEY);
+    } catch {
+      /* ignore */
+    }
+    const initialMode = isMode(storedMode)
+      ? storedMode
+      : isMode(modeFromDom)
+        ? modeFromDom
+        : DEFAULT_MODE;
+    setModeState(initialMode);
+    document.documentElement.setAttribute("data-mode", initialMode);
   }, []);
 
   const setConcept = useCallback((c: ConceptId) => {
@@ -78,8 +110,21 @@ export function ConceptProvider({ children }: { children: React.ReactNode }) {
     });
   }, []);
 
+  const setMode = useCallback((m: Mode) => {
+    setModeState(m);
+    applyMode(m);
+  }, []);
+
+  // Keep the side effect OUT of the state updater (StrictMode double-invokes
+  // updaters in dev, which would flip the mode straight back).
+  const toggleMode = useCallback(() => {
+    setMode(mode === "dark" ? "light" : "dark");
+  }, [mode, setMode]);
+
   return (
-    <ConceptContext.Provider value={{ concept, setConcept, cycle, cyclePrev }}>
+    <ConceptContext.Provider
+      value={{ concept, setConcept, cycle, cyclePrev, mode, setMode, toggleMode }}
+    >
       {children}
     </ConceptContext.Provider>
   );

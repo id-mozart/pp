@@ -176,13 +176,34 @@ export const clients = {
   subtitle: "Провідні компанії довіряють мені.",
   retention:
     "90% клієнтів продовжують співпрацю з нами та рекомендують нас своїм партнерам.",
-  named: ["Vodafone", "Kyivstar", "ДТЕК", "Danone", "Coca-Cola", "Олімп"],
+  named: [
+    "Vodafone",
+    "Kyivstar",
+    "ДТЕК",
+    "Danone",
+    "Coca-Cola",
+    "Олімп",
+    "Energum",
+    "ІДС Аква Сервіс",
+  ],
   logos: [
     "/brand/customers_car_1.png",
     "/brand/customers_car_2.png",
     "/brand/customers_car_3.png",
     "/brand/customers_car_4.png",
     "/brand/customers_car_5.png",
+  ],
+  // Individual client logos shown as a grid (placeholders — swap the files in
+  // /public/brand/logos for real logos later, keep the same names).
+  logoTiles: [
+    { name: "Vodafone", src: "/brand/logos/vodafone.svg" },
+    { name: "Kyivstar", src: "/brand/logos/kyivstar.svg" },
+    { name: "ДТЕК", src: "/brand/logos/dtek.svg" },
+    { name: "Danone", src: "/brand/logos/danone.svg" },
+    { name: "Coca-Cola", src: "/brand/logos/coca-cola.svg" },
+    { name: "Олімп", src: "/brand/logos/olimp.svg" },
+    { name: "Energum", src: "/brand/logos/energum.svg" },
+    { name: "ІДС Аква Сервіс", src: "/brand/logos/ids-aqua.svg" },
   ],
   stats: [
     { value: "25+", label: "років реального досвіду продажів" },

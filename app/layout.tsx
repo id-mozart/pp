@@ -20,7 +20,13 @@ import { SiteFooter } from "@/components/chrome/SiteFooter";
 import { ConceptSwitcher } from "@/components/chrome/ConceptSwitcher";
 import { FloatingContacts } from "@/components/chrome/FloatingContacts";
 import { CookieConsent } from "@/components/chrome/CookieConsent";
-import { DEFAULT_CONCEPT, STORAGE_KEY, CONCEPT_IDS } from "@/lib/concepts";
+import {
+  DEFAULT_CONCEPT,
+  DEFAULT_MODE,
+  STORAGE_KEY,
+  MODE_STORAGE_KEY,
+  CONCEPT_IDS,
+} from "@/lib/concepts";
 
 const spectral = Spectral({
   subsets: ["latin", "latin-ext", "cyrillic"],
@@ -139,9 +145,9 @@ export const viewport: Viewport = {
 };
 
 /** Inline, render-blocking: apply persisted concept before first paint (no FOUC). */
-const noFlash = `(function(){try{var k="${STORAGE_KEY}",v=localStorage.getItem(k),ok=${JSON.stringify(
+const noFlash = `(function(){try{var d=document.documentElement;var k="${STORAGE_KEY}",v=localStorage.getItem(k),ok=${JSON.stringify(
   CONCEPT_IDS,
-)};if(v&&ok.indexOf(v)>-1){document.documentElement.setAttribute("data-concept",v);}}catch(e){}})();`;
+)};if(v&&ok.indexOf(v)>-1){d.setAttribute("data-concept",v);}var mv=localStorage.getItem("${MODE_STORAGE_KEY}");if(mv==="light"||mv==="dark"){d.setAttribute("data-mode",mv);}}catch(e){}})();`;
 
 export default function RootLayout({
   children,
@@ -152,6 +158,7 @@ export default function RootLayout({
     <html
       lang="uk"
       data-concept={DEFAULT_CONCEPT}
+      data-mode={DEFAULT_MODE}
       className={`${spectral.variable} ${inter.variable} ${playfair.variable} ${sourceSans.variable} ${manrope.variable} ${jetbrains.variable} ${cormorant.variable} ${prata.variable} ${oswald.variable} ${unbounded.variable} ${caveat.variable}`}
       suppressHydrationWarning
     >

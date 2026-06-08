@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
 import { nav, languages } from "@/lib/content";
 import { Menu, Close, ChevronDown, ArrowUpRight } from "@/components/ui/icons";
+import { ModeToggle } from "@/components/chrome/ModeToggle";
 
 const EASE = [0.16, 1, 0.3, 1] as const;
 
@@ -86,6 +87,7 @@ export function SiteHeader() {
 
           {/* Right controls */}
           <div className="flex items-center gap-3">
+            <ModeToggle />
             <LanguageMenu open={langOpen} setOpen={setLangOpen} />
             <Link
               href="/consultation#book"

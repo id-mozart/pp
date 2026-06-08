@@ -2,6 +2,7 @@
 
 import { useConcept } from "@/components/providers/ConceptProvider";
 import { StandardHome } from "@/components/compositions/StandardHome";
+import { ConceptHome } from "@/components/compositions/ConceptHome";
 import { BentoHome } from "@/components/compositions/BentoHome";
 import { DeckHome } from "@/components/compositions/DeckHome";
 import { StoryHome } from "@/components/compositions/StoryHome";
@@ -31,6 +32,7 @@ import type { ConceptId } from "@/lib/concepts";
  * Everything else falls back to the standard stacked composition.
  */
 const COMPOSITIONS: Partial<Record<ConceptId, () => JSX.Element>> = {
+  concept: ConceptHome,
   bento: BentoHome,
   deck: DeckHome,
   story: StoryHome,

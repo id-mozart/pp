@@ -38,6 +38,61 @@
   color-scheme: dark;
 }
 
+/* ==================================================================
+   0 — CONCEPT · the working version (a copy of Ember) with a
+   light / dark switcher. Base = dark; [data-mode="light"] flips it.
+   ================================================================== */
+[data-concept="concept"] {
+  --c-canvas: 14 11 9;
+  --c-surface: 26 21 18;
+  --c-raised: 34 28 23;
+  --c-line: 74 62 50;
+  --c-ink: 242 233 220;
+  --c-muted: 168 155 137;
+  --c-faint: 116 105 92;
+  --c-gold: 201 150 46;
+  --c-gold-soft: 224 188 122;
+  --c-ember: 181 86 42;
+  --c-action: 201 150 46;
+  --c-action-ink: 14 11 9;
+  --c-oncontrast: 14 11 9;
+
+  --font-display: var(--font-spectral);
+  --font-body: var(--font-inter);
+  --font-mono: var(--font-jetbrains);
+  --display-weight: 500;
+  --display-tracking: -0.018em;
+
+  --glow-a: rgb(201 150 46 / 0.16);
+  --glow-b: rgb(181 86 42 / 0.13);
+  --grain-opacity: 0.05;
+  --shadow-lux: 0 30px 80px -30px rgb(0 0 0 / 0.7);
+  color-scheme: dark;
+}
+
+/* Concept — LIGHT MODE (warm ivory, gold identity kept) */
+[data-concept="concept"][data-mode="light"] {
+  --c-canvas: 245 239 229;
+  --c-surface: 252 248 240;
+  --c-raised: 255 253 248;
+  --c-line: 214 200 176;
+  --c-ink: 26 20 16;
+  --c-muted: 104 92 78;
+  --c-faint: 120 106 88;
+  --c-gold: 158 116 32;
+  --c-gold-soft: 178 134 52;
+  --c-ember: 168 78 38;
+  --c-action: 26 20 16;
+  --c-action-ink: 245 239 229;
+  --c-oncontrast: 245 239 229;
+
+  --glow-a: rgb(158 116 32 / 0.12);
+  --glow-b: rgb(168 78 38 / 0.08);
+  --grain-opacity: 0.035;
+  --shadow-lux: 0 30px 70px -36px rgb(60 40 16 / 0.32);
+  color-scheme: light;
+}
+
 [data-concept="champagne"] {
   /* II — Champagne Study · light, editorial, antique gold */
   --c-canvas: 244 237 225;
