@@ -4,7 +4,14 @@ import Link from "next/link";
 import { Reveal, RevealGroup, RevealItem } from "@/components/ui/Reveal";
 import { ArrowRight } from "@/components/ui/icons";
 import { Formats } from "@/components/sections/Formats";
+import { HeroSlideshowBg } from "@/components/sections/HeroSlideshowBg";
 import { clients, contacts } from "@/lib/content";
+
+const HERO_SLIDES = [
+  "/brand/Tania3.webp",
+  "/brand/Tania1-2.webp",
+  "/brand/Tania1-3.webp",
+];
 
 const PHASES = [
   { n: "01", t: "Діагностика", d: "Знаходимо, що саме блокує продажі: меседж, офер, переговори чи процес." },
@@ -30,10 +37,13 @@ const PROOF = [
 ];
 
 const DOSSIER = [
-  { k: "Досвід", v: "25+ років у продажах і керівництві" },
-  { k: "Компанії", v: "Олімп · Danone · Coca-Cola" },
-  { k: "Навчання", v: "17+ років · 15 000+ учнів" },
-  { k: "Визнання", v: "№2 ТОП-тренерів України, UBA 2023" },
+  { k: "Хто", v: "Власниця компанії Pan&Partners, бізнес-тренерка, експертка з продажів та переговорів." },
+  { k: "Досвід", v: "25+ років власного досвіду в продажах і керівництві: «Олімп» (горілчана компанія), Danone, Coca-Cola, власні магазини та власна консалтингова компанія." },
+  { k: "Навчання", v: "17+ років навчає продавати й вести переговори · 15 000+ учнів за методом." },
+  { k: "Галузі", v: "Досвід у 6 галузях — від FMCG до B2B-послуг." },
+  { k: "Підхід", v: "Чітко та структуровано, впевнено, з очікуваним результатом. Без тиску. Без маніпуляцій. Природно та легко." },
+  { k: "Місія", v: "Допомогти вам відчувати задоволення від отриманого результату." },
+  { k: "Визнання", v: "№2 серед ТОП-тренерів України, UBA 2023." },
 ];
 
 const AUDIENCES = [
@@ -43,131 +53,41 @@ const AUDIENCES = [
   "Експерти та ФОП",
 ];
 
-function SystemGraph() {
-  const nodes: [number, number, string][] = [
-    [88, 78, "01"],
-    [300, 150, "02"],
-    [104, 256, "03"],
-    [312, 322, "04"],
-  ];
-  return (
-    <div className="relative mx-auto aspect-square w-full max-w-md">
-      <div
-        className="absolute inset-0 rounded-3xl border border-line/50"
-        style={{
-          backgroundImage:
-            "radial-gradient(circle, rgb(var(--c-gold) / 0.1) 1px, transparent 1px)",
-          backgroundSize: "26px 26px",
-        }}
-      />
-      <svg viewBox="0 0 400 400" className="absolute inset-0 h-full w-full">
-        <defs>
-          <linearGradient id="mg" x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0" stopColor="rgb(var(--c-gold-soft))" />
-            <stop offset="1" stopColor="rgb(var(--c-ember))" />
-          </linearGradient>
-        </defs>
-        <path
-          d="M88 78 L300 150 L104 256 L312 322"
-          fill="none"
-          stroke="url(#mg)"
-          strokeWidth="2"
-          strokeDasharray="5 7"
-        />
-        {nodes.map(([x, y, n]) => (
-          <g key={n}>
-            <circle
-              cx={x}
-              cy={y}
-              r="30"
-              className="origin-center animate-pulse"
-              fill="none"
-              stroke="rgb(var(--c-gold))"
-              strokeOpacity="0.35"
-              strokeWidth="1"
-            />
-            <circle
-              cx={x}
-              cy={y}
-              r="24"
-              fill="rgb(var(--c-surface))"
-              stroke="rgb(var(--c-gold))"
-              strokeWidth="1.5"
-            />
-            <text
-              x={x}
-              y={y + 5}
-              textAnchor="middle"
-              className="fill-[rgb(var(--c-gold))] font-mono"
-              fontSize="13"
-            >
-              {n}
-            </text>
-          </g>
-        ))}
-      </svg>
-      <div className="absolute bottom-4 left-4 font-mono text-[0.6rem] uppercase tracking-widest text-faint">
-        система продажів · v.2026
-      </div>
-    </div>
-  );
-}
-
-/** Editorial photo collage for the top slide — keeps the Method dotted-grid motif. */
-function HeroCollage() {
-  return (
-    <div className="relative mx-auto w-full max-w-md lg:mr-0">
-      {/* dotted-grid motif behind */}
-      <div
-        className="pointer-events-none absolute -right-5 -top-5 hidden h-44 w-44 rounded-2xl sm:block"
-        style={{
-          backgroundImage:
-            "radial-gradient(circle, rgb(var(--c-gold) / 0.2) 1px, transparent 1px)",
-          backgroundSize: "22px 22px",
-        }}
-      />
-      <div className="relative">
-        {/* main portrait */}
-        <div className="relative overflow-hidden rounded-2xl border border-gold/25 shadow-[var(--shadow-lux)]">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src="/brand/Tania4.webp"
-            alt="Тетяна Пан — автор методу"
-            className="aspect-[4/5] w-full object-cover object-top"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-canvas/60 via-transparent to-transparent" />
-          <span className="absolute bottom-3 left-4 font-mono text-[0.6rem] uppercase tracking-[0.2em] text-ink/90">
-            автор методу
-          </span>
-        </div>
-        {/* secondary image, overlapping */}
-        <div className="absolute -bottom-6 -left-4 w-32 overflow-hidden rounded-xl border border-line/60 shadow-[var(--shadow-lux)] sm:-left-7 sm:w-44">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src="/brand/Tania2.jpg"
-            alt="Тетяна Пан"
-            className="aspect-square w-full object-cover object-top"
-          />
-        </div>
-        {/* system badge */}
-        <div className="surface absolute -right-3 top-7 hidden items-center gap-2 rounded-full px-3 py-2 shadow-[var(--shadow-lux)] sm:flex">
-          <span className="h-2 w-2 animate-pulse rounded-full bg-gold" />
-          <span className="font-mono text-[0.58rem] uppercase tracking-[0.2em] text-faint">
-            система · v.2026
-          </span>
-        </div>
-      </div>
-    </div>
-  );
-}
-
 export function MethodHome() {
   return (
     <>
-      {/* HERO — manifesto + photo collage */}
-      <section className="relative grain overflow-hidden pb-24 pt-32 lg:pt-40">
-        <div className="container-shell relative grid items-center gap-14 lg:grid-cols-2">
-          <Reveal className="flex flex-col gap-7">
+      {/* HERO — full-bleed slideshow + right-aligned manifesto */}
+      <section className="relative grain min-h-[94vh] overflow-hidden">
+        <HeroSlideshowBg
+          images={HERO_SLIDES}
+          overlay={
+            <>
+              <div
+                className="absolute inset-0"
+                style={{
+                  background:
+                    "linear-gradient(90deg, rgba(16,15,12,0.38) 0%, rgba(16,15,12,0.6) 44%, rgba(16,15,12,0.95) 100%)",
+                }}
+              />
+              <div
+                className="absolute inset-0"
+                style={{
+                  background:
+                    "linear-gradient(0deg, rgba(16,15,12,0.88) 0%, rgba(16,15,12,0.05) 55%)",
+                }}
+              />
+              <div
+                className="absolute inset-x-0 top-0 h-32"
+                style={{
+                  background:
+                    "linear-gradient(180deg, rgba(16,15,12,0.7) 0%, rgba(16,15,12,0) 100%)",
+                }}
+              />
+            </>
+          }
+        />
+        <div className="container-shell relative grid min-h-[94vh] items-center gap-10 pb-20 pt-32 lg:grid-cols-12">
+          <Reveal className="flex flex-col gap-7 lg:col-span-6 lg:col-start-7">
             <span className="font-mono text-xs uppercase tracking-[0.2em] text-gold">
               Pan&amp;Partners · метод продажів
             </span>
@@ -176,7 +96,7 @@ export function MethodHome() {
               <br />
               <span className="text-gradient-gold">Це система.</span>
             </h1>
-            <p className="max-w-md text-lg leading-relaxed text-muted">
+            <p className="max-w-md text-lg leading-relaxed text-ink/80">
               Метод, що перетворює переговори з B2B-клієнтами на прогнозований,
               повторюваний результат.
             </p>
@@ -189,35 +109,27 @@ export function MethodHome() {
               </Link>
             </div>
           </Reveal>
-          <Reveal delay={0.1}>
-            <HeroCollage />
-          </Reveal>
         </div>
       </section>
 
-      {/* METHOD — 4 phases (heading + system graph) */}
+      {/* METHOD — 4 phases (full-width heading, no graphic) */}
       <section
         id="method"
         className="relative grain border-y border-line/50 bg-surface section-pad"
       >
         <div className="container-shell relative">
-          <div className="mb-16 grid items-center gap-12 lg:grid-cols-2">
-            <Reveal className="flex flex-col gap-4">
-              <span className="font-mono text-xs uppercase tracking-[0.2em] text-gold">
-                Метод · 4 фази
-              </span>
-              <h2 className="max-w-2xl text-[clamp(2rem,4vw,3.2rem)] leading-[1.06] text-ink">
-                Від хаосу до системи — за чотири фази
-              </h2>
-              <p className="max-w-md text-lg leading-relaxed text-muted">
-                Кожна фаза — окремий вузол системи. Разом вони роблять воронку
-                прозорою та керованою.
-              </p>
-            </Reveal>
-            <Reveal delay={0.1}>
-              <SystemGraph />
-            </Reveal>
-          </div>
+          <Reveal className="mb-14 flex max-w-4xl flex-col gap-4">
+            <span className="font-mono text-xs uppercase tracking-[0.2em] text-gold">
+              Метод · 4 фази
+            </span>
+            <h2 className="text-[clamp(2rem,4.4vw,3.6rem)] leading-[1.06] text-ink">
+              Від хаосу до системи — за чотири фази
+            </h2>
+            <p className="max-w-2xl text-lg leading-relaxed text-muted">
+              Кожна фаза — окремий вузол системи. Разом вони роблять воронку
+              прозорою та керованою.
+            </p>
+          </Reveal>
           <RevealGroup className="relative grid gap-10 md:grid-cols-4">
             <div className="absolute left-0 right-0 top-7 hidden h-px bg-gradient-to-r from-gold/10 via-gold/50 to-gold/10 md:block" />
             {PHASES.map((p) => (
@@ -282,7 +194,7 @@ export function MethodHome() {
         </div>
       </section>
 
-      {/* CLIENTS — logo grid */}
+      {/* CLIENTS — logo wall */}
       <section id="clients" className="section-pad">
         <div className="container-shell">
           <Reveal className="mb-12 flex flex-col gap-4">
@@ -320,10 +232,10 @@ export function MethodHome() {
         </div>
       </section>
 
-      {/* ARCHITECT — dossier */}
+      {/* ARCHITECT — dossier (more source detail) */}
       <section className="relative grain border-t border-line/50 bg-surface section-pad">
-        <div className="container-shell grid items-center gap-12 lg:grid-cols-12 lg:gap-16">
-          <Reveal className="lg:col-span-5">
+        <div className="container-shell grid items-start gap-12 lg:grid-cols-12 lg:gap-16">
+          <Reveal className="lg:col-span-5 lg:sticky lg:top-28">
             <div className="relative overflow-hidden rounded-2xl border border-gold/20">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
@@ -347,15 +259,20 @@ export function MethodHome() {
               <h2 className="text-[clamp(2rem,4vw,3.2rem)] leading-[1.05] text-ink">
                 Тетяна Пан
               </h2>
+              <p className="max-w-xl text-lg leading-relaxed text-muted">
+                Привіт! Понад 25 років я в продажах і керівництві, 17+ років навчаю
+                продавати та вести переговори. Метод народився з реальної практики —
+                від лінійних продажів до власного консалтингу.
+              </p>
             </Reveal>
             <RevealGroup className="mt-8 flex flex-col">
               {DOSSIER.map((d) => (
                 <RevealItem key={d.k}>
-                  <div className="grid grid-cols-[8rem_1fr] gap-4 border-t border-line/50 py-4">
+                  <div className="grid grid-cols-[7rem_1fr] gap-4 border-t border-line/50 py-4 sm:grid-cols-[9rem_1fr]">
                     <dt className="font-mono text-[0.65rem] uppercase tracking-wider text-faint">
                       {d.k}
                     </dt>
-                    <dd className="text-base text-ink/90">{d.v}</dd>
+                    <dd className="text-base leading-relaxed text-ink/90">{d.v}</dd>
                   </div>
                 </RevealItem>
               ))}

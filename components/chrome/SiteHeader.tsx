@@ -93,7 +93,7 @@ export function SiteHeader() {
               href="/consultation#book"
               className="btn btn-primary hidden !px-5 !py-2.5 text-sm sm:inline-flex"
             >
-              Забронювати
+              Написати нам
             </Link>
             <button
               onClick={() => setMobileOpen(true)}
@@ -158,7 +158,7 @@ export function SiteHeader() {
                 onClick={() => setMobileOpen(false)}
                 className="btn btn-primary mt-8 w-full"
               >
-                Забронювати консультацію <ArrowUpRight className="h-4 w-4" />
+                Написати нам <ArrowUpRight className="h-4 w-4" />
               </Link>
             </motion.nav>
           </motion.div>
