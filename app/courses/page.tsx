@@ -23,6 +23,7 @@ export default function CoursesPage() {
           </>
         }
         lead={courses.hero.lead}
+        image="/brand/ph/p6.jpg"
       />
       <CoursesIntro />
       <CoursesList />

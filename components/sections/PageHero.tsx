@@ -17,6 +17,7 @@ export function PageHero({
   primary,
   secondary,
   finePrint,
+  image,
   children,
 }: {
   pill?: string;
@@ -26,13 +27,15 @@ export function PageHero({
   primary?: CTA;
   secondary?: CTA;
   finePrint?: string;
+  image?: string;
   children?: ReactNode;
 }) {
   return (
     <section className="relative grain overflow-hidden pb-16 pt-36 lg:pt-44">
       <Ambient />
       <div className="container-shell relative">
-        <Reveal className="flex max-w-3xl flex-col gap-6">
+        <div className={image ? "grid items-center gap-12 lg:grid-cols-12" : ""}>
+        <Reveal className={`flex flex-col gap-6 ${image ? "lg:col-span-7" : "max-w-3xl"}`}>
           {pill && (
             <span className="inline-flex items-center gap-2.5 self-start rounded-full border border-gold/30 px-4 py-2 text-sm text-gold">
               <span className="h-1.5 w-1.5 rounded-full bg-gold" />
@@ -63,6 +66,20 @@ export function PageHero({
           )}
           {finePrint && <p className="text-sm text-faint">{finePrint}</p>}
         </Reveal>
+        {image && (
+          <Reveal delay={0.1} className="lg:col-span-5">
+            <div className="relative overflow-hidden rounded-[28px] border border-gold/20 shadow-[var(--shadow-lux)]">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={image}
+                alt=""
+                className="aspect-[4/5] w-full object-cover object-top"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-canvas/40 to-transparent" />
+            </div>
+          </Reveal>
+        )}
+        </div>
         {children}
       </div>
     </section>

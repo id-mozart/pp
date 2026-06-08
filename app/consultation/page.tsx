@@ -23,6 +23,7 @@ export default function ConsultationPage() {
           </>
         }
         lead={consultation.hero.lead}
+        image="/brand/Tania4.webp"
         primary={consultation.hero.primaryCta}
         secondary={consultation.hero.secondaryCta}
         finePrint={consultation.hero.finePrint}
