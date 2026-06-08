@@ -38,20 +38,20 @@ export function ClientsWall() {
           </Reveal>
         </div>
 
-        {/* Logo grid — one tile per client */}
-        <Reveal className="mt-14">
-          <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
+        {/* Logo wall — clean grid, no cards */}
+        <Reveal className="mt-16">
+          <div className="grid grid-cols-3 items-center gap-x-8 gap-y-10 sm:grid-cols-4 sm:gap-y-12 lg:grid-cols-6">
             {clients.logoTiles.map((logo) => (
               <div
                 key={logo.name}
-                className="flex min-h-[7rem] items-center justify-center rounded-2xl bg-white px-6 py-8 shadow-sm ring-1 ring-black/5 transition-transform duration-500 hover:-translate-y-1 sm:min-h-[8rem]"
+                className="flex items-center justify-center"
                 title={logo.name}
               >
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={logo.src}
                   alt={logo.name}
-                  className="h-8 w-auto max-w-[82%] object-contain sm:h-10"
+                  className="logo-wall-img"
                   loading="lazy"
                 />
               </div>
