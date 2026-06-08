@@ -1279,7 +1279,9 @@
 [data-concept="noir"],
 [data-concept="kinetik"],
 [data-concept="method"],
-[data-concept="vhs"] {
+[data-concept="vhs"],
+[data-concept="movement"],
+[data-concept="maisonnoir"] {
   --c-canvas: 23 16 11;
   --c-surface: 35 26 18;
   --c-raised: 46 34 24;

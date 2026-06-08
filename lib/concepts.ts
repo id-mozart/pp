@@ -325,14 +325,14 @@ export const CONCEPTS: Concept[] = [
     numeral: "XXXVIII",
     name: "Movement",
     tagline: "За мотивами BossBabe · рух",
-    swatch: { canvas: "#F3EBE0", gold: "#C2601E", ink: "#171310" },
+    swatch: { canvas: "#17100B", gold: "#D8A24A", ink: "#F5E9D7" },
   },
   {
     id: "maisonnoir",
     numeral: "XXXIX",
     name: "Maison Noir",
     tagline: "Мікс · Ember × Maison",
-    swatch: { canvas: "#0E0B09", gold: "#C9962E", ink: "#F2E9DC" },
+    swatch: { canvas: "#17100B", gold: "#D8A24A", ink: "#F5E9D7" },
   },
 ];
 
@@ -350,6 +350,8 @@ export const VISIBLE_CONCEPT_IDS: ConceptId[] = [
   "kinetik",
   "method",
   "vhs",
+  "movement",
+  "maisonnoir",
 ];
 export const VISIBLE_CONCEPTS: Concept[] = VISIBLE_CONCEPT_IDS.map(
   (id) => CONCEPTS.find((c) => c.id === id) as Concept,
