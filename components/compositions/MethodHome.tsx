@@ -4,6 +4,7 @@ import Link from "next/link";
 import { Reveal, RevealGroup, RevealItem } from "@/components/ui/Reveal";
 import { ArrowRight } from "@/components/ui/icons";
 import { Formats } from "@/components/sections/Formats";
+import { Phases } from "@/components/sections/Phases";
 import { HeroSlideshowBg } from "@/components/sections/HeroSlideshowBg";
 import { clients, contacts } from "@/lib/content";
 
@@ -112,40 +113,14 @@ export function MethodHome() {
         </div>
       </section>
 
-      {/* METHOD — 4 phases (full-width heading, no graphic) */}
-      <section
+      {/* METHOD — 4 phases */}
+      <Phases
         id="method"
-        className="relative grain border-y border-line/50 bg-surface section-pad"
-      >
-        <div className="container-shell relative">
-          <Reveal className="mb-14 flex max-w-4xl flex-col gap-4">
-            <span className="font-mono text-xs uppercase tracking-[0.2em] text-gold">
-              Метод · 4 фази
-            </span>
-            <h2 className="text-[clamp(2rem,4.4vw,3.6rem)] leading-[1.06] text-ink">
-              Від хаосу до системи — за чотири фази
-            </h2>
-            <p className="max-w-2xl text-lg leading-relaxed text-muted">
-              Кожна фаза — окремий вузол системи. Разом вони роблять воронку
-              прозорою та керованою.
-            </p>
-          </Reveal>
-          <RevealGroup className="relative grid gap-10 md:grid-cols-4">
-            <div className="absolute left-0 right-0 top-7 hidden h-px bg-gradient-to-r from-gold/10 via-gold/50 to-gold/10 md:block" />
-            {PHASES.map((p) => (
-              <RevealItem key={p.n}>
-                <div className="relative">
-                  <div className="relative z-10 grid h-14 w-14 place-items-center rounded-full border border-gold/40 bg-canvas font-mono text-gold">
-                    {p.n}
-                  </div>
-                  <h3 className="mt-5 text-xl text-ink">{p.t}</h3>
-                  <p className="mt-2 text-sm leading-relaxed text-muted">{p.d}</p>
-                </div>
-              </RevealItem>
-            ))}
-          </RevealGroup>
-        </div>
-      </section>
+        eyebrow="Метод · 4 фази"
+        title="Від хаосу до системи — за чотири фази"
+        lead="Кожна фаза — окремий вузол системи. Разом вони роблять воронку прозорою та керованою."
+        phases={PHASES}
+      />
 
       {/* PRINCIPLES — manifesto */}
       <section className="section-pad">
