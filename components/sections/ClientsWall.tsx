@@ -40,7 +40,7 @@ export function ClientsWall() {
 
         {/* Logo wall — clean grid, no cards */}
         <Reveal className="mt-16">
-          <div className="grid grid-cols-3 items-center gap-x-8 gap-y-10 sm:grid-cols-4 sm:gap-y-12 lg:grid-cols-6">
+          <div className="grid grid-cols-3 items-center gap-x-8 gap-y-12 sm:grid-cols-4 lg:grid-cols-5">
             {clients.logoTiles.map((logo) => (
               <div
                 key={logo.name}

@@ -10,20 +10,20 @@
 
 :root,
 [data-concept="ember"] {
-  /* I — Ember Atelier · dark, cinematic, gold-as-metal */
-  --c-canvas: 14 11 9;
-  --c-surface: 26 21 18;
-  --c-raised: 34 28 23;
-  --c-line: 74 62 50;
-  --c-ink: 242 233 220;
-  --c-muted: 168 155 137;
-  --c-faint: 116 105 92;
-  --c-gold: 201 150 46;
-  --c-gold-soft: 224 188 122;
-  --c-ember: 181 86 42;
-  --c-action: 201 150 46;
-  --c-action-ink: 14 11 9;
-  --c-oncontrast: 14 11 9;
+  /* I — Ember Atelier · warm cinematic, honey-amber gold */
+  --c-canvas: 23 16 11;
+  --c-surface: 35 26 18;
+  --c-raised: 46 34 24;
+  --c-line: 86 68 48;
+  --c-ink: 245 233 215;
+  --c-muted: 184 163 134;
+  --c-faint: 130 113 90;
+  --c-gold: 216 162 74;
+  --c-gold-soft: 233 196 134;
+  --c-ember: 197 101 49;
+  --c-action: 216 162 74;
+  --c-action-ink: 23 16 11;
+  --c-oncontrast: 23 16 11;
 
   --font-display: var(--font-spectral);
   --font-body: var(--font-inter);
@@ -31,8 +31,8 @@
   --display-weight: 500;
   --display-tracking: -0.018em;
 
-  --glow-a: rgb(201 150 46 / 0.16);
-  --glow-b: rgb(181 86 42 / 0.13);
+  --glow-a: rgb(216 162 74 / 0.18);
+  --glow-b: rgb(197 101 49 / 0.14);
   --grain-opacity: 0.05;
   --shadow-lux: 0 30px 80px -30px rgb(0 0 0 / 0.7);
   color-scheme: dark;
@@ -43,19 +43,19 @@
    light / dark switcher. Base = dark; [data-mode="light"] flips it.
    ================================================================== */
 [data-concept="concept"] {
-  --c-canvas: 14 11 9;
-  --c-surface: 26 21 18;
-  --c-raised: 34 28 23;
-  --c-line: 74 62 50;
-  --c-ink: 242 233 220;
-  --c-muted: 168 155 137;
-  --c-faint: 116 105 92;
-  --c-gold: 201 150 46;
-  --c-gold-soft: 224 188 122;
-  --c-ember: 181 86 42;
-  --c-action: 201 150 46;
-  --c-action-ink: 14 11 9;
-  --c-oncontrast: 14 11 9;
+  --c-canvas: 23 16 11;
+  --c-surface: 35 26 18;
+  --c-raised: 46 34 24;
+  --c-line: 86 68 48;
+  --c-ink: 245 233 215;
+  --c-muted: 184 163 134;
+  --c-faint: 130 113 90;
+  --c-gold: 216 162 74;
+  --c-gold-soft: 233 196 134;
+  --c-ember: 197 101 49;
+  --c-action: 216 162 74;
+  --c-action-ink: 23 16 11;
+  --c-oncontrast: 23 16 11;
 
   --font-display: var(--font-spectral);
   --font-body: var(--font-inter);
@@ -63,8 +63,8 @@
   --display-weight: 500;
   --display-tracking: -0.018em;
 
-  --glow-a: rgb(201 150 46 / 0.16);
-  --glow-b: rgb(181 86 42 / 0.13);
+  --glow-a: rgb(216 162 74 / 0.18);
+  --glow-b: rgb(197 101 49 / 0.14);
   --grain-opacity: 0.05;
   --shadow-lux: 0 30px 80px -30px rgb(0 0 0 / 0.7);
   color-scheme: dark;
@@ -913,26 +913,26 @@
 }
 
 [data-concept="method"] {
-  /* XXVII — Метод · dark architectural "blueprint", methodology brand */
-  --c-canvas: 16 15 12;
-  --c-surface: 26 24 20;
-  --c-raised: 36 33 27;
-  --c-line: 70 64 52;
-  --c-ink: 240 233 222;
-  --c-muted: 178 168 152;
-  --c-faint: 122 113 100;
-  --c-gold: 203 162 78;
-  --c-gold-soft: 232 196 130;
-  --c-ember: 206 120 60;
-  --c-action: 203 162 78;
-  --c-action-ink: 16 15 12;
-  --c-oncontrast: 16 15 12;
+  /* XXVII — Метод · warm espresso "blueprint", honey gold (closer to II) */
+  --c-canvas: 26 20 14;
+  --c-surface: 38 30 21;
+  --c-raised: 49 39 27;
+  --c-line: 84 70 51;
+  --c-ink: 245 234 218;
+  --c-muted: 186 168 142;
+  --c-faint: 130 116 96;
+  --c-gold: 216 166 84;
+  --c-gold-soft: 234 198 138;
+  --c-ember: 208 120 62;
+  --c-action: 216 166 84;
+  --c-action-ink: 26 20 14;
+  --c-oncontrast: 26 20 14;
   --font-display: var(--font-spectral);
   --font-body: var(--font-inter);
   --font-mono: var(--font-jetbrains);
   --display-weight: 500;
   --display-tracking: -0.02em;
-  --glow-a: rgb(203 162 78 / 0.12);
+  --glow-a: rgb(216 166 84 / 0.14);
   --glow-b: transparent;
   --grain-opacity: 0.05;
   --shadow-lux: 0 30px 80px -30px rgb(0 0 0 / 0.7);
@@ -1543,7 +1543,7 @@
    White on dark concepts; ink on the Concept light mode.
    ================================================================== */
 .logo-wall-img {
-  height: 2.1rem;
+  height: 2.4rem;
   width: auto;
   max-width: 100%;
   object-fit: contain;
@@ -1553,7 +1553,7 @@
 }
 @media (min-width: 640px) {
   .logo-wall-img {
-    height: 2.7rem;
+    height: 3.1rem;
   }
 }
 .logo-wall-img:hover {

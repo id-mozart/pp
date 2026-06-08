@@ -54,7 +54,7 @@ export function HeroConcept() {
   }, [reduce]);
 
   return (
-    <section className="relative grain min-h-[94vh] overflow-hidden">
+    <section className="relative grain min-h-[78vh] overflow-hidden">
       {/* Crossfading slideshow */}
       <div className="absolute inset-0">
         {SLIDES.map((src, i) => (
@@ -98,7 +98,7 @@ export function HeroConcept() {
         />
       </div>
 
-      <div className="container-shell relative flex min-h-[94vh] flex-col justify-center pb-16 pt-32">
+      <div className="container-shell relative flex min-h-[78vh] flex-col justify-center pb-14 pt-32">
         <div className="flex max-w-3xl flex-col gap-7">
           <motion.span
             className="inline-flex items-center gap-3 text-xs font-medium uppercase tracking-[0.22em]"
@@ -115,8 +115,8 @@ export function HeroConcept() {
             initial={{ opacity: 0, y: 26 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, ease: EASE, delay: 0.05 }}
-            className="font-display text-[clamp(2.6rem,6vw,5.4rem)] leading-[1.04]"
-            style={{ color: CREAM, fontWeight: 500, letterSpacing: "-0.018em" }}
+            className="font-display text-[clamp(1.7rem,3.4vw,3rem)] leading-[1.1]"
+            style={{ color: CREAM, fontWeight: 500, letterSpacing: "-0.015em" }}
           >
             {goldPhrase(hero.title, "B2B-клієнтами")}
           </motion.h1>

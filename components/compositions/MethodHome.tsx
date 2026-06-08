@@ -58,7 +58,7 @@ export function MethodHome() {
   return (
     <>
       {/* HERO — full-bleed slideshow + right-aligned manifesto */}
-      <section className="relative grain min-h-[94vh] overflow-hidden">
+      <section className="relative grain min-h-[78vh] overflow-hidden">
         <HeroSlideshowBg
           images={HERO_SLIDES}
           overlay={
@@ -87,7 +87,7 @@ export function MethodHome() {
             </>
           }
         />
-        <div className="container-shell relative grid min-h-[94vh] items-center gap-10 pb-20 pt-32 lg:grid-cols-12">
+        <div className="container-shell relative grid min-h-[78vh] items-center gap-10 pb-16 pt-32 lg:grid-cols-12">
           <Reveal className="flex flex-col gap-7 lg:col-span-6 lg:col-start-7">
             <span className="font-mono text-xs uppercase tracking-[0.2em] text-gold">
               Pan&amp;Partners · метод продажів
@@ -148,8 +148,8 @@ export function MethodHome() {
       {/* FORMATS — ways of cooperation */}
       <Formats />
 
-      {/* PROOF — evidence */}
-      <section className="relative grain border-y border-line/50 bg-surface section-pad">
+      {/* PROOF + CLIENTS — evidence & client logos in one band */}
+      <section id="clients" className="relative grain border-y border-line/50 bg-surface section-pad">
         <div className="container-shell relative">
           <Reveal className="mb-10">
             <span className="font-mono text-xs uppercase tracking-[0.2em] text-gold">
@@ -166,25 +166,7 @@ export function MethodHome() {
               </RevealItem>
             ))}
           </RevealGroup>
-        </div>
-      </section>
-
-      {/* CLIENTS — logo wall */}
-      <section id="clients" className="section-pad">
-        <div className="container-shell">
-          <Reveal className="mb-12 flex flex-col gap-4">
-            <span className="font-mono text-xs uppercase tracking-[0.2em] text-gold">
-              Клієнти
-            </span>
-            <h2 className="max-w-2xl text-[clamp(2rem,4vw,3.2rem)] leading-[1.05] text-ink">
-              Метод працює там, де ставки високі
-            </h2>
-            <p className="max-w-xl text-lg leading-relaxed text-muted">
-              <span className="text-gradient-gold font-display">90%</span> клієнтів
-              продовжують співпрацю з нами та рекомендують нас своїм партнерам.
-            </p>
-          </Reveal>
-          <RevealGroup className="grid grid-cols-3 items-center gap-x-8 gap-y-10 sm:grid-cols-4 sm:gap-y-12 lg:grid-cols-6">
+          <RevealGroup className="mt-14 grid grid-cols-3 items-center gap-x-8 gap-y-12 sm:grid-cols-4 lg:grid-cols-5">
             {clients.logoTiles.map((logo) => (
               <RevealItem key={logo.name}>
                 <div className="flex items-center justify-center" title={logo.name}>
@@ -199,11 +181,6 @@ export function MethodHome() {
               </RevealItem>
             ))}
           </RevealGroup>
-          <Reveal className="mx-auto mt-10 max-w-2xl text-center">
-            <p className="text-pretty text-sm italic leading-relaxed text-muted">
-              {clients.caption}
-            </p>
-          </Reveal>
         </div>
       </section>
 
@@ -214,14 +191,13 @@ export function MethodHome() {
             <div className="relative overflow-hidden rounded-2xl border border-gold/20">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                src="/brand/tania-portrait.jpg"
+                src="/brand/Tania4.webp"
                 alt="Тетяна Пан"
-                className="aspect-[4/5] w-full object-cover object-top grayscale contrast-[1.05]"
+                className="aspect-[4/5] w-full object-cover object-top"
               />
-              <div className="absolute inset-0 bg-gold/70 mix-blend-multiply" />
-              <div className="absolute inset-0 bg-canvas/25" />
-              <div className="grain absolute inset-0 opacity-40" />
-              <div className="absolute bottom-4 left-4 font-mono text-[0.62rem] uppercase tracking-widest text-canvas/90">
+              <div className="absolute inset-0 bg-gradient-to-t from-canvas/55 via-transparent to-transparent" />
+              <div className="grain absolute inset-0 opacity-20" />
+              <div className="absolute bottom-4 left-4 font-mono text-[0.62rem] uppercase tracking-widest text-ink/90">
                 автор методу
               </div>
             </div>
