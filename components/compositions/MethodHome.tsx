@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { Reveal, RevealGroup, RevealItem } from "@/components/ui/Reveal";
 import { ArrowRight } from "@/components/ui/icons";
+import { Formats } from "@/components/sections/Formats";
 import { clients, contacts } from "@/lib/content";
 
 const PHASES = [
@@ -112,12 +113,60 @@ function SystemGraph() {
   );
 }
 
+/** Editorial photo collage for the top slide — keeps the Method dotted-grid motif. */
+function HeroCollage() {
+  return (
+    <div className="relative mx-auto w-full max-w-md lg:mr-0">
+      {/* dotted-grid motif behind */}
+      <div
+        className="pointer-events-none absolute -right-5 -top-5 hidden h-44 w-44 rounded-2xl sm:block"
+        style={{
+          backgroundImage:
+            "radial-gradient(circle, rgb(var(--c-gold) / 0.2) 1px, transparent 1px)",
+          backgroundSize: "22px 22px",
+        }}
+      />
+      <div className="relative">
+        {/* main portrait */}
+        <div className="relative overflow-hidden rounded-2xl border border-gold/25 shadow-[var(--shadow-lux)]">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/brand/Tania4.webp"
+            alt="Тетяна Пан — автор методу"
+            className="aspect-[4/5] w-full object-cover object-top"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-canvas/60 via-transparent to-transparent" />
+          <span className="absolute bottom-3 left-4 font-mono text-[0.6rem] uppercase tracking-[0.2em] text-ink/90">
+            автор методу
+          </span>
+        </div>
+        {/* secondary image, overlapping */}
+        <div className="absolute -bottom-6 -left-4 w-32 overflow-hidden rounded-xl border border-line/60 shadow-[var(--shadow-lux)] sm:-left-7 sm:w-44">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/brand/Tania2.jpg"
+            alt="Тетяна Пан"
+            className="aspect-square w-full object-cover object-top"
+          />
+        </div>
+        {/* system badge */}
+        <div className="surface absolute -right-3 top-7 hidden items-center gap-2 rounded-full px-3 py-2 shadow-[var(--shadow-lux)] sm:flex">
+          <span className="h-2 w-2 animate-pulse rounded-full bg-gold" />
+          <span className="font-mono text-[0.58rem] uppercase tracking-[0.2em] text-faint">
+            система · v.2026
+          </span>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export function MethodHome() {
   return (
     <>
-      {/* HERO — manifesto */}
-      <section className="relative grain overflow-hidden pb-20 pt-32 lg:pt-40">
-        <div className="container-shell relative grid items-center gap-12 lg:grid-cols-2">
+      {/* HERO — manifesto + photo collage */}
+      <section className="relative grain overflow-hidden pb-24 pt-32 lg:pt-40">
+        <div className="container-shell relative grid items-center gap-14 lg:grid-cols-2">
           <Reveal className="flex flex-col gap-7">
             <span className="font-mono text-xs uppercase tracking-[0.2em] text-gold">
               Pan&amp;Partners · метод продажів
@@ -141,25 +190,34 @@ export function MethodHome() {
             </div>
           </Reveal>
           <Reveal delay={0.1}>
-            <SystemGraph />
+            <HeroCollage />
           </Reveal>
         </div>
       </section>
 
-      {/* METHOD — 4 phases */}
+      {/* METHOD — 4 phases (heading + system graph) */}
       <section
         id="method"
         className="relative grain border-y border-line/50 bg-surface section-pad"
       >
         <div className="container-shell relative">
-          <Reveal className="mb-14 flex flex-col gap-4">
-            <span className="font-mono text-xs uppercase tracking-[0.2em] text-gold">
-              Метод · 4 фази
-            </span>
-            <h2 className="max-w-2xl text-[clamp(2rem,4vw,3.2rem)] leading-[1.06] text-ink">
-              Від хаосу до системи — за чотири фази
-            </h2>
-          </Reveal>
+          <div className="mb-16 grid items-center gap-12 lg:grid-cols-2">
+            <Reveal className="flex flex-col gap-4">
+              <span className="font-mono text-xs uppercase tracking-[0.2em] text-gold">
+                Метод · 4 фази
+              </span>
+              <h2 className="max-w-2xl text-[clamp(2rem,4vw,3.2rem)] leading-[1.06] text-ink">
+                Від хаосу до системи — за чотири фази
+              </h2>
+              <p className="max-w-md text-lg leading-relaxed text-muted">
+                Кожна фаза — окремий вузол системи. Разом вони роблять воронку
+                прозорою та керованою.
+              </p>
+            </Reveal>
+            <Reveal delay={0.1}>
+              <SystemGraph />
+            </Reveal>
+          </div>
           <RevealGroup className="relative grid gap-10 md:grid-cols-4">
             <div className="absolute left-0 right-0 top-7 hidden h-px bg-gradient-to-r from-gold/10 via-gold/50 to-gold/10 md:block" />
             {PHASES.map((p) => (
@@ -200,6 +258,9 @@ export function MethodHome() {
         </div>
       </section>
 
+      {/* FORMATS — ways of cooperation */}
+      <Formats />
+
       {/* PROOF — evidence */}
       <section className="relative grain border-y border-line/50 bg-surface section-pad">
         <div className="container-shell relative">
@@ -218,20 +279,52 @@ export function MethodHome() {
               </RevealItem>
             ))}
           </RevealGroup>
-          <Reveal delay={0.1}>
-            <div className="mt-8 flex flex-wrap items-center justify-center gap-x-8 gap-y-3">
-              {clients.named.map((n) => (
-                <span key={n} className="font-display text-2xl text-ink/60">
-                  {n}
-                </span>
-              ))}
-            </div>
+        </div>
+      </section>
+
+      {/* CLIENTS — logo grid */}
+      <section id="clients" className="section-pad">
+        <div className="container-shell">
+          <Reveal className="mb-12 flex flex-col gap-4">
+            <span className="font-mono text-xs uppercase tracking-[0.2em] text-gold">
+              Клієнти
+            </span>
+            <h2 className="max-w-2xl text-[clamp(2rem,4vw,3.2rem)] leading-[1.05] text-ink">
+              Метод працює там, де ставки високі
+            </h2>
+            <p className="max-w-xl text-lg leading-relaxed text-muted">
+              <span className="text-gradient-gold font-display">90%</span> клієнтів
+              продовжують співпрацю з нами та рекомендують нас своїм партнерам.
+            </p>
+          </Reveal>
+          <RevealGroup className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
+            {clients.logoTiles.map((logo) => (
+              <RevealItem key={logo.name}>
+                <div
+                  className="flex min-h-[7rem] items-center justify-center rounded-2xl bg-white px-6 py-8 shadow-sm ring-1 ring-black/5 transition-transform duration-500 hover:-translate-y-1 sm:min-h-[8rem]"
+                  title={logo.name}
+                >
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={logo.src}
+                    alt={logo.name}
+                    className="h-8 w-auto max-w-[82%] object-contain sm:h-10"
+                    loading="lazy"
+                  />
+                </div>
+              </RevealItem>
+            ))}
+          </RevealGroup>
+          <Reveal className="mx-auto mt-10 max-w-2xl text-center">
+            <p className="text-pretty text-sm italic leading-relaxed text-muted">
+              {clients.caption}
+            </p>
           </Reveal>
         </div>
       </section>
 
       {/* ARCHITECT — dossier */}
-      <section className="section-pad">
+      <section className="relative grain border-t border-line/50 bg-surface section-pad">
         <div className="container-shell grid items-center gap-12 lg:grid-cols-12 lg:gap-16">
           <Reveal className="lg:col-span-5">
             <div className="relative overflow-hidden rounded-2xl border border-gold/20">
@@ -275,7 +368,7 @@ export function MethodHome() {
       </section>
 
       {/* AUDIENCES + CTA */}
-      <section className="relative grain border-t border-line/50 bg-surface section-pad">
+      <section className="relative grain border-t border-line/50 section-pad">
         <div className="container-shell relative">
           <Reveal className="flex flex-col gap-4">
             <span className="font-mono text-xs uppercase tracking-[0.2em] text-gold">
