@@ -1134,6 +1134,60 @@
   color-scheme: light;
 }
 
+[data-concept="maison"] {
+  /* XXXVII — Maison · couture maison (Dior Beauty-inspired): ivory, black, gold, light serif */
+  --c-canvas: 247 244 238;
+  --c-surface: 252 250 245;
+  --c-raised: 255 254 251;
+  --c-line: 220 213 200;
+  --c-ink: 21 19 15;
+  --c-muted: 96 90 80;
+  --c-faint: 150 140 124;
+  --c-gold: 176 138 62;
+  --c-gold-soft: 200 166 100;
+  --c-ember: 150 96 50;
+  --c-action: 21 19 15;
+  --c-action-ink: 247 244 238;
+  --c-oncontrast: 247 244 238;
+  --font-display: var(--font-cormorant);
+  --font-body: var(--font-inter);
+  --font-mono: var(--font-jetbrains);
+  --display-weight: 300;
+  --display-tracking: 0.005em;
+  --glow-a: transparent;
+  --glow-b: transparent;
+  --grain-opacity: 0.02;
+  --shadow-lux: 0 24px 56px -32px rgb(40 30 16 / 0.3);
+  color-scheme: light;
+}
+
+[data-concept="movement"] {
+  /* XXXVIII — Movement · bold founder/community brand (BossBabe-inspired): warm cream + terracotta-gold */
+  --c-canvas: 243 235 224;
+  --c-surface: 252 247 240;
+  --c-raised: 255 252 246;
+  --c-line: 214 202 184;
+  --c-ink: 23 19 16;
+  --c-muted: 100 88 74;
+  --c-faint: 142 128 110;
+  --c-gold: 194 96 30;
+  --c-gold-soft: 224 140 70;
+  --c-ember: 176 64 36;
+  --c-action: 23 19 16;
+  --c-action-ink: 243 235 224;
+  --c-oncontrast: 243 235 224;
+  --font-display: var(--font-manrope);
+  --font-body: var(--font-inter);
+  --font-mono: var(--font-jetbrains);
+  --display-weight: 800;
+  --display-tracking: -0.03em;
+  --glow-a: transparent;
+  --glow-b: transparent;
+  --grain-opacity: 0.02;
+  --shadow-lux: 0 22px 50px -28px rgb(60 30 12 / 0.4);
+  color-scheme: light;
+}
+
 /* ==================================================================
    BASE
    ================================================================== */

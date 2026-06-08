@@ -34,7 +34,9 @@ export type ConceptId =
   | "journal"
   | "vhs"
   | "feed"
-  | "typewriter";
+  | "typewriter"
+  | "maison"
+  | "movement";
 
 export interface Concept {
   id: ConceptId;
@@ -298,6 +300,20 @@ export const CONCEPTS: Concept[] = [
     name: "Друкарка",
     tagline: "Маніфест друкується сам",
     swatch: { canvas: "#EEE9DE", gold: "#966E1E", ink: "#241E16" },
+  },
+  {
+    id: "maison",
+    numeral: "XXXVII",
+    name: "Maison",
+    tagline: "За мотивами Dior · couture-мезон",
+    swatch: { canvas: "#F7F4EE", gold: "#B08A3E", ink: "#15130F" },
+  },
+  {
+    id: "movement",
+    numeral: "XXXVIII",
+    name: "Movement",
+    tagline: "За мотивами BossBabe · рух",
+    swatch: { canvas: "#F3EBE0", gold: "#C2601E", ink: "#171310" },
   },
 ];
 
