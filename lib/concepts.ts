@@ -336,7 +336,7 @@ export const CONCEPTS: Concept[] = [
   },
 ];
 
-export const DEFAULT_CONCEPT: ConceptId = "concept";
+export const DEFAULT_CONCEPT: ConceptId = "method";
 export const CONCEPT_IDS = CONCEPTS.map((c) => c.id) as ConceptId[];
 export const STORAGE_KEY = "pp-concept";
 

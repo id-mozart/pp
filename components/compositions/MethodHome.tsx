@@ -171,6 +171,9 @@ export function MethodHome() {
         </div>
       </section>
 
+      {/* TRUST — client logo wall right after the promise */}
+      <ClientsWall />
+
       {/* PAINS — what people come with (from Concept 0) */}
       <Requests />
 
@@ -187,32 +190,6 @@ export function MethodHome() {
         lead={system.intro}
         phases={system.phases}
       />
-
-      {/* PRINCIPLES — manifesto */}
-      <section className="section-pad">
-        <div className="container-shell">
-          <Reveal className="mb-10">
-            <span className="font-mono text-xs uppercase tracking-[0.2em] text-gold">
-              Принципи
-            </span>
-          </Reveal>
-          <RevealGroup className="flex flex-col">
-            {PRINCIPLES.map((p) => (
-              <RevealItem key={p.n}>
-                <div className="group flex items-center gap-6 border-t border-line/50 py-6 last:border-b">
-                  <span className="font-mono text-sm text-gold">{p.n}</span>
-                  <span className="font-display text-[clamp(1.6rem,4vw,3rem)] leading-tight text-ink transition-colors group-hover:text-gold">
-                    {p.t}
-                  </span>
-                </div>
-              </RevealItem>
-            ))}
-          </RevealGroup>
-        </div>
-      </section>
-
-      {/* FORMATS — ways of cooperation */}
-      <Formats />
 
       {/* RESULTS — before → after outcomes */}
       <section id="results" className="relative grain section-pad">
@@ -260,20 +237,22 @@ export function MethodHome() {
         </div>
       </section>
 
-      {/* PROOF — evidence (logos live in the Clients section below) */}
-      <section id="proof" className="relative grain border-y border-line/50 bg-surface section-pad">
-        <div className="container-shell relative">
+      {/* PRINCIPLES — manifesto */}
+      <section className="section-pad">
+        <div className="container-shell">
           <Reveal className="mb-10">
             <span className="font-mono text-xs uppercase tracking-[0.2em] text-gold">
-              Доказова база
+              Принципи
             </span>
           </Reveal>
-          <RevealGroup className="grid grid-cols-2 gap-px overflow-hidden rounded-2xl border border-line/60 bg-line/40 md:grid-cols-3 lg:grid-cols-6">
-            {PROOF.map((s) => (
-              <RevealItem key={s.l}>
-                <div className="h-full bg-surface p-6 text-center">
-                  <div className="stat-number text-3xl sm:text-4xl">{s.v}</div>
-                  <div className="mt-2 text-xs leading-snug text-muted">{s.l}</div>
+          <RevealGroup className="flex flex-col">
+            {PRINCIPLES.map((p) => (
+              <RevealItem key={p.n}>
+                <div className="group flex items-center gap-6 border-t border-line/50 py-6 last:border-b">
+                  <span className="font-mono text-sm text-gold">{p.n}</span>
+                  <span className="font-display text-[clamp(1.6rem,4vw,3rem)] leading-tight text-ink transition-colors group-hover:text-gold">
+                    {p.t}
+                  </span>
                 </div>
               </RevealItem>
             ))}
@@ -329,6 +308,30 @@ export function MethodHome() {
         </div>
       </section>
 
+      {/* PROOF — evidence */}
+      <section id="proof" className="relative grain border-y border-line/50 bg-surface section-pad">
+        <div className="container-shell relative">
+          <Reveal className="mb-10">
+            <span className="font-mono text-xs uppercase tracking-[0.2em] text-gold">
+              Доказова база
+            </span>
+          </Reveal>
+          <RevealGroup className="grid grid-cols-2 gap-px overflow-hidden rounded-2xl border border-line/60 bg-line/40 md:grid-cols-3 lg:grid-cols-6">
+            {PROOF.map((s) => (
+              <RevealItem key={s.l}>
+                <div className="h-full bg-surface p-6 text-center">
+                  <div className="stat-number text-3xl sm:text-4xl">{s.v}</div>
+                  <div className="mt-2 text-xs leading-snug text-muted">{s.l}</div>
+                </div>
+              </RevealItem>
+            ))}
+          </RevealGroup>
+        </div>
+      </section>
+
+      {/* TESTIMONIALS — social proof voices */}
+      <Testimonials />
+
       {/* AUDIENCES + CTA — graphite grid band */}
       <section className="relative grain border-t border-line/50 bg-surface section-pad">
         <div className="container-shell relative">
@@ -369,9 +372,8 @@ export function MethodHome() {
         </div>
       </section>
 
-      {/* Last three sections from Concept 0 */}
-      <ClientsWall />
-      <Testimonials />
+      {/* FORMATS — offer: ways of cooperation */}
+      <Formats />
 
       {/* FAQ — objection handling before the form */}
       <section id="faq" className="relative grain border-t border-line/50 bg-surface section-pad">
