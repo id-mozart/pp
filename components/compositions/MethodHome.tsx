@@ -5,16 +5,12 @@ import { Reveal, RevealGroup, RevealItem } from "@/components/ui/Reveal";
 import { ArrowRight } from "@/components/ui/icons";
 import { Formats } from "@/components/sections/Formats";
 import { Phases } from "@/components/sections/Phases";
+import { ClientsWall } from "@/components/sections/ClientsWall";
+import { Testimonials } from "@/components/sections/Testimonials";
+import { ContactForm } from "@/components/sections/ContactForm";
 import { HeroSlideshowBg } from "@/components/sections/HeroSlideshowBg";
 import { HERO_SLIDES } from "@/lib/heroSlides";
-import { clients, contacts } from "@/lib/content";
-
-const PHASES = [
-  { n: "01", t: "Діагностика", d: "Знаходимо, що саме блокує продажі: меседж, офер, переговори чи процес." },
-  { n: "02", t: "Структура", d: "Будуємо процес, скрипти та методологію під ваш бізнес — не шаблон." },
-  { n: "03", t: "Переговори", d: "Тренуємо команду на реальних кейсах. Без тиску й маніпуляцій." },
-  { n: "04", t: "Впровадження", d: "Супровід до результату: воронка стає прозорою й керованою." },
-];
+import { contacts, system } from "@/lib/content";
 
 const PRINCIPLES = [
   { n: "01", t: "Без тиску" },
@@ -108,13 +104,18 @@ export function MethodHome() {
         </div>
       </section>
 
-      {/* METHOD — 4 phases */}
+      {/* SYSTEM — 4 phases (same composition as Concept 0) */}
       <Phases
         id="method"
-        eyebrow="Метод · 4 фази"
-        title="Від хаосу до системи — за чотири фази"
-        lead="Кожна фаза — окремий вузол системи. Разом вони роблять воронку прозорою та керованою."
-        phases={PHASES}
+        eyebrow={system.eyebrow}
+        title={
+          <>
+            Продажі — це <span className="text-gradient-gold">система</span>, а не
+            везіння
+          </>
+        }
+        lead={system.intro}
+        phases={system.phases}
       />
 
       {/* PRINCIPLES — manifesto */}
@@ -143,8 +144,8 @@ export function MethodHome() {
       {/* FORMATS — ways of cooperation */}
       <Formats />
 
-      {/* PROOF + CLIENTS — evidence & client logos in one band */}
-      <section id="clients" className="relative grain border-y border-line/50 bg-surface section-pad">
+      {/* PROOF — evidence (logos live in the Clients section below) */}
+      <section id="proof" className="relative grain border-y border-line/50 bg-surface section-pad">
         <div className="container-shell relative">
           <Reveal className="mb-10">
             <span className="font-mono text-xs uppercase tracking-[0.2em] text-gold">
@@ -157,21 +158,6 @@ export function MethodHome() {
                 <div className="h-full bg-surface p-6 text-center">
                   <div className="stat-number text-3xl sm:text-4xl">{s.v}</div>
                   <div className="mt-2 text-xs leading-snug text-muted">{s.l}</div>
-                </div>
-              </RevealItem>
-            ))}
-          </RevealGroup>
-          <RevealGroup className="mt-14 grid grid-cols-3 items-center gap-x-8 gap-y-12 sm:grid-cols-4 lg:grid-cols-5">
-            {clients.logoTiles.map((logo) => (
-              <RevealItem key={logo.name}>
-                <div className="flex items-center justify-center" title={logo.name}>
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src={logo.src}
-                    alt={logo.name}
-                    className="logo-wall-img"
-                    loading="lazy"
-                  />
                 </div>
               </RevealItem>
             ))}
@@ -266,6 +252,11 @@ export function MethodHome() {
           </Reveal>
         </div>
       </section>
+
+      {/* Last three sections from Concept 0 */}
+      <ClientsWall />
+      <Testimonials />
+      <ContactForm />
     </>
   );
 }
