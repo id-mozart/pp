@@ -1,4 +1,5 @@
 export type ConceptId =
+  | "main"
   | "concept"
   | "ember"
   | "champagne"
@@ -53,6 +54,13 @@ export interface Concept {
 }
 
 export const CONCEPTS: Concept[] = [
+  {
+    id: "main",
+    numeral: "M",
+    name: "Main",
+    tagline: "Робоча версія · копія Системи",
+    swatch: { canvas: "#090908", gold: "#E2A638", ink: "#F4E6CC" },
+  },
   {
     id: "concept",
     numeral: "0",
@@ -336,12 +344,13 @@ export const CONCEPTS: Concept[] = [
   },
 ];
 
-export const DEFAULT_CONCEPT: ConceptId = "method";
+export const DEFAULT_CONCEPT: ConceptId = "main";
 export const CONCEPT_IDS = CONCEPTS.map((c) => c.id) as ConceptId[];
 export const STORAGE_KEY = "pp-concept";
 
 /** Curated set shown in the switcher (others remain reachable via storage). */
 export const VISIBLE_CONCEPT_IDS: ConceptId[] = [
+  "main",
   "concept",
   "ember",
   "edition",
