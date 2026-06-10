@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { Reveal, RevealGroup, RevealItem } from "@/components/ui/Reveal";
-import { ArrowRight } from "@/components/ui/icons";
+import { ArrowRight, Users, Calendar } from "@/components/ui/icons";
 import { Formats } from "@/components/sections/Formats";
 import { Phases } from "@/components/sections/Phases";
 import { ClientsWall } from "@/components/sections/ClientsWall";
@@ -58,23 +58,43 @@ export function MethodHome() {
                 className="absolute inset-0"
                 style={{
                   background:
-                    "linear-gradient(90deg, rgba(33,21,10,0.38) 0%, rgba(33,21,10,0.6) 44%, rgba(33,21,10,0.95) 100%)",
+                    "linear-gradient(90deg, rgba(12,8,5,0.45) 0%, rgba(12,8,5,0.66) 44%, rgba(12,8,5,0.96) 100%)",
                 }}
               />
               <div
                 className="absolute inset-0"
                 style={{
                   background:
-                    "linear-gradient(0deg, rgba(33,21,10,0.88) 0%, rgba(33,21,10,0.05) 55%)",
+                    "linear-gradient(0deg, rgba(12,8,5,0.92) 0%, rgba(12,8,5,0.08) 55%)",
                 }}
               />
               <div
                 className="absolute inset-x-0 top-0 h-32"
                 style={{
                   background:
-                    "linear-gradient(180deg, rgba(33,21,10,0.7) 0%, rgba(33,21,10,0) 100%)",
+                    "linear-gradient(180deg, rgba(12,8,5,0.75) 0%, rgba(12,8,5,0) 100%)",
                 }}
               />
+              {/* lux vignette — the scene emerges from darkness */}
+              <div
+                className="absolute inset-0"
+                style={{
+                  background:
+                    "radial-gradient(110% 85% at 38% 42%, transparent 38%, rgba(8,5,3,0.72) 100%)",
+                }}
+              />
+              {/* concentric golden arcs (left), like the slide */}
+              <div aria-hidden className="absolute left-0 top-1/2 hidden lg:block">
+                {[460, 620, 780].map((d) => (
+                  <span
+                    key={d}
+                    className="lux-arcs"
+                    style={{ width: d, height: d, left: -d * 0.62, top: -d / 2 }}
+                  />
+                ))}
+              </div>
+              {/* golden bokeh dust */}
+              <div aria-hidden className="lux-bokeh" />
             </>
           }
         />
@@ -99,6 +119,29 @@ export function MethodHome() {
               <Link href="#method" className="btn btn-ghost">
                 Як це працює
               </Link>
+            </div>
+
+            {/* info pills — like the slide's bordered cards */}
+            <div className="flex flex-wrap gap-3 pt-1">
+              {[
+                { Icon: Users, label: "Бізнес-тренерка", value: "Тетяна Пан" },
+                { Icon: Calendar, label: "Україна", value: "2026" },
+              ].map(({ Icon, label, value }) => (
+                <div
+                  key={label}
+                  className="flex items-center gap-3 rounded-2xl border border-gold/30 bg-canvas/35 py-2.5 pl-2.5 pr-5 backdrop-blur-sm"
+                >
+                  <span className="grid h-10 w-10 place-items-center rounded-xl border border-gold/35 text-gold">
+                    <Icon className="h-5 w-5" />
+                  </span>
+                  <span className="leading-tight">
+                    <span className="block text-xs text-muted">{label}</span>
+                    <span className="block text-base font-medium text-gold">
+                      {value}
+                    </span>
+                  </span>
+                </div>
+              ))}
             </div>
           </Reveal>
         </div>

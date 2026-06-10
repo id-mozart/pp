@@ -1318,14 +1318,41 @@
   --c-oncontrast: 33 21 10;
   --glow-a: rgb(226 166 56 / 0.16);
 
-  /* chocolate canvas — the card-plate tone from the Instagram-story handoff
-     (top stop of the card fill, rgba(33,21,10,.95)) */
-  --c-canvas: 33 21 10;       /* #21150A */
+  /* near-black warm canvas — the SHABO-slide "dark lux stage" direction
+     (deep black with a chocolate tint + golden glow) */
+  --c-canvas: 12 8 5;         /* #0C0805 */
 
-  /* graphite (desaturated) section bands & cards vs the chocolate canvas */
-  --c-surface: 33 32 30;      /* #21201E */
-  --c-raised: 44 43 40;       /* #2C2B28 */
-  --c-line: 82 77 68;         /* #524D44 */
+  /* dark graphite section bands & cards vs the near-black canvas */
+  --c-surface: 28 26 23;      /* #1C1A17 */
+  --c-raised: 40 37 33;       /* #282521 */
+  --c-line: 96 78 50;         /* #604E32 — gold-tinted hairlines */
+
+  --glow-a: rgb(226 166 56 / 0.22);
+  --glow-b: rgb(197 101 49 / 0.16);
+}
+
+/* Dark-lux decor (used by the Система hero): concentric golden arcs + bokeh */
+.lux-arcs {
+  position: absolute;
+  border-radius: 9999px;
+  border: 1px solid rgb(var(--c-gold) / 0.14);
+  box-shadow: 0 0 40px -18px rgb(var(--c-gold) / 0.35);
+}
+.lux-bokeh {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: radial-gradient(circle at 9% 28%, rgb(var(--c-gold) / 0.55) 0, transparent 3px),
+    radial-gradient(circle at 16% 64%, rgb(var(--c-gold) / 0.4) 0, transparent 2.4px),
+    radial-gradient(circle at 27% 18%, rgb(var(--c-gold-soft) / 0.45) 0, transparent 2px),
+    radial-gradient(circle at 6% 84%, rgb(var(--c-gold) / 0.35) 0, transparent 2.6px),
+    radial-gradient(circle at 38% 78%, rgb(var(--c-gold-soft) / 0.3) 0, transparent 2px),
+    radial-gradient(circle at 70% 12%, rgb(var(--c-gold) / 0.3) 0, transparent 2.2px),
+    radial-gradient(circle at 88% 58%, rgb(var(--c-gold-soft) / 0.35) 0, transparent 2.4px),
+    radial-gradient(circle at 60% 88%, rgb(var(--c-gold) / 0.25) 0, transparent 2px),
+    radial-gradient(circle at 14% 44%, rgb(var(--c-gold) / 0.18) 0, transparent 22px),
+    radial-gradient(circle at 82% 30%, rgb(var(--c-gold) / 0.12) 0, transparent 30px);
+  filter: blur(0.4px);
 }
 
 /* Story CTA: gold gradient button (--grad-gold from the handoff) */

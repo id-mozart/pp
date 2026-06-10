@@ -146,6 +146,21 @@ export const Telegram = (p: IconProps) => (
   </svg>
 );
 
+export const Users = (p: IconProps) => (
+  <svg {...base(p)}>
+    <path d="M17 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2" />
+    <circle cx="10" cy="7" r="3.5" />
+    <path d="M21 21v-2a4 4 0 0 0-3-3.85M15.5 3.6a3.5 3.5 0 0 1 0 6.8" />
+  </svg>
+);
+
+export const Calendar = (p: IconProps) => (
+  <svg {...base(p)}>
+    <rect x="3" y="5" width="18" height="16" rx="2.5" />
+    <path d="M8 3v4M16 3v4M3 10h18" />
+  </svg>
+);
+
 export const Sun = (p: IconProps) => (
   <svg {...base(p)}>
     <circle cx="12" cy="12" r="4" />
