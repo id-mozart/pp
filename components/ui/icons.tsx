@@ -146,6 +146,34 @@ export const Telegram = (p: IconProps) => (
   </svg>
 );
 
+export const TrendDown = (p: IconProps) => (
+  <svg {...base(p)}>
+    <path d="M2 7l6.5 6.5 5-5L22 17" />
+    <path d="M22 11v6h-6" />
+  </svg>
+);
+
+export const Activity = (p: IconProps) => (
+  <svg {...base(p)}>
+    <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
+  </svg>
+);
+
+export const CircleX = (p: IconProps) => (
+  <svg {...base(p)}>
+    <circle cx="12" cy="12" r="9" />
+    <path d="M15 9l-6 6M9 9l6 6" />
+  </svg>
+);
+
+export const Percent = (p: IconProps) => (
+  <svg {...base(p)}>
+    <path d="M19 5 5 19" />
+    <circle cx="6.5" cy="6.5" r="2.5" />
+    <circle cx="17.5" cy="17.5" r="2.5" />
+  </svg>
+);
+
 export const Users = (p: IconProps) => (
   <svg {...base(p)}>
     <path d="M17 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2" />
