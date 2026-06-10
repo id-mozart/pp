@@ -62,21 +62,21 @@ export function MethodHome() {
                 className="absolute inset-0"
                 style={{
                   background:
-                    "linear-gradient(90deg, rgba(16,15,12,0.38) 0%, rgba(16,15,12,0.6) 44%, rgba(16,15,12,0.95) 100%)",
+                    "linear-gradient(90deg, rgba(33,21,10,0.38) 0%, rgba(33,21,10,0.6) 44%, rgba(33,21,10,0.95) 100%)",
                 }}
               />
               <div
                 className="absolute inset-0"
                 style={{
                   background:
-                    "linear-gradient(0deg, rgba(16,15,12,0.88) 0%, rgba(16,15,12,0.05) 55%)",
+                    "linear-gradient(0deg, rgba(33,21,10,0.88) 0%, rgba(33,21,10,0.05) 55%)",
                 }}
               />
               <div
                 className="absolute inset-x-0 top-0 h-32"
                 style={{
                   background:
-                    "linear-gradient(180deg, rgba(16,15,12,0.7) 0%, rgba(16,15,12,0) 100%)",
+                    "linear-gradient(180deg, rgba(33,21,10,0.7) 0%, rgba(33,21,10,0) 100%)",
                 }}
               />
             </>
@@ -227,8 +227,8 @@ export function MethodHome() {
         </div>
       </section>
 
-      {/* AUDIENCES + CTA */}
-      <section className="relative grain border-t border-line/50 section-pad">
+      {/* AUDIENCES + CTA — graphite grid band */}
+      <section className="relative grain border-t border-line/50 bg-surface section-pad">
         <div className="container-shell relative">
           <Reveal className="flex flex-col gap-4">
             <span className="font-mono text-xs uppercase tracking-[0.2em] text-gold">

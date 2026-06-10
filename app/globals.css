@@ -938,10 +938,12 @@
   --shadow-lux: 0 30px 80px -30px rgb(0 0 0 / 0.7);
   color-scheme: dark;
 }
-[data-concept="method"] body {
+/* Blueprint grid lives ONLY on the graphite section bands (système/для кого
+   etc.) — the plain chocolate canvas stays clean. */
+[data-concept="method"] section.bg-surface {
   background-image:
-    linear-gradient(rgb(var(--c-line) / 0.16) 1px, transparent 1px),
-    linear-gradient(90deg, rgb(var(--c-line) / 0.16) 1px, transparent 1px);
+    linear-gradient(rgb(var(--c-line) / 0.18) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(var(--c-line) / 0.18) 1px, transparent 1px);
   background-size: 64px 64px;
 }
 
@@ -1312,10 +1314,15 @@
   --c-gold: 226 166 56;       /* #E2A638 */
   --c-gold-soft: 239 190 106; /* #EFBE6A */
   --c-action: 226 166 56;
-  --c-action-ink: 23 16 11;
+  --c-action-ink: 33 21 10;
+  --c-oncontrast: 33 21 10;
   --glow-a: rgb(226 166 56 / 0.16);
 
-  /* graphite (desaturated) section bands & cards vs the espresso canvas */
+  /* chocolate canvas — the card-plate tone from the Instagram-story handoff
+     (top stop of the card fill, rgba(33,21,10,.95)) */
+  --c-canvas: 33 21 10;       /* #21150A */
+
+  /* graphite (desaturated) section bands & cards vs the chocolate canvas */
   --c-surface: 33 32 30;      /* #21201E */
   --c-raised: 44 43 40;       /* #2C2B28 */
   --c-line: 82 77 68;         /* #524D44 */
