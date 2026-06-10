@@ -1302,6 +1302,18 @@
   color-scheme: dark;
 }
 
+/* XXVII — Система · corrected type colours from the Instagram-story handoff
+   (design_handoff_silpo_carousel, v4 «Ember»): warmer golden cream ink,
+   brighter saturated gold. Placed after the shared block so it wins. */
+[data-concept="method"] {
+  --c-ink: 244 230 204;       /* #F4E6CC */
+  --c-gold: 226 166 56;       /* #E2A638 */
+  --c-gold-soft: 239 190 106; /* #EFBE6A */
+  --c-action: 226 166 56;
+  --c-action-ink: 23 16 11;
+  --glow-a: rgb(226 166 56 / 0.16);
+}
+
 /* ==================================================================
    BASE
    ================================================================== */
