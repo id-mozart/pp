@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { Reveal, RevealGroup, RevealItem } from "@/components/ui/Reveal";
-import { ArrowRight, Users, Calendar, Plus } from "@/components/ui/icons";
+import { ArrowRight, Plus } from "@/components/ui/icons";
 import { Formats } from "@/components/sections/Formats";
 import { Phases } from "@/components/sections/Phases";
 import { Requests } from "@/components/sections/Requests";
@@ -153,28 +153,6 @@ export function MethodHome() {
               </Link>
             </div>
 
-            {/* info pills — like the slide's bordered cards */}
-            <div className="flex flex-wrap gap-3 pt-1">
-              {[
-                { Icon: Users, label: "Бізнес-тренерка", value: "Тетяна Пан" },
-                { Icon: Calendar, label: "Україна", value: "2026" },
-              ].map(({ Icon, label, value }) => (
-                <div
-                  key={label}
-                  className="flex items-center gap-3 rounded-2xl border border-gold/30 bg-canvas/35 py-2.5 pl-2.5 pr-5 backdrop-blur-sm"
-                >
-                  <span className="grid h-10 w-10 place-items-center rounded-xl border border-gold/35 text-gold">
-                    <Icon className="h-5 w-5" />
-                  </span>
-                  <span className="leading-tight">
-                    <span className="block text-xs text-muted">{label}</span>
-                    <span className="block text-base font-medium text-gold">
-                      {value}
-                    </span>
-                  </span>
-                </div>
-              ))}
-            </div>
           </Reveal>
         </div>
       </section>
