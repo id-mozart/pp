@@ -1,6 +1,7 @@
 "use client";
 
 import { requests } from "@/lib/content";
+import { smoothScrollToEl } from "@/lib/smoothScroll";
 import { Reveal, RevealGroup, RevealItem } from "@/components/ui/Reveal";
 import {
   ArrowRight,
@@ -36,6 +37,13 @@ export function Requests() {
                     <li className="border-t border-line/50 last:border-b">
                       <a
                         href="#contact"
+                        onClick={(e) => {
+                          const el = document.querySelector("#contact");
+                          if (!el) return;
+                          e.preventDefault();
+                          smoothScrollToEl(el);
+                          history.replaceState(null, "", "#contact");
+                        }}
                         className="group flex items-center gap-5 py-5 transition-colors"
                         aria-label={`${item} — перейти до форми`}
                       >
