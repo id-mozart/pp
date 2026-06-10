@@ -27,12 +27,21 @@ export function smoothScrollToEl(el: Element, offset = 88) {
   const prev = html.style.scrollBehavior;
   html.style.scrollBehavior = "auto";
 
+  // Fail-safe: if rAF is throttled to zero (hidden/janky tab), still land.
+  const failSafe = window.setTimeout(() => {
+    window.scrollTo(0, targetY);
+    html.style.scrollBehavior = prev;
+  }, duration + 150);
+
   const t0 = performance.now();
   const step = (now: number) => {
     const p = Math.min(1, (now - t0) / duration);
     window.scrollTo(0, startY + (targetY - startY) * ease(p));
     if (p < 1) requestAnimationFrame(step);
-    else html.style.scrollBehavior = prev;
+    else {
+      window.clearTimeout(failSafe);
+      html.style.scrollBehavior = prev;
+    }
   };
   requestAnimationFrame(step);
 }
