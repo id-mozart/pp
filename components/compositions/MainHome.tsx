@@ -10,8 +10,6 @@ import { Testimonials } from "@/components/sections/Testimonials";
 import { ContactForm } from "@/components/sections/ContactForm";
 import { HeroSlideshowBg } from "@/components/sections/HeroSlideshowBg";
 import { HERO_SLIDES } from "@/lib/heroSlides";
-import { contacts } from "@/lib/content";
-
 const PROOF = [
   { v: "25+", l: "років у продажах" },
   { v: "17+", l: "років навчання" },
@@ -29,13 +27,6 @@ const DOSSIER = [
   { k: "Підхід", v: "Чітко та структуровано, впевнено, з очікуваним результатом. Без тиску. Без маніпуляцій. Природно та легко." },
   { k: "Місія", v: "Допомогти вам відчувати задоволення від отриманого результату." },
   { k: "Визнання", v: "№2 серед ТОП-тренерів України, UBA 2023." },
-];
-
-const AUDIENCES = [
-  "Власники бізнесу",
-  "Керівники продажів",
-  "Команди продажів",
-  "Експерти та ФОП",
 ];
 
 /* FAQ — objection handling; answers assembled from the source facts */
@@ -289,69 +280,8 @@ export function MainHome() {
         </div>
       </section>
 
-      {/* PROOF — evidence */}
-      <section id="proof" className="relative grain border-y border-line/50 bg-surface section-pad">
-        <div className="container-shell relative">
-          <Reveal className="mb-10">
-            <span className="font-mono text-xs uppercase tracking-[0.2em] text-gold">
-              Доказова база
-            </span>
-          </Reveal>
-          <RevealGroup className="grid grid-cols-2 gap-px overflow-hidden rounded-2xl border border-line/60 bg-line/40 md:grid-cols-3 lg:grid-cols-6">
-            {PROOF.map((s) => (
-              <RevealItem key={s.l}>
-                <div className="h-full bg-surface p-6 text-center">
-                  <div className="stat-number text-3xl sm:text-4xl">{s.v}</div>
-                  <div className="mt-2 text-xs leading-snug text-muted">{s.l}</div>
-                </div>
-              </RevealItem>
-            ))}
-          </RevealGroup>
-        </div>
-      </section>
-
-      {/* TESTIMONIALS — social proof voices */}
-      <Testimonials />
-
-      {/* AUDIENCES + CTA — graphite grid band */}
-      <section className="relative grain border-t border-line/50 bg-surface section-pad">
-        <div className="container-shell relative">
-          <Reveal className="flex flex-col gap-4">
-            <span className="font-mono text-xs uppercase tracking-[0.2em] text-gold">
-              Для кого
-            </span>
-            <div className="flex flex-wrap gap-3">
-              {AUDIENCES.map((a) => (
-                <span
-                  key={a}
-                  className="rounded-full border border-line/70 px-4 py-2 text-sm text-ink"
-                >
-                  {a}
-                </span>
-              ))}
-            </div>
-          </Reveal>
-          <Reveal delay={0.1} className="mt-14 flex flex-col items-start gap-6 border-t border-line/50 pt-12">
-            <h2 className="max-w-3xl font-display text-[clamp(2rem,4.5vw,3.6rem)] leading-[1.04] text-ink">
-              Готові замінити інтуїцію на{" "}
-              <span className="text-gradient-gold">систему</span>?
-            </h2>
-            <div className="flex flex-wrap items-center gap-4">
-              <Link href="/consultation#book" className="btn btn-primary">
-                Запустити систему продажів <ArrowRight className="h-4 w-4" />
-              </Link>
-              <a
-                href={contacts.whatsapp.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="btn btn-ghost"
-              >
-                Написати у WhatsApp
-              </a>
-            </div>
-          </Reveal>
-        </div>
-      </section>
+      {/* TESTIMONIALS — social proof voices (with the proof tiles) */}
+      <Testimonials stats={PROOF} />
 
       {/* FORMATS — offer: ways of cooperation */}
       <Formats />

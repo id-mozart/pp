@@ -13,7 +13,12 @@ function initials(name: string) {
     .join("");
 }
 
-export function Testimonials() {
+export function Testimonials({
+  stats,
+}: {
+  /** Override the 3 credibility marks with custom stat tiles (proof-band style). */
+  stats?: { v: string; l: string }[];
+} = {}) {
   return (
     <section
       id="cases"
@@ -32,16 +37,29 @@ export function Testimonials() {
         </Reveal>
 
         {/* Credibility marks */}
-        <Reveal delay={0.05}>
-          <div className="mx-auto mt-12 grid max-w-4xl grid-cols-1 gap-px overflow-hidden rounded-2xl border border-line/60 bg-line/40 sm:grid-cols-3">
-            {credibility.marks.map((m) => (
-              <div key={m.label} className="bg-surface p-6 text-center">
-                <div className="stat-number text-4xl sm:text-5xl">{m.value}</div>
-                <div className="mt-2 text-xs leading-snug text-muted">{m.label}</div>
-              </div>
-            ))}
-          </div>
-        </Reveal>
+        {stats ? (
+          <Reveal delay={0.05}>
+            <div className="mt-12 grid grid-cols-2 gap-px overflow-hidden rounded-2xl border border-line/60 bg-line/40 md:grid-cols-3 lg:grid-cols-6">
+              {stats.map((s) => (
+                <div key={s.l} className="h-full bg-surface p-6 text-center">
+                  <div className="stat-number text-3xl sm:text-4xl">{s.v}</div>
+                  <div className="mt-2 text-xs leading-snug text-muted">{s.l}</div>
+                </div>
+              ))}
+            </div>
+          </Reveal>
+        ) : (
+          <Reveal delay={0.05}>
+            <div className="mx-auto mt-12 grid max-w-4xl grid-cols-1 gap-px overflow-hidden rounded-2xl border border-line/60 bg-line/40 sm:grid-cols-3">
+              {credibility.marks.map((m) => (
+                <div key={m.label} className="bg-surface p-6 text-center">
+                  <div className="stat-number text-4xl sm:text-5xl">{m.value}</div>
+                  <div className="mt-2 text-xs leading-snug text-muted">{m.label}</div>
+                </div>
+              ))}
+            </div>
+          </Reveal>
+        )}
 
         {/* Manifesto pull-quote */}
         <Reveal delay={0.1}>
