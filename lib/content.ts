@@ -7,7 +7,7 @@
 export const brand = {
   company: "Pan&Partners",
   person: "Тетяна Пан",
-  role: "Бізнес-тренерка · експертка з продажів та переговорів",
+  role: "Консалтингова компанія · системи продажів та переговорів",
   logo: "/brand/logo.webp",
   copyright: "© 2026 Tetiana Pan. Усі права захищені.",
   email: "hello@panpartners.com",

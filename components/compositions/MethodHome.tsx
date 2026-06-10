@@ -119,12 +119,12 @@ export function MethodHome() {
                     "radial-gradient(110% 85% at 38% 42%, transparent 38%, rgba(7,7,6,0.74) 100%)",
                 }}
               />
-              {/* gold-foil shimmer wash (переливи, як у VII) */}
+              {/* amber shimmer wash (переливи, як у VII) */}
               <div
                 className="absolute inset-0"
                 style={{
                   background:
-                    "radial-gradient(52vw 52vw at 88% -8%, rgb(203 164 90 / 0.14), transparent 62%), radial-gradient(46vw 46vw at -6% 104%, rgb(176 120 60 / 0.1), transparent 62%)",
+                    "radial-gradient(52vw 52vw at 88% -8%, rgb(226 166 56 / 0.14), transparent 62%), radial-gradient(46vw 46vw at -6% 104%, rgb(214 106 44 / 0.1), transparent 62%)",
                 }}
               />
             </>
@@ -265,7 +265,7 @@ export function MethodHome() {
                         style={{
                           width: `${m.pct}%`,
                           background:
-                            "linear-gradient(90deg, #e6cd9a 0%, #cba45a 55%, #9c6f2e 100%)",
+                            "linear-gradient(90deg, #f0c26e 0%, #e2a638 55%, #c5631f 100%)",
                         }}
                       />
                     </div>
@@ -344,6 +344,67 @@ export function MethodHome() {
                 </RevealItem>
               ))}
             </RevealGroup>
+          </div>
+        </div>
+      </section>
+
+      {/* MENTORING — особистий бізнес-менторинг (окрема послуга) */}
+      <section id="mentoring" className="relative grain section-pad">
+        <div className="container-shell grid items-center gap-12 lg:grid-cols-12 lg:gap-16">
+          <Reveal delay={0.08} className="lg:order-2 lg:col-span-5">
+            <div className="relative overflow-hidden rounded-2xl border border-gold/20 shadow-[var(--shadow-lux)]">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/brand/1M6A0522.webp"
+                alt="Тетяна Пан — особистий бізнес-менторинг"
+                className="aspect-[4/5] w-full object-cover object-top"
+                loading="lazy"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-canvas/55 via-transparent to-transparent" />
+              <div className="absolute bottom-4 left-4 font-mono text-[0.62rem] uppercase tracking-widest text-ink/90">
+                менторинг із Тетяною Пан
+              </div>
+            </div>
+          </Reveal>
+          <div className="lg:order-1 lg:col-span-7">
+            <Reveal className="flex flex-col gap-4">
+              <span className="font-mono text-xs uppercase tracking-[0.2em] text-gold">
+                Окрема послуга
+              </span>
+              <h2 className="text-[clamp(2rem,4vw,3.2rem)] leading-[1.05] text-ink">
+                Особистий <span className="text-gradient-gold">бізнес-менторинг</span>
+              </h2>
+              <p className="max-w-xl text-lg leading-relaxed text-muted">
+                Індивідуальна робота з Тетяною Пан для власників та керівників:
+                навчання, розбір саме ваших кейсів і підтримка між зустрічами — у
+                вашому темпі та під вашу ціль.
+              </p>
+            </Reveal>
+            <RevealGroup className="mt-8 flex flex-col">
+              {[
+                { k: "Формат", v: "Індивідуально або в міні-групі до 4 осіб · онлайн чи офлайн" },
+                { k: "Для кого", v: "Власники бізнесу та керівники продажів" },
+                { k: "Результат", v: "Зростання продажів від +20% до ×2" },
+                { k: "Як", v: "Методологія продажів, розбір бізнес-кейсів, підтримка між зустрічами" },
+              ].map((d) => (
+                <RevealItem key={d.k}>
+                  <div className="grid grid-cols-[7rem_1fr] gap-4 border-t border-line/50 py-4 sm:grid-cols-[9rem_1fr]">
+                    <dt className="font-mono text-[0.65rem] uppercase tracking-wider text-faint">
+                      {d.k}
+                    </dt>
+                    <dd className="text-base leading-relaxed text-ink/90">{d.v}</dd>
+                  </div>
+                </RevealItem>
+              ))}
+            </RevealGroup>
+            <Reveal delay={0.1} className="mt-8 flex flex-wrap gap-3">
+              <Link href="/consultation#book" className="btn btn-primary">
+                Записатися на менторинг <ArrowRight className="h-4 w-4" />
+              </Link>
+              <a href="#contact" className="btn btn-ghost">
+                Поставити запитання
+              </a>
+            </Reveal>
           </div>
         </div>
       </section>
