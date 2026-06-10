@@ -62,7 +62,7 @@ export function HeroConcept() {
             src={s.src}
             alt=""
             aria-hidden
-            className="absolute inset-0 h-full w-full object-cover"
+            className={`absolute inset-0 h-full w-full object-cover ${s.className ?? ""}`}
             style={{
               objectPosition: s.position,
               opacity: i === idx ? 1 : 0,

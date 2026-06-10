@@ -179,6 +179,38 @@ export function MethodHome() {
         </div>
       </section>
 
+      {/* COMPANY — who we are */}
+      <section id="company" className="relative grain border-b border-line/40 section-pad">
+        <div className="container-shell relative grid gap-10 lg:grid-cols-12 lg:gap-16">
+          <Reveal className="flex flex-col gap-4 lg:col-span-5">
+            <span className="font-mono text-xs uppercase tracking-[0.2em] text-gold">
+              Pan&amp;Partners · про компанію
+            </span>
+            <h2 className="text-[clamp(2rem,4vw,3.2rem)] leading-[1.05] text-ink">
+              Будуємо системи продажів, а не разові тренінги
+            </h2>
+          </Reveal>
+          <Reveal delay={0.08} className="flex flex-col justify-center gap-5 lg:col-span-7">
+            <p className="text-lg leading-relaxed text-muted">
+              Pan&amp;Partners — українська консалтингова компанія з продажів та
+              переговорів. Навчаємо команди продавати та вести переговори з
+              B2B-клієнтами, ставимо процес і супроводжуємо до вимірюваного
+              результату — онлайн та офлайн.
+            </p>
+            <p className="text-lg leading-relaxed text-muted">
+              Компанію заснувала Тетяна Пан — бізнес-тренерка та експертка з
+              продажів із 25+ роками власного досвіду («Олімп», Danone,
+              Coca-Cola, власні магазини) та 17+ роками навчання команд. Формати
+              роботи — корпоративні тренінги, онлайн-курси та наставництво.
+            </p>
+            <p className="max-w-xl text-pretty font-display text-xl leading-snug text-gradient-gold">
+              Без тиску. Без маніпуляцій. Природно та легко — з очікуваним
+              результатом.
+            </p>
+          </Reveal>
+        </div>
+      </section>
+
       {/* TRUST — client logo wall right after the promise */}
       <ClientsWall />
 

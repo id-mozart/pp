@@ -10,12 +10,20 @@ export interface HeroSlide {
   src: string;
   /** CSS object-position for the full-bleed crop */
   position: string;
+  /** Extra crop tweaks (e.g. desktop-only) via Tailwind classes */
+  className?: string;
 }
 
 export const HERO_SLIDES: HeroSlide[] = [
   { src: "/brand/Tania3.webp", position: "10% center" },
   { src: "/brand/Tania1-2.webp", position: "32% center" },
-  { src: "/brand/Tania1-3.webp", position: "45% center" },
+  {
+    src: "/brand/Tania1-3.webp",
+    position: "45% center",
+    // crop the busy banner on the LEFT of the frame (desktop shows almost
+    // the full 1920×800 banner, so we zoom slightly and pin to the right)
+    className: "lg:scale-[1.1] lg:![object-position:92%_50%]",
+  },
 ];
 
 /** Calmer cadence: 9s hold (was 5s), 2.4s crossfade. */

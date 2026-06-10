@@ -43,7 +43,7 @@ export function HeroSlideshowBg({
           src={img.src}
           alt=""
           aria-hidden
-          className="absolute inset-0 h-full w-full object-cover"
+          className={`absolute inset-0 h-full w-full object-cover ${img.className ?? ""}`}
           style={{
             objectPosition: img.position,
             opacity: i === idx ? 1 : 0,
