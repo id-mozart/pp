@@ -1310,34 +1310,51 @@
    dark) against the warm espresso canvas. Placed after the shared block
    so it wins. */
 [data-concept="method"] {
-  --c-ink: 244 230 204;       /* #F4E6CC */
-  --c-gold: 226 166 56;       /* #E2A638 */
-  --c-gold-soft: 239 190 106; /* #EFBE6A */
-  --c-action: 226 166 56;
-  --c-action-ink: 33 21 10;
-  --c-oncontrast: 33 21 10;
-  --glow-a: rgb(226 166 56 / 0.16);
+  /* Noir-luxe (за мотивами VII): обсидіан + золота фольга */
+  --c-ink: 237 232 223;       /* #EDE8DF */
+  --c-muted: 165 156 142;
+  --c-faint: 112 105 94;
+  --c-gold: 203 164 90;       /* #CBA45A — золота фольга */
+  --c-gold-soft: 226 196 140; /* #E2C48C */
+  --c-ember: 176 120 60;
+  --c-action: 203 164 90;
+  --c-action-ink: 9 9 8;
+  --c-oncontrast: 9 9 8;
 
-  /* near-black warm canvas — the SHABO-slide "dark lux stage" direction
-     (deep black with a chocolate tint + golden glow) */
-  --c-canvas: 12 8 5;         /* #0C0805 */
+  --c-canvas: 9 9 8;          /* #090908 — обсидіан */
+  --c-surface: 19 18 16;      /* graphite-black section bands & cards */
+  --c-raised: 28 26 23;
+  --c-line: 70 64 52;
 
-  /* dark graphite section bands & cards vs the near-black canvas */
-  --c-surface: 28 26 23;      /* #1C1A17 */
-  --c-raised: 40 37 33;       /* #282521 */
-  --c-line: 96 78 50;         /* #604E32 — gold-tinted hairlines */
-
-  --glow-a: rgb(226 166 56 / 0.22);
-  --glow-b: rgb(197 101 49 / 0.16);
+  --glow-a: rgb(203 164 90 / 0.13);
+  --glow-b: rgb(176 120 60 / 0.09);
+  --shadow-lux: 0 30px 90px -30px rgb(0 0 0 / 0.85);
 }
 
-/* Story CTA: gold gradient button (--grad-gold from the handoff) */
+/* Переливи: великі м'які золоті градієнтні плями по всій сторінці (як перший
+   слайд VII) — fixed, тож секції «пливуть» крізь сяйво. */
+[data-concept="method"] body {
+  background-image:
+    radial-gradient(56vw 56vw at 86% -12%, rgb(203 164 90 / 0.12), transparent 62%),
+    radial-gradient(50vw 50vw at -10% 38%, rgb(176 120 60 / 0.09), transparent 62%),
+    radial-gradient(60vw 60vw at 108% 86%, rgb(203 164 90 / 0.07), transparent 62%);
+  background-attachment: fixed;
+}
+
+/* Логотип — шрифт із VII (Playfair) */
+[data-concept="method"] .wordmark {
+  font-family: var(--font-playfair);
+  font-weight: 500;
+  letter-spacing: -0.01em;
+}
+
+/* CTA: gold-foil gradient button (noir-luxe) */
 [data-concept="method"] .btn-primary {
-  background: linear-gradient(100deg, #f0c26e 0%, #e2a638 55%, #c5631f 100%);
-  color: rgb(23 16 11);
+  background: linear-gradient(100deg, #e6cd9a 0%, #cba45a 55%, #9c6f2e 100%);
+  color: rgb(9 9 8);
 }
 [data-concept="method"] .btn-primary:hover {
-  background: linear-gradient(100deg, #f4cb7e 0%, #e9b04a 55%, #cd6c26 100%);
+  background: linear-gradient(100deg, #eed7a8 0%, #d5b068 55%, #a87a38 100%);
 }
 
 /* ==================================================================

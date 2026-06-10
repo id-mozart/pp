@@ -24,7 +24,7 @@ export default function B2BPage() {
         lead={b2b.hero.lead}
         image="/brand/tania-portrait.jpg"
         primary={{ label: "Хочу деталі", href: "#contact" }}
-        secondary={{ label: "Мої рішення", href: "#solutions" }}
+        secondary={{ label: "Наші рішення", href: "#solutions" }}
       />
       <B2BExperience />
       <section className="pb-4">

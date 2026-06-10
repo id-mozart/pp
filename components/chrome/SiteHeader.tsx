@@ -54,7 +54,7 @@ export function SiteHeader() {
           {/* Wordmark */}
           <Link
             href="/"
-            className="font-display text-xl tracking-tight text-ink transition-opacity hover:opacity-80"
+            className="wordmark font-display text-xl tracking-tight text-ink transition-opacity hover:opacity-80"
             aria-label="Pan&Partners — на головну"
           >
             Pan<span className="text-gold">&amp;</span>Partners
@@ -116,7 +116,7 @@ export function SiteHeader() {
             className="fixed inset-0 z-[90] bg-canvas/95 backdrop-blur-2xl lg:hidden"
           >
             <div className="container-shell flex h-[4.6rem] items-center justify-between">
-              <span className="font-display text-xl tracking-tight text-ink">
+              <span className="wordmark font-display text-xl tracking-tight text-ink">
                 Pan<span className="text-gold">&amp;</span>Partners
               </span>
               <button

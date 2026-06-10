@@ -94,21 +94,21 @@ export function MethodHome() {
                 className="absolute inset-0"
                 style={{
                   background:
-                    "linear-gradient(90deg, rgba(12,8,5,0.45) 0%, rgba(12,8,5,0.66) 44%, rgba(12,8,5,0.96) 100%)",
+                    "linear-gradient(90deg, rgba(9,9,8,0.45) 0%, rgba(9,9,8,0.66) 44%, rgba(9,9,8,0.96) 100%)",
                 }}
               />
               <div
                 className="absolute inset-0"
                 style={{
                   background:
-                    "linear-gradient(0deg, rgba(12,8,5,0.92) 0%, rgba(12,8,5,0.08) 55%)",
+                    "linear-gradient(0deg, rgba(9,9,8,0.92) 0%, rgba(9,9,8,0.08) 55%)",
                 }}
               />
               <div
                 className="absolute inset-x-0 top-0 h-32"
                 style={{
                   background:
-                    "linear-gradient(180deg, rgba(12,8,5,0.75) 0%, rgba(12,8,5,0) 100%)",
+                    "linear-gradient(180deg, rgba(9,9,8,0.75) 0%, rgba(9,9,8,0) 100%)",
                 }}
               />
               {/* lux vignette — the scene emerges from darkness */}
@@ -116,9 +116,19 @@ export function MethodHome() {
                 className="absolute inset-0"
                 style={{
                   background:
-                    "radial-gradient(110% 85% at 38% 42%, transparent 38%, rgba(8,5,3,0.72) 100%)",
+                    "radial-gradient(110% 85% at 38% 42%, transparent 38%, rgba(7,7,6,0.74) 100%)",
                 }}
               />
+              {/* gold-foil shimmer wash (переливи, як у VII) */}
+              <div
+                className="absolute inset-0"
+                style={{
+                  background:
+                    "radial-gradient(52vw 52vw at 88% -8%, rgb(203 164 90 / 0.14), transparent 62%), radial-gradient(46vw 46vw at -6% 104%, rgb(176 120 60 / 0.1), transparent 62%)",
+                }}
+              />
+              {/* thin gold gallery frame (noir signature) */}
+              <div className="pointer-events-none absolute inset-4 border border-gold/20 sm:inset-6" />
             </>
           }
         />
@@ -225,7 +235,7 @@ export function MethodHome() {
                         style={{
                           width: `${m.pct}%`,
                           background:
-                            "linear-gradient(90deg, #f0c26e 0%, #e2a638 55%, #c5631f 100%)",
+                            "linear-gradient(90deg, #e6cd9a 0%, #cba45a 55%, #9c6f2e 100%)",
                         }}
                       />
                     </div>

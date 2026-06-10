@@ -10,7 +10,7 @@ export function SiteFooter() {
         <div className="grid gap-12 lg:grid-cols-[1.4fr_1fr_1fr_1.2fr]">
           {/* Brand */}
           <div>
-            <Link href="/" className="font-display text-2xl tracking-tight text-ink">
+            <Link href="/" className="wordmark font-display text-2xl tracking-tight text-ink">
               Pan<span className="text-gold">&amp;</span>Partners
             </Link>
             <p className="mt-4 max-w-xs text-sm leading-relaxed text-muted">

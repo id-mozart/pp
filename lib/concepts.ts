@@ -248,7 +248,7 @@ export const CONCEPTS: Concept[] = [
     numeral: "XXVII",
     name: "Система",
     tagline: "Система продажів · методологія",
-    swatch: { canvas: "#1A140E", gold: "#D8A654", ink: "#F5EAD8" },
+    swatch: { canvas: "#090908", gold: "#CBA45A", ink: "#EDE8DF" },
   },
   {
     id: "funnel",
