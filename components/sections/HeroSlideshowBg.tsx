@@ -3,18 +3,24 @@
 import type { ReactNode } from "react";
 import { useEffect, useState } from "react";
 import { useReducedMotion } from "framer-motion";
+import {
+  HERO_SLIDE_FADE,
+  HERO_SLIDE_INTERVAL,
+  type HeroSlide,
+} from "@/lib/heroSlides";
 
 /**
- * Full-bleed crossfading background slideshow (same cadence as the source
- * site: 5s hold, 2s fade). Pass theme-specific gradient overlays via `overlay`.
+ * Full-bleed crossfading background slideshow with a per-image crop
+ * (object-position), so the subject never drifts off-screen. Pass
+ * theme-specific gradient overlays via `overlay`.
  */
 export function HeroSlideshowBg({
   images,
   overlay,
-  interval = 5000,
-  fadeMs = 2000,
+  interval = HERO_SLIDE_INTERVAL,
+  fadeMs = HERO_SLIDE_FADE,
 }: {
-  images: string[];
+  images: HeroSlide[];
   overlay?: ReactNode;
   interval?: number;
   fadeMs?: number;
@@ -30,15 +36,16 @@ export function HeroSlideshowBg({
 
   return (
     <div className="absolute inset-0 overflow-hidden">
-      {images.map((src, i) => (
+      {images.map((img, i) => (
         /* eslint-disable-next-line @next/next/no-img-element */
         <img
-          key={src}
-          src={src}
+          key={img.src}
+          src={img.src}
           alt=""
           aria-hidden
-          className="absolute inset-0 h-full w-full object-cover object-center"
+          className="absolute inset-0 h-full w-full object-cover"
           style={{
+            objectPosition: img.position,
             opacity: i === idx ? 1 : 0,
             transition: `opacity ${fadeMs}ms ease-in-out`,
           }}

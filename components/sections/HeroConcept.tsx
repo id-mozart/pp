@@ -9,16 +9,14 @@ import { ArrowRight, Check } from "@/components/ui/icons";
 const EASE = [0.16, 1, 0.3, 1] as const;
 
 /**
- * Crossfading hero slideshow — same three photos and cadence as the source
- * (tetianapansales.com): Tania3 → Tania1-2 → Tania1-3, 5s hold, 2s fade.
+ * Crossfading hero slideshow — the three source photos (Tania3 → Tania1-2 →
+ * Tania1-3) with per-image crops and a calm cadence (see lib/heroSlides).
  */
-const SLIDES = [
-  "/brand/Tania3.webp",
-  "/brand/Tania1-2.webp",
-  "/brand/Tania1-3.webp",
-];
-const INTERVAL = 5000;
-const FADE_MS = 2000;
+import {
+  HERO_SLIDES as SLIDES,
+  HERO_SLIDE_INTERVAL as INTERVAL,
+  HERO_SLIDE_FADE as FADE_MS,
+} from "@/lib/heroSlides";
 
 /* Fixed colours: the hero sits on a darkened photo, so it reads identically
    in both light and dark modes (only the body below reacts to the toggle). */
@@ -57,15 +55,16 @@ export function HeroConcept() {
     <section className="relative grain min-h-[78vh] overflow-hidden">
       {/* Crossfading slideshow */}
       <div className="absolute inset-0">
-        {SLIDES.map((src, i) => (
+        {SLIDES.map((s, i) => (
           /* eslint-disable-next-line @next/next/no-img-element */
           <img
-            key={src}
-            src={src}
+            key={s.src}
+            src={s.src}
             alt=""
             aria-hidden
-            className="absolute inset-0 h-full w-full object-cover object-center"
+            className="absolute inset-0 h-full w-full object-cover"
             style={{
+              objectPosition: s.position,
               opacity: i === idx ? 1 : 0,
               transition: `opacity ${FADE_MS}ms ease-in-out`,
             }}
@@ -163,9 +162,9 @@ export function HeroConcept() {
 
           {/* Slideshow indicator (also lets you drive it) */}
           <div className="flex items-center gap-2.5 pt-1">
-            {SLIDES.map((src, i) => (
+            {SLIDES.map((s, i) => (
               <button
-                key={src}
+                key={s.src}
                 onClick={() => setIdx(i)}
                 aria-label={`Показати фото ${i + 1}`}
                 className="h-1.5 rounded-full transition-all duration-500"

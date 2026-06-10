@@ -6,13 +6,8 @@ import { ArrowRight } from "@/components/ui/icons";
 import { Formats } from "@/components/sections/Formats";
 import { Phases } from "@/components/sections/Phases";
 import { HeroSlideshowBg } from "@/components/sections/HeroSlideshowBg";
+import { HERO_SLIDES } from "@/lib/heroSlides";
 import { clients, contacts } from "@/lib/content";
-
-const HERO_SLIDES = [
-  "/brand/Tania3.webp",
-  "/brand/Tania1-2.webp",
-  "/brand/Tania1-3.webp",
-];
 
 const PHASES = [
   { n: "01", t: "Діагностика", d: "Знаходимо, що саме блокує продажі: меседж, офер, переговори чи процес." },
