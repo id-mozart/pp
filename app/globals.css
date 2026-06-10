@@ -1302,9 +1302,11 @@
   color-scheme: dark;
 }
 
-/* XXVII — Система · corrected type colours from the Instagram-story handoff
+/* XXVII — Система · corrected colours from the Instagram-story handoff
    (design_handoff_silpo_carousel, v4 «Ember»): warmer golden cream ink,
-   brighter saturated gold. Placed after the shared block so it wins. */
+   brighter saturated gold; section bands & cards go GRAPHITE (neutral
+   dark) against the warm espresso canvas. Placed after the shared block
+   so it wins. */
 [data-concept="method"] {
   --c-ink: 244 230 204;       /* #F4E6CC */
   --c-gold: 226 166 56;       /* #E2A638 */
@@ -1312,6 +1314,20 @@
   --c-action: 226 166 56;
   --c-action-ink: 23 16 11;
   --glow-a: rgb(226 166 56 / 0.16);
+
+  /* graphite (desaturated) section bands & cards vs the espresso canvas */
+  --c-surface: 33 32 30;      /* #21201E */
+  --c-raised: 44 43 40;       /* #2C2B28 */
+  --c-line: 82 77 68;         /* #524D44 */
+}
+
+/* Story CTA: gold gradient button (--grad-gold from the handoff) */
+[data-concept="method"] .btn-primary {
+  background: linear-gradient(100deg, #f0c26e 0%, #e2a638 55%, #c5631f 100%);
+  color: rgb(23 16 11);
+}
+[data-concept="method"] .btn-primary:hover {
+  background: linear-gradient(100deg, #f4cb7e 0%, #e9b04a 55%, #cd6c26 100%);
 }
 
 /* ==================================================================
