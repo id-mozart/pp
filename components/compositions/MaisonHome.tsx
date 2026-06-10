@@ -86,7 +86,7 @@ export function MaisonHome() {
             <div className="mx-auto mt-6 h-px w-16 bg-gold lg:mx-0" />
             <p className="mt-6 max-w-md text-muted lg:mx-0">
               Власниця Pan&amp;Partners. 25+ років у продажах — «Олімп», Danone,
-              Coca-Cola. 17+ років навчаю команди продавати природно та з
+              Coca-Cola. 17+ років навчаємо команди продавати природно та з
               результатом.
             </p>
             <Link href="/consultation#book" className="btn btn-primary mt-8">

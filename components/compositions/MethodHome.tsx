@@ -127,8 +127,6 @@ export function MethodHome() {
                     "radial-gradient(52vw 52vw at 88% -8%, rgb(203 164 90 / 0.14), transparent 62%), radial-gradient(46vw 46vw at -6% 104%, rgb(176 120 60 / 0.1), transparent 62%)",
                 }}
               />
-              {/* thin gold gallery frame (noir signature) */}
-              <div className="pointer-events-none absolute inset-4 border border-gold/20 sm:inset-6" />
             </>
           }
         />
@@ -297,7 +295,7 @@ export function MethodHome() {
                 Тетяна Пан
               </h2>
               <p className="max-w-xl text-lg leading-relaxed text-muted">
-                Привіт! Понад 25 років я в продажах і керівництві, 17+ років навчаю
+                Понад 25 років у продажах і керівництві, 17+ років навчає команди
                 продавати та вести переговори. Метод народився з реальної практики —
                 від лінійних продажів до власного консалтингу.
               </p>

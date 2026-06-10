@@ -21,12 +21,14 @@ export function Testimonials() {
     >
       <div className="container-shell relative">
         {/* Header */}
-        <Reveal className="mx-auto flex max-w-2xl flex-col items-center gap-5 text-center">
+        <Reveal className="mx-auto flex max-w-4xl flex-col items-center gap-5 text-center">
           <span className="eyebrow">{testimonials.eyebrow}</span>
-          <h2 className="text-[clamp(2rem,4vw,3.2rem)] leading-[1.05] text-ink">
+          <h2 className="text-[clamp(2rem,3.4vw,2.8rem)] leading-[1.05] text-ink">
             {testimonials.title}
           </h2>
-          <p className="text-lg leading-relaxed text-muted">{testimonials.intro}</p>
+          <p className="max-w-2xl text-lg leading-relaxed text-muted">
+            {testimonials.intro}
+          </p>
         </Reveal>
 
         {/* Credibility marks */}

@@ -77,7 +77,7 @@ export function CanvasHome() {
             </p>
             <p className="mt-2 font-display text-xl text-ink">Тетяна Пан</p>
             <p className="mt-1 text-sm text-muted">
-              25+ років у продажах · Олімп, Danone, Coca-Cola. 17+ років навчаю.
+              25+ років у продажах · Олімп, Danone, Coca-Cola. 17+ років навчаємо.
             </p>
           </Block>
 

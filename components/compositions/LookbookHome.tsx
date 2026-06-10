@@ -5,7 +5,7 @@ import { ArrowRight } from "@/components/ui/icons";
 
 const SPREADS = [
   { img: "/brand/ph/p1.jpg", n: "01", kicker: "Pan&Partners · Lookbook 2026", title: "Продажі, що виглядають дорого", sub: "Навчаємо команди продавати й вести переговори з B2B-клієнтами." },
-  { img: "/brand/ph/p3.jpg", n: "02", kicker: "Експертиза", title: "25+ років у грі", sub: "Олімп · Danone · Coca-Cola. 17+ років навчаю." },
+  { img: "/brand/ph/p3.jpg", n: "02", kicker: "Експертиза", title: "25+ років у грі", sub: "Олімп · Danone · Coca-Cola. 17+ років навчаємо." },
   { img: "/brand/ph/p6.jpg", n: "03", kicker: "Метод", title: "Без тиску. Без маніпуляцій.", sub: "Природно, структуровано, з очікуваним результатом." },
   { img: "/brand/ph/p4.jpg", n: "04", kicker: "Результат", title: "×5 продажів", sub: "90% клієнтів продовжують співпрацю та рекомендують нас." },
   { img: "/brand/ph/p2.jpg", n: "05", kicker: "Дія", title: "Ваш вихід", sub: "Забронюйте персональну консультацію.", cta: true },

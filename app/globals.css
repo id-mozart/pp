@@ -1348,6 +1348,13 @@
   letter-spacing: -0.01em;
 }
 
+/* Блок відгуків — один в один як у VII: display-шрифт Playfair всередині */
+[data-concept="method"] #cases {
+  --font-display: var(--font-playfair);
+  --display-weight: 500;
+  --display-tracking: -0.01em;
+}
+
 /* CTA: gold-foil gradient button (noir-luxe) */
 [data-concept="method"] .btn-primary {
   background: linear-gradient(100deg, #e6cd9a 0%, #cba45a 55%, #9c6f2e 100%);
