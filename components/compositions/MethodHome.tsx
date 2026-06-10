@@ -2,9 +2,10 @@
 
 import Link from "next/link";
 import { Reveal, RevealGroup, RevealItem } from "@/components/ui/Reveal";
-import { ArrowRight, Users, Calendar } from "@/components/ui/icons";
+import { ArrowRight, Users, Calendar, Plus } from "@/components/ui/icons";
 import { Formats } from "@/components/sections/Formats";
 import { Phases } from "@/components/sections/Phases";
+import { Requests } from "@/components/sections/Requests";
 import { ClientsWall } from "@/components/sections/ClientsWall";
 import { Testimonials } from "@/components/sections/Testimonials";
 import { ContactForm } from "@/components/sections/ContactForm";
@@ -45,6 +46,41 @@ const AUDIENCES = [
   "Експерти та ФОП",
 ];
 
+/* Outcomes — before → after, from the source figures */
+const RESULTS = [
+  { label: "Конверсія у продаж", from: "5%", to: "20–30%", pct: 82 },
+  { label: "Зростання продажів", from: "+20%", to: "×5", pct: 96 },
+  { label: "Утримання клієнтів", from: "—", to: "90%", pct: 90 },
+];
+
+/* FAQ — objection handling; answers assembled from the source facts */
+const FAQ = [
+  {
+    q: "З чого почати співпрацю?",
+    a: "З онлайн-консультації 1:1 — одна фокусна година: діагностуємо вузьке місце ваших продажів, даємо план наступних кроків і конкретні скрипти.",
+  },
+  {
+    q: "Які формати роботи можливі?",
+    a: "Корпоративні тренінги під ваш запит, готові онлайн-курси та наставництво (командне або індивідуальне, групи до 4 осіб). Працюємо онлайн та офлайн.",
+  },
+  {
+    q: "Це підходить лише для B2B?",
+    a: "Основна спеціалізація — B2B-продажі та переговори з великими клієнтами. Водночас система адаптується й під B2C — будуємо простий продажний процес під вашу реальність.",
+  },
+  {
+    q: "Який результат можна очікувати?",
+    a: "Зростання продажів від +20% до ×5, конверсія з 5% до 20–30%. 90% клієнтів продовжують співпрацю з нами та рекомендують нас своїм партнерам.",
+  },
+  {
+    q: "Чи є досвід у нашій галузі?",
+    a: "25+ років практики в 6 галузях — від FMCG (Danone, Coca-Cola, «Олімп») до телекому та енергетики (Vodafone, Kyivstar, ДТЕК). Методологію будуємо під ваш бізнес, а не за шаблоном.",
+  },
+  {
+    q: "Без тиску — це як?",
+    a: "Ми не вчимо маніпуляціям і «дотисканню». Система спирається на структуру, підготовку та переговори, після яких клієнт повертається — природно та легко.",
+  },
+];
+
 export function MethodHome() {
   return (
     <>
@@ -83,18 +119,6 @@ export function MethodHome() {
                     "radial-gradient(110% 85% at 38% 42%, transparent 38%, rgba(8,5,3,0.72) 100%)",
                 }}
               />
-              {/* concentric golden arcs (left), like the slide */}
-              <div aria-hidden className="absolute left-0 top-1/2 hidden lg:block">
-                {[460, 620, 780].map((d) => (
-                  <span
-                    key={d}
-                    className="lux-arcs"
-                    style={{ width: d, height: d, left: -d * 0.62, top: -d / 2 }}
-                  />
-                ))}
-              </div>
-              {/* golden bokeh dust */}
-              <div aria-hidden className="lux-bokeh" />
             </>
           }
         />
@@ -147,6 +171,9 @@ export function MethodHome() {
         </div>
       </section>
 
+      {/* PAINS — what people come with (from Concept 0) */}
+      <Requests />
+
       {/* SYSTEM — 4 phases (same composition as Concept 0) */}
       <Phases
         id="method"
@@ -186,6 +213,52 @@ export function MethodHome() {
 
       {/* FORMATS — ways of cooperation */}
       <Formats />
+
+      {/* RESULTS — before → after outcomes */}
+      <section id="results" className="relative grain section-pad">
+        <div className="container-shell relative">
+          <div className="grid gap-12 lg:grid-cols-12 lg:gap-16">
+            <Reveal className="flex flex-col gap-4 lg:col-span-5">
+              <span className="font-mono text-xs uppercase tracking-[0.2em] text-gold">
+                Результати · до → після
+              </span>
+              <h2 className="text-[clamp(2rem,4vw,3.2rem)] leading-[1.05] text-ink">
+                Що змінюється, коли продажі стають{" "}
+                <span className="text-gradient-gold">системою</span>
+              </h2>
+              <p className="max-w-md text-lg leading-relaxed text-muted">
+                Цифри наших клієнтів після впровадження системи — від перших
+                тижнів до повного супроводу.
+              </p>
+            </Reveal>
+            <RevealGroup className="flex flex-col justify-center gap-7 lg:col-span-7">
+              {RESULTS.map((m) => (
+                <RevealItem key={m.label}>
+                  <div>
+                    <div className="flex items-baseline justify-between gap-4">
+                      <span className="text-lg text-ink">{m.label}</span>
+                      <span className="font-mono text-sm text-muted">
+                        {m.from} →{" "}
+                        <span className="text-xl font-medium text-gold">{m.to}</span>
+                      </span>
+                    </div>
+                    <div className="mt-3 h-1.5 w-full overflow-hidden rounded-full bg-line/40">
+                      <div
+                        className="h-full rounded-full"
+                        style={{
+                          width: `${m.pct}%`,
+                          background:
+                            "linear-gradient(90deg, #f0c26e 0%, #e2a638 55%, #c5631f 100%)",
+                        }}
+                      />
+                    </div>
+                  </div>
+                </RevealItem>
+              ))}
+            </RevealGroup>
+          </div>
+        </div>
+      </section>
 
       {/* PROOF — evidence (logos live in the Clients section below) */}
       <section id="proof" className="relative grain border-y border-line/50 bg-surface section-pad">
@@ -299,6 +372,43 @@ export function MethodHome() {
       {/* Last three sections from Concept 0 */}
       <ClientsWall />
       <Testimonials />
+
+      {/* FAQ — objection handling before the form */}
+      <section id="faq" className="relative grain border-t border-line/50 bg-surface section-pad">
+        <div className="container-shell relative">
+          <div className="grid gap-12 lg:grid-cols-12 lg:gap-16">
+            <Reveal className="flex flex-col gap-4 lg:col-span-4">
+              <span className="font-mono text-xs uppercase tracking-[0.2em] text-gold">
+                Питання · відповіді
+              </span>
+              <h2 className="text-[clamp(2rem,4vw,3.2rem)] leading-[1.05] text-ink">
+                Часті питання
+              </h2>
+              <p className="text-lg leading-relaxed text-muted">
+                Не знайшли відповідь? Напишіть нам — відповімо особисто.
+              </p>
+            </Reveal>
+            <RevealGroup className="lg:col-span-8">
+              {FAQ.map((f) => (
+                <RevealItem key={f.q}>
+                  <details className="group border-t border-line/50 py-5 last:border-b">
+                    <summary className="flex cursor-pointer list-none items-center justify-between gap-5 [&::-webkit-details-marker]:hidden">
+                      <span className="text-lg text-ink sm:text-xl">{f.q}</span>
+                      <span className="grid h-8 w-8 shrink-0 place-items-center rounded-full border border-gold/35 text-gold transition-transform duration-300 group-open:rotate-45">
+                        <Plus className="h-4 w-4" />
+                      </span>
+                    </summary>
+                    <p className="mt-3 max-w-3xl text-base leading-relaxed text-muted">
+                      {f.a}
+                    </p>
+                  </details>
+                </RevealItem>
+              ))}
+            </RevealGroup>
+          </div>
+        </div>
+      </section>
+
       <ContactForm />
     </>
   );

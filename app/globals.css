@@ -1331,30 +1331,6 @@
   --glow-b: rgb(197 101 49 / 0.16);
 }
 
-/* Dark-lux decor (used by the Система hero): concentric golden arcs + bokeh */
-.lux-arcs {
-  position: absolute;
-  border-radius: 9999px;
-  border: 1px solid rgb(var(--c-gold) / 0.14);
-  box-shadow: 0 0 40px -18px rgb(var(--c-gold) / 0.35);
-}
-.lux-bokeh {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background-image: radial-gradient(circle at 9% 28%, rgb(var(--c-gold) / 0.55) 0, transparent 3px),
-    radial-gradient(circle at 16% 64%, rgb(var(--c-gold) / 0.4) 0, transparent 2.4px),
-    radial-gradient(circle at 27% 18%, rgb(var(--c-gold-soft) / 0.45) 0, transparent 2px),
-    radial-gradient(circle at 6% 84%, rgb(var(--c-gold) / 0.35) 0, transparent 2.6px),
-    radial-gradient(circle at 38% 78%, rgb(var(--c-gold-soft) / 0.3) 0, transparent 2px),
-    radial-gradient(circle at 70% 12%, rgb(var(--c-gold) / 0.3) 0, transparent 2.2px),
-    radial-gradient(circle at 88% 58%, rgb(var(--c-gold-soft) / 0.35) 0, transparent 2.4px),
-    radial-gradient(circle at 60% 88%, rgb(var(--c-gold) / 0.25) 0, transparent 2px),
-    radial-gradient(circle at 14% 44%, rgb(var(--c-gold) / 0.18) 0, transparent 22px),
-    radial-gradient(circle at 82% 30%, rgb(var(--c-gold) / 0.12) 0, transparent 30px);
-  filter: blur(0.4px);
-}
-
 /* Story CTA: gold gradient button (--grad-gold from the handoff) */
 [data-concept="method"] .btn-primary {
   background: linear-gradient(100deg, #f0c26e 0%, #e2a638 55%, #c5631f 100%);
