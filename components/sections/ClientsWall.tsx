@@ -5,11 +5,12 @@ import { Reveal, RevealGroup, RevealItem } from "@/components/ui/Reveal";
 import { GRAD_ACC, GRAD_GOLD, CARD_BG, gradText } from "@/lib/ember";
 
 /**
- * Clients in the «Ember» slide language: serif wordmark wall (the 8 real
- * names from the source), a dark stat plate with the gold top bar, and the
- * 90% retention line as a signed serif statement.
+ * Clients in the «Ember» slide language: a dark stat plate with the gold top
+ * bar and the 90% retention line as a signed serif statement. The wall below
+ * is either serif wordmarks (default) or the monochrome logo-tile grid
+ * (logoWall — placeholders from /brand/logos until real files arrive).
  */
-export function ClientsWall() {
+export function ClientsWall({ logoWall = false }: { logoWall?: boolean } = {}) {
   return (
     <section className="relative grain section-pad" id="clients">
       <div className="container-shell">
@@ -64,16 +65,35 @@ export function ClientsWall() {
           </Reveal>
         </div>
 
-        {/* Wordmark wall — реальні імена з джерела, серифом */}
-        <RevealGroup className="mt-16 grid grid-cols-2 gap-x-8 gap-y-10 sm:grid-cols-3 lg:grid-cols-4">
-          {clients.named.map((n) => (
-            <RevealItem key={n}>
-              <div className="flex items-center justify-center py-2 font-display text-xl tracking-wide text-muted/80 transition-colors duration-500 hover:text-ink">
-                {n}
-              </div>
-            </RevealItem>
-          ))}
-        </RevealGroup>
+        {logoWall ? (
+          /* Logo wall — монохромна плитка логотипів (плейсхолдери до заміни) */
+          <RevealGroup className="mt-16 grid grid-cols-3 items-center gap-x-8 gap-y-12 sm:grid-cols-4 lg:grid-cols-5">
+            {clients.logoTiles.map((logo) => (
+              <RevealItem key={logo.name}>
+                <div className="flex items-center justify-center" title={logo.name}>
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={logo.src}
+                    alt={logo.name}
+                    className="logo-wall-img"
+                    loading="lazy"
+                  />
+                </div>
+              </RevealItem>
+            ))}
+          </RevealGroup>
+        ) : (
+          /* Wordmark wall — реальні імена з джерела, серифом */
+          <RevealGroup className="mt-16 grid grid-cols-2 gap-x-8 gap-y-10 sm:grid-cols-3 lg:grid-cols-4">
+            {clients.named.map((n) => (
+              <RevealItem key={n}>
+                <div className="flex items-center justify-center py-2 font-display text-xl tracking-wide text-muted/80 transition-colors duration-500 hover:text-ink">
+                  {n}
+                </div>
+              </RevealItem>
+            ))}
+          </RevealGroup>
+        )}
 
         <Reveal className="mx-auto mt-14 max-w-2xl text-center">
           <span
