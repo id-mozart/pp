@@ -14,30 +14,35 @@ const W = 1080;
 const H = 1350;
 const PREVIEW_SCALE = 0.45;
 
-interface CoverData {
+/* Photo framing: base object-position (pos) + direct pan/zoom on top */
+interface Frame {
+  photo: string;
+  pos: string;
+  tx: number;
+  ty: number;
+  zoom: number;
+}
+interface CoverData extends Frame {
   eyebrow: string;
   title: string;
   sub: string;
   tag: string;
-  photo: string;
-  pos: string;
 }
-interface ContentData {
+interface ContentData extends Frame {
   kicker: string;
   title: string;
   body: string;
-  photo: string;
-  pos: string;
 }
-interface ClosingData {
+interface ClosingData extends Frame {
   eyebrow: string;
   title: string;
   quote: string;
   ctaText: string;
   ctaLink: string;
-  photo: string;
-  pos: string;
 }
+
+const imgTransform = (d: Frame) =>
+  `translate(${d.tx}px, ${d.ty}px) scale(${d.zoom})`;
 
 const DEFAULT_COVER: CoverData = {
   eyebrow: "Бізнес-тренінг",
@@ -46,6 +51,9 @@ const DEFAULT_COVER: CoverData = {
   tag: "Бізнес-тренерка **Тетяна Пан**",
   photo: "/brand/Tania5.jpg",
   pos: "74% 48%",
+  tx: 0,
+  ty: 0,
+  zoom: 1,
 };
 
 const DEFAULT_SLIDES: ContentData[] = [
@@ -55,6 +63,9 @@ const DEFAULT_SLIDES: ContentData[] = [
     body: "Буквально з перших хвилин, коли учасники озвучували свої цілі й очікування, було відчуття, що ми не просто працюємо на тренінгу, а разом створюємо рішення.",
     photo: "/brand/Tania1-2.webp",
     pos: "center 24%",
+    tx: 0,
+    ty: 0,
+    zoom: 1,
   },
   {
     kicker: "Єдність",
@@ -62,6 +73,9 @@ const DEFAULT_SLIDES: ContentData[] = [
     body: "У кожного свій рівень, свій підхід, свій стиль, але всі дуже чітко розуміють цілі, навіщо вони це роблять і чому хочуть робити це круто.",
     photo: "/brand/Tania1-3.webp",
     pos: "center 30%",
+    tx: 0,
+    ty: 0,
+    zoom: 1,
   },
   {
     kicker: "Розвиток",
@@ -69,6 +83,9 @@ const DEFAULT_SLIDES: ContentData[] = [
     body: "З кожною рольовою грою, з кожним кейсом було видно, як учасники швидко розуміють, що потрібно змінити, і одразу пробують нові підходи.",
     photo: "/brand/1M6A0522.webp",
     pos: "center 20%",
+    tx: 0,
+    ty: 0,
+    zoom: 1,
   },
 ];
 
@@ -81,6 +98,9 @@ const DEFAULT_CLOSING: ClosingData = {
   ctaLink: "напишіть у директ →",
   photo: "/brand/Tania3.webp",
   pos: "center top",
+  tx: 0,
+  ty: 0,
+  zoom: 1.07,
 };
 
 /* `*текст*` → <em>, `**текст**` → <b> (як у макеті) */
@@ -130,7 +150,7 @@ function CoverSlide({
     <section className="ig-slide ig-cover">
       <div className="ig-cover-bg">
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={d.photo} alt="" style={{ objectPosition: d.pos }} />
+        <img src={d.photo} alt="" style={{ objectPosition: d.pos, transform: imgTransform(d) }} />
       </div>
       <div className="ig-cover-shade" />
       <div className="ig-cover-in">
@@ -169,7 +189,7 @@ function ContentSlide({
     <section className="ig-slide">
       <div className="ig-photo">
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={d.photo} alt="" style={{ objectPosition: d.pos }} />
+        <img src={d.photo} alt="" style={{ objectPosition: d.pos, transform: imgTransform(d) }} />
       </div>
       <div className="ig-scrim-top" />
       <div className="ig-scrim-bot" />
@@ -202,7 +222,7 @@ function ClosingSlide({
     <section className="ig-slide ig-closing">
       <div className="ig-photo ig-close-photo">
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={d.photo} alt="" style={{ objectPosition: d.pos }} />
+        <img src={d.photo} alt="" style={{ objectPosition: d.pos, transform: imgTransform(d) }} />
       </div>
       <div className="ig-scrim-bot ig-close-scrim" />
       <div className="ig-close-glow" />
@@ -277,45 +297,59 @@ function TextInput({
 
 function PhotoInput({
   photo,
-  pos,
+  zoom,
   onPhoto,
-  onPos,
+  onZoom,
+  onReset,
 }: {
   photo: string;
-  pos: string;
+  zoom: number;
   onPhoto: (dataUrl: string) => void;
-  onPos: (v: string) => void;
+  onZoom: (v: number) => void;
+  onReset: () => void;
 }) {
   const onFile = async (e: ChangeEvent<HTMLInputElement>) => {
     const f = e.target.files?.[0];
     if (f) onPhoto(await readFileAsDataURL(f));
   };
   return (
-    <div className="flex items-end gap-3">
-      <div
-        className="h-14 w-14 shrink-0 rounded-lg border border-line/60 bg-cover bg-center"
-        style={{ backgroundImage: `url(${photo})` }}
-      />
-      <div className="min-w-0 flex-1">
-        <Field label="Фото">
-          <input
-            type="file"
-            accept="image/*"
-            onChange={onFile}
-            className="block w-full text-xs text-muted file:mr-3 file:rounded-full file:border-0 file:bg-gold/15 file:px-3 file:py-1.5 file:text-xs file:text-gold"
-          />
-        </Field>
+    <div className="flex flex-col gap-3">
+      <div className="flex items-end gap-3">
+        <div
+          className="h-14 w-14 shrink-0 rounded-lg border border-line/60 bg-cover bg-center"
+          style={{ backgroundImage: `url(${photo})` }}
+        />
+        <div className="min-w-0 flex-1">
+          <Field label="Фото · тягніть мишкою прямо у прев'ю">
+            <input
+              type="file"
+              accept="image/*"
+              onChange={onFile}
+              className="block w-full text-xs text-muted file:mr-3 file:rounded-full file:border-0 file:bg-gold/15 file:px-3 file:py-1.5 file:text-xs file:text-gold"
+            />
+          </Field>
+        </div>
       </div>
-      <div className="w-32">
-        <Field label="Позиція">
-          <input
-            className={inputCls}
-            type="text"
-            value={pos}
-            onChange={(e) => onPos(e.target.value)}
-            placeholder="center 24%"
-          />
-        </Field>
+      <div className="flex items-end gap-3">
+        <div className="min-w-0 flex-1">
+          <Field label={`Масштаб · ${zoom.toFixed(2)}×`}>
+            <input
+              type="range"
+              min={0.5}
+              max={3}
+              step={0.01}
+              value={zoom}
+              onChange={(e) => onZoom(parseFloat(e.target.value))}
+              className="w-full accent-[#E2A638]"
+            />
+          </Field>
+        </div>
+        <button
+          onClick={onReset}
+          className="shrink-0 rounded-full border border-line/70 px-3 py-1.5 font-mono text-[0.62rem] uppercase tracking-wider text-muted transition-colors hover:border-gold/50 hover:text-gold"
+        >
+          Скинути кадр
+        </button>
       </div>
     </div>
   );
@@ -332,7 +366,8 @@ function Panel({ title, children }: { title: string; children: ReactNode }) {
   );
 }
 
-/** One slide row: settings on the left · big preview on the right. */
+/** One slide row: settings on the left · big preview on the right.
+    Drag the preview to pan the photo (onDrag gets slide-px deltas). */
 function SlideRow({
   title,
   name,
@@ -340,6 +375,7 @@ function SlideRow({
   onExport,
   setRef,
   slide,
+  onDrag,
   children,
 }: {
   title: string;
@@ -348,15 +384,43 @@ function SlideRow({
   onExport: () => void;
   setRef: (el: HTMLDivElement | null) => void;
   slide: ReactNode;
+  onDrag?: (dx: number, dy: number) => void;
   children: ReactNode;
 }) {
+  const drag = useRef<{ x: number; y: number } | null>(null);
   return (
     <div className="grid items-start gap-6 lg:grid-cols-[minmax(300px,430px)_auto]">
       <Panel title={title}>{children}</Panel>
       <figure className="flex flex-col gap-2">
         <div
-          className="overflow-hidden rounded-xl ring-1 ring-line/50"
-          style={{ width: W * PREVIEW_SCALE, height: H * PREVIEW_SCALE }}
+          className="select-none overflow-hidden rounded-xl ring-1 ring-line/50"
+          style={{
+            width: W * PREVIEW_SCALE,
+            height: H * PREVIEW_SCALE,
+            cursor: onDrag ? "grab" : "default",
+            touchAction: "none",
+          }}
+          onPointerDown={(e) => {
+            if (!onDrag) return;
+            drag.current = { x: e.clientX, y: e.clientY };
+            e.currentTarget.setPointerCapture?.(e.pointerId);
+            e.currentTarget.style.cursor = "grabbing";
+          }}
+          onPointerMove={(e) => {
+            if (!onDrag || !drag.current) return;
+            const dx = (e.clientX - drag.current.x) / PREVIEW_SCALE;
+            const dy = (e.clientY - drag.current.y) / PREVIEW_SCALE;
+            drag.current = { x: e.clientX, y: e.clientY };
+            onDrag(dx, dy);
+          }}
+          onPointerUp={(e) => {
+            drag.current = null;
+            e.currentTarget.style.cursor = "grab";
+          }}
+          onPointerCancel={(e) => {
+            drag.current = null;
+            e.currentTarget.style.cursor = "grab";
+          }}
         >
           <div
             ref={setRef}
@@ -365,6 +429,7 @@ function SlideRow({
               height: H,
               transform: `scale(${PREVIEW_SCALE})`,
               transformOrigin: "top left",
+              pointerEvents: "none",
             }}
           >
             {slide}
@@ -375,13 +440,20 @@ function SlideRow({
           style={{ width: W * PREVIEW_SCALE }}
         >
           <code className="font-mono text-[0.62rem] text-faint">{name}</code>
-          <button
-            onClick={onExport}
-            disabled={busy}
-            className="rounded-full border border-gold/40 px-3 py-1 font-mono text-[0.62rem] uppercase tracking-wider text-gold transition-colors hover:bg-gold/10 disabled:opacity-50"
-          >
-            PNG ↓
-          </button>
+          <span className="flex items-center gap-3">
+            {onDrag && (
+              <span className="font-mono text-[0.6rem] text-faint">
+                ↔ тягніть фото у прев&apos;ю
+              </span>
+            )}
+            <button
+              onClick={onExport}
+              disabled={busy}
+              className="rounded-full border border-gold/40 px-3 py-1 font-mono text-[0.62rem] uppercase tracking-wider text-gold transition-colors hover:bg-gold/10 disabled:opacity-50"
+            >
+              PNG ↓
+            </button>
+          </span>
         </figcaption>
       </figure>
     </div>
@@ -419,6 +491,9 @@ export function CarouselStudio() {
         body: "Текст слайда…",
         photo: "/brand/ph/p1.jpg",
         pos: "center 30%",
+        tx: 0,
+        ty: 0,
+        zoom: 1,
       },
     ]);
 
@@ -521,6 +596,9 @@ export function CarouselStudio() {
           setRef={(el) => {
             refs.current[0] = el;
           }}
+          onDrag={(dx, dy) =>
+            setCover((c) => ({ ...c, tx: c.tx + dx, ty: c.ty + dy }))
+          }
           slide={<CoverSlide d={cover} brand={brand} meta={meta} />}
         >
           <Field label="Eyebrow">
@@ -551,9 +629,10 @@ export function CarouselStudio() {
           </Field>
           <PhotoInput
             photo={cover.photo}
-            pos={cover.pos}
-            onPhoto={(p) => setCover({ ...cover, photo: p })}
-            onPos={(p) => setCover({ ...cover, pos: p })}
+            zoom={cover.zoom}
+            onPhoto={(p) => setCover((c) => ({ ...c, photo: p, tx: 0, ty: 0 }))}
+            onZoom={(z) => setCover((c) => ({ ...c, zoom: z }))}
+            onReset={() => setCover((c) => ({ ...c, tx: 0, ty: 0, zoom: 1 }))}
           />
         </SlideRow>
 
@@ -567,6 +646,13 @@ export function CarouselStudio() {
             setRef={(el) => {
               refs.current[i + 1] = el;
             }}
+            onDrag={(dx, dy) =>
+              setSlides((arr) =>
+                arr.map((sl, k) =>
+                  k === i ? { ...sl, tx: sl.tx + dx, ty: sl.ty + dy } : sl,
+                ),
+              )
+            }
             slide={<ContentSlide d={s} n={i + 1} brand={brand} meta={meta} />}
           >
             <Field label="Кікер (після номера)">
@@ -591,9 +677,10 @@ export function CarouselStudio() {
             </Field>
             <PhotoInput
               photo={s.photo}
-              pos={s.pos}
-              onPhoto={(p) => patchSlide(i, { photo: p })}
-              onPos={(p) => patchSlide(i, { pos: p })}
+              zoom={s.zoom}
+              onPhoto={(p) => patchSlide(i, { photo: p, tx: 0, ty: 0 })}
+              onZoom={(z) => patchSlide(i, { zoom: z })}
+              onReset={() => patchSlide(i, { tx: 0, ty: 0, zoom: 1 })}
             />
             <button
               onClick={() => removeSlide(i)}
@@ -619,6 +706,9 @@ export function CarouselStudio() {
           setRef={(el) => {
             refs.current[total - 1] = el;
           }}
+          onDrag={(dx, dy) =>
+            setClosing((c) => ({ ...c, tx: c.tx + dx, ty: c.ty + dy }))
+          }
           slide={<ClosingSlide d={closing} brand={brand} meta={meta} />}
         >
           <Field label="Eyebrow">
@@ -654,9 +744,14 @@ export function CarouselStudio() {
           </Field>
           <PhotoInput
             photo={closing.photo}
-            pos={closing.pos}
-            onPhoto={(p) => setClosing({ ...closing, photo: p })}
-            onPos={(p) => setClosing({ ...closing, pos: p })}
+            zoom={closing.zoom}
+            onPhoto={(p) =>
+              setClosing((c) => ({ ...c, photo: p, tx: 0, ty: 0 }))
+            }
+            onZoom={(z) => setClosing((c) => ({ ...c, zoom: z }))}
+            onReset={() =>
+              setClosing((c) => ({ ...c, tx: 0, ty: 0, zoom: 1.07 }))
+            }
           />
         </SlideRow>
       </div>
