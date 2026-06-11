@@ -61,7 +61,7 @@ export const hero = {
   ],
   formats:
     "Формати роботи онлайн та офлайн — корпоративні тренінги, онлайн-курси, наставництво (командне та індивідуальне).",
-  primaryCta: { label: "Хочу деталі", href: "#contact" },
+  primaryCta: { label: "Обговорити навчання команди", href: "#contact" },
   secondaryCta: { label: "Формати роботи", href: "#formats" },
   trust: "Практичні інструменти, реальні кейси, вимірюваний прогрес.",
   image: "/brand/Tania1-3.webp",
@@ -160,7 +160,7 @@ export const formats = {
       result: "Зростання продажів від +20% до ×2",
       how: "Методологія продажів, розбір бізнес-кейсів, підтримка між зустрічами",
       href: "/consultation",
-      cta: "Дізнатися більше",
+      cta: "Почати з консультації",
     },
   ] as FormatCard[],
 };
@@ -327,7 +327,7 @@ export const contact = {
   fields: [
     { name: "name", label: "Ім'я та прізвище", type: "text", placeholder: "Олена Коваленко", required: true },
     { name: "email", label: "Email", type: "email", placeholder: "mail@example.com", required: true },
-    { name: "phone", label: "Телефон", type: "tel", placeholder: "+380 …", required: true },
+    { name: "phone", label: "Телефон або месенджер (необовʼязково)", type: "tel", placeholder: "+380 … / @telegram", required: false },
     { name: "company", label: "Компанія (необов'язково)", type: "text", placeholder: "Назва компанії" },
     { name: "message", label: "Чим ми можемо вам допомогти?", type: "textarea", placeholder: "Коротко опишіть вашу ситуацію та ціль" },
   ] as FormField[],
@@ -375,7 +375,7 @@ export const b2b = {
     eyebrow: "Pan&Partners · B2B",
     title: "B2B продажі та переговори",
     lead: "Структура продажів, переговори та вихід на великих клієнтів — адаптовано під цілі вашого бізнесу, а не стандартний тренінг.",
-    cta: { label: "Хочу деталі", href: "#contact" },
+    cta: { label: "Обговорити навчання команди", href: "#contact" },
   },
   experience: {
     eyebrow: "Мій досвід у B2B",
@@ -488,10 +488,10 @@ export const consultation = {
   },
   booking: {
     title: "Бронювання консультації",
-    intro: "Оберіть день, потім час. Якщо слот зникає — значить, його щойно забронювали.",
-    monthLabel: "Травень 2026",
+    intro: "Оберіть день, потім час.",
+    monthLabel: "",
     weekdays: ["Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Нд"],
-    timezone: "Час показано за Europe/Madrid.",
+    timezone: "Час показано за вашим часовим поясом.",
     slotsHeading: "Доступний час",
     chooseDay: "Оберіть день",
     slotsPlaceholder: "Натисніть на день у календарі, щоб побачити доступні слоти по 1 годині.",
@@ -505,8 +505,8 @@ export const consultation = {
       { name: "description", label: "Запит", type: "textarea", placeholder: "Що хочете вирішити? (необов'язково, але корисно)" },
     ] as FormField[],
     submit: "Підтвердити запит на бронювання",
-    note: "Після бронювання запис створюється зі статусом pending. За потреби ви отримаєте підтвердження на email.",
-    success: "Запит надіслано! Найближчим часом ви отримаєте підтвердження на email.",
+    note: "Після запиту ми підтверджуємо час особисто — у відповідь на email або в месенджері.",
+    success: "Запит отримано! Тетяна звʼяжеться з вами протягом робочого дня, щоб підтвердити час.",
   },
 };
 
@@ -553,7 +553,7 @@ export const courses = {
         short: "Стартовий онлайн-курс: прості інструменти продажів і переговорів, які можна застосувати вже сьогодні.",
         price: "120 €",
         image: "/brand/course1.png",
-        href: "https://tetianapan.weblium.site/",
+        href: "https://tetianapan.weblium.site/?utm_source=panpartners&utm_medium=site&utm_campaign=course_basic",
         cta: "Приєднатися",
       },
     ] as CourseCard[],

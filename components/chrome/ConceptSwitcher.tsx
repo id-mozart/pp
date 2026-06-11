@@ -92,7 +92,7 @@ export function ConceptSwitcher() {
 
   return (
     <div
-      className="fixed bottom-5 right-5 z-[75] flex flex-col items-end"
+      className="fixed bottom-5 left-5 z-[75] flex flex-col items-start"
       onMouseEnter={() => setOpen(true)}
       onMouseLeave={() => setOpen(false)}
     >
@@ -186,7 +186,7 @@ export function ConceptSwitcher() {
               initial={{ opacity: 0, x: 8 }}
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: 8 }}
-              className="surface absolute bottom-1 right-14 whitespace-nowrap rounded-full px-3 py-1.5 text-xs text-muted shadow-[var(--shadow-lux)]"
+              className="surface absolute bottom-1 left-14 whitespace-nowrap rounded-full px-3 py-1.5 text-xs text-muted shadow-[var(--shadow-lux)]"
             >
               {CONCEPTS.length} дизайнів — спробуйте →
             </motion.div>

@@ -43,7 +43,21 @@ export function CookieConsent() {
           role="dialog"
           aria-label={cookie.title}
         >
-          <div className="surface relative overflow-hidden p-5 shadow-[var(--shadow-lux)] backdrop-blur-xl">
+          <div
+            className="relative overflow-hidden rounded-[14px] border border-line/70 p-5 shadow-[var(--shadow-lux)] backdrop-blur-xl"
+            style={{
+              background:
+                "linear-gradient(160deg,rgba(33,21,10,.95),rgba(19,12,6,.96))",
+            }}
+          >
+            <span
+              aria-hidden
+              className="absolute left-5 top-0 h-[3px] w-10 rounded-full"
+              style={{
+                background:
+                  "linear-gradient(100deg,#F0C26E 0%,#E2A638 55%,#C5631F 100%)",
+              }}
+            />
             <div className="grain absolute inset-0" />
             <p className="relative font-display text-lg text-ink">{cookie.title}</p>
             <p className="relative mt-2 text-sm leading-relaxed text-muted">

@@ -33,16 +33,16 @@ export function HeroSlideshowBg({
   useEffect(() => {
     if (reduce || images.length < 2) return;
     const t = setInterval(
-      () =>
-        setIdx((i) => {
-          const next = (i + 1) % images.length;
-          onIndexChange?.(next);
-          return next;
-        }),
+      () => setIdx((i) => (i + 1) % images.length),
       interval,
     );
     return () => clearInterval(t);
-  }, [reduce, images.length, interval, onIndexChange]);
+  }, [reduce, images.length, interval]);
+
+  // Повідомляємо батька ПІСЛЯ рендера (не всередині state-апдейтера).
+  useEffect(() => {
+    onIndexChange?.(idx);
+  }, [idx, onIndexChange]);
 
   return (
     <div className="absolute inset-0 overflow-hidden">

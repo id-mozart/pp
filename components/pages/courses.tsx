@@ -1,20 +1,36 @@
 import Link from "next/link";
 import { courses } from "@/lib/content";
 import { Reveal, RevealGroup, RevealItem } from "@/components/ui/Reveal";
-import { Check, ArrowUpRight, ArrowRight } from "@/components/ui/icons";
+import { Check } from "@/components/ui/icons";
+import { GRAD_ACC, GRAD_GOLD, CARD_BG, CTAG_BG, gradText } from "@/lib/ember";
 
 export function CoursesIntro() {
   const { hero } = courses;
   return (
     <section className="pb-4">
       <div className="container-shell">
-        {/* numbered solutions */}
-        <RevealGroup className="grid gap-px overflow-hidden rounded-2xl border border-line/60 bg-line/40 sm:grid-cols-3">
+        {/* numbered solutions — три окремі плити */}
+        <RevealGroup className="grid gap-3 sm:grid-cols-3">
           {hero.items.map((it) => (
             <RevealItem key={it.n}>
-              <div className="h-full bg-surface p-7">
-                <span className="font-display text-3xl text-gradient-gold">{it.n}</span>
-                <h3 className="mt-3 text-lg text-ink">{it.title}</h3>
+              <div
+                className="relative h-full rounded-[14px] border border-line/70 p-7"
+                style={{ background: CARD_BG }}
+              >
+                <span
+                  aria-hidden
+                  className="absolute left-7 top-0 h-[3px] w-10 -translate-y-1/2 rounded-full"
+                  style={{ background: GRAD_GOLD }}
+                />
+                <span
+                  className="font-display text-3xl"
+                  style={gradText(GRAD_ACC)}
+                >
+                  {it.n}
+                </span>
+                <h3 className="mt-3 font-display text-lg font-medium text-ink">
+                  {it.title}
+                </h3>
                 <p className="mt-1 text-sm text-muted">{it.sub}</p>
               </div>
             </RevealItem>
@@ -24,18 +40,31 @@ export function CoursesIntro() {
         {/* features */}
         <div className="mt-6 grid gap-6 md:grid-cols-2">
           {hero.features.map((f) => (
-            <Reveal key={f.title} className="surface p-7">
-              <h3 className="text-xl text-ink">{f.title}</h3>
-              <ul className="mt-4 flex flex-col gap-2.5">
-                {f.points.map((p) => (
-                  <li key={p} className="flex items-center gap-3 text-sm text-muted">
-                    <span className="grid h-5 w-5 shrink-0 place-items-center rounded-full bg-gold/15 text-gold">
-                      <Check className="h-3 w-3" strokeWidth={2.4} />
-                    </span>
-                    {p}
-                  </li>
-                ))}
-              </ul>
+            <Reveal key={f.title}>
+              <div
+                className="relative h-full rounded-[14px] border border-line/70 p-7"
+                style={{ background: CARD_BG }}
+              >
+                <span
+                  aria-hidden
+                  className="absolute left-7 top-0 h-[3px] w-10 -translate-y-1/2 rounded-full"
+                  style={{ background: GRAD_GOLD }}
+                />
+                <h3 className="font-display text-xl font-medium text-ink">
+                  {f.title}
+                </h3>
+                <ul className="mt-4 flex flex-col gap-2.5">
+                  {f.points.map((p) => (
+                    <li key={p} className="flex items-start gap-3 text-sm text-muted">
+                      <Check
+                        className="mt-0.5 h-4 w-4 shrink-0 text-gold"
+                        strokeWidth={2.2}
+                      />
+                      {p}
+                    </li>
+                  ))}
+                </ul>
+              </div>
             </Reveal>
           ))}
         </div>
@@ -59,17 +88,28 @@ const EXTRA = [
   },
 ];
 
+const ctagCls =
+  "rounded-[10px] border border-line/70 px-3 py-1.5 font-mono text-[0.62rem] font-medium uppercase tracking-[0.1em] text-ink backdrop-blur-md";
+const ctagStyle = { background: CTAG_BG, borderLeft: "3px solid #E2A638" } as const;
+
 export function CoursesList() {
   const { list } = courses;
   return (
-    <section className="section-pad">
+    <section id="catalog" className="section-pad">
       <div className="container-shell">
         <Reveal className="mb-10 flex flex-col gap-4">
           <span className="eyebrow">Каталог</span>
           <h2 className="text-[clamp(2rem,4vw,3.2rem)] leading-[1.05] text-ink">
             {list.title}
           </h2>
-          <p className="max-w-xl text-lg text-muted">{list.subtitle}</p>
+          <span
+            aria-hidden
+            className="h-[2px] w-16 rounded-full"
+            style={{ background: GRAD_GOLD }}
+          />
+          <p className="max-w-xl font-display text-lg italic leading-relaxed text-muted">
+            {list.subtitle}
+          </p>
         </Reveal>
 
         <RevealGroup className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
@@ -79,7 +119,8 @@ export function CoursesList() {
                 href={c.href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group flex h-full flex-col overflow-hidden surface transition-all duration-500 ease-lux hover:-translate-y-1.5 hover:border-gold/40"
+                className="group flex h-full flex-col overflow-hidden rounded-[14px] border border-line/70 transition-all duration-500 ease-lux hover:-translate-y-1.5 hover:border-gold/40"
+                style={{ background: CARD_BG }}
               >
                 <div className="relative overflow-hidden">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -89,18 +130,25 @@ export function CoursesList() {
                     className="aspect-[16/10] w-full object-cover transition-transform duration-700 ease-lux group-hover:scale-105"
                     loading="lazy"
                   />
-                  <span className="absolute right-3 top-3 rounded-full bg-canvas/80 px-3 py-1 text-sm text-gold backdrop-blur-md">
+                  <span className={`absolute right-3 top-3 ${ctagCls}`} style={ctagStyle}>
                     {c.price}
                   </span>
                 </div>
                 <div className="flex flex-1 flex-col p-6">
-                  <h3 className="text-xl text-ink">{c.title}</h3>
+                  <h3 className="font-display text-xl font-medium text-ink">
+                    {c.title}
+                  </h3>
                   <p className="mt-2 flex-1 text-sm leading-relaxed text-muted">
                     {c.short}
                   </p>
-                  <span className="mt-5 inline-flex items-center gap-2 text-sm text-gold">
-                    {c.cta}
-                    <ArrowUpRight className="h-4 w-4 transition-transform duration-500 ease-lux group-hover:translate-x-1 group-hover:-translate-y-1" />
+                  <span
+                    className="mt-5 inline-flex items-center gap-2 font-display text-base italic transition-transform duration-500 ease-lux group-hover:translate-x-1.5"
+                    style={gradText(GRAD_ACC)}
+                  >
+                    {c.cta} →
+                  </span>
+                  <span className="mt-2 font-mono text-[0.6rem] uppercase tracking-[0.14em] text-faint">
+                    відкриється на сторінці курсу
                   </span>
                 </div>
               </a>
@@ -111,18 +159,23 @@ export function CoursesList() {
             <RevealItem key={c.title}>
               <Link
                 href="#contact"
-                className="group flex h-full flex-col justify-between surface p-6 transition-all duration-500 ease-lux hover:-translate-y-1.5 hover:border-gold/40"
+                className="group flex h-full flex-col justify-between rounded-[14px] border border-line/70 p-6 transition-all duration-500 ease-lux hover:-translate-y-1.5 hover:border-gold/40"
+                style={{ background: CARD_BG }}
               >
                 <div>
-                  <span className="rounded-full bg-gold/10 px-3 py-1 text-xs text-gold">
+                  <span className={`inline-flex ${ctagCls}`} style={ctagStyle}>
                     {c.price}
                   </span>
-                  <h3 className="mt-5 text-xl text-ink">{c.title}</h3>
+                  <h3 className="mt-5 font-display text-xl font-medium text-ink">
+                    {c.title}
+                  </h3>
                   <p className="mt-2 text-sm leading-relaxed text-muted">{c.short}</p>
                 </div>
-                <span className="mt-8 inline-flex items-center gap-2 text-sm text-gold">
-                  Дізнатися
-                  <ArrowRight className="h-4 w-4 transition-transform duration-500 ease-lux group-hover:translate-x-1.5" />
+                <span
+                  className="mt-8 inline-flex items-center gap-2 font-display text-base italic transition-transform duration-500 ease-lux group-hover:translate-x-1.5"
+                  style={gradText(GRAD_ACC)}
+                >
+                  дізнатися →
                 </span>
               </Link>
             </RevealItem>

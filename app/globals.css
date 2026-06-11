@@ -913,7 +913,8 @@
 }
 
 [data-concept="method"],
-[data-concept="main"] {
+[data-concept="main"] ,
+[data-concept="main2"] {
   /* XXVII — Метод · warm espresso "blueprint", honey gold (closer to II) */
   --c-canvas: 26 20 14;
   --c-surface: 38 30 21;
@@ -942,7 +943,8 @@
 /* Blueprint grid lives ONLY on the graphite section bands (système/для кого
    etc.) — the plain chocolate canvas stays clean. */
 [data-concept="method"] section.bg-surface,
-[data-concept="main"] section.bg-surface {
+[data-concept="main"] section.bg-surface ,
+[data-concept="main2"] section.bg-surface {
   background-image:
     linear-gradient(rgb(var(--c-line) / 0.18) 1px, transparent 1px),
     linear-gradient(90deg, rgb(var(--c-line) / 0.18) 1px, transparent 1px);
@@ -1312,7 +1314,8 @@
    dark) against the warm espresso canvas. Placed after the shared block
    so it wins. */
 [data-concept="method"],
-[data-concept="main"] {
+[data-concept="main"] ,
+[data-concept="main2"] {
   /* Обсидіан-сцена VII + янтарно-помаранчеве золото */
   --c-ink: 244 230 204;       /* #F4E6CC — теплий золотавий крем */
   --c-muted: 184 166 138;
@@ -1337,7 +1340,8 @@
 /* Переливи: великі м'які янтарні градієнтні плями по всій сторінці (як перший
    слайд VII) — fixed, тож секції «пливуть» крізь сяйво. */
 [data-concept="method"] body,
-[data-concept="main"] body {
+[data-concept="main"] body ,
+[data-concept="main2"] body {
   background-image:
     radial-gradient(56vw 56vw at 86% -12%, rgb(226 166 56 / 0.12), transparent 62%),
     radial-gradient(50vw 50vw at -10% 38%, rgb(214 106 44 / 0.09), transparent 62%),
@@ -1346,7 +1350,8 @@
 }
 
 /* Єдиний фірмовий eyebrow Main: mono caps + градієнт Ember, без тире */
-[data-concept="main"] .eyebrow {
+[data-concept="main"] .eyebrow ,
+[data-concept="main2"] .eyebrow {
   font-family: var(--font-mono);
   font-size: 0.72rem;
   font-weight: 500;
@@ -1356,15 +1361,18 @@
   background-clip: text;
   color: transparent;
 }
-[data-concept="main"] .eyebrow::before {
+[data-concept="main"] .eyebrow::before ,
+[data-concept="main2"] .eyebrow::before {
   content: none;
 }
 
 /* FAQ: відкрите питання підсвічується; відповідь виїжджає плавно */
-[data-concept="main"] #faq details[open] .faq-q {
+[data-concept="main"] #faq details[open] .faq-q ,
+[data-concept="main2"] #faq details[open] .faq-q {
   color: rgb(var(--c-gold-soft));
 }
-[data-concept="main"] #faq details[open] > p {
+[data-concept="main"] #faq details[open] > p ,
+[data-concept="main2"] #faq details[open] > p {
   animation: faq-in 0.45s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 @keyframes faq-in {
@@ -1380,7 +1388,8 @@
 
 /* Логотип — шрифт із VII (Playfair) */
 [data-concept="method"] .wordmark,
-[data-concept="main"] .wordmark {
+[data-concept="main"] .wordmark ,
+[data-concept="main2"] .wordmark {
   font-family: var(--font-playfair);
   font-weight: 500;
   letter-spacing: -0.01em;
@@ -1388,7 +1397,8 @@
 
 /* Блок відгуків — один в один як у VII: display-шрифт Playfair всередині */
 [data-concept="method"] #cases,
-[data-concept="main"] #cases {
+[data-concept="main"] #cases ,
+[data-concept="main2"] #cases {
   --font-display: var(--font-playfair);
   --display-weight: 500;
   --display-tracking: -0.01em;
@@ -1396,12 +1406,14 @@
 
 /* CTA: amber gradient button */
 [data-concept="method"] .btn-primary,
-[data-concept="main"] .btn-primary {
+[data-concept="main"] .btn-primary ,
+[data-concept="main2"] .btn-primary {
   background: linear-gradient(100deg, #f0c26e 0%, #e2a638 55%, #c5631f 100%);
   color: rgb(9 9 8);
 }
 [data-concept="method"] .btn-primary:hover,
-[data-concept="main"] .btn-primary:hover {
+[data-concept="main"] .btn-primary:hover ,
+[data-concept="main2"] .btn-primary:hover {
   background: linear-gradient(100deg, #f4cb7e 0%, #e9b04a 55%, #cd6c26 100%);
 }
 

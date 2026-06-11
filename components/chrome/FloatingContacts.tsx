@@ -4,6 +4,8 @@ import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { contacts } from "@/lib/content";
 import { WhatsApp, Telegram, Plus } from "@/components/ui/icons";
+import { GRAD_GOLD, CTAG_BG } from "@/lib/ember";
+import { track } from "@/lib/analytics";
 
 const EASE = [0.16, 1, 0.3, 1] as const;
 
@@ -11,7 +13,7 @@ export function FloatingContacts() {
   const [open, setOpen] = useState(false);
 
   return (
-    <div className="fixed bottom-5 left-5 z-[70] flex flex-col items-start gap-3">
+    <div className="fixed bottom-5 right-5 z-[70] flex flex-col items-end gap-3">
       <AnimatePresence>
         {open && (
           <motion.div
@@ -42,7 +44,8 @@ export function FloatingContacts() {
         onClick={() => setOpen((o) => !o)}
         aria-expanded={open}
         aria-label={open ? "Сховати контакти" : "Звʼязатися"}
-        className="group relative grid h-12 w-12 place-items-center rounded-full bg-gold text-oncontrast shadow-[0_14px_30px_-12px_rgb(var(--c-gold)/0.7)] transition-transform duration-500 ease-lux hover:scale-105"
+        style={{ background: GRAD_GOLD }}
+        className="group relative grid h-12 w-12 place-items-center rounded-full text-oncontrast shadow-[0_14px_30px_-12px_rgb(var(--c-gold)/0.7)] transition-transform duration-500 ease-lux hover:scale-105"
       >
         <span className="absolute inset-0 -z-10 rounded-full bg-gold/40 animate-pulse-ring" />
         <motion.span animate={{ rotate: open ? 45 : 0 }} transition={{ duration: 0.4, ease: EASE }}>
@@ -67,11 +70,13 @@ function ContactPill({
       href={href}
       target="_blank"
       rel="noopener noreferrer"
+      onClick={() => track("click_messenger")}
       variants={{
-        hidden: { opacity: 0, x: -12, scale: 0.9 },
+        hidden: { opacity: 0, x: 12, scale: 0.9 },
         show: { opacity: 1, x: 0, scale: 1, transition: { duration: 0.4, ease: EASE } },
       }}
-      className="surface flex items-center gap-3 rounded-full py-2 pl-3 pr-4 text-sm text-ink shadow-[var(--shadow-lux)] transition-colors hover:text-gold"
+      style={{ background: CTAG_BG }}
+      className="flex items-center gap-3 rounded-full border border-line/70 py-2 pl-3 pr-4 text-sm text-ink shadow-[var(--shadow-lux)] transition-colors hover:text-gold"
     >
       <span className="grid h-8 w-8 place-items-center rounded-full bg-gold/12 text-gold">
         {icon}

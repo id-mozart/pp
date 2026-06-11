@@ -16,10 +16,18 @@ import {
 /* One meaningful icon per pain (order matches requests.items) */
 const ICONS = [TrendDown, Activity, CircleX, Percent, Users];
 
-function goToContact(e: React.MouseEvent) {
+function goToContact(e: React.MouseEvent, topic?: string) {
   const el = document.querySelector("#contact");
   if (!el) return;
   e.preventDefault();
+  if (topic) {
+    try {
+      sessionStorage.setItem("lead_topic", topic);
+    } catch {
+      /* ignore */
+    }
+    window.dispatchEvent(new CustomEvent("pp:lead-topic", { detail: topic }));
+  }
   smoothScrollToEl(el);
   history.replaceState(null, "", "#contact");
 }
@@ -57,7 +65,7 @@ export function Requests() {
                     <li className="border-t border-line/50 last:border-b">
                       <a
                         href="#contact"
-                        onClick={goToContact}
+                        onClick={(e) => goToContact(e, item)}
                         className="group flex items-center gap-5 py-5 transition-colors"
                         aria-label={`${item} — перейти до форми`}
                       >

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { PageHero } from "@/components/sections/PageHero";
 import { ConsultCards, ConsultWhat } from "@/components/pages/consultation";
 import { BookingCalendar } from "@/components/sections/BookingCalendar";
+import { StickyBookCta } from "@/components/chrome/StickyBookCta";
 import { consultation } from "@/lib/content";
 
 export const metadata: Metadata = {
@@ -19,7 +20,7 @@ export default function ConsultationPage() {
         title={
           <>
             Чіткий план для ваших продажів —{" "}
-            <span className="text-gradient-gold">за одну фокусну годину</span>
+            <em className="italic text-gradient-gold">за одну фокусну годину</em>
           </>
         }
         lead={consultation.hero.lead}
@@ -31,6 +32,7 @@ export default function ConsultationPage() {
       <ConsultCards />
       <ConsultWhat />
       <BookingCalendar />
+      <StickyBookCta />
     </>
   );
 }

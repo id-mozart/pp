@@ -19,11 +19,13 @@ export default function CoursesPage() {
         title={
           <>
             Готові рішення для ваших{" "}
-            <span className="text-gradient-gold">продажів</span>
+            <em className="italic text-gradient-gold">продажів</em>
           </>
         }
         lead={courses.hero.lead}
         image="/brand/ph/p6.jpg"
+        primary={{ label: "До каталогу курсів", href: "#catalog" }}
+        secondary={{ label: "Поставити запитання", href: "#contact" }}
       />
       <CoursesIntro />
       <CoursesList />

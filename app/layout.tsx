@@ -132,10 +132,7 @@ export const metadata: Metadata = {
     images: ["/brand/logo.webp"],
   },
   icons: { icon: "/brand/favicon.png", apple: "/brand/favicon.png" },
-  alternates: {
-    canonical: "/",
-    languages: { uk: "/", en: "/?lang=en", ru: "/?lang=ru", es: "/?lang=es", ca: "/?lang=ca" },
-  },
+  alternates: { canonical: "/" },
 };
 
 export const viewport: Viewport = {
@@ -164,6 +161,11 @@ export default function RootLayout({
     >
       <body>
         <script dangerouslySetInnerHTML={{ __html: noFlash }} />
+        <script
+          defer
+          data-domain="pan-partners-production.up.railway.app"
+          src="https://plausible.io/js/script.js"
+        />
         <ConceptProvider>
           <a
             href="#main"

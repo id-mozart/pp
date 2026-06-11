@@ -1,10 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { contact, contacts } from "@/lib/content";
 import { Reveal } from "@/components/ui/Reveal";
 import { GRAD_ACC, GRAD_GOLD, CTAG_BG, gradText } from "@/lib/ember";
+import { track } from "@/lib/analytics";
 import {
   ArrowRight,
   Check,
@@ -16,6 +18,23 @@ type Status = "idle" | "submitting" | "success" | "error";
 
 export function ContactForm() {
   const [status, setStatus] = useState<Status>("idle");
+  const [topic, setTopic] = useState("");
+
+  // Префіл із кліку по «болю» (Requests кладе тему в sessionStorage)
+  useEffect(() => {
+    try {
+      const t = sessionStorage.getItem("lead_topic");
+      if (t) setTopic(t);
+    } catch {
+      /* ignore */
+    }
+    const onTopic = (e: Event) => {
+      const d = (e as CustomEvent<string>).detail;
+      if (d) setTopic(d);
+    };
+    window.addEventListener("pp:lead-topic", onTopic);
+    return () => window.removeEventListener("pp:lead-topic", onTopic);
+  }, []);
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -29,8 +48,14 @@ export function ContactForm() {
         body: JSON.stringify({ ...data, type: "Contact" }),
       });
       if (!res.ok) throw new Error("bad response");
+      track("submit_lead");
       setStatus("success");
       form.reset();
+      try {
+        sessionStorage.removeItem("lead_topic");
+      } catch {
+        /* ignore */
+      }
     } catch {
       setStatus("error");
     }
@@ -141,8 +166,17 @@ export function ContactForm() {
                         aria-hidden="true"
                         className="pointer-events-none absolute -left-[9999px] h-0 w-0 opacity-0"
                       />
+                      <input type="hidden" name="topic" value={topic} />
                       {contact.fields.map((f) => (
-                        <Field key={f.name} {...f} />
+                        <Field
+                          key={f.name === "message" ? `message-${topic}` : f.name}
+                          {...f}
+                          defaultValue={
+                            f.name === "message" && topic
+                              ? `Запит: ${topic} — `
+                              : undefined
+                          }
+                        />
                       ))}
                       <button
                         type="submit"
@@ -152,6 +186,14 @@ export function ContactForm() {
                         {status === "submitting" ? "Надсилаю…" : contact.submit}
                         {status !== "submitting" && <ArrowRight className="h-4 w-4" />}
                       </button>
+                      <p className="text-xs leading-relaxed text-faint">
+                        Відповідаємо протягом робочого дня. Без дзвінків без
+                        попередження. Надсилаючи форму, ви погоджуєтеся з{" "}
+                        <Link href="/privacy" className="lux-link">
+                          політикою конфіденційності
+                        </Link>
+                        .
+                      </p>
                       {status === "error" && (
                         <p className="text-sm text-ember">
                           Щось пішло не так. Спробуйте ще раз — або напишіть нам
@@ -176,12 +218,14 @@ function Field({
   type,
   placeholder,
   required,
+  defaultValue,
 }: {
   name: string;
   label: string;
   type: string;
   placeholder?: string;
   required?: boolean;
+  defaultValue?: string;
 }) {
   const cls =
     "w-full rounded-[10px] border border-line/60 bg-[rgba(35,26,18,.55)] px-4 py-3.5 text-ink caret-[#E2A638] placeholder:text-faint/60 transition-[border-color,background-color,box-shadow] duration-300 focus:border-gold/70 focus:bg-[rgba(35,26,18,.8)] focus:outline-none focus:ring-1 focus:ring-gold/40 focus:shadow-[0_10px_30px_-18px_rgba(226,166,56,.45)]";
@@ -197,6 +241,7 @@ function Field({
           placeholder={placeholder}
           required={required}
           rows={4}
+          defaultValue={defaultValue}
           className={`${cls} resize-none`}
         />
       ) : (
@@ -205,6 +250,7 @@ function Field({
           type={type}
           placeholder={placeholder}
           required={required}
+          defaultValue={defaultValue}
           className={cls}
         />
       )}

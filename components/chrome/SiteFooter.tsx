@@ -2,6 +2,7 @@ import Link from "next/link";
 import { brand, footer, contacts } from "@/lib/content";
 import { WhatsApp, Telegram } from "@/components/ui/icons";
 import { GRAD_ACC, gradText } from "@/lib/ember";
+import { FooterLeadLink } from "@/components/chrome/FooterLeadLink";
 
 export function SiteFooter() {
   return (
@@ -53,7 +54,7 @@ export function SiteFooter() {
                 <span className="grid h-8 w-8 place-items-center rounded-full bg-gold/12 text-gold">
                   <WhatsApp className="h-4 w-4" />
                 </span>
-                {contacts.whatsapp.label}
+                WhatsApp
               </a>
               <a
                 href={contacts.telegram.href}
@@ -64,16 +65,19 @@ export function SiteFooter() {
                 <span className="grid h-8 w-8 place-items-center rounded-full bg-gold/12 text-gold">
                   <Telegram className="h-4 w-4" />
                 </span>
-                {contacts.telegram.label}
+                Telegram
+              </a>
+              <a
+                href={`mailto:${brand.email}`}
+                className="group flex items-center gap-3 text-sm text-muted transition-colors hover:text-gold"
+              >
+                <span className="grid h-8 w-8 place-items-center rounded-full bg-gold/12 font-mono text-[0.7rem] text-gold">
+                  @
+                </span>
+                {brand.email}
               </a>
             </div>
-            <Link
-              href="/#contact"
-              className="mt-5 inline-block font-display text-base italic transition-transform duration-500 ease-lux hover:translate-x-1.5"
-              style={gradText(GRAD_ACC)}
-            >
-              залишити заявку →
-            </Link>
+            <FooterLeadLink />
           </div>
         </div>
 

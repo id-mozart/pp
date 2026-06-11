@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { PageHero } from "@/components/sections/PageHero";
 import { brand, contacts } from "@/lib/content";
+import { GRAD_ACC, gradText } from "@/lib/ember";
 
 export const metadata: Metadata = {
   title: "Політика конфіденційності",
@@ -43,10 +44,21 @@ export default function PrivacyPage() {
       <section className="pb-24">
         <div className="container-shell">
           <div className="mx-auto max-w-prose">
-            {sections.map((s) => (
-              <div key={s.h} className="border-t border-line/50 py-7">
-                <h2 className="text-xl text-ink">{s.h}</h2>
-                <p className="mt-3 leading-relaxed text-muted">{s.p}</p>
+            {sections.map((s, i) => (
+              <div
+                key={s.h}
+                className="grid grid-cols-[2.6rem_1fr] border-t border-line/50 py-7"
+              >
+                <span
+                  className="font-mono text-[0.7rem] font-medium tracking-[0.2em]"
+                  style={gradText(GRAD_ACC)}
+                >
+                  {String(i + 1).padStart(2, "0")}
+                </span>
+                <div>
+                  <h2 className="text-xl text-ink">{s.h}</h2>
+                  <p className="mt-3 leading-relaxed text-muted">{s.p}</p>
+                </div>
               </div>
             ))}
             <div className="border-t border-line/50 py-7 text-sm text-faint">
