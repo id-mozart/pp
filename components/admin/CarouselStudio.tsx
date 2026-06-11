@@ -125,10 +125,15 @@ function readFileAsDataURL(file: File): Promise<string> {
 
 /* ------------------------------ slides ------------------------------ */
 
-function Lockup({ brand }: { brand: string }) {
+function Lockup({ brand, logo }: { brand: string; logo: string | null }) {
   return (
     <div className="ig-lockup">
-      <span className="ig-sip">{brand}</span>
+      {logo ? (
+        /* eslint-disable-next-line @next/next/no-img-element */
+        <img className="ig-sip-logo" src={logo} alt={brand} />
+      ) : (
+        <span className="ig-sip">{brand}</span>
+      )}
       <span className="ig-div" />
       <span className="ig-pp">
         Pan<span className="ig-amp">&amp;</span>Partners
@@ -140,10 +145,12 @@ function Lockup({ brand }: { brand: string }) {
 function CoverSlide({
   d,
   brand,
+  logo,
   meta,
 }: {
   d: CoverData;
   brand: string;
+  logo: string | null;
   meta: string;
 }) {
   return (
@@ -155,7 +162,7 @@ function CoverSlide({
       <div className="ig-cover-shade" />
       <div className="ig-cover-in">
         <div className="ig-top">
-          <Lockup brand={brand} />
+          <Lockup brand={brand} logo={logo} />
           <span className="ig-ctag ig-ktag">
             <b>{meta}</b>
           </span>
@@ -212,10 +219,12 @@ function ContentSlide({
 function ClosingSlide({
   d,
   brand,
+  logo,
   meta,
 }: {
   d: ClosingData;
   brand: string;
+  logo: string | null;
   meta: string;
 }) {
   return (
@@ -231,7 +240,7 @@ function ClosingSlide({
         <h2 className="ig-close-h2">{rich(d.title)}</h2>
         <p className="ig-close-quote">{rich(d.quote)}</p>
         <div className="ig-top ig-close-foot2">
-          <Lockup brand={brand} />
+          <Lockup brand={brand} logo={logo} />
           <span className="ig-ctag ig-ktag">
             <b>{meta}</b>
           </span>
@@ -465,6 +474,7 @@ function SlideRow({
 export function CarouselStudio() {
   const [brand, setBrand] = useState("Сільпо-Фуд");
   const [meta, setMeta] = useState("Київ · 2026");
+  const [logo, setLogo] = useState<string | null>(null);
   const [cover, setCover] = useState<CoverData>(DEFAULT_COVER);
   const [slides, setSlides] = useState<ContentData[]>(DEFAULT_SLIDES);
   const [closing, setClosing] = useState<ClosingData>(DEFAULT_CLOSING);
@@ -549,6 +559,7 @@ export function CarouselStudio() {
   // Test hook: returns the dataURL of a slide without downloading.
   if (typeof window !== "undefined") {
     (window as any).__ppExportSlide = exportOne;
+    (window as any).__ppSetLogo = setLogo;
   }
 
   return (
@@ -586,6 +597,39 @@ export function CarouselStudio() {
               <TextInput value={meta} onChange={setMeta} />
             </Field>
           </div>
+          <div className="flex items-end gap-3">
+            <div
+              className="grid h-12 w-28 shrink-0 place-items-center rounded-lg border border-line/60 bg-contain bg-center bg-no-repeat"
+              style={logo ? { backgroundImage: `url(${logo})` } : undefined}
+            >
+              {!logo && (
+                <span className="font-mono text-[0.55rem] uppercase text-faint">
+                  текстом
+                </span>
+              )}
+            </div>
+            <div className="min-w-0 flex-1">
+              <Field label="Лого клієнта картинкою — для обкладинки та фіналу (порожньо = текстом)">
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={async (e) => {
+                    const f = e.target.files?.[0];
+                    if (f) setLogo(await readFileAsDataURL(f));
+                  }}
+                  className="block w-full text-xs text-muted file:mr-3 file:rounded-full file:border-0 file:bg-gold/15 file:px-3 file:py-1.5 file:text-xs file:text-gold"
+                />
+              </Field>
+            </div>
+            {logo && (
+              <button
+                onClick={() => setLogo(null)}
+                className="shrink-0 rounded-full border border-line/70 px-3 py-1.5 font-mono text-[0.62rem] uppercase tracking-wider text-muted transition-colors hover:border-gold/50 hover:text-gold"
+              >
+                Прибрати
+              </button>
+            )}
+          </div>
         </Panel>
 
         <SlideRow
@@ -599,7 +643,7 @@ export function CarouselStudio() {
           onDrag={(dx, dy) =>
             setCover((c) => ({ ...c, tx: c.tx + dx, ty: c.ty + dy }))
           }
-          slide={<CoverSlide d={cover} brand={brand} meta={meta} />}
+          slide={<CoverSlide d={cover} brand={brand} logo={logo} meta={meta} />}
         >
           <Field label="Eyebrow">
             <TextInput
@@ -709,7 +753,7 @@ export function CarouselStudio() {
           onDrag={(dx, dy) =>
             setClosing((c) => ({ ...c, tx: c.tx + dx, ty: c.ty + dy }))
           }
-          slide={<ClosingSlide d={closing} brand={brand} meta={meta} />}
+          slide={<ClosingSlide d={closing} brand={brand} logo={logo} meta={meta} />}
         >
           <Field label="Eyebrow">
             <TextInput
@@ -821,6 +865,7 @@ const SLIDE_CSS = `
 .ig-lockup{display:flex;align-items:center;gap:20px;white-space:nowrap;color:var(--igink);}
 .ig-sip{font-family:var(--font-spectral),serif;font-style:italic;font-weight:600;font-size:38px;
   background:var(--gg);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent;}
+.ig-sip-logo{height:73px;width:auto;display:block;}
 .ig-div{width:2px;height:56px;background:var(--igline);}
 .ig-pp{font-family:var(--font-spectral),serif;font-weight:500;font-size:44px;line-height:1;letter-spacing:-.01em;color:var(--igink);}
 .ig-amp{font-style:italic;color:var(--igsoft);}
