@@ -12,7 +12,7 @@ import { toPng } from "html-to-image";
 
 const W = 1080;
 const H = 1350;
-const PREVIEW_SCALE = 0.27;
+const PREVIEW_SCALE = 0.45;
 
 interface CoverData {
   eyebrow: string;
@@ -332,6 +332,62 @@ function Panel({ title, children }: { title: string; children: ReactNode }) {
   );
 }
 
+/** One slide row: settings on the left · big preview on the right. */
+function SlideRow({
+  title,
+  name,
+  busy,
+  onExport,
+  setRef,
+  slide,
+  children,
+}: {
+  title: string;
+  name: string;
+  busy: boolean;
+  onExport: () => void;
+  setRef: (el: HTMLDivElement | null) => void;
+  slide: ReactNode;
+  children: ReactNode;
+}) {
+  return (
+    <div className="grid items-start gap-6 lg:grid-cols-[minmax(300px,430px)_auto]">
+      <Panel title={title}>{children}</Panel>
+      <figure className="flex flex-col gap-2">
+        <div
+          className="overflow-hidden rounded-xl ring-1 ring-line/50"
+          style={{ width: W * PREVIEW_SCALE, height: H * PREVIEW_SCALE }}
+        >
+          <div
+            ref={setRef}
+            style={{
+              width: W,
+              height: H,
+              transform: `scale(${PREVIEW_SCALE})`,
+              transformOrigin: "top left",
+            }}
+          >
+            {slide}
+          </div>
+        </div>
+        <figcaption
+          className="flex items-center justify-between"
+          style={{ width: W * PREVIEW_SCALE }}
+        >
+          <code className="font-mono text-[0.62rem] text-faint">{name}</code>
+          <button
+            onClick={onExport}
+            disabled={busy}
+            className="rounded-full border border-gold/40 px-3 py-1 font-mono text-[0.62rem] uppercase tracking-wider text-gold transition-colors hover:bg-gold/10 disabled:opacity-50"
+          >
+            PNG ↓
+          </button>
+        </figcaption>
+      </figure>
+    </div>
+  );
+}
+
 /* ------------------------------ studio ------------------------------ */
 
 export function CarouselStudio() {
@@ -420,14 +476,6 @@ export function CarouselStudio() {
     (window as any).__ppExportSlide = exportOne;
   }
 
-  const allSlides: ReactNode[] = [
-    <CoverSlide key="cover" d={cover} brand={brand} meta={meta} />,
-    ...slides.map((s, i) => (
-      <ContentSlide key={`s${i}`} d={s} n={i + 1} brand={brand} meta={meta} />
-    )),
-    <ClosingSlide key="closing" d={closing} brand={brand} meta={meta} />,
-  ];
-
   return (
     <section className="container-shell pb-24 pt-28">
       <style dangerouslySetInnerHTML={{ __html: SLIDE_CSS }} />
@@ -453,180 +501,164 @@ export function CarouselStudio() {
         </button>
       </header>
 
-      <div className="grid gap-10 xl:grid-cols-[420px_1fr]">
-        {/* ----- editor ----- */}
-        <div className="flex flex-col gap-5">
-          <Panel title="Загальне">
+      <div className="flex flex-col gap-8">
+        <Panel title="Загальне">
+          <div className="grid gap-3 sm:grid-cols-2">
             <Field label="Бренд клієнта (зліва в лого та шапці)">
               <TextInput value={brand} onChange={setBrand} />
             </Field>
             <Field label="Мітка справа (місто · рік)">
               <TextInput value={meta} onChange={setMeta} />
             </Field>
-          </Panel>
+          </div>
+        </Panel>
 
-          <Panel title="Обкладинка">
-            <Field label="Eyebrow">
-              <TextInput
-                value={cover.eyebrow}
-                onChange={(v) => setCover({ ...cover, eyebrow: v })}
-              />
-            </Field>
-            <Field label="Заголовок">
-              <TextInput
-                rows={2}
-                value={cover.title}
-                onChange={(v) => setCover({ ...cover, title: v })}
-              />
-            </Field>
-            <Field label="Підзаголовок">
-              <TextInput
-                rows={2}
-                value={cover.sub}
-                onChange={(v) => setCover({ ...cover, sub: v })}
-              />
-            </Field>
-            <Field label="Плашка внизу праворуч">
-              <TextInput
-                value={cover.tag}
-                onChange={(v) => setCover({ ...cover, tag: v })}
-              />
-            </Field>
-            <PhotoInput
-              photo={cover.photo}
-              pos={cover.pos}
-              onPhoto={(p) => setCover({ ...cover, photo: p })}
-              onPos={(p) => setCover({ ...cover, pos: p })}
+        <SlideRow
+          title="Обкладинка"
+          name={names[0]}
+          busy={busy !== null}
+          onExport={() => handleExport(0)}
+          setRef={(el) => {
+            refs.current[0] = el;
+          }}
+          slide={<CoverSlide d={cover} brand={brand} meta={meta} />}
+        >
+          <Field label="Eyebrow">
+            <TextInput
+              value={cover.eyebrow}
+              onChange={(v) => setCover({ ...cover, eyebrow: v })}
             />
-          </Panel>
+          </Field>
+          <Field label="Заголовок">
+            <TextInput
+              rows={2}
+              value={cover.title}
+              onChange={(v) => setCover({ ...cover, title: v })}
+            />
+          </Field>
+          <Field label="Підзаголовок">
+            <TextInput
+              rows={2}
+              value={cover.sub}
+              onChange={(v) => setCover({ ...cover, sub: v })}
+            />
+          </Field>
+          <Field label="Плашка внизу праворуч">
+            <TextInput
+              value={cover.tag}
+              onChange={(v) => setCover({ ...cover, tag: v })}
+            />
+          </Field>
+          <PhotoInput
+            photo={cover.photo}
+            pos={cover.pos}
+            onPhoto={(p) => setCover({ ...cover, photo: p })}
+            onPos={(p) => setCover({ ...cover, pos: p })}
+          />
+        </SlideRow>
 
-          {slides.map((s, i) => (
-            <Panel key={i} title={`Слайд ${String(i + 1).padStart(2, "0")}`}>
-              <Field label="Кікер (після номера)">
-                <TextInput
-                  value={s.kicker}
-                  onChange={(v) => patchSlide(i, { kicker: v })}
-                />
-              </Field>
-              <Field label="Заголовок">
-                <TextInput
-                  rows={2}
-                  value={s.title}
-                  onChange={(v) => patchSlide(i, { title: v })}
-                />
-              </Field>
-              <Field label="Текст">
-                <TextInput
-                  rows={3}
-                  value={s.body}
-                  onChange={(v) => patchSlide(i, { body: v })}
-                />
-              </Field>
-              <PhotoInput
-                photo={s.photo}
-                pos={s.pos}
-                onPhoto={(p) => patchSlide(i, { photo: p })}
-                onPos={(p) => patchSlide(i, { pos: p })}
-              />
-              <button
-                onClick={() => removeSlide(i)}
-                className="self-start text-xs text-faint underline-offset-2 hover:text-ember hover:underline"
-              >
-                Видалити слайд
-              </button>
-            </Panel>
-          ))}
-
-          <button
-            onClick={addSlide}
-            className="btn btn-ghost self-start !px-5 !py-2.5 text-sm"
+        {slides.map((s, i) => (
+          <SlideRow
+            key={i}
+            title={`Слайд ${String(i + 1).padStart(2, "0")}`}
+            name={names[i + 1]}
+            busy={busy !== null}
+            onExport={() => handleExport(i + 1)}
+            setRef={(el) => {
+              refs.current[i + 1] = el;
+            }}
+            slide={<ContentSlide d={s} n={i + 1} brand={brand} meta={meta} />}
           >
-            + Додати слайд
-          </button>
-
-          <Panel title="Фінальний слайд">
-            <Field label="Eyebrow">
+            <Field label="Кікер (після номера)">
               <TextInput
-                value={closing.eyebrow}
-                onChange={(v) => setClosing({ ...closing, eyebrow: v })}
+                value={s.kicker}
+                onChange={(v) => patchSlide(i, { kicker: v })}
               />
             </Field>
             <Field label="Заголовок">
               <TextInput
-                value={closing.title}
-                onChange={(v) => setClosing({ ...closing, title: v })}
+                rows={2}
+                value={s.title}
+                onChange={(v) => patchSlide(i, { title: v })}
               />
             </Field>
-            <Field label="Цитата">
+            <Field label="Текст">
               <TextInput
                 rows={3}
-                value={closing.quote}
-                onChange={(v) => setClosing({ ...closing, quote: v })}
-              />
-            </Field>
-            <Field label="CTA — текст">
-              <TextInput
-                value={closing.ctaText}
-                onChange={(v) => setClosing({ ...closing, ctaText: v })}
-              />
-            </Field>
-            <Field label="CTA — лінк-фраза">
-              <TextInput
-                value={closing.ctaLink}
-                onChange={(v) => setClosing({ ...closing, ctaLink: v })}
+                value={s.body}
+                onChange={(v) => patchSlide(i, { body: v })}
               />
             </Field>
             <PhotoInput
-              photo={closing.photo}
-              pos={closing.pos}
-              onPhoto={(p) => setClosing({ ...closing, photo: p })}
-              onPos={(p) => setClosing({ ...closing, pos: p })}
+              photo={s.photo}
+              pos={s.pos}
+              onPhoto={(p) => patchSlide(i, { photo: p })}
+              onPos={(p) => patchSlide(i, { pos: p })}
             />
-          </Panel>
-        </div>
+            <button
+              onClick={() => removeSlide(i)}
+              className="self-start text-xs text-faint underline-offset-2 hover:text-ember hover:underline"
+            >
+              Видалити слайд
+            </button>
+          </SlideRow>
+        ))}
 
-        {/* ----- preview / export nodes ----- */}
-        <div>
-          <p className="mb-4 font-mono text-[0.62rem] uppercase tracking-[0.18em] text-faint">
-            Прев&apos;ю · {total} слайдів · 1080×1350
-          </p>
-          <div className="flex flex-wrap gap-5">
-            {allSlides.map((slide, i) => (
-              <figure key={i} className="flex flex-col gap-2">
-                <div
-                  className="overflow-hidden rounded-xl ring-1 ring-line/50"
-                  style={{ width: W * PREVIEW_SCALE, height: H * PREVIEW_SCALE }}
-                >
-                  <div
-                    ref={(el) => {
-                      refs.current[i] = el;
-                    }}
-                    style={{
-                      width: W,
-                      height: H,
-                      transform: `scale(${PREVIEW_SCALE})`,
-                      transformOrigin: "top left",
-                    }}
-                  >
-                    {slide}
-                  </div>
-                </div>
-                <figcaption className="flex items-center justify-between">
-                  <code className="font-mono text-[0.62rem] text-faint">
-                    {names[i]}
-                  </code>
-                  <button
-                    onClick={() => handleExport(i)}
-                    disabled={busy !== null}
-                    className="rounded-full border border-gold/40 px-3 py-1 font-mono text-[0.62rem] uppercase tracking-wider text-gold transition-colors hover:bg-gold/10 disabled:opacity-50"
-                  >
-                    PNG ↓
-                  </button>
-                </figcaption>
-              </figure>
-            ))}
-          </div>
-        </div>
+        <button
+          onClick={addSlide}
+          className="btn btn-ghost self-start !px-5 !py-2.5 text-sm"
+        >
+          + Додати слайд
+        </button>
+
+        <SlideRow
+          title="Фінальний слайд"
+          name={names[total - 1]}
+          busy={busy !== null}
+          onExport={() => handleExport(total - 1)}
+          setRef={(el) => {
+            refs.current[total - 1] = el;
+          }}
+          slide={<ClosingSlide d={closing} brand={brand} meta={meta} />}
+        >
+          <Field label="Eyebrow">
+            <TextInput
+              value={closing.eyebrow}
+              onChange={(v) => setClosing({ ...closing, eyebrow: v })}
+            />
+          </Field>
+          <Field label="Заголовок">
+            <TextInput
+              value={closing.title}
+              onChange={(v) => setClosing({ ...closing, title: v })}
+            />
+          </Field>
+          <Field label="Цитата">
+            <TextInput
+              rows={3}
+              value={closing.quote}
+              onChange={(v) => setClosing({ ...closing, quote: v })}
+            />
+          </Field>
+          <Field label="CTA — текст">
+            <TextInput
+              value={closing.ctaText}
+              onChange={(v) => setClosing({ ...closing, ctaText: v })}
+            />
+          </Field>
+          <Field label="CTA — лінк-фраза">
+            <TextInput
+              value={closing.ctaLink}
+              onChange={(v) => setClosing({ ...closing, ctaLink: v })}
+            />
+          </Field>
+          <PhotoInput
+            photo={closing.photo}
+            pos={closing.pos}
+            onPhoto={(p) => setClosing({ ...closing, photo: p })}
+            onPos={(p) => setClosing({ ...closing, pos: p })}
+          />
+        </SlideRow>
       </div>
     </section>
   );
