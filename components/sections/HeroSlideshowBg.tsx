@@ -19,20 +19,30 @@ export function HeroSlideshowBg({
   overlay,
   interval = HERO_SLIDE_INTERVAL,
   fadeMs = HERO_SLIDE_FADE,
+  onIndexChange,
 }: {
   images: HeroSlide[];
   overlay?: ReactNode;
   interval?: number;
   fadeMs?: number;
+  onIndexChange?: (i: number) => void;
 }) {
   const reduce = useReducedMotion();
   const [idx, setIdx] = useState(0);
 
   useEffect(() => {
     if (reduce || images.length < 2) return;
-    const t = setInterval(() => setIdx((i) => (i + 1) % images.length), interval);
+    const t = setInterval(
+      () =>
+        setIdx((i) => {
+          const next = (i + 1) % images.length;
+          onIndexChange?.(next);
+          return next;
+        }),
+      interval,
+    );
     return () => clearInterval(t);
-  }, [reduce, images.length, interval]);
+  }, [reduce, images.length, interval, onIndexChange]);
 
   return (
     <div className="absolute inset-0 overflow-hidden">

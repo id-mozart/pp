@@ -1,19 +1,21 @@
 import Link from "next/link";
-import { brand, footer, contacts, nav } from "@/lib/content";
-import { WhatsApp, Telegram, ArrowUpRight } from "@/components/ui/icons";
+import { brand, footer, contacts } from "@/lib/content";
+import { WhatsApp, Telegram } from "@/components/ui/icons";
+import { GRAD_ACC, gradText } from "@/lib/ember";
 
 export function SiteFooter() {
   return (
-    <footer className="relative overflow-hidden border-t border-line/60 bg-surface">
+    <footer className="relative overflow-hidden bg-surface">
+      <div className="hairline absolute inset-x-0 top-0" />
       <div className="grain absolute inset-0" />
       <div className="container-shell relative py-16 lg:py-20">
         <div className="grid gap-12 lg:grid-cols-[1.4fr_1fr_1fr_1.2fr]">
           {/* Brand */}
           <div>
             <Link href="/" className="wordmark font-display text-2xl tracking-tight text-ink">
-              Pan<span className="text-gold">&amp;</span>Partners
+              Pan<span className="italic text-gold">&amp;</span>Partners
             </Link>
-            <p className="mt-4 max-w-xs text-sm leading-relaxed text-muted">
+            <p className="mt-4 max-w-xs font-display text-base italic leading-relaxed text-muted">
               {footer.tagline}
             </p>
           </div>
@@ -21,7 +23,7 @@ export function SiteFooter() {
           {/* Link columns */}
           {footer.columns.map((col) => (
             <div key={col.title}>
-              <p className="font-mono text-xs uppercase tracking-[0.18em] text-faint">
+              <p className="font-mono text-xs uppercase tracking-[0.22em] text-faint">
                 {col.title}
               </p>
               <ul className="mt-4 space-y-2.5">
@@ -38,7 +40,7 @@ export function SiteFooter() {
 
           {/* Contacts */}
           <div>
-            <p className="font-mono text-xs uppercase tracking-[0.18em] text-faint">
+            <p className="font-mono text-xs uppercase tracking-[0.22em] text-faint">
               Прямий контакт
             </p>
             <div className="mt-4 space-y-3">
@@ -67,19 +69,21 @@ export function SiteFooter() {
             </div>
             <Link
               href="/#contact"
-              className="mt-5 inline-flex items-center gap-1.5 text-sm text-gold lux-link"
+              className="mt-5 inline-block font-display text-base italic transition-transform duration-500 ease-lux hover:translate-x-1.5"
+              style={gradText(GRAD_ACC)}
             >
-              Залишити заявку <ArrowUpRight className="h-4 w-4" />
+              залишити заявку →
             </Link>
           </div>
         </div>
 
         <div className="mt-14 hairline" />
-        <div className="mt-6 flex flex-col items-center justify-between gap-3 text-xs text-faint sm:flex-row">
+        <div className="mt-6 flex flex-col items-center justify-between gap-3 text-xs text-faint lg:flex-row">
           <p>{footer.copyright}</p>
-          <p className="font-mono uppercase tracking-[0.16em]">
-            {brand.role}
+          <p className="font-display text-sm italic" style={gradText(GRAD_ACC)}>
+            Без тиску. Без маніпуляцій. Природно та легко.
           </p>
+          <p className="font-mono uppercase tracking-[0.16em]">{brand.role}</p>
         </div>
       </div>
     </footer>

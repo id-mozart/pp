@@ -5,18 +5,7 @@ import type { ReactNode } from "react";
 import { formats } from "@/lib/content";
 import { Reveal, RevealGroup, RevealItem } from "@/components/ui/Reveal";
 
-/* Story-template gradients (the Instagram-carousel «Ember» look) */
-const GRAD_ACC = "linear-gradient(95deg,#F7B658 0%,#EE8C2C 52%,#DC6716 100%)";
-const GRAD_GOLD = "linear-gradient(100deg,#F0C26E 0%,#E2A638 55%,#C5631F 100%)";
-const CARD_BG = "linear-gradient(160deg,rgba(33,21,10,.95),rgba(19,12,6,.96))";
-
-const gradText = (g: string) => ({
-  background: g,
-  WebkitBackgroundClip: "text" as const,
-  backgroundClip: "text" as const,
-  WebkitTextFillColor: "transparent" as const,
-  color: "transparent" as const,
-});
+import { GRAD_ACC, GRAD_GOLD, CARD_BG, gradText } from "@/lib/ember";
 
 /* Per-card presentation: photo, framed title with the italic accent, short result */
 const SHOWCASE: {

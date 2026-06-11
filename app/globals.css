@@ -1345,6 +1345,39 @@
   background-attachment: fixed;
 }
 
+/* Єдиний фірмовий eyebrow Main: mono caps + градієнт Ember, без тире */
+[data-concept="main"] .eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.28em;
+  background: linear-gradient(95deg, #f7b658 0%, #ee8c2c 52%, #dc6716 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+[data-concept="main"] .eyebrow::before {
+  content: none;
+}
+
+/* FAQ: відкрите питання підсвічується; відповідь виїжджає плавно */
+[data-concept="main"] #faq details[open] .faq-q {
+  color: rgb(var(--c-gold-soft));
+}
+[data-concept="main"] #faq details[open] > p {
+  animation: faq-in 0.45s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+@keyframes faq-in {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
 /* Логотип — шрифт із VII (Playfair) */
 [data-concept="method"] .wordmark,
 [data-concept="main"] .wordmark {

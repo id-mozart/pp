@@ -57,7 +57,7 @@ export function SiteHeader() {
             className="wordmark font-display text-xl tracking-tight text-ink transition-opacity hover:opacity-80"
             aria-label="Pan&Partners — на головну"
           >
-            Pan<span className="text-gold">&amp;</span>Partners
+            Pan<span className="italic text-gold">&amp;</span>Partners
           </Link>
 
           {/* Desktop nav */}
@@ -117,7 +117,7 @@ export function SiteHeader() {
           >
             <div className="container-shell flex h-[4.6rem] items-center justify-between">
               <span className="wordmark font-display text-xl tracking-tight text-ink">
-                Pan<span className="text-gold">&amp;</span>Partners
+                Pan<span className="italic text-gold">&amp;</span>Partners
               </span>
               <button
                 onClick={() => setMobileOpen(false)}
