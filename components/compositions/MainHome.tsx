@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { Reveal, RevealGroup, RevealItem } from "@/components/ui/Reveal";
 import { ArrowRight, Plus } from "@/components/ui/icons";
-import { Formats } from "@/components/sections/Formats";
+import { FormatsShowcase } from "@/components/sections/FormatsShowcase";
 import { Requests } from "@/components/sections/Requests";
 import { ClientsWall } from "@/components/sections/ClientsWall";
 import { Testimonials } from "@/components/sections/Testimonials";
@@ -283,8 +283,8 @@ export function MainHome() {
       {/* TESTIMONIALS — social proof voices (with the proof tiles) */}
       <Testimonials stats={PROOF} />
 
-      {/* FORMATS — offer: ways of cooperation */}
-      <Formats />
+      {/* FORMATS — offer: three services as story-style cover cards */}
+      <FormatsShowcase />
 
       {/* FAQ — objection handling before the form */}
       <section id="faq" className="relative grain border-t border-line/50 bg-surface section-pad">
