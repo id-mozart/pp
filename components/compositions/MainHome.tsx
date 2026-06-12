@@ -180,19 +180,6 @@ export function MainHome() {
               className="mt-1 h-[2px] w-16 rounded-full"
               style={{ background: GRAD_GOLD }}
             />
-            <div className="mt-4 flex flex-wrap gap-2">
-              {["Тренінги", "Онлайн-курси", "Наставництво", "Онлайн · Офлайн"].map(
-                (t) => (
-                  <span
-                    key={t}
-                    className="inline-flex rounded-[10px] border border-line/70 px-3.5 py-2 font-mono text-[0.62rem] font-medium uppercase tracking-[0.1em] text-ink"
-                    style={{ background: CTAG_BG, borderLeft: "3px solid #E2A638" }}
-                  >
-                    {t}
-                  </span>
-                ),
-              )}
-            </div>
           </Reveal>
           <Reveal delay={0.08} className="flex flex-col justify-center gap-5 lg:col-span-7">
             <p className="max-w-xl text-pretty font-display text-xl italic leading-snug text-ink/90">
@@ -207,22 +194,16 @@ export function MainHome() {
               власні магазини) і 17+ років навчання команд. Працюємо так, як
               зручно вам: корпоративні тренінги, онлайн-курси, наставництво.
             </p>
-            <figure className="mt-2 max-w-xl">
+            <div className="mt-2 max-w-xl">
               <span
                 aria-hidden
                 className="block h-[2px] w-16 rounded-full"
                 style={{ background: GRAD_GOLD }}
               />
-              <blockquote className="mt-5 font-display text-[1.4rem] italic leading-snug">
-                <span style={gradText(GRAD_ACC)}>
-                  Без тиску. Без маніпуляцій. Природно та легко
-                </span>
-                <span className="text-ink"> — з очікуваним результатом.</span>
-              </blockquote>
-              <figcaption className="mt-3 font-mono text-[0.62rem] uppercase tracking-[0.22em] text-faint">
-                Тетяна Пан — засновниця Pan&amp;Partners
-              </figcaption>
-            </figure>
+              <Link href="#formats" className="btn btn-primary mt-6 w-fit">
+                Обрати спосіб роботи <ArrowRight className="h-4 w-4" />
+              </Link>
+            </div>
           </Reveal>
         </div>
       </section>
