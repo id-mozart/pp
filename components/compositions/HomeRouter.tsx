@@ -5,6 +5,7 @@ import { StandardHome } from "@/components/compositions/StandardHome";
 import { MainHome } from "@/components/compositions/MainHome";
 import { Main2Home } from "@/components/compositions/Main2Home";
 import { Main3Home, Main4Home } from "@/components/compositions/Main3Home";
+import { Main5Home } from "@/components/compositions/Main5Home";
 import { ConceptHome } from "@/components/compositions/ConceptHome";
 import { BentoHome } from "@/components/compositions/BentoHome";
 import { DeckHome } from "@/components/compositions/DeckHome";
@@ -35,6 +36,7 @@ import type { ConceptId } from "@/lib/concepts";
  * Everything else falls back to the standard stacked composition.
  */
 const COMPOSITIONS: Partial<Record<ConceptId, () => JSX.Element>> = {
+  main5: Main5Home,
   main3: Main3Home,
   main4: Main4Home,
   main2: Main2Home,

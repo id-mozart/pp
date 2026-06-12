@@ -916,7 +916,8 @@
 [data-concept="main"] ,
 [data-concept="main2"] ,
 [data-concept="main3"] ,
-[data-concept="main4"] {
+[data-concept="main4"] ,
+[data-concept="main5"] {
   /* XXVII — Метод · warm espresso "blueprint", honey gold (closer to II) */
   --c-canvas: 26 20 14;
   --c-surface: 38 30 21;
@@ -948,7 +949,8 @@
 [data-concept="main"] section.bg-surface ,
 [data-concept="main2"] section.bg-surface ,
 [data-concept="main3"] section.bg-surface ,
-[data-concept="main4"] section.bg-surface {
+[data-concept="main4"] section.bg-surface ,
+[data-concept="main5"] section.bg-surface {
   background-image:
     linear-gradient(rgb(var(--c-line) / 0.18) 1px, transparent 1px),
     linear-gradient(90deg, rgb(var(--c-line) / 0.18) 1px, transparent 1px);
@@ -1321,7 +1323,8 @@
 [data-concept="main"] ,
 [data-concept="main2"] ,
 [data-concept="main3"] ,
-[data-concept="main4"] {
+[data-concept="main4"] ,
+[data-concept="main5"] {
   /* Обсидіан-сцена VII + янтарно-помаранчеве золото */
   --c-ink: 244 230 204;       /* #F4E6CC — теплий золотавий крем */
   --c-muted: 184 166 138;
@@ -1349,7 +1352,8 @@
 [data-concept="main"] body ,
 [data-concept="main2"] body ,
 [data-concept="main3"] body ,
-[data-concept="main4"] body {
+[data-concept="main4"] body ,
+[data-concept="main5"] body {
   background-image:
     radial-gradient(56vw 56vw at 86% -12%, rgb(226 166 56 / 0.12), transparent 62%),
     radial-gradient(50vw 50vw at -10% 38%, rgb(214 106 44 / 0.09), transparent 62%),
@@ -1361,7 +1365,8 @@
 [data-concept="main"] .eyebrow ,
 [data-concept="main2"] .eyebrow ,
 [data-concept="main3"] .eyebrow ,
-[data-concept="main4"] .eyebrow {
+[data-concept="main4"] .eyebrow ,
+[data-concept="main5"] .eyebrow {
   font-family: var(--font-mono);
   font-size: 0.72rem;
   font-weight: 500;
@@ -1374,7 +1379,8 @@
 [data-concept="main"] .eyebrow::before ,
 [data-concept="main2"] .eyebrow::before ,
 [data-concept="main3"] .eyebrow::before ,
-[data-concept="main4"] .eyebrow::before {
+[data-concept="main4"] .eyebrow::before ,
+[data-concept="main5"] .eyebrow::before {
   content: none;
 }
 
@@ -1382,13 +1388,15 @@
 [data-concept="main"] #faq details[open] .faq-q ,
 [data-concept="main2"] #faq details[open] .faq-q ,
 [data-concept="main3"] #faq details[open] .faq-q ,
-[data-concept="main4"] #faq details[open] .faq-q {
+[data-concept="main4"] #faq details[open] .faq-q ,
+[data-concept="main5"] #faq details[open] .faq-q {
   color: rgb(var(--c-gold-soft));
 }
 [data-concept="main"] #faq details[open] > p ,
 [data-concept="main2"] #faq details[open] > p ,
 [data-concept="main3"] #faq details[open] > p ,
-[data-concept="main4"] #faq details[open] > p {
+[data-concept="main4"] #faq details[open] > p ,
+[data-concept="main5"] #faq details[open] > p {
   animation: faq-in 0.45s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 @keyframes faq-in {
@@ -1407,7 +1415,8 @@
 [data-concept="main"] .wordmark ,
 [data-concept="main2"] .wordmark ,
 [data-concept="main3"] .wordmark ,
-[data-concept="main4"] .wordmark {
+[data-concept="main4"] .wordmark ,
+[data-concept="main5"] .wordmark {
   font-family: var(--font-playfair);
   font-weight: 500;
   letter-spacing: -0.01em;
@@ -1418,7 +1427,8 @@
 [data-concept="main"] #cases ,
 [data-concept="main2"] #cases ,
 [data-concept="main3"] #cases ,
-[data-concept="main4"] #cases {
+[data-concept="main4"] #cases ,
+[data-concept="main5"] #cases {
   --font-display: var(--font-playfair);
   --display-weight: 500;
   --display-tracking: -0.01em;
@@ -1429,7 +1439,8 @@
 [data-concept="main"] .btn-primary ,
 [data-concept="main2"] .btn-primary ,
 [data-concept="main3"] .btn-primary ,
-[data-concept="main4"] .btn-primary {
+[data-concept="main4"] .btn-primary ,
+[data-concept="main5"] .btn-primary {
   background: linear-gradient(100deg, #f0c26e 0%, #e2a638 55%, #c5631f 100%);
   color: rgb(9 9 8);
 }
@@ -1437,7 +1448,8 @@
 [data-concept="main"] .btn-primary:hover ,
 [data-concept="main2"] .btn-primary:hover ,
 [data-concept="main3"] .btn-primary:hover ,
-[data-concept="main4"] .btn-primary:hover {
+[data-concept="main4"] .btn-primary:hover ,
+[data-concept="main5"] .btn-primary:hover {
   background: linear-gradient(100deg, #f4cb7e 0%, #e9b04a 55%, #cd6c26 100%);
 }
 

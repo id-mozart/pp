@@ -1,6 +1,7 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import type { ReactNode } from "react";
 import { motion } from "framer-motion";
 import { consultation } from "@/lib/content";
 import { Reveal } from "@/components/ui/Reveal";
@@ -58,13 +59,37 @@ function icsHref(date: Date, slot: string) {
   return `data:text/calendar;charset=utf-8,${encodeURIComponent(ics)}`;
 }
 
-export function BookingCalendar() {
+export function BookingCalendar({
+  title,
+  lead,
+}: {
+  /** Override the section heading (defaults to «Бронювання консультації»). */
+  title?: ReactNode;
+  lead?: string;
+} = {}) {
   const { booking } = consultation;
   const [day, setDay] = useState<Date | null>(null);
   const [slot, setSlot] = useState<string | null>(null);
   const [status, setStatus] = useState<"idle" | "submitting" | "success" | "error">(
     "idle",
   );
+  const [topic, setTopic] = useState("");
+
+  // Префіл «Запиту» з кліку по болю/репліці (sessionStorage + подія)
+  useEffect(() => {
+    try {
+      const t = sessionStorage.getItem("lead_topic");
+      if (t) setTopic(t);
+    } catch {
+      /* ignore */
+    }
+    const onTopic = (e: Event) => {
+      const d = (e as CustomEvent<string>).detail;
+      if (d) setTopic(d);
+    };
+    window.addEventListener("pp:lead-topic", onTopic);
+    return () => window.removeEventListener("pp:lead-topic", onTopic);
+  }, []);
 
   const available = useMemo(() => nextBusinessDays(5), []);
   const availableIso = useMemo(() => new Set(available.map(iso)), [available]);
@@ -119,10 +144,14 @@ export function BookingCalendar() {
         <Reveal className="mb-8 flex flex-col gap-4">
           <span className="eyebrow">Бронювання</span>
           <h2 className="text-[clamp(2rem,4vw,3.2rem)] leading-[1.05] text-ink">
-            Бронювання{" "}
-            <em className="italic" style={gradText(GRAD_ACC)}>
-              консультації
-            </em>
+            {title ?? (
+              <>
+                Бронювання{" "}
+                <em className="italic" style={gradText(GRAD_ACC)}>
+                  консультації
+                </em>
+              </>
+            )}
           </h2>
           <span
             aria-hidden
@@ -130,7 +159,7 @@ export function BookingCalendar() {
             style={{ background: GRAD_GOLD }}
           />
           <p className="max-w-xl font-display text-lg italic leading-relaxed text-muted">
-            {booking.intro}
+            {lead ?? booking.intro}
           </p>
         </Reveal>
 
@@ -289,6 +318,14 @@ export function BookingCalendar() {
                   <p className="font-mono text-xs uppercase tracking-[0.22em] text-faint">
                     {booking.formLabel}
                   </p>
+                  {topic && (
+                    <p
+                      className="-mt-1 font-mono text-[0.6rem] font-medium uppercase tracking-[0.18em]"
+                      style={gradText(GRAD_ACC)}
+                    >
+                      Ваш запит вже записано — лишилось обрати час
+                    </p>
+                  )}
                   <input
                     type="text"
                     name="website_url"
@@ -300,11 +337,12 @@ export function BookingCalendar() {
                   {booking.fields.map((f) =>
                     f.type === "textarea" ? (
                       <textarea
-                        key={f.name}
+                        key={`${f.name}-${topic}`}
                         name={f.name}
                         rows={3}
                         required={f.required}
                         placeholder={f.placeholder}
+                        defaultValue={topic ? `Запит: ${topic} — ` : undefined}
                         className={`${FIELD_CLS} resize-none text-sm`}
                       />
                     ) : (
