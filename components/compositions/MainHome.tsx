@@ -212,7 +212,7 @@ export function MainHome() {
       </div>
 
       {/* TRUST — client logo wall right after the promise */}
-      <ClientsWall logoWall />
+      <ClientsWall logoWall lean />
 
       {/* PAINS — what people come with */}
       <Requests />

@@ -10,7 +10,10 @@ import { GRAD_ACC, GRAD_GOLD, CARD_BG, gradText } from "@/lib/ember";
  * is either serif wordmarks (default) or the monochrome logo-tile grid
  * (logoWall — placeholders from /brand/logos until real files arrive).
  */
-export function ClientsWall({ logoWall = false }: { logoWall?: boolean } = {}) {
+export function ClientsWall({
+  logoWall = false,
+  lean = false,
+}: { logoWall?: boolean; lean?: boolean } = {}) {
   return (
     <section className="relative grain section-pad" id="clients">
       <div className="container-shell">
@@ -27,20 +30,22 @@ export function ClientsWall({ logoWall = false }: { logoWall?: boolean } = {}) {
             <p className="mt-4 max-w-md font-display text-lg italic leading-relaxed text-muted">
               {clients.subtitle}
             </p>
-            <div className="mt-8 max-w-md">
-              <span
-                aria-hidden
-                className="block h-[2px] w-16 rounded-full"
-                style={{ background: GRAD_GOLD }}
-              />
-              <p className="mt-4 font-display text-xl italic leading-snug text-ink">
-                <b className="stat-number align-baseline text-3xl not-italic">
-                  90%
-                </b>{" "}
-                клієнтів продовжують співпрацю з нами та рекомендують нас своїм
-                партнерам.
-              </p>
-            </div>
+            {!lean && (
+              <div className="mt-8 max-w-md">
+                <span
+                  aria-hidden
+                  className="block h-[2px] w-16 rounded-full"
+                  style={{ background: GRAD_GOLD }}
+                />
+                <p className="mt-4 font-display text-xl italic leading-snug text-ink">
+                  <b className="stat-number align-baseline text-3xl not-italic">
+                    90%
+                  </b>{" "}
+                  клієнтів продовжують співпрацю з нами та рекомендують нас
+                  своїм партнерам.
+                </p>
+              </div>
+            )}
           </Reveal>
 
           <Reveal delay={0.08} className="lg:col-span-6">
