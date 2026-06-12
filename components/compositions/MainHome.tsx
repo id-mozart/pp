@@ -217,6 +217,10 @@ export function MainHome() {
       {/* PAINS — what people come with */}
       <Requests />
 
+      {/* FORMATS — offer: three services as story-style cover cards */}
+      <FormatsShowcase lean />
+
+
       {/* ARCHITECT — людина за методом */}
       <section className="relative grain border-t border-line/50 bg-surface section-pad">
         <div className="container-shell grid items-start gap-12 lg:grid-cols-12 lg:gap-16">
@@ -537,9 +541,6 @@ export function MainHome() {
 
       {/* TESTIMONIALS — social proof voices (with the proof tiles) */}
       <Testimonials stats={PROOF.slice(0, 4)} />
-
-      {/* FORMATS — offer: three services as story-style cover cards */}
-      <FormatsShowcase lean />
 
       {/* FAQ — objection handling before the form */}
       <section id="faq" className="relative grain border-t border-line/50 bg-surface section-pad">
