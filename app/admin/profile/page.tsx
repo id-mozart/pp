@@ -25,13 +25,23 @@ const CSS = `
   body:has(#pp-profile) { background: #060605 !important; }
 
   #pp-profile { --ink:#F4E6CC; --muted:#CDBb9b; --faint:#94835f; --line:rgba(96,80,58,.5);
+    --acc:#E8A93C; --sheet:#0B0A09; --plate:linear-gradient(160deg,rgba(33,21,10,.95),rgba(19,12,6,.96));
+    --ctagbg:rgba(35,26,18,.84); --logoplate:#F2EDE4;
     display:flex; flex-direction:column; align-items:center; gap:24px; padding:32px 0;
     -webkit-print-color-adjust:exact; print-color-adjust:exact;
     font-family:var(--font-inter),system-ui,sans-serif; }
   #pp-profile * { box-sizing:border-box; margin:0; }
 
+  /* светлая тема — тёплая слоновая кость, акценты глубже для контраста */
+  #pp-profile.light { --ink:#261C11; --muted:#5E4D38; --faint:#8A7355; --line:rgba(140,115,80,.42);
+    --acc:#BD5E14; --sheet:#FBF6EC; --plate:linear-gradient(160deg,#FFFEFA,#F4EBD9);
+    --ctagbg:rgba(226,166,56,.12); --logoplate:#FFFFFF; }
+  #pp-profile.light .rule { background:linear-gradient(90deg,#C5872288,#C5872226 55%,transparent); }
+  #pp-profile.light .glow { background:radial-gradient(48% 34% at 88% -6%, rgba(226,166,56,.22), transparent 70%); }
+  #pp-profile.light .sheet { box-shadow:0 30px 80px rgba(40,28,12,.25); }
+
   #pp-profile .sheet { position:relative; width:210mm; height:297mm; overflow:hidden;
-    background:#0B0A09; color:var(--ink); padding:12mm 14mm 9mm;
+    background:var(--sheet); color:var(--ink); padding:12mm 14mm 9mm;
     display:flex; flex-direction:column;
     box-shadow:0 30px 80px rgba(0,0,0,.6); }
   #pp-profile .glow { position:absolute; inset:0; pointer-events:none;
@@ -42,7 +52,7 @@ const CSS = `
   #pp-profile .hand { font-family:var(--font-caveat),cursive; }
   #pp-profile .logo { font-family:var(--font-playfair),Georgia,serif; }
   /* печать: background-clip:text даёт рамки-артефакты в Chrome print — золото сплошным цветом */
-  #pp-profile .grad { color:#E8A93C; }
+  #pp-profile .grad { color:var(--acc); }
 
   #pp-profile .runhead { display:flex; align-items:baseline; justify-content:space-between; }
   #pp-profile .runhead .lg { font-size:15pt; letter-spacing:.01em; }
@@ -51,7 +61,7 @@ const CSS = `
   #pp-profile .goldbar { height:2px; width:16mm; border-radius:2px; background:${GRAD_G}; }
 
   #pp-profile .eyebrow { font-size:7pt; font-weight:500; letter-spacing:.28em; text-transform:uppercase;
-    width:fit-content; color:#E8A93C; }
+    width:fit-content; color:var(--acc); }
   #pp-profile h1 { font-size:30pt; font-weight:500; line-height:1.04; letter-spacing:-.01em; }
   #pp-profile h2 { font-size:15pt; font-weight:500; line-height:1.15; }
   #pp-profile .body { font-size:9pt; line-height:1.6; color:var(--muted); }
@@ -59,21 +69,26 @@ const CSS = `
 
   #pp-profile .ctag { display:inline-flex; align-items:baseline; gap:4px;
     border:1px solid var(--line); border-left:3px solid ${GOLD}; border-radius:7px;
-    background:rgba(35,26,18,.84); padding:5px 9px;
+    background:var(--ctagbg); padding:5px 9px;
     font-size:7pt; font-weight:500; letter-spacing:.1em; text-transform:uppercase; color:var(--ink); }
 
   #pp-profile .plate { position:relative; border:1px solid var(--line); border-radius:9px;
-    background:linear-gradient(160deg,rgba(33,21,10,.95),rgba(19,12,6,.96)); }
+    background:var(--plate); }
   #pp-profile .plate .bar { position:absolute; left:6mm; top:-1px; height:2px; width:12mm;
     border-radius:2px; background:${GRAD_G}; }
 
-  #pp-profile .num { font-size:7.5pt; font-weight:500; letter-spacing:.18em; color:#E8A93C; }
+  #pp-profile .num { font-size:7.5pt; font-weight:500; letter-spacing:.18em; color:var(--acc); }
   #pp-profile .footrow { display:flex; align-items:flex-end; justify-content:space-between;
     border-top:1px solid var(--line); padding-top:3mm; margin-top:auto; }
 
+  #pp-profile .no-print { position:fixed; right:18px; top:14px; z-index:50;
+    font-size:11px; letter-spacing:.12em; text-transform:uppercase; color:#E8A93C;
+    border:1px solid rgba(226,166,56,.4); border-radius:99px; padding:7px 14px; text-decoration:none; }
+
   @page { size:A4; margin:0; }
   @media print {
-    html, body { background:#0B0A09 !important; }
+    html, body { background:var(--sheet,#0B0A09) !important; }
+    #pp-profile .no-print { display:none !important; }
     #pp-profile { padding:0; gap:0; }
     #pp-profile .sheet { box-shadow:none; page-break-after:always; }
     #pp-profile .sheet:last-child { page-break-after:auto; }
@@ -139,10 +154,18 @@ const EDUCATION = [
   "Музыкальное училище, преподаватель фортепиано — Бухара, Узбекистан.",
 ];
 
-export default function ProfilePage() {
+export default function ProfilePage({
+  searchParams,
+}: {
+  searchParams?: { theme?: string };
+}) {
+  const light = searchParams?.theme === "light";
   return (
-    <div id="pp-profile">
+    <div id="pp-profile" className={light ? "light" : undefined}>
       <style dangerouslySetInnerHTML={{ __html: CSS }} />
+      <a className="no-print mono" href={light ? "/admin/profile" : "/admin/profile?theme=light"}>
+        {light ? "тёмная версия" : "светлая версия"}
+      </a>
 
       {/* ───────────────────────── СТРАНИЦА 1 ───────────────────────── */}
       <section className="sheet">
@@ -343,7 +366,7 @@ export default function ProfilePage() {
             style={{
               marginTop: "3mm",
               width: "121mm", borderRadius: "9px", border: "1px solid var(--line)",
-              background: "#F2EDE4", padding: "3.5mm 4.5mm",
+              background: "var(--logoplate)", padding: "3.5mm 4.5mm",
             }}
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -368,7 +391,7 @@ export default function ProfilePage() {
             </p>
           </div>
           <div style={{ textAlign: "right" }}>
-            <span className="hand" style={{ fontSize: "20pt", color: GOLD, lineHeight: 1 }}>Татьяна Пан</span>
+            <span className="hand" style={{ fontSize: "20pt", color: "var(--acc)", lineHeight: 1 }}>Татьяна Пан</span>
             <p className="mono" style={{ fontSize: "6.8pt", letterSpacing: ".22em", textTransform: "uppercase", color: "var(--faint)", marginTop: "1mm" }}>
               основатель Pan&amp;Partners&nbsp;&nbsp;·&nbsp;&nbsp;2 — 2
             </p>

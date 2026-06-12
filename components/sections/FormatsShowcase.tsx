@@ -64,7 +64,7 @@ const SHOWCASE: {
  * photo + scrims, mono gradient index, Spectral title with italic gradient
  * accent, gold rule, ctag plates and an italic CTA line.
  */
-export function FormatsShowcase() {
+export function FormatsShowcase({ lean = false }: { lean?: boolean } = {}) {
   return (
     <section id="formats" className="relative grain section-pad">
       <div className="container-shell">
@@ -75,18 +75,29 @@ export function FormatsShowcase() {
           >
             {formats.eyebrow}
           </span>
-          <div className="flex flex-col justify-between gap-6 lg:flex-row lg:items-end">
-            <h2 className="max-w-2xl font-display text-[clamp(2rem,4vw,3.2rem)] leading-[1.05] text-ink">
+          {lean ? (
+            /* lean: заголовок одним рядком на всю ширину, без підзаголовка */
+            <h2 className="font-display text-[clamp(2rem,4vw,3.2rem)] leading-[1.05] text-ink">
               Оберіть{" "}
               <em className="italic" style={gradText(GRAD_ACC)}>
                 спосіб роботи
               </em>
               , який відповідає вашій цілі та темпу
             </h2>
-            <p className="max-w-sm font-display text-lg italic leading-relaxed text-muted">
-              {formats.subtitle}
-            </p>
-          </div>
+          ) : (
+            <div className="flex flex-col justify-between gap-6 lg:flex-row lg:items-end">
+              <h2 className="max-w-2xl font-display text-[clamp(2rem,4vw,3.2rem)] leading-[1.05] text-ink">
+                Оберіть{" "}
+                <em className="italic" style={gradText(GRAD_ACC)}>
+                  спосіб роботи
+                </em>
+                , який відповідає вашій цілі та темпу
+              </h2>
+              <p className="max-w-sm font-display text-lg italic leading-relaxed text-muted">
+                {formats.subtitle}
+              </p>
+            </div>
+          )}
         </Reveal>
 
         <RevealGroup className="grid gap-6 md:grid-cols-3">
@@ -148,20 +159,22 @@ export function FormatsShowcase() {
                       {card.summary}
                     </p>
 
-                    <div className="mt-5 flex flex-wrap gap-2">
-                      <span
-                        className="inline-flex items-center gap-2 rounded-[10px] border border-line/70 px-3.5 py-2 font-mono text-[0.62rem] font-medium uppercase tracking-[0.1em] text-ink"
-                        style={{
-                          background: "rgba(35,26,18,.84)",
-                          borderLeft: "3px solid #E2A638",
-                        }}
-                      >
-                        Результат{" "}
-                        <b className="font-semibold" style={gradText(GRAD_ACC)}>
-                          {s.result}
-                        </b>
-                      </span>
-                    </div>
+                    {!lean && (
+                      <div className="mt-5 flex flex-wrap gap-2">
+                        <span
+                          className="inline-flex items-center gap-2 rounded-[10px] border border-line/70 px-3.5 py-2 font-mono text-[0.62rem] font-medium uppercase tracking-[0.1em] text-ink"
+                          style={{
+                            background: "rgba(35,26,18,.84)",
+                            borderLeft: "3px solid #E2A638",
+                          }}
+                        >
+                          Результат{" "}
+                          <b className="font-semibold" style={gradText(GRAD_ACC)}>
+                            {s.result}
+                          </b>
+                        </span>
+                      </div>
+                    )}
 
                     <div className="mt-5 border-t border-line/60 pt-4">
                       <span className="font-display text-base italic text-muted">

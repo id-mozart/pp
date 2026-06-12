@@ -230,8 +230,8 @@ export function MainHome() {
         <div className="hairline" />
       </div>
 
-      {/* TRUST — client wordmark wall right after the promise */}
-      <ClientsWall />
+      {/* TRUST — client logo wall right after the promise */}
+      <ClientsWall logoWall />
 
       {/* PAINS — what people come with */}
       <Requests />
@@ -558,7 +558,7 @@ export function MainHome() {
       <Testimonials stats={PROOF.slice(0, 4)} />
 
       {/* FORMATS — offer: three services as story-style cover cards */}
-      <FormatsShowcase />
+      <FormatsShowcase lean />
 
       {/* FAQ — objection handling before the form */}
       <section id="faq" className="relative grain border-t border-line/50 bg-surface section-pad">
