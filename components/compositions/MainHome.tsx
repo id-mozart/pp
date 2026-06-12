@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
 import { Reveal, RevealGroup, RevealItem } from "@/components/ui/Reveal";
 import { ArrowRight, Plus } from "@/components/ui/icons";
 import { FormatsShowcase } from "@/components/sections/FormatsShowcase";
@@ -87,15 +86,12 @@ const FAQ = [
 ];
 
 export function MainHome() {
-  const [slide, setSlide] = useState(0);
-
   return (
     <>
       {/* HERO — full-bleed slideshow + right-aligned manifesto */}
       <section className="relative grain min-h-[78vh] overflow-hidden">
         <HeroSlideshowBg
           images={HERO_SLIDES}
-          onIndexChange={setSlide}
           overlay={
             <>
               <div
@@ -163,40 +159,7 @@ export function MainHome() {
                 Як це працює
               </Link>
             </div>
-            <div className="mt-3 flex flex-wrap gap-2">
-              {[PROOF[0], PROOF[3], PROOF[4]].map((p) => (
-                <span
-                  key={p.l}
-                  className="inline-flex items-baseline gap-2 rounded-[10px] border border-line/70 px-3.5 py-2 font-mono text-[0.62rem] font-medium uppercase tracking-[0.1em] text-ink"
-                  style={{ background: CTAG_BG, borderLeft: "3px solid #E2A638" }}
-                >
-                  <b className="font-semibold" style={gradText(GRAD_ACC)}>
-                    {p.v}
-                  </b>
-                  {p.l}
-                </span>
-              ))}
-            </div>
           </Reveal>
-        </div>
-        {/* runhead-полоса */}
-        <div className="absolute inset-x-0 bottom-0 border-t border-ink/10">
-          <div className="container-shell flex items-center justify-between py-4 font-mono text-[0.62rem] uppercase tracking-[0.22em]">
-            <span className="flex items-center gap-2.5 text-ink/80">
-              <span
-                className="h-1.5 w-1.5 rounded-full"
-                style={{ background: GRAD_GOLD }}
-              />
-              Pan&amp;Partners ✕ Тетяна Пан
-            </span>
-            <span className="hidden text-ink/50 sm:block">
-              продажі · переговори · B2B
-            </span>
-            <span className="font-mono text-[0.62rem] tracking-[0.22em] text-ink/60 transition-opacity duration-500">
-              {String(slide + 1).padStart(2, "0")} —{" "}
-              {String(HERO_SLIDES.length).padStart(2, "0")}
-            </span>
-          </div>
         </div>
       </section>
 
