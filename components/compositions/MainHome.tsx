@@ -493,34 +493,20 @@ export function MainHome() {
               ))}
             </RevealGroup>
 
-            {/* Кому підходить + результат */}
-            <Reveal delay={0.06} className="mt-8 flex flex-col gap-5">
-              <div className="flex flex-wrap items-center gap-2">
-                <span className="mr-1 font-mono text-[0.62rem] font-medium uppercase tracking-[0.22em] text-faint">
-                  Кому підходить
+            {/* Кому підходить */}
+            <Reveal delay={0.06} className="mt-8 flex flex-wrap items-center gap-2">
+              {[
+                "Власникам бізнесу",
+                "Керівникам продажів",
+                "Індивідуально або в групі до 4",
+              ].map((c) => (
+                <span
+                  key={c}
+                  className="rounded-full border border-line/70 bg-raised/40 px-3.5 py-1.5 text-sm text-ink/85"
+                >
+                  {c}
                 </span>
-                {[
-                  "Власникам бізнесу",
-                  "Керівникам продажів",
-                  "Індивідуально або в групі до 4",
-                ].map((c) => (
-                  <span
-                    key={c}
-                    className="rounded-full border border-line/70 bg-raised/40 px-3.5 py-1.5 text-sm text-ink/85"
-                  >
-                    {c}
-                  </span>
-                ))}
-              </div>
-              <span
-                className="inline-flex w-fit items-center gap-2 rounded-[10px] border border-line/70 px-3.5 py-2 font-mono text-[0.62rem] font-medium uppercase tracking-[0.1em] text-ink"
-                style={{ background: CTAG_BG, borderLeft: "3px solid #E2A638" }}
-              >
-                Результат{" "}
-                <b className="font-semibold" style={gradText(GRAD_ACC)}>
-                  +20% → ×2
-                </b>
-              </span>
+              ))}
             </Reveal>
 
             <Reveal delay={0.1} className="mt-8 flex flex-wrap items-center gap-x-7 gap-y-3">
