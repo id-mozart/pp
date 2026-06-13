@@ -382,7 +382,6 @@ export const STORAGE_KEY = "pp-concept";
 
 /** Curated set shown in the switcher (others remain reachable via storage). */
 export const VISIBLE_CONCEPT_IDS: ConceptId[] = [
-  "main5",
   "main3",
   "main4",
   "main2",
