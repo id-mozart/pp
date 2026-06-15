@@ -167,8 +167,12 @@ export function MainHome({ content }: { content?: MainContent } = {}) {
                 className="block h-[2px] w-16 rounded-full"
                 style={{ background: GRAD_GOLD }}
               />
-              <Link href="#formats" className="btn btn-primary mt-6 w-fit">
-                {c.company.cta} <ArrowRight className="h-4 w-4" />
+              <Link
+                href="#formats"
+                className="mt-5 inline-block font-display text-lg font-medium italic transition-transform duration-500 ease-lux hover:translate-x-1.5"
+                style={gradText(GRAD_ACC)}
+              >
+                {c.company.cta} →
               </Link>
             </div>
           </Reveal>
@@ -193,13 +197,13 @@ export function MainHome({ content }: { content?: MainContent } = {}) {
         <div className="container-shell grid items-start gap-12 lg:grid-cols-12 lg:gap-16">
           <Reveal className="lg:sticky lg:top-28 lg:col-span-5">
             <div className="relative">
-              {/* конус прожектора (без сітки, як у консультації) */}
+              {/* м'яке світло за фігурою — без жорстких країв (гасне до прозорого) */}
               <div
                 aria-hidden
-                className="absolute -inset-x-10 -top-12 bottom-0"
+                className="pointer-events-none absolute inset-0"
                 style={{
                   background:
-                    "radial-gradient(60% 70% at 50% 0%, rgba(226,166,56,.16), transparent 70%)",
+                    "radial-gradient(55% 52% at 50% 46%, rgba(226,166,56,.13), transparent 70%)",
                 }}
               />
               {/* фігура на повний зріст */}

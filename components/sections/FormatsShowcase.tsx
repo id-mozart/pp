@@ -181,13 +181,6 @@ export function FormatsShowcase({ lean = false }: { lean?: boolean } = {}) {
                         {card.who}
                       </span>
                     </div>
-
-                    <span
-                      className="mt-4 inline-block font-display text-lg font-medium italic transition-transform duration-500 ease-lux group-hover:translate-x-1.5"
-                      style={gradText(GRAD_ACC)}
-                    >
-                      дізнатися більше →
-                    </span>
                   </div>
                 </Link>
               </RevealItem>
