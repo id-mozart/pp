@@ -27,7 +27,7 @@ export function ClientsWall({
                 клієнти
               </em>
             </h2>
-            <p className="mt-4 max-w-md font-display text-lg italic leading-relaxed text-muted">
+            <p className="mt-4 max-w-md font-display text-lg italic leading-relaxed text-muted xl:max-w-none xl:whitespace-nowrap">
               {clients.subtitle}
             </p>
             {!lean && (

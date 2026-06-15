@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { PageHero } from "@/components/sections/PageHero";
 import { B2BSolutions, B2BApproach } from "@/components/pages/b2b";
+import { ClientsWall } from "@/components/sections/ClientsWall";
 import { ContactForm } from "@/components/sections/ContactForm";
 import { b2b } from "@/lib/content";
 
@@ -28,6 +29,7 @@ export default function B2BPage() {
       />
       <B2BSolutions />
       <B2BApproach />
+      <ClientsWall logoWall lean />
       <ContactForm />
     </>
   );
