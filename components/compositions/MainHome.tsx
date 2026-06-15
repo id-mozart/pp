@@ -62,54 +62,66 @@ export function MainHome({ content }: { content?: MainContent } = {}) {
   const c = content ?? MAIN_CONTENT_DEFAULTS;
   return (
     <>
-      {/* HERO — full-bleed slideshow + right-aligned manifesto */}
-      <section className="relative grain min-h-[78vh] overflow-hidden">
-        <HeroSlideshowBg
-          images={HERO_SLIDES}
-          overlay={
-            <>
-              <div
-                className="absolute inset-0"
-                style={{
-                  background:
-                    "linear-gradient(90deg, rgba(9,9,8,0.45) 0%, rgba(9,9,8,0.66) 44%, rgba(9,9,8,0.96) 100%)",
-                }}
-              />
-              <div
-                className="absolute inset-0"
-                style={{
-                  background:
-                    "linear-gradient(0deg, rgba(9,9,8,0.92) 0%, rgba(9,9,8,0.08) 55%)",
-                }}
-              />
-              <div
-                className="absolute inset-x-0 top-0 h-32"
-                style={{
-                  background:
-                    "linear-gradient(180deg, rgba(9,9,8,0.75) 0%, rgba(9,9,8,0) 100%)",
-                }}
-              />
-              {/* lux vignette — the scene emerges from darkness */}
-              <div
-                className="absolute inset-0"
-                style={{
-                  background:
-                    "radial-gradient(110% 85% at 38% 42%, transparent 38%, rgba(7,7,6,0.74) 100%)",
-                }}
-              />
-              {/* amber shimmer wash (переливи, як у VII) */}
-              <div
-                className="absolute inset-0"
-                style={{
-                  background:
-                    "radial-gradient(52vw 52vw at 88% -8%, rgb(226 166 56 / 0.14), transparent 62%), radial-gradient(46vw 46vw at -6% 104%, rgb(214 106 44 / 0.1), transparent 62%)",
-                }}
-              />
-            </>
-          }
-        />
-        <div className="container-shell relative grid min-h-[78vh] items-center gap-10 pb-28 pt-32 lg:grid-cols-12">
-          <Reveal className="flex flex-col gap-7 lg:col-span-6 lg:col-start-7">
+      {/* HERO — моб.: фото зверху + текст під ним; десктоп: full-bleed з текстом праворуч */}
+      <section className="relative grain overflow-hidden lg:min-h-[78vh]">
+        <div className="relative h-[52vh] w-full overflow-hidden lg:absolute lg:inset-0 lg:h-auto">
+          <HeroSlideshowBg
+            images={HERO_SLIDES}
+            overlay={
+              <>
+                {/* десктоп: важкі скрими під текст поверх фото */}
+                <div
+                  className="absolute inset-0 hidden lg:block"
+                  style={{
+                    background:
+                      "linear-gradient(90deg, rgba(9,9,8,0.45) 0%, rgba(9,9,8,0.66) 44%, rgba(9,9,8,0.96) 100%)",
+                  }}
+                />
+                <div
+                  className="absolute inset-0 hidden lg:block"
+                  style={{
+                    background:
+                      "linear-gradient(0deg, rgba(9,9,8,0.92) 0%, rgba(9,9,8,0.08) 55%)",
+                  }}
+                />
+                {/* lux vignette — десктоп */}
+                <div
+                  className="absolute inset-0 hidden lg:block"
+                  style={{
+                    background:
+                      "radial-gradient(110% 85% at 38% 42%, transparent 38%, rgba(7,7,6,0.74) 100%)",
+                  }}
+                />
+                {/* верхній фейд під шапку */}
+                <div
+                  className="absolute inset-x-0 top-0 h-32"
+                  style={{
+                    background:
+                      "linear-gradient(180deg, rgba(9,9,8,0.75) 0%, rgba(9,9,8,0) 100%)",
+                  }}
+                />
+                {/* моб.: нижній фейд у канву, щоб текст під фото зливався */}
+                <div
+                  className="absolute inset-x-0 bottom-0 h-2/5 lg:hidden"
+                  style={{
+                    background:
+                      "linear-gradient(0deg, rgb(9 9 8) 0%, rgba(9,9,8,0) 100%)",
+                  }}
+                />
+                {/* amber shimmer wash (переливи, як у VII) */}
+                <div
+                  className="absolute inset-0"
+                  style={{
+                    background:
+                      "radial-gradient(52vw 52vw at 88% -8%, rgb(226 166 56 / 0.14), transparent 62%), radial-gradient(46vw 46vw at -6% 104%, rgb(214 106 44 / 0.1), transparent 62%)",
+                  }}
+                />
+              </>
+            }
+          />
+        </div>
+        <div className="container-shell relative grid items-start gap-8 pb-14 pt-8 lg:min-h-[78vh] lg:grid-cols-12 lg:items-center lg:gap-10 lg:pb-28 lg:pt-32">
+          <Reveal className="flex flex-col gap-6 lg:col-span-6 lg:col-start-7 lg:gap-7">
             <span className="eyebrow">{c.hero.eyebrow}</span>
             <h1 className="font-display text-[clamp(2.7rem,6vw,5.4rem)] leading-[1.02] text-ink">
               {c.hero.titleTop}
