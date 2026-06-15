@@ -61,7 +61,7 @@ export function CtaBanner() {
           className="absolute left-6 top-0 h-[3px] w-16 -translate-y-1/2 rounded-full"
           style={{ background: GRAD_GOLD }}
         />
-        <p className="hidden font-display text-base italic leading-snug text-ink sm:block">
+        <p className="hidden font-display text-lg italic leading-snug text-ink sm:block lg:text-xl">
           Готові посилити{" "}
           <em className="not-italic" style={gradText(GRAD_ACC)}>
             свої продажі
