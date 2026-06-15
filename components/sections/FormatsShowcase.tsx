@@ -108,30 +108,30 @@ export function FormatsShowcase({ lean = false }: { lean?: boolean } = {}) {
                 <Link
                   href={card.href}
                   className="group relative block overflow-hidden rounded-[14px] border border-line/60 transition-colors duration-500 hover:border-gold/50"
-                  style={{ aspectRatio: "4 / 5.4", boxShadow: "0 24px 60px rgba(0,0,0,.5)" }}
+                  style={{ aspectRatio: "4 / 5.4", backgroundColor: "#0b0a09", boxShadow: "0 24px 60px rgba(0,0,0,.5)" }}
                 >
-                  {/* photo */}
+                  {/* фото — притиснуте до верху, на повну ширину */}
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src={s.photo}
                     alt=""
-                    className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 ease-lux group-hover:scale-[1.05]"
-                    style={{ objectPosition: s.pos }}
+                    className="absolute inset-x-0 top-0 w-full origin-top transition-transform duration-700 ease-lux group-hover:scale-[1.04]"
                     loading="lazy"
                   />
-                  {/* scrims (як у слайдів) */}
+                  {/* верхній скрим під runhead */}
                   <div
-                    className="absolute inset-x-0 top-0 h-36"
+                    className="absolute inset-x-0 top-0 h-28"
                     style={{
                       background:
-                        "linear-gradient(180deg,rgba(13,9,5,.82) 0%,rgba(13,9,5,.30) 55%,transparent 100%)",
+                        "linear-gradient(180deg,rgba(13,9,5,.78) 0%,rgba(13,9,5,.22) 55%,transparent 100%)",
                     }}
                   />
+                  {/* затемнення вниз — фото зливається у темну основу */}
                   <div
-                    className="absolute inset-x-0 bottom-0 h-[70%]"
+                    className="absolute inset-0"
                     style={{
                       background:
-                        "linear-gradient(0deg,rgba(11,7,4,.86) 0%,rgba(12,8,5,.30) 60%,transparent 100%)",
+                        "linear-gradient(180deg,rgba(11,9,8,0) 30%,rgba(11,9,8,.72) 56%,#0b0a09 76%)",
                     }}
                   />
 

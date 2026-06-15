@@ -60,9 +60,9 @@ export function ClientsWall({
                 style={{ background: GRAD_GOLD }}
               />
               {clients.stats.map((s) => (
-                <div key={s.label} className="p-6 text-center">
+                <div key={s.label} className="px-3 py-6 text-center sm:px-5">
                   <div className="stat-number text-4xl sm:text-5xl">{s.value}</div>
-                  <div className="mt-2 font-mono text-[0.62rem] uppercase tracking-[0.12em] leading-snug text-muted">
+                  <div className="mt-2 font-mono text-[0.62rem] uppercase tracking-[0.06em] leading-snug text-muted">
                     {s.label}
                   </div>
                 </div>
