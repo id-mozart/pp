@@ -13,7 +13,8 @@ import { GRAD_ACC, GRAD_GOLD, CARD_BG, gradText } from "@/lib/ember";
 export function ClientsWall({
   logoWall = false,
   lean = false,
-}: { logoWall?: boolean; lean?: boolean } = {}) {
+  subtitle,
+}: { logoWall?: boolean; lean?: boolean; subtitle?: string } = {}) {
   return (
     <section className="relative grain section-pad" id="clients">
       <div className="container-shell">
@@ -28,7 +29,7 @@ export function ClientsWall({
               </em>
             </h2>
             <p className="mt-4 max-w-md font-display text-lg italic leading-relaxed text-muted xl:max-w-none xl:whitespace-nowrap">
-              {clients.subtitle}
+              {subtitle ?? clients.subtitle}
             </p>
             {!lean && (
               <div className="mt-8 max-w-md">

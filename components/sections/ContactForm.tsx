@@ -16,7 +16,12 @@ import {
 
 type Status = "idle" | "submitting" | "success" | "error";
 
-export function ContactForm() {
+export function ContactForm({
+  title,
+}: {
+  /** Override the left-column heading (defaults to «Поговорімо про ваші продажі»). */
+  title?: React.ReactNode;
+} = {}) {
   const [status, setStatus] = useState<Status>("idle");
   const [topic, setTopic] = useState("");
 
@@ -77,10 +82,14 @@ export function ContactForm() {
                 <Reveal className="flex flex-col gap-5">
                   <span className="eyebrow">{contact.eyebrow}</span>
                   <h2 className="text-[clamp(2rem,3.6vw,3rem)] leading-[1.05] text-ink">
-                    Поговорімо про{" "}
-                    <em className="italic" style={gradText(GRAD_ACC)}>
-                      ваші продажі
-                    </em>
+                    {title ?? (
+                      <>
+                        Поговорімо про{" "}
+                        <em className="italic" style={gradText(GRAD_ACC)}>
+                          ваші продажі
+                        </em>
+                      </>
+                    )}
                   </h2>
                   <p className="max-w-md font-display text-lg italic leading-relaxed text-muted">
                     {contact.body}

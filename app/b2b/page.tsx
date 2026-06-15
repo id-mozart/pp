@@ -29,8 +29,18 @@ export default function B2BPage() {
       />
       <B2BSolutions />
       <B2BApproach />
-      <ClientsWall logoWall lean />
-      <ContactForm />
+      <ClientsWall
+        logoWall
+        lean
+        subtitle="90% клієнтів повертаються та рекомендують нас партнерам."
+      />
+      <ContactForm
+        title={
+          <>
+            Залиште <em className="italic text-gradient-gold">заявку</em>
+          </>
+        }
+      />
     </>
   );
 }

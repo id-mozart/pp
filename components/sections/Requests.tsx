@@ -44,7 +44,7 @@ export function Requests() {
               <em className="italic" style={gradText(GRAD_ACC)}>
                 запитів
               </em>
-              , з яких усе починається
+              , з якими до нас звертаються найчастіше
             </h2>
             <span
               aria-hidden
