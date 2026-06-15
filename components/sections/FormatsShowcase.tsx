@@ -25,8 +25,8 @@ const SHOWCASE: {
         </em>
       </>
     ),
-    photo: "/brand/Tania1-2.webp",
-    pos: "30% 20%",
+    photo: "/brand/format-trainings.jpg",
+    pos: "center 55%",
     result: "+20% → ×5",
   },
   {
@@ -39,8 +39,8 @@ const SHOWCASE: {
         </em>
       </>
     ),
-    photo: "/brand/Tania1-3.webp",
-    pos: "42% 15%",
+    photo: "/brand/format-courses.jpg",
+    pos: "center 42%",
     result: "конверсія 5% → 20–30%",
   },
   {
@@ -53,8 +53,8 @@ const SHOWCASE: {
         </em>
       </>
     ),
-    photo: "/brand/1M6A0522.webp",
-    pos: "center 18%",
+    photo: "/brand/format-mentoring.jpg",
+    pos: "center 42%",
     result: "+20% → ×2",
   },
 ];
