@@ -17,6 +17,7 @@ import "./globals.css";
 import { ConceptProvider } from "@/components/providers/ConceptProvider";
 import { SiteHeader } from "@/components/chrome/SiteHeader";
 import { SiteFooter } from "@/components/chrome/SiteFooter";
+import { CtaBanner } from "@/components/chrome/CtaBanner";
 import { ConceptSwitcher } from "@/components/chrome/ConceptSwitcher";
 import { FloatingContacts } from "@/components/chrome/FloatingContacts";
 import { CookieConsent } from "@/components/chrome/CookieConsent";
@@ -175,6 +176,7 @@ export default function RootLayout({
           </a>
           <SiteHeader />
           <main id="main">{children}</main>
+          <CtaBanner />
           <SiteFooter />
           <ConceptSwitcher />
           <FloatingContacts />

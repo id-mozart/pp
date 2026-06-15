@@ -4,8 +4,8 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
-import { nav } from "@/lib/content";
-import { Menu, Close, ArrowUpRight } from "@/components/ui/icons";
+import { nav, contacts } from "@/lib/content";
+import { Menu, Close, ArrowUpRight, WhatsApp, Telegram } from "@/components/ui/icons";
 import { ModeToggle } from "@/components/chrome/ModeToggle";
 import { GRAD_ACC, GRAD_GOLD, gradText } from "@/lib/ember";
 
@@ -84,15 +84,29 @@ export function SiteHeader() {
             })}
           </nav>
 
-          {/* Right controls */}
-          <div className="flex items-center gap-3">
+          {/* Right controls — акуратні контакти замість кнопки */}
+          <div className="flex items-center gap-2.5">
             <ModeToggle />
-            <Link
-              href="/consultation#book"
-              className="btn btn-primary !px-4 !py-2 text-xs sm:!px-5 sm:!py-2.5 sm:text-sm"
+            <a
+              href={contacts.whatsapp.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={`WhatsApp ${contacts.whatsapp.label}`}
+              title={`WhatsApp · ${contacts.whatsapp.label}`}
+              className="hidden h-10 w-10 place-items-center rounded-full border border-line/70 text-ink transition-colors hover:border-gold/50 hover:text-gold sm:grid"
             >
-              Записатися на консультацію
-            </Link>
+              <WhatsApp className="h-[1.05rem] w-[1.05rem]" />
+            </a>
+            <a
+              href={contacts.telegram.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={`Telegram ${contacts.telegram.label}`}
+              title={`Telegram · ${contacts.telegram.label}`}
+              className="hidden h-10 w-10 place-items-center rounded-full border border-line/70 text-ink transition-colors hover:border-gold/50 hover:text-gold sm:grid"
+            >
+              <Telegram className="h-[1.05rem] w-[1.05rem]" />
+            </a>
             <button
               onClick={() => setMobileOpen(true)}
               aria-label="Відкрити меню"
@@ -156,8 +170,26 @@ export function SiteHeader() {
                 onClick={() => setMobileOpen(false)}
                 className="btn btn-primary mt-8 w-full"
               >
-                Записатися на консультацію <ArrowUpRight className="h-4 w-4" />
+                Залишити заявку <ArrowUpRight className="h-4 w-4" />
               </Link>
+              <div className="mt-6 flex flex-col gap-3">
+                <a
+                  href={contacts.whatsapp.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-3 text-ink/85 transition-colors hover:text-gold"
+                >
+                  <WhatsApp className="h-5 w-5 text-gold" /> {contacts.whatsapp.label}
+                </a>
+                <a
+                  href={contacts.telegram.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-3 text-ink/85 transition-colors hover:text-gold"
+                >
+                  <Telegram className="h-5 w-5 text-gold" /> {contacts.telegram.label}
+                </a>
+              </div>
             </motion.nav>
           </motion.div>
         )}

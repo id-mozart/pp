@@ -960,6 +960,7 @@
 /* /admin — ховаємо маркетинговий хром (хедер/футер/плаваючі кнопки) */
 body:has(#pp-admin) header,
 body:has(#pp-admin) footer,
+body:has(#pp-admin) [data-cta-band],
 body:has(#pp-admin) [class*="fixed"] {
   display: none !important;
 }
