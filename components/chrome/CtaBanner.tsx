@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { ArrowRight } from "@/components/ui/icons";
-import { GRAD_ACC, GRAD_GOLD, CARD_BG, gradText } from "@/lib/ember";
+import { GRAD_ACC, GRAD_GOLD, gradText } from "@/lib/ember";
 
 /**
  * Липкий CTA-банер, що випливає знизу під час прокрутки і ховається, коли
@@ -53,8 +53,12 @@ export function CtaBanner() {
       style={{ marginBottom: "env(safe-area-inset-bottom)" }}
     >
       <div
-        className="relative mx-auto flex max-w-2xl items-center justify-between gap-4 rounded-[14px] border border-line/70 px-5 py-3.5 sm:px-6"
-        style={{ background: CARD_BG, boxShadow: "0 24px 60px rgba(0,0,0,.55)" }}
+        className="relative mx-auto flex max-w-2xl items-center justify-between gap-4 rounded-[14px] border border-line/70 px-5 py-3.5 backdrop-blur-2xl sm:px-6"
+        style={{
+          background:
+            "linear-gradient(160deg,rgba(40,27,14,.58),rgba(20,13,7,.62))",
+          boxShadow: "0 24px 60px rgba(0,0,0,.5)",
+        }}
       >
         <span
           aria-hidden
