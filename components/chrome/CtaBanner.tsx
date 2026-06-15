@@ -47,17 +47,15 @@ export function CtaBanner() {
     <div
       data-cta-band
       aria-hidden={!show}
-      className={`fixed inset-x-0 bottom-0 z-[55] border-t border-line/60 bg-canvas/85 backdrop-blur-xl transition-[transform,opacity] duration-500 ease-lux ${
-        show ? "translate-y-0 opacity-100" : "pointer-events-none translate-y-full opacity-0"
+      className={`fixed inset-x-0 bottom-4 z-[55] px-4 transition-[transform,opacity] duration-500 ease-lux sm:bottom-6 ${
+        show ? "translate-y-0 opacity-100" : "pointer-events-none translate-y-[140%] opacity-0"
       }`}
-      style={{ paddingBottom: "env(safe-area-inset-bottom)" }}
+      style={{ marginBottom: "env(safe-area-inset-bottom)" }}
     >
-      <span
-        aria-hidden
-        className="absolute inset-x-0 top-0 h-px"
-        style={{ background: GRAD_ACC, opacity: 0.5 }}
-      />
-      <div className="container-shell flex items-center justify-between gap-4 py-3 sm:py-3.5 lg:pr-24">
+      <div
+        className="mx-auto flex max-w-2xl items-center justify-between gap-4 rounded-2xl border border-line/60 bg-canvas/90 px-5 py-3 backdrop-blur-xl sm:px-6"
+        style={{ boxShadow: "0 24px 60px rgba(0,0,0,.55)", borderLeft: "3px solid #E2A638" }}
+      >
         <p className="hidden font-display text-base italic leading-snug text-ink sm:block">
           Готові посилити{" "}
           <em className="not-italic" style={gradText(GRAD_ACC)}>

@@ -321,7 +321,7 @@ export interface FormField {
 }
 
 export const contact = {
-  eyebrow: "Зв'язатися",
+  eyebrow: "Контакти",
   title: "Поговорімо про ваші продажі",
   body: "Напишіть, що зараз із вашими продажами, — і Тетяна особисто підкаже, з чого почати.",
   fields: [

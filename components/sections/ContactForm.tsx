@@ -84,9 +84,9 @@ export function ContactForm({
                   <h2 className="text-[clamp(2rem,3.6vw,3rem)] leading-[1.05] text-ink">
                     {title ?? (
                       <>
-                        Поговорімо про{" "}
+                        Звʼяжімося{" "}
                         <em className="italic" style={gradText(GRAD_ACC)}>
-                          ваші продажі
+                          з нами
                         </em>
                       </>
                     )}
