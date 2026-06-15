@@ -51,11 +51,12 @@ function goTo(e: React.MouseEvent, id: string) {
 
 /* ---------- хронометр-рейка (desktop) ---------- */
 
+// Рейка-хронометр: ті самі таймстампи, що й на фазах таймлайну справа.
 const RAIL = [
-  { t: "−00:01", id: "before" },
   { t: "00:00", id: "hour" },
-  { t: "60:01", id: "after" },
-  { t: "61:00", id: "next" },
+  { t: "15:00", id: "hp-1" },
+  { t: "40:00", id: "hp-2" },
+  { t: "60:00", id: "after" },
 ];
 
 function ChronoRail() {
@@ -441,6 +442,10 @@ export function Main5Home() {
                   delay={0.05 * i}
                   className={`relative grid items-center gap-6 pl-10 lg:grid-cols-2 lg:gap-20 lg:pl-0`}
                 >
+                  {/* якір для рейки-хронометра (фази 2 і 3) */}
+                  {i > 0 && (
+                    <span id={`hp-${i}`} aria-hidden className="absolute -top-24 h-2 w-2" />
+                  )}
                   {/* вузол на рейці */}
                   <span
                     aria-hidden
