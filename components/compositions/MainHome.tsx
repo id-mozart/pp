@@ -222,69 +222,56 @@ export function MainHome() {
 
 
       {/* ARCHITECT — людина за методом */}
-      <section className="relative grain border-t border-line/50 bg-surface section-pad">
+      <section className="relative grain border-t border-line/50 section-pad">
         <div className="container-shell grid items-start gap-12 lg:grid-cols-12 lg:gap-16">
           <Reveal className="lg:sticky lg:top-28 lg:col-span-5">
-            <div
-              className="relative overflow-hidden rounded-[14px] border border-line/60"
-              style={{ background: CARD_BG, boxShadow: "0 24px 60px rgba(0,0,0,.5)" }}
-            >
-              {/* blueprint-сітка + бурштинове світіння */}
+            <div className="relative">
+              {/* конус прожектора (без сітки, як у консультації) */}
               <div
-                className="absolute inset-0"
-                style={{
-                  backgroundImage:
-                    "linear-gradient(rgba(82,68,52,.2) 1px,transparent 1px),linear-gradient(90deg,rgba(82,68,52,.2) 1px,transparent 1px)",
-                  backgroundSize: "64px 64px",
-                }}
-              />
-              <div
-                className="absolute inset-0"
+                aria-hidden
+                className="absolute -inset-x-10 -top-12 bottom-0"
                 style={{
                   background:
-                    "radial-gradient(85% 60% at 50% 26%, rgba(226,166,56,.16), transparent 70%)",
+                    "radial-gradient(60% 70% at 50% 0%, rgba(226,166,56,.16), transparent 70%)",
                 }}
               />
-              {/* runhead */}
-              <div className="absolute left-6 right-6 top-5 z-10 flex items-center justify-between font-mono text-[0.7rem] font-medium uppercase tracking-[0.22em]">
-                <span style={gradText(GRAD_ACC)}>Pan&amp;Partners</span>
-                <span
-                  className="h-2 w-2 rounded-full"
-                  style={{ background: GRAD_GOLD }}
-                />
-              </div>
               {/* фігура на повний зріст */}
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src="/brand/Tania4.webp"
                 alt="Тетяна Пан — засновниця Pan&Partners"
-                className="relative z-[1] mx-auto mb-16 mt-16 block w-[66%] max-w-[300px]"
+                className="relative z-[1] mx-auto block w-[72%] max-w-[320px]"
                 loading="lazy"
               />
-              {/* тінь під фігурою */}
+              {/* світло на підлозі + тінь */}
               <div
-                className="absolute inset-x-12 bottom-14 h-8"
+                aria-hidden
+                className="absolute inset-x-10 -bottom-2 h-10"
                 style={{
                   background:
-                    "radial-gradient(50% 100% at 50% 100%, rgba(0,0,0,.5), transparent 70%)",
+                    "radial-gradient(50% 100% at 50% 100%, rgba(226,166,56,.18), transparent 70%)",
                 }}
               />
-              <div className="grain absolute inset-0 opacity-20" />
-              {/* ctag-визнання + підпис */}
-              <div className="absolute inset-x-6 bottom-5 z-10 flex flex-wrap items-center justify-between gap-3">
-                <span
-                  className="inline-flex items-center gap-2 rounded-[10px] border border-line/70 px-3.5 py-2 font-mono text-[0.62rem] font-medium uppercase tracking-[0.1em] text-ink"
-                  style={{ background: CTAG_BG, borderLeft: "3px solid #E2A638" }}
-                >
-                  №2{" "}
-                  <b className="font-semibold" style={gradText(GRAD_ACC)}>
-                    ТОП-тренерів UBA 2023
-                  </b>
-                </span>
-                <span className="font-mono text-[0.62rem] uppercase tracking-widest text-ink/75">
-                  засновниця
-                </span>
-              </div>
+              <div
+                aria-hidden
+                className="absolute inset-x-16 bottom-0 h-8"
+                style={{
+                  background:
+                    "radial-gradient(50% 100% at 50% 100%, rgba(0,0,0,.55), transparent 70%)",
+                }}
+              />
+            </div>
+            {/* визнання — під фігурою */}
+            <div className="mt-7 flex justify-center">
+              <span
+                className="inline-flex items-center gap-2 rounded-[10px] border border-line/70 px-3.5 py-2 font-mono text-[0.62rem] font-medium uppercase tracking-[0.1em] text-ink"
+                style={{ background: CTAG_BG, borderLeft: "3px solid #E2A638" }}
+              >
+                №2{" "}
+                <b className="font-semibold" style={gradText(GRAD_ACC)}>
+                  ТОП-тренерів UBA 2023
+                </b>
+              </span>
             </div>
           </Reveal>
 
