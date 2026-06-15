@@ -34,7 +34,7 @@ const JOURNEY = [
 const FACTS = [
   { v: "15 000+", l: "людей продають за її методом" },
   { v: "6", l: "галузей — від FMCG до B2B-послуг" },
-  { v: "90%", l: "клієнтів продовжують співпрацю" },
+  { v: "№2", l: "у ТОП тренерів України · UBA 2023" },
 ];
 
 const MENTORING_STEPS = [
@@ -231,18 +231,6 @@ export function MainHome({ content }: { content?: MainContent } = {}) {
                     "radial-gradient(50% 100% at 50% 100%, rgba(0,0,0,.55), transparent 70%)",
                 }}
               />
-            </div>
-            {/* визнання — під фігурою */}
-            <div className="mt-7 flex justify-center">
-              <span
-                className="inline-flex items-center gap-2 rounded-[10px] border border-line/70 px-3.5 py-2 font-mono text-[0.62rem] font-medium uppercase tracking-[0.1em] text-ink"
-                style={{ background: CTAG_BG, borderLeft: "3px solid #E2A638" }}
-              >
-                №2{" "}
-                <b className="font-semibold" style={gradText(GRAD_ACC)}>
-                  ТОП-тренерів UBA 2023
-                </b>
-              </span>
             </div>
           </Reveal>
 
