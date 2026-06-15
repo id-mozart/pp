@@ -231,10 +231,12 @@ function Field({
     "w-full rounded-[10px] border border-line/60 bg-[rgba(35,26,18,.55)] px-4 py-3.5 text-ink caret-[#E2A638] placeholder:text-faint/60 transition-[border-color,background-color,box-shadow] duration-300 focus:border-gold/70 focus:bg-[rgba(35,26,18,.8)] focus:outline-none focus:ring-1 focus:ring-gold/40 focus:shadow-[0_10px_30px_-18px_rgba(226,166,56,.45)]";
   return (
     <label className="flex flex-col gap-2">
-      <span className="font-mono text-[0.68rem] uppercase tracking-[0.18em] text-muted">
-        {label}
-        {required && <span className="text-gold"> *</span>}
-      </span>
+      {label && (
+        <span className="font-mono text-[0.68rem] uppercase tracking-[0.18em] text-muted">
+          {label}
+          {required && <span className="text-gold"> *</span>}
+        </span>
+      )}
       {type === "textarea" ? (
         <textarea
           name={name}

@@ -323,13 +323,11 @@ export interface FormField {
 export const contact = {
   eyebrow: "Зв'язатися",
   title: "Поговорімо про ваші продажі",
-  body: "Залиште заявку — Тетяна особисто розбере вашу ситуацію та повернеться з рішенням.",
+  body: "Напишіть, що зараз із вашими продажами, — і Тетяна особисто підкаже, з чого почати.",
   fields: [
-    { name: "name", label: "Ім'я та прізвище", type: "text", placeholder: "Олена Коваленко", required: true },
-    { name: "email", label: "Email", type: "email", placeholder: "mail@example.com", required: true },
-    { name: "phone", label: "Телефон або месенджер (необовʼязково)", type: "tel", placeholder: "+380 … / @telegram", required: false },
-    { name: "company", label: "Компанія (необов'язково)", type: "text", placeholder: "Назва компанії" },
-    { name: "message", label: "Чим ми можемо вам допомогти?", type: "textarea", placeholder: "Коротко опишіть вашу ситуацію та ціль" },
+    { name: "name", label: "Ім'я", type: "text", placeholder: "Олена Коваленко", required: true },
+    { name: "contact", label: "Email або телефон / месенджер", type: "text", placeholder: "mail@example.com · +380 … · @telegram", required: true },
+    { name: "message", label: "", type: "textarea", placeholder: "Коротко опишіть вашу ситуацію та ціль" },
   ] as FormField[],
   submit: "Надіслати заявку",
   success: "Дякуємо! Заявку отримано — ми звʼяжемося з вами найближчим часом.",

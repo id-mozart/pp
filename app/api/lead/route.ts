@@ -46,11 +46,16 @@ export async function POST(req: Request) {
   const email = clip(data.email, 200);
   const phone = clip(data.phone, 100);
   const company = clip(data.company, 200);
+  // Об'єднане поле контакту (email або телефон/месенджер) з простої форми.
+  const contact = clip(data.contact, 200);
   const message = clip(data.message ?? data.description, 2000);
   const topic = clip(data.topic, 200);
   const type = clip(data.type, 50) || "Contact";
 
-  if (!name || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+  const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  // Потрібні імʼя та хоча б один спосіб звʼязку: валідний email (бронювання)
+  // або заповнене обʼєднане поле / телефон (проста форма).
+  if (!name || !(emailValid || contact || phone)) {
     return NextResponse.json({ ok: false, error: "validation" }, { status: 422 });
   }
 
@@ -69,8 +74,9 @@ export async function POST(req: Request) {
   const lines = [
     `🟡 Нова заявка · ${type}`,
     `Імʼя: ${name}`,
-    `Email: ${email}`,
+    email && `Email: ${email}`,
     phone && `Телефон: ${phone}`,
+    contact && `Контакт: ${contact}`,
     company && `Компанія: ${company}`,
     appt && `Слот: ${appt}`,
     topic && `Тема: ${topic}`,
@@ -96,7 +102,7 @@ export async function POST(req: Request) {
     }
   } else {
     // No provider wired yet — keep observability so leads aren't silent.
-    console.log("[lead]", { type, name, email, phone, company, appt, topic, message, at: new Date().toISOString() });
+    console.log("[lead]", { type, name, email, phone, contact, company, appt, topic, message, at: new Date().toISOString() });
   }
 
   return NextResponse.json({ ok: true });
