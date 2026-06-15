@@ -322,10 +322,10 @@ export function Main5Home() {
               />
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                src="/brand/1M6A0522.webp"
+                src="/brand/portrait.png"
                 alt="Тетяна Пан — засновниця Pan&Partners"
                 className="aspect-[4/5] w-full object-cover"
-                style={{ objectPosition: "center 16%" }}
+                style={{ objectPosition: "center 18%" }}
               />
               <div
                 className="absolute inset-x-0 bottom-0 h-[45%]"

@@ -405,10 +405,10 @@ export function MainHome() {
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                src="/brand/Tania5.jpg"
-                alt="Тетяна Пан проводить навчання"
+                src="/brand/portrait.png"
+                alt="Тетяна Пан"
                 className="aspect-[4/5] w-full object-cover"
-                style={{ objectPosition: "46% 24%" }}
+                style={{ objectPosition: "center 18%" }}
                 loading="lazy"
               />
               <div
