@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { insertLead } from "@/lib/db";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -70,6 +71,18 @@ export async function POST(req: Request) {
     }
     appt = `${d} ${t}`;
   }
+
+  // Зберігаємо у вхідні /admin (best-effort; no-op без DATABASE_URL).
+  await insertLead({
+    type,
+    name,
+    contact: contact || null,
+    email: email || null,
+    phone: phone || null,
+    topic: topic || null,
+    appt,
+    message: message || null,
+  });
 
   const lines = [
     `🟡 Нова заявка · ${type}`,

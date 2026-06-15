@@ -11,6 +11,7 @@ import { ContactForm } from "@/components/sections/ContactForm";
 import { HeroSlideshowBg } from "@/components/sections/HeroSlideshowBg";
 import { HERO_SLIDES } from "@/lib/heroSlides";
 import { GRAD_ACC, GRAD_GOLD, CARD_BG, CTAG_BG, gradText } from "@/lib/ember";
+import { MAIN_CONTENT_DEFAULTS, type MainContent } from "@/lib/mainContent";
 
 const PROOF = [
   { v: "25+", l: "років у продажах" },
@@ -57,35 +58,8 @@ const MENTORING_STEPS = [
   },
 ];
 
-/* FAQ — objection handling; answers assembled from the source facts */
-const FAQ = [
-  {
-    q: "З чого почати співпрацю?",
-    a: "З онлайн-консультації 1:1. Одна фокусна година — і ви знаєте вузьке місце своїх продажів, маєте план наступних кроків і конкретні скрипти.",
-  },
-  {
-    q: "Які формати роботи можливі?",
-    a: "Корпоративні тренінги під ваш запит, готові онлайн-курси та наставництво — командне чи індивідуальне, у групах до 4 осіб. Онлайн або офлайн — як зручніше вам.",
-  },
-  {
-    q: "Це підходить лише для B2B?",
-    a: "Наша головна спеціалізація — B2B-продажі та переговори з великими клієнтами. Але та сама система працює і в B2C: будуємо простий продажний процес під вашу реальність.",
-  },
-  {
-    q: "Який результат можна очікувати?",
-    a: "Зростання продажів від +20% до ×5, конверсія з 5% до 20–30%. І показник, яким пишаємося найбільше: 90% клієнтів продовжують співпрацю та рекомендують нас партнерам.",
-  },
-  {
-    q: "Чи є досвід у нашій галузі?",
-    a: "25+ років практики в 6 галузях — від FMCG (Danone, Coca-Cola, «Олімп») до телекому та енергетики (Vodafone, Kyivstar, ДТЕК). Методологію будуємо під ваш бізнес, а не за шаблоном.",
-  },
-  {
-    q: "Без тиску — це як?",
-    a: "Ми не вчимо маніпуляціям і «дотисканню». Система спирається на структуру, підготовку та переговори, після яких клієнт повертається — природно та легко.",
-  },
-];
-
-export function MainHome() {
+export function MainHome({ content }: { content?: MainContent } = {}) {
+  const c = content ?? MAIN_CONTENT_DEFAULTS;
   return (
     <>
       {/* HERO — full-bleed slideshow + right-aligned manifesto */}
@@ -136,11 +110,11 @@ export function MainHome() {
         />
         <div className="container-shell relative grid min-h-[78vh] items-center gap-10 pb-28 pt-32 lg:grid-cols-12">
           <Reveal className="flex flex-col gap-7 lg:col-span-6 lg:col-start-7">
-            <span className="eyebrow">Pan&amp;Partners · метод продажів</span>
+            <span className="eyebrow">{c.hero.eyebrow}</span>
             <h1 className="font-display text-[clamp(2.7rem,6vw,5.4rem)] leading-[1.02] text-ink">
-              Продажі — це не талант.
+              {c.hero.titleTop}
               <br />
-              <em className="italic text-gradient-gold">Це система.</em>
+              <em className="italic text-gradient-gold">{c.hero.titleEm}</em>
             </h1>
             <span
               aria-hidden
@@ -148,15 +122,14 @@ export function MainHome() {
               style={{ background: GRAD_GOLD }}
             />
             <p className="max-w-md font-display text-lg italic leading-relaxed text-ink/85">
-              Метод, що перетворює переговори з B2B-клієнтами на результат, який
-              можна передбачити — і повторити.
+              {c.hero.lead}
             </p>
             <div className="flex flex-wrap gap-3">
               <Link href="/consultation#book" className="btn btn-primary">
-                Запустити систему <ArrowRight className="h-4 w-4" />
+                {c.hero.ctaPrimary} <ArrowRight className="h-4 w-4" />
               </Link>
               <Link href="#formats" className="btn btn-ghost">
-                Як це працює
+                {c.hero.ctaSecondary}
               </Link>
             </div>
           </Reveal>
@@ -167,13 +140,13 @@ export function MainHome() {
       <section id="company" className="relative grain section-pad">
         <div className="container-shell relative grid gap-10 lg:grid-cols-12 lg:gap-16">
           <Reveal className="flex flex-col gap-4 lg:col-span-5">
-            <span className="eyebrow">Pan&amp;Partners · про компанію</span>
+            <span className="eyebrow">{c.company.eyebrow}</span>
             <h2 className="text-[clamp(2rem,4vw,3.2rem)] leading-[1.05] text-ink">
-              Будуємо{" "}
+              {c.company.headTop}{" "}
               <em className="italic" style={gradText(GRAD_ACC)}>
-                системи продажів
+                {c.company.headEm}
               </em>
-              , а не разові тренінги
+              {c.company.headTail}
             </h2>
             <span
               aria-hidden
@@ -183,16 +156,10 @@ export function MainHome() {
           </Reveal>
           <Reveal delay={0.08} className="flex flex-col justify-center gap-5 lg:col-span-7">
             <p className="max-w-xl text-pretty font-display text-xl italic leading-snug text-ink/90">
-              Pan&amp;Partners — українська консалтингова компанія з продажів та
-              переговорів. Ми вчимо команди продавати B2B-клієнтам і впевнено
-              домовлятися, вибудовуємо процес і залишаємося поруч до
-              вимірюваного результату — онлайн та офлайн.
+              {c.company.para1}
             </p>
             <p className="max-w-xl text-pretty text-base leading-relaxed text-muted">
-              Компанію заснувала Тетяна Пан — бізнес-тренерка та експертка з
-              продажів: 25+ років власної практики («Олімп», Danone, Coca-Cola,
-              власні магазини) і 17+ років навчання команд. Працюємо так, як
-              зручно вам: корпоративні тренінги, онлайн-курси, наставництво.
+              {c.company.para2}
             </p>
             <div className="mt-2 max-w-xl">
               <span
@@ -201,7 +168,7 @@ export function MainHome() {
                 style={{ background: GRAD_GOLD }}
               />
               <Link href="#formats" className="btn btn-primary mt-6 w-fit">
-                Обрати спосіб роботи <ArrowRight className="h-4 w-4" />
+                {c.company.cta} <ArrowRight className="h-4 w-4" />
               </Link>
             </div>
           </Reveal>
@@ -238,7 +205,7 @@ export function MainHome() {
               {/* фігура на повний зріст */}
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                src="/brand/Tania4.webp"
+                src={c.architect.image}
                 alt="Тетяна Пан — засновниця Pan&Partners"
                 className="relative z-[1] mx-auto block w-[72%] max-w-[320px]"
                 loading="lazy"
@@ -277,24 +244,18 @@ export function MainHome() {
 
           <div className="lg:col-span-7">
             <Reveal className="flex flex-col gap-4">
-              <span className="eyebrow">Архітектор методу</span>
+              <span className="eyebrow">{c.architect.eyebrow}</span>
               <h2 className="font-display text-[clamp(2rem,4vw,3.2rem)] leading-[1.05] text-ink">
-                Тетяна{" "}
+                {c.architect.nameTop}{" "}
                 <em className="italic" style={gradText(GRAD_ACC)}>
-                  Пан
+                  {c.architect.nameEm}
                 </em>
               </h2>
               <p className="max-w-xl text-pretty text-lg leading-relaxed text-muted">
-                Тетяна не вивчала продажі з книжок — вона пройшла цей шлях сама:
-                продавчинею і керівницею з продажів у «Олімпі», Danone та
-                Coca-Cola, згодом — у власних магазинах і власній консалтинговій
-                компанії. Понад 25 років реальних угод, команд і переговорів.
+                {c.architect.para1}
               </p>
               <p className="max-w-xl text-pretty text-lg leading-relaxed text-muted">
-                А 17 років тому вона почала вчити цього інших. Так особистий
-                досвід став методом Pan&amp;Partners: чітким і структурованим,
-                без тиску й маніпуляцій — щоб результат був очікуваним, а
-                клієнти поверталися.
+                {c.architect.para2}
               </p>
             </Reveal>
 
@@ -309,12 +270,10 @@ export function MainHome() {
                   className="text-pretty font-display text-[clamp(1.45rem,2.4vw,1.95rem)] font-medium italic leading-[1.3]"
                   style={gradText(GRAD_ACC)}
                 >
-                  «Я не вчу тиснути й маніпулювати. Я вчу продавати так, щоб
-                  клієнт повертався — природно та легко, із задоволенням від
-                  результату».
+                  {c.architect.quote}
                 </blockquote>
                 <figcaption className="mt-4 font-mono text-[0.65rem] font-medium uppercase tracking-[0.22em] text-muted">
-                  — Тетяна Пан, засновниця
+                  {c.architect.quoteAuthor}
                 </figcaption>
               </figure>
             </Reveal>
@@ -392,7 +351,7 @@ export function MainHome() {
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                src="/brand/portrait.png"
+                src={c.mentoring.image}
                 alt="Тетяна Пан"
                 className="aspect-[4/5] w-full object-cover"
                 style={{ objectPosition: "center 18%" }}
@@ -439,17 +398,15 @@ export function MainHome() {
 
           <div className="lg:order-1 lg:col-span-7">
             <Reveal className="flex flex-col gap-4">
-              <span className="eyebrow">Особиста робота з Тетяною</span>
+              <span className="eyebrow">{c.mentoring.eyebrow}</span>
               <h2 className="font-display text-[clamp(2rem,4vw,3.2rem)] leading-[1.05] text-ink">
-                Бізнес-
+                {c.mentoring.headTop}
                 <em className="italic" style={gradText(GRAD_ACC)}>
-                  менторинг
+                  {c.mentoring.headEm}
                 </em>
               </h2>
               <p className="max-w-xl text-pretty text-lg leading-relaxed text-muted">
-                Є питання, які не вирішує тренінг для команди: ціна, стратегія
-                переговорів з ключовими клієнтами, ваша власна впевненість. Для
-                них є менторинг: методологія Тетяни, ваші кейси, ваш темп.
+                {c.mentoring.lead}
               </p>
             </Reveal>
 
@@ -498,14 +455,14 @@ export function MainHome() {
 
             <Reveal delay={0.1} className="mt-8 flex flex-wrap items-center gap-x-7 gap-y-3">
               <Link href="/consultation#book" className="btn btn-primary">
-                Записатися на менторинг <ArrowRight className="h-4 w-4" />
+                {c.mentoring.ctaPrimary} <ArrowRight className="h-4 w-4" />
               </Link>
               <a
                 href="#contact"
                 className="font-display text-lg font-medium italic transition-transform duration-500 ease-lux hover:translate-x-1.5"
                 style={gradText(GRAD_ACC)}
               >
-                поставити запитання →
+                {c.mentoring.ctaSecondary}
               </a>
             </Reveal>
           </div>
@@ -544,7 +501,7 @@ export function MainHome() {
               </a>
             </Reveal>
             <RevealGroup className="lg:col-span-8">
-              {FAQ.map((f, i) => (
+              {c.faq.map((f, i) => (
                 <RevealItem key={f.q}>
                   <details className="group border-t border-line/50 py-5 last:border-b">
                     <summary className="flex cursor-pointer list-none items-baseline gap-4 [&::-webkit-details-marker]:hidden">

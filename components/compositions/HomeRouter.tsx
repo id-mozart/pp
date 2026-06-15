@@ -30,12 +30,13 @@ import { MaisonHome } from "@/components/compositions/MaisonHome";
 import { MovementHome } from "@/components/compositions/MovementHome";
 import { MaisonNoirHome } from "@/components/compositions/MaisonNoirHome";
 import type { ConceptId } from "@/lib/concepts";
+import type { MainContent } from "@/lib/mainContent";
 
 /**
  * Concepts whose IDENTITY is the page architecture itself (not just the skin).
  * Everything else falls back to the standard stacked composition.
  */
-const COMPOSITIONS: Partial<Record<ConceptId, () => JSX.Element>> = {
+const COMPOSITIONS: Partial<Record<ConceptId, (props: { content?: MainContent }) => JSX.Element>> = {
   main5: Main5Home,
   main3: Main3Home,
   main4: Main4Home,
@@ -66,8 +67,10 @@ const COMPOSITIONS: Partial<Record<ConceptId, () => JSX.Element>> = {
   maisonnoir: MaisonNoirHome,
 };
 
-export function HomeRouter() {
+export function HomeRouter({ mainContent }: { mainContent?: MainContent } = {}) {
   const { concept } = useConcept();
-  const Composition = COMPOSITIONS[concept] ?? StandardHome;
-  return <Composition />;
+  const Composition: (props: { content?: MainContent }) => JSX.Element =
+    COMPOSITIONS[concept] ?? StandardHome;
+  // Лише версія M читає редагований контент із CMS; решта ігнорують проп.
+  return <Composition content={mainContent} />;
 }

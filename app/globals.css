@@ -957,6 +957,16 @@
   background-size: 64px 64px;
 }
 
+/* /admin — ховаємо маркетинговий хром (хедер/футер/плаваючі кнопки) */
+body:has(#pp-admin) header,
+body:has(#pp-admin) footer,
+body:has(#pp-admin) [class*="fixed"] {
+  display: none !important;
+}
+body:has(#pp-admin) #main {
+  padding-top: 0 !important;
+}
+
 [data-concept="funnel"] {
   /* XXVIII — Воронка · form = content (the page is a sales funnel) */
   --c-canvas: 16 15 12;

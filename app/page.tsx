@@ -1,4 +1,9 @@
 import { HomeRouter } from "@/components/compositions/HomeRouter";
+import { getContent } from "@/lib/db";
+import { mergeMainContent, type MainContentOverride } from "@/lib/mainContent";
+
+// CMS-правки версії M читаються з БД на кожен запит.
+export const dynamic = "force-dynamic";
 
 const jsonLd = {
   "@context": "https://schema.org",
@@ -12,14 +17,16 @@ const jsonLd = {
   slogan: "Продавайте впевнено та з очікуваним результатом.",
 };
 
-export default function HomePage() {
+export default async function HomePage() {
+  const override = await getContent<MainContentOverride>("main");
+  const mainContent = mergeMainContent(override);
   return (
     <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <HomeRouter />
+      <HomeRouter mainContent={mainContent} />
     </>
   );
 }
