@@ -7,6 +7,7 @@ import { ArrowRight } from "@/components/ui/icons";
 import { ClientsWall } from "@/components/sections/ClientsWall";
 import { Testimonials } from "@/components/sections/Testimonials";
 import { BookingCalendar } from "@/components/sections/BookingCalendar";
+import { ArchitectSection } from "@/components/sections/ArchitectSection";
 import { ContactForm } from "@/components/sections/ContactForm";
 import { smoothScrollToEl } from "@/lib/smoothScroll";
 import { GRAD_ACC, GRAD_GOLD, CARD_BG, CTAG_BG, gradText } from "@/lib/ember";
@@ -150,12 +151,6 @@ const HOUR_PHASES = [
   },
 ];
 
-const PERSON_FACTS = [
-  { v: "25+", l: "років у продажах — «Олімп», Danone, Coca-Cola, власні магазини" },
-  { v: "17+", l: "років навчає продавати та вести переговори" },
-  { v: "№2", l: "у ТОП тренерів України — UBA 2023" },
-  { v: "15 000+", l: "учнів застосовують технологію продажів" },
-];
 
 const LEDGER = [
   { v: "5% → 20–30%", l: "зростання конверсії після онлайн-курсів" },
@@ -531,111 +526,8 @@ export function Main5Home() {
         </div>
       </section>
 
-      {/* ХТО ПО ТОЙ БІК ЕКРАНА — Тетяна у прожекторі */}
-      <section id="person" className="relative grain section-pad">
-        <div className="container-shell grid items-center gap-12 lg:grid-cols-12 lg:gap-16">
-          <Reveal delay={0.08} className="relative lg:col-span-5">
-            <div className="relative">
-              {/* конус прожектора */}
-              <div
-                aria-hidden
-                className="absolute -inset-x-10 -top-12 bottom-0"
-                style={{
-                  background:
-                    "radial-gradient(60% 70% at 50% 0%, rgba(226,166,56,.16), transparent 70%)",
-                }}
-              />
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src="/brand/Tania4.webp"
-                alt="Тетяна Пан — засновниця Pan&Partners"
-                className="relative z-[1] mx-auto block w-[72%] max-w-[320px]"
-                loading="lazy"
-              />
-              {/* світло на підлозі */}
-              <div
-                aria-hidden
-                className="absolute inset-x-10 -bottom-2 h-10"
-                style={{
-                  background:
-                    "radial-gradient(50% 100% at 50% 100%, rgba(226,166,56,.18), transparent 70%)",
-                }}
-              />
-              <div
-                aria-hidden
-                className="absolute inset-x-16 bottom-0 h-8"
-                style={{
-                  background:
-                    "radial-gradient(50% 100% at 50% 100%, rgba(0,0,0,.55), transparent 70%)",
-                }}
-              />
-            </div>
-          </Reveal>
-
-          <div className="lg:col-span-7">
-            <Reveal className="flex flex-col gap-4">
-              <span className="eyebrow">Ваші 60 хвилин — з цією людиною</span>
-              <h2 className="font-display text-[clamp(2rem,4.4vw,3.6rem)] leading-[1.05] text-ink">
-                Тетяна{" "}
-                <em className="italic" style={gradText(GRAD_ACC)}>
-                  Пан
-                </em>
-              </h2>
-              <p className="font-mono text-[0.65rem] font-medium uppercase tracking-[0.22em] text-muted">
-                Власниця Pan&amp;Partners · експертка з продажів та переговорів
-              </p>
-            </Reveal>
-
-            <RevealGroup className="mt-9 grid gap-3 sm:grid-cols-2">
-              {PERSON_FACTS.map((f) => (
-                <RevealItem key={f.v}>
-                  <div
-                    className="relative h-full rounded-[14px] border border-line/70 p-5"
-                    style={{ background: CARD_BG }}
-                  >
-                    <span
-                      aria-hidden
-                      className="absolute left-5 top-0 h-[3px] w-10 -translate-y-1/2 rounded-full"
-                      style={{ background: GRAD_GOLD }}
-                    />
-                    <div className="font-display text-[1.7rem] leading-none" style={gradText(GRAD_ACC)}>
-                      {f.v}
-                    </div>
-                    <p className="mt-2 text-sm leading-snug text-muted">{f.l}</p>
-                  </div>
-                </RevealItem>
-              ))}
-            </RevealGroup>
-
-            <Reveal delay={0.08} className="mt-10">
-              <figure className="relative max-w-2xl pl-7">
-                <span
-                  aria-hidden
-                  className="absolute bottom-2 left-0 top-2 w-[3px] rounded-full"
-                  style={{ background: GRAD_GOLD }}
-                />
-                <blockquote
-                  className="text-pretty font-display text-[clamp(1.4rem,2.3vw,1.9rem)] font-medium italic leading-[1.3]"
-                  style={gradText(GRAD_ACC)}
-                >
-                  «Без тиску. Без маніпуляцій. Природно та легко».
-                </blockquote>
-                <figcaption className="mt-4 flex items-end gap-4">
-                  <span
-                    className="text-3xl leading-none text-gold"
-                    style={{ fontFamily: "var(--font-caveat)" }}
-                  >
-                    Тетяна Пан
-                  </span>
-                  <span className="pb-0.5 font-mono text-[0.62rem] uppercase tracking-[0.22em] text-faint">
-                    засновниця
-                  </span>
-                </figcaption>
-              </figure>
-            </Reveal>
-          </div>
-        </div>
-      </section>
+      {/* ХТО ПО ТОЙ БІК ЕКРАНА — той самий блок про Тетяну, що й на головній */}
+      <ArchitectSection id="person" />
 
       {/* 60:01 · ПІСЛЯ ГОДИНИ — леджер результатів */}
       <section id="after" className="relative grain border-t border-line/50 section-pad">
