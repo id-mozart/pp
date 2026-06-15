@@ -47,7 +47,7 @@ export default function PrivacyPage() {
             {sections.map((s, i) => (
               <div
                 key={s.h}
-                className="grid grid-cols-[2.6rem_1fr] border-t border-line/50 py-7"
+                className="grid grid-cols-[2rem_1fr] border-t border-line/50 py-7 sm:grid-cols-[2.6rem_1fr]"
               >
                 <span
                   className="font-mono text-[0.7rem] font-medium tracking-[0.2em]"

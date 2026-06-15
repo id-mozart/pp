@@ -78,7 +78,7 @@ export function ContactForm({
           <div className="overflow-hidden surface">
             <div className="grid lg:grid-cols-2">
               {/* Left — invitation */}
-              <div className="relative grain flex flex-col justify-between gap-10 border-b border-line/60 bg-raised p-8 sm:p-12 lg:border-b-0 lg:border-r">
+              <div className="relative grain flex flex-col justify-between gap-10 border-b border-line/60 bg-raised p-6 sm:p-8 md:p-12 lg:border-b-0 lg:border-r">
                 <Reveal className="flex flex-col gap-5">
                   <span className="eyebrow">{contact.eyebrow}</span>
                   <h2 className="text-[clamp(2rem,3.6vw,3rem)] leading-[1.05] text-ink">
@@ -133,7 +133,7 @@ export function ContactForm({
               </div>
 
               {/* Right — form */}
-              <div className="p-8 sm:p-12">
+              <div className="p-6 sm:p-8 md:p-12">
                 <AnimatePresence mode="wait">
                   {status === "success" ? (
                     <motion.div

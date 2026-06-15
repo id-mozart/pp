@@ -48,7 +48,7 @@ export function PageHero({
           >
             {pill && (
               <span
-                className="inline-flex w-fit items-center gap-2 rounded-[10px] border border-line/70 px-3.5 py-2 font-mono text-[0.62rem] font-medium uppercase tracking-[0.1em] text-ink"
+                className="inline-flex w-fit items-center gap-2 rounded-[10px] border border-line/70 px-3.5 py-2 font-mono text-[0.6rem] font-medium uppercase tracking-[0.1em] text-ink sm:text-[0.62rem]"
                 style={{ background: CTAG_BG, borderLeft: "3px solid #E2A638" }}
               >
                 <span

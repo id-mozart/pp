@@ -253,7 +253,7 @@ export function MainHome({ content }: { content?: MainContent } = {}) {
 
             {/* Цитата засновниці */}
             <Reveal delay={0.08} className="mt-10">
-              <figure className="relative max-w-2xl pl-7">
+              <figure className="relative max-w-2xl pl-4 sm:pl-7">
                 <span
                   className="absolute bottom-2 left-0 top-2 w-[3px] rounded-full"
                   style={{ background: GRAD_GOLD }}

@@ -39,7 +39,7 @@ export function CookieConsent() {
           animate={{ y: 0, opacity: 1 }}
           exit={{ y: 40, opacity: 0 }}
           transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-          className="fixed bottom-4 left-4 right-4 z-[80] mx-auto max-w-md sm:left-6 sm:right-auto"
+          className="fixed bottom-4 left-3 right-3 z-[80] mx-auto max-w-md sm:left-6 sm:right-auto"
           role="dialog"
           aria-label={cookie.title}
         >
@@ -63,7 +63,7 @@ export function CookieConsent() {
             <p className="relative mt-2 text-sm leading-relaxed text-muted">
               {cookie.body}
             </p>
-            <div className="relative mt-4 flex gap-3">
+            <div className="relative mt-4 flex flex-col gap-2 sm:flex-row sm:gap-3">
               <button className="btn btn-primary flex-1 !py-2.5 text-sm" onClick={() => choose("granted")}>
                 {cookie.accept}
               </button>

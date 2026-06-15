@@ -210,7 +210,7 @@ export function BookingCalendar({
                 style={{ background: GRAD_GOLD }}
               />
               <div
-                className="rounded-[14px] border border-line/70 p-6 sm:p-8"
+                className="rounded-[14px] border border-line/70 p-4 sm:p-8"
                 style={{ background: CARD_BG }}
               >
                 <div className="flex items-center justify-between">
@@ -222,11 +222,11 @@ export function BookingCalendar({
                   </span>
                 </div>
 
-                <div className="mt-6 grid grid-cols-7 gap-1.5 text-center">
+                <div className="mt-6 grid grid-cols-7 gap-0.5 text-center sm:gap-1.5">
                   {booking.weekdays.map((w) => (
                     <div
                       key={w}
-                      className="pb-2 font-mono text-[0.65rem] uppercase tracking-wider text-faint"
+                      className="pb-2 font-mono text-[0.7rem] uppercase tracking-wider text-faint"
                     >
                       {w}
                     </div>
@@ -273,7 +273,7 @@ export function BookingCalendar({
                 style={{ background: GRAD_GOLD }}
               />
               <div
-                className="rounded-[14px] border border-line/70 p-6 sm:p-8"
+                className="rounded-[14px] border border-line/70 p-4 sm:p-8"
                 style={{ background: CARD_BG }}
               >
                 <div className="flex items-center justify-between gap-3">
@@ -299,7 +299,7 @@ export function BookingCalendar({
                         key={s.value}
                         onClick={() => setSlot(s.value)}
                         className={[
-                          "flex items-center justify-center gap-1.5 rounded-lg border px-2 py-2.5 text-xs transition-all duration-300",
+                          "flex items-center justify-center gap-1.5 whitespace-nowrap rounded-lg border px-2 py-3 text-xs transition-all duration-300 sm:py-2.5",
                           slot === s.value
                             ? "border-gold bg-gold/15 text-gold"
                             : "border-line/60 text-ink hover:border-gold/50",

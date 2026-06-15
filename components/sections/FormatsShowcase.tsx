@@ -100,7 +100,7 @@ export function FormatsShowcase({ lean = false }: { lean?: boolean } = {}) {
           )}
         </Reveal>
 
-        <RevealGroup className="grid gap-6 md:grid-cols-3">
+        <RevealGroup className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {formats.cards.map((card, i) => {
             const s = SHOWCASE[i % SHOWCASE.length];
             return (

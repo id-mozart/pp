@@ -48,7 +48,7 @@ export function B2BExperience() {
                 className="flex flex-col gap-7 rounded-[14px] border border-line/70 p-8"
                 style={{ background: CARD_BG, boxShadow: "0 24px 60px rgba(0,0,0,.5)" }}
               >
-                <div className="grid grid-cols-2 gap-6">
+                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-6">
                   <Stat value="25+" label="років у B2B" />
                   <Stat value="€500–700K+" label="оборот клієнтів / міс" />
                 </div>
