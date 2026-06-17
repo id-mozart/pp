@@ -4,8 +4,6 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { Reveal, RevealGroup, RevealItem } from "@/components/ui/Reveal";
 import { ArrowRight } from "@/components/ui/icons";
-import { ClientsWall } from "@/components/sections/ClientsWall";
-import { Testimonials } from "@/components/sections/Testimonials";
 import { BookingCalendar } from "@/components/sections/BookingCalendar";
 import { ArchitectSection } from "@/components/sections/ArchitectSection";
 import { ContactForm } from "@/components/sections/ContactForm";
@@ -57,7 +55,7 @@ const RAIL = [
   { t: "00:00", id: "hour" },
   { t: "15:00", id: "hp-1" },
   { t: "40:00", id: "hp-2" },
-  { t: "60:00", id: "after" },
+  { t: "60:00", id: "book" },
 ];
 
 function ChronoRail() {
@@ -151,63 +149,6 @@ const HOUR_PHASES = [
   },
 ];
 
-
-const LEDGER = [
-  { v: "5% → 20–30%", l: "зростання конверсії після онлайн-курсів" },
-  { v: "+20% → ×5", l: "максимальне зафіксоване зростання продажів" },
-  { v: "90%", l: "клієнтів продовжують співпрацю та рекомендують" },
-];
-
-const PATHS = [
-  {
-    kicker: "Тренінги",
-    title: (
-      <>
-        Корпоративні{" "}
-        <em className="italic" style={gradText(GRAD_ACC)}>
-          тренінги
-        </em>
-      </>
-    ),
-    photo: "/brand/Tania1-2.webp",
-    pos: "30% 20%",
-    result: "+20% → ×5",
-    who: "Для керівників і команд — на ваших реальних кейсах.",
-    href: "/b2b",
-  },
-  {
-    kicker: "Курси",
-    title: (
-      <>
-        Онлайн-
-        <em className="italic" style={gradText(GRAD_ACC)}>
-          курси
-        </em>
-      </>
-    ),
-    photo: "/brand/Tania1-3.webp",
-    pos: "42% 15%",
-    result: "5% → 20–30%",
-    who: "Для власників МСБ і менеджерів — застосовуєте вже сьогодні.",
-    href: "/courses",
-  },
-  {
-    kicker: "Менторинг",
-    title: (
-      <>
-        Менторинг та{" "}
-        <em className="italic" style={gradText(GRAD_ACC)}>
-          коучинг
-        </em>
-      </>
-    ),
-    photo: "/brand/1M6A0522.webp",
-    pos: "center 18%",
-    result: "+20% → ×2",
-    who: "Особисто з Тетяною — індивідуально або в групі до 4 осіб.",
-    href: "/consultation",
-  },
-];
 
 const HONEST_FAQ = [
   {
@@ -528,144 +469,6 @@ export function Main5Home() {
 
       {/* ХТО ПО ТОЙ БІК ЕКРАНА — той самий блок про Тетяну, що й на головній */}
       <ArchitectSection id="person" />
-
-      {/* 60:01 · ПІСЛЯ ГОДИНИ — леджер результатів */}
-      <section id="after" className="relative grain border-t border-line/50 section-pad">
-        <div className="container-shell">
-          <Reveal className="flex flex-col gap-4">
-            <MinuteMark>60:01 · Що змінюється далі</MinuteMark>
-            <span className="eyebrow">Результати тих, хто почав з однієї години</span>
-          </Reveal>
-          <RevealGroup className="mt-10 max-w-3xl">
-            {LEDGER.map((r) => (
-              <RevealItem key={r.l}>
-                <div className="flex flex-col gap-1 border-t border-line/50 py-6 last:border-b sm:flex-row sm:items-baseline sm:gap-8">
-                  <div
-                    className="shrink-0 font-display text-[clamp(1.9rem,3.4vw,2.7rem)] leading-none sm:w-72"
-                    style={gradText(GRAD_ACC)}
-                  >
-                    {r.v}
-                  </div>
-                  <p className="text-base leading-relaxed text-muted">{r.l}</p>
-                </div>
-              </RevealItem>
-            ))}
-          </RevealGroup>
-          <Reveal delay={0.08} className="mt-8 flex flex-col gap-3">
-            <p className="font-mono text-[0.6rem] uppercase tracking-[0.18em] text-faint">
-              Джерела: рейтинг UBA 2023 · внутрішня статистика проєктів Pan&amp;Partners
-            </p>
-            <p className="max-w-xl font-display text-lg italic leading-relaxed text-muted">
-              Це не магія однієї розмови — це система, яка починається з
-              правильної діагностики.
-            </p>
-          </Reveal>
-        </div>
-      </section>
-
-      {/* СВІДЧЕННЯ — голоси клієнтів (спільний компонент) */}
-      <Testimonials />
-
-      {/* ДОСВІД НАВПРОТИ ВАС — стіна логотипів */}
-      <ClientsWall logoWall />
-
-      {/* 61:00 · ЩО ДАЛІ — три шляхи після години */}
-      <section id="next" className="relative grain border-t border-line/50 bg-surface section-pad">
-        <div className="container-shell">
-          <Reveal className="flex flex-col gap-4">
-            <MinuteMark>61:00 · Що далі після години</MinuteMark>
-            <h2 className="max-w-3xl text-[clamp(2rem,4vw,3.2rem)] leading-[1.05] text-ink">
-              Консультація — це двері.{" "}
-              <em className="italic" style={gradText(GRAD_ACC)}>
-                За ними — три шляхи
-              </em>
-            </h2>
-            <p className="max-w-xl font-display text-lg italic leading-relaxed text-muted">
-              Якщо після години захочеться йти далі — є три глибини занурення.
-              Але всі вони починаються з одного й того самого кроку.
-            </p>
-          </Reveal>
-
-          <RevealGroup className="mt-12 grid gap-6 md:grid-cols-3">
-            {PATHS.map((p, i) => (
-              <RevealItem key={p.kicker}>
-                <Link
-                  href={p.href}
-                  className="group relative block overflow-hidden rounded-[14px] border border-line/60 transition-colors duration-500 hover:border-gold/50"
-                  style={{ aspectRatio: "4 / 5.2", boxShadow: "0 24px 60px rgba(0,0,0,.5)" }}
-                >
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src={p.photo}
-                    alt=""
-                    className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 ease-lux group-hover:scale-[1.05]"
-                    style={{ objectPosition: p.pos }}
-                    loading="lazy"
-                  />
-                  <div
-                    className="absolute inset-x-0 top-0 h-36"
-                    style={{
-                      background:
-                        "linear-gradient(180deg,rgba(13,9,5,.82) 0%,rgba(13,9,5,.30) 55%,transparent 100%)",
-                    }}
-                  />
-                  <div
-                    className="absolute inset-x-0 bottom-0 h-[72%]"
-                    style={{
-                      background:
-                        "linear-gradient(0deg,rgba(11,7,4,.88) 0%,rgba(12,8,5,.30) 60%,transparent 100%)",
-                    }}
-                  />
-                  <div className="absolute left-6 right-6 top-5 flex items-center justify-between font-mono text-[0.7rem] font-medium uppercase tracking-[0.22em]">
-                    <span style={gradText(GRAD_ACC)}>
-                      0{i + 1} — {p.kicker}
-                    </span>
-                    <span className="h-2 w-2 rounded-full" style={{ background: GRAD_GOLD }} />
-                  </div>
-                  <div
-                    className="absolute inset-x-4 bottom-4 rounded-[14px] border border-line/70 p-6"
-                    style={{ background: CARD_BG }}
-                  >
-                    <span
-                      aria-hidden
-                      className="absolute left-6 top-0 h-[3px] w-16 -translate-y-1/2 rounded-full"
-                      style={{ background: GRAD_GOLD }}
-                    />
-                    <h3 className="font-display text-[1.55rem] font-medium leading-[1.1] tracking-[-0.02em] text-ink">
-                      {p.title}
-                    </h3>
-                    <p className="mt-3 font-display text-[0.95rem] italic leading-snug text-muted">
-                      {p.who}
-                    </p>
-                    <div className="mt-5 flex flex-wrap gap-2">
-                      <span
-                        className="inline-flex items-center gap-2 rounded-[10px] border border-line/70 px-3.5 py-2 font-mono text-[0.62rem] font-medium uppercase tracking-[0.1em] text-ink"
-                        style={{ background: CTAG_BG, borderLeft: "3px solid #E2A638" }}
-                      >
-                        Результат{" "}
-                        <b className="font-semibold" style={gradText(GRAD_ACC)}>
-                          {p.result}
-                        </b>
-                      </span>
-                    </div>
-                    <div className="mt-5 border-t border-line/60 pt-4">
-                      <span className="font-mono text-[0.6rem] font-medium uppercase tracking-[0.16em] text-faint">
-                        Початок — та сама перша година
-                      </span>
-                    </div>
-                  </div>
-                </Link>
-              </RevealItem>
-            ))}
-          </RevealGroup>
-
-          <Reveal delay={0.1} className="mt-10 flex justify-center">
-            <a href="#book" onClick={(e) => goTo(e, "book")} className="btn btn-primary">
-              Почати з години <ArrowRight className="h-4 w-4" />
-            </a>
-          </Reveal>
-        </div>
-      </section>
 
       {/* ЧЕСНІ ВІДПОВІДІ — чотири заперечення перед слотом */}
       <section id="faq" className="relative grain section-pad">
