@@ -497,10 +497,9 @@ export const consultation = {
     pickSlotFirst: "Спочатку оберіть слот часу.",
     formLabel: "Ваші дані",
     fields: [
-      { name: "full_name", label: "Ім'я та прізвище", type: "text", placeholder: "Ім'я та прізвище", required: true },
-      { name: "email", label: "Email", type: "email", placeholder: "Email", required: true },
-      { name: "phone", label: "Телефон", type: "tel", placeholder: "Телефон (необов'язково)" },
-      { name: "description", label: "Запит", type: "textarea", placeholder: "Що хочете вирішити? (необов'язково, але корисно)" },
+      { name: "full_name", label: "Ім'я", type: "text", placeholder: "Олена Коваленко", required: true },
+      { name: "contact", label: "Email або телефон / месенджер", type: "text", placeholder: "mail@example.com · +380 … · @telegram", required: true },
+      { name: "message", label: "", type: "textarea", placeholder: "Коротко опишіть вашу ситуацію та ціль" },
     ] as FormField[],
     submit: "Підтвердити запит на бронювання",
     note: "Після запиту ми підтверджуємо час особисто — у відповідь на email або в месенджері.",

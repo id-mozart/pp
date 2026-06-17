@@ -149,25 +149,6 @@ const HOUR_PHASES = [
 ];
 
 
-const HONEST_FAQ = [
-  {
-    q: "Це продажний дзвінок під виглядом консультації?",
-    a: "Ні. Без тиску й без маніпуляцій: за 60 хвилин ви отримуєте план дій і скрипти — незалежно від того, чи працюватимемо ми далі.",
-  },
-  {
-    q: "Моя ніша специфічна — спрацює?",
-    a: "25+ років продажів, 6 галузей — від FMCG до телекому та енергетики. Розбір будується на ваших реальних кейсах, а не на шаблоні.",
-  },
-  {
-    q: "Що я матиму на руках після дзвінка?",
-    a: "Простий план наступних кроків і конкретні скрипти, які можна застосувати того ж дня.",
-  },
-  {
-    q: "Мені потрібен тренінг для команди, а не консультація.",
-    a: "Тим більше почніть із години: діагностика покаже, який формат дасть результат — тренінг, курс чи менторинг.",
-  },
-];
-
 /* ---------- композиція ---------- */
 
 export function Main5Home() {
@@ -468,41 +449,6 @@ export function Main5Home() {
 
       {/* ХТО ПО ТОЙ БІК ЕКРАНА — той самий блок про Тетяну, що й на головній */}
       <ArchitectSection id="person" />
-
-      {/* ЧЕСНІ ВІДПОВІДІ — чотири заперечення перед слотом */}
-      <section id="faq" className="relative grain section-pad">
-        <div className="container-shell">
-          <Reveal className="flex flex-col gap-4">
-            <span className="eyebrow">Перед тим, як обрати слот</span>
-            <h2 className="text-[clamp(2rem,4vw,3.2rem)] leading-[1.05] text-ink">
-              Чесні{" "}
-              <em className="italic" style={gradText(GRAD_ACC)}>
-                відповіді
-              </em>
-            </h2>
-          </Reveal>
-          <RevealGroup className="mt-10 grid gap-4 md:grid-cols-2">
-            {HONEST_FAQ.map((f) => (
-              <RevealItem key={f.q}>
-                <div
-                  className="relative h-full rounded-[14px] border border-line/70 p-7"
-                  style={{ background: CARD_BG }}
-                >
-                  <span
-                    aria-hidden
-                    className="absolute left-7 top-0 h-[3px] w-12 -translate-y-1/2 rounded-full"
-                    style={{ background: GRAD_GOLD }}
-                  />
-                  <p className="font-display text-xl font-medium italic leading-snug text-ink">
-                    «{f.q}»
-                  </p>
-                  <p className="mt-3 text-base leading-relaxed text-muted">{f.a}</p>
-                </div>
-              </RevealItem>
-            ))}
-          </RevealGroup>
-        </div>
-      </section>
 
       {/* РАМПА + ОБЕРІТЬ СВОЮ ГОДИНУ — кульмінація (#book усередині) */}
       <Ramp />

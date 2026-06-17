@@ -334,28 +334,37 @@ export function BookingCalendar({
                     aria-hidden="true"
                     className="pointer-events-none absolute -left-[9999px] h-0 w-0 opacity-0"
                   />
-                  {booking.fields.map((f) =>
-                    f.type === "textarea" ? (
-                      <textarea
-                        key={`${f.name}-${topic}`}
-                        name={f.name}
-                        rows={3}
-                        required={f.required}
-                        placeholder={f.placeholder}
-                        defaultValue={topic ? `Запит: ${topic} — ` : undefined}
-                        className={`${FIELD_CLS} resize-none text-sm`}
-                      />
-                    ) : (
-                      <input
-                        key={f.name}
-                        type={f.type}
-                        name={f.name}
-                        required={f.required}
-                        placeholder={f.placeholder}
-                        className={`${FIELD_CLS} text-sm`}
-                      />
-                    ),
-                  )}
+                  {booking.fields.map((f) => (
+                    <label
+                      key={f.name === "message" ? `message-${topic}` : f.name}
+                      className="flex flex-col gap-2"
+                    >
+                      {f.label && (
+                        <span className="font-mono text-[0.68rem] uppercase tracking-[0.18em] text-muted">
+                          {f.label}
+                          {f.required && <span className="text-gold"> *</span>}
+                        </span>
+                      )}
+                      {f.type === "textarea" ? (
+                        <textarea
+                          name={f.name}
+                          rows={4}
+                          required={f.required}
+                          placeholder={f.placeholder}
+                          defaultValue={topic ? `Запит: ${topic} — ` : undefined}
+                          className={`${FIELD_CLS} resize-none`}
+                        />
+                      ) : (
+                        <input
+                          type={f.type}
+                          name={f.name}
+                          required={f.required}
+                          placeholder={f.placeholder}
+                          className={FIELD_CLS}
+                        />
+                      )}
+                    </label>
+                  ))}
                   <p className="text-xs text-faint">
                     {slot && day
                       ? `Обрано: ${fmtShort.format(day)}, ${slot}`
