@@ -6,7 +6,6 @@ import { Reveal, RevealGroup, RevealItem } from "@/components/ui/Reveal";
 import { ArrowRight } from "@/components/ui/icons";
 import { BookingCalendar } from "@/components/sections/BookingCalendar";
 import { ArchitectSection } from "@/components/sections/ArchitectSection";
-import { ContactForm } from "@/components/sections/ContactForm";
 import { smoothScrollToEl } from "@/lib/smoothScroll";
 import { GRAD_ACC, GRAD_GOLD, CARD_BG, CTAG_BG, gradText } from "@/lib/ember";
 
@@ -518,9 +517,6 @@ export function Main5Home() {
         }
         lead="Оберіть день, потім час. Поле «Запит» — необовʼязкове, але корисне."
       />
-
-      {/* запасний канал — класична форма */}
-      <ContactForm />
 
       {/* ФІНАЛ-МАНІФЕСТ — завіса */}
       <section className="relative grain overflow-hidden">
