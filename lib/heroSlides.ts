@@ -15,7 +15,14 @@ export interface HeroSlide {
 }
 
 export const HERO_SLIDES: HeroSlide[] = [
-  { src: "/brand/Tania3.webp", position: "10% center" },
+  {
+    src: "/brand/Tania3.webp",
+    // mobile: zoom & pin on Tania (far-left), щоб вона була крупно, а не порожній фон праворуч;
+    // desktop: full-bleed framing as before.
+    position: "11% 26%",
+    className:
+      "scale-[1.5] origin-[13%_28%] lg:scale-100 lg:origin-center lg:![object-position:10%_50%]",
+  },
   { src: "/brand/Tania1-2.webp", position: "32% center" },
   {
     src: "/brand/Tania1-3.webp",
