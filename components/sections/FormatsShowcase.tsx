@@ -118,12 +118,19 @@ export function FormatsShowcase({ lean = false }: { lean?: boolean } = {}) {
                   className="group relative block overflow-hidden rounded-[14px] border border-line/60 transition-colors duration-500 hover:border-gold/50"
                   style={{ aspectRatio: "4 / 5.4", backgroundColor: "#0b0a09", boxShadow: "0 24px 60px rgba(0,0,0,.5)" }}
                 >
-                  {/* фото — притиснуте до верху, на повну ширину */}
+                  {/* фото — притиснуте до верху; на вузьких екранах підняте вище,
+                      нижній край розчиняється маскою в темну основу */}
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src={s.photo}
                     alt=""
-                    className="absolute inset-x-0 top-0 w-full origin-top transition-transform duration-700 ease-lux group-hover:scale-[1.04]"
+                    className="absolute inset-x-0 top-0 w-full origin-top -translate-y-[9%] transition-transform duration-700 ease-lux group-hover:scale-[1.04] xl:translate-y-0"
+                    style={{
+                      maskImage:
+                        "linear-gradient(180deg,#000 46%,rgba(0,0,0,0.55) 66%,transparent 82%)",
+                      WebkitMaskImage:
+                        "linear-gradient(180deg,#000 46%,rgba(0,0,0,0.55) 66%,transparent 82%)",
+                    }}
                     loading="lazy"
                   />
                   {/* верхній скрим під runhead */}
@@ -139,7 +146,7 @@ export function FormatsShowcase({ lean = false }: { lean?: boolean } = {}) {
                     className="absolute inset-0"
                     style={{
                       background:
-                        "linear-gradient(180deg,rgba(11,9,8,0) 30%,rgba(11,9,8,.72) 56%,#0b0a09 76%)",
+                        "linear-gradient(180deg,rgba(11,9,8,0) 26%,rgba(11,9,8,.6) 48%,#0b0a09 66%)",
                     }}
                   />
 
