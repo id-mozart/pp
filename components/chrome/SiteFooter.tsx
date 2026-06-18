@@ -1,15 +1,19 @@
+"use client";
+
 import Link from "next/link";
 import { WhatsApp, Telegram } from "@/components/ui/icons";
 import { GRAD_ACC, gradText } from "@/lib/ember";
 import { FooterLeadLink } from "@/components/chrome/FooterLeadLink";
-import { getLocale } from "@/lib/i18n/server";
-import { getDictionary } from "@/lib/i18n/dictionaries";
-import { withLocale } from "@/lib/i18n/config";
+import {
+  useContent,
+  useUi,
+  useLocalizedHref,
+} from "@/components/providers/LocaleProvider";
 
 export function SiteFooter() {
-  const locale = getLocale();
-  const { content, ui } = getDictionary(locale);
-  const { brand, footer, contacts } = content;
+  const { brand, footer, contacts } = useContent();
+  const ui = useUi();
+  const localized = useLocalizedHref();
   return (
     <footer className="relative overflow-hidden bg-surface">
       <div className="hairline absolute inset-x-0 top-0" />
@@ -18,7 +22,7 @@ export function SiteFooter() {
         <div className="grid gap-12 lg:grid-cols-[1.4fr_1fr_1fr_1.2fr]">
           {/* Brand */}
           <div>
-            <Link href={withLocale("/", locale)} className="wordmark font-display text-2xl tracking-tight text-ink">
+            <Link href={localized("/")} className="wordmark font-display text-2xl tracking-tight text-ink">
               Pan<span className="italic text-gold">&amp;</span>Partners
             </Link>
             <p className="mt-4 max-w-xs font-display text-base italic leading-relaxed text-muted">
@@ -35,7 +39,7 @@ export function SiteFooter() {
               <ul className="mt-4 space-y-2.5">
                 {col.links.map((l) => (
                   <li key={l.href}>
-                    <Link href={withLocale(l.href, locale)} className="lux-link text-sm text-muted">
+                    <Link href={localized(l.href)} className="lux-link text-sm text-muted">
                       {l.label}
                     </Link>
                   </li>

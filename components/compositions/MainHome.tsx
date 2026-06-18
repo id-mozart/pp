@@ -19,11 +19,11 @@ const PROOF_VALUES = ["25+", "17+", "90%", "15 000+", "№2", "6"];
 
 const MENTORING_NUMBERS = ["01", "02", "03"];
 
-export function MainHome({ content }: { content?: MainContent } = {}) {
+export function MainHome(_props: { content?: MainContent } = {}) {
   const ui = useUi();
-  const fallback = useMainContent();
+  // Reactive locale content (server-passed prop would be stale on a client switch).
+  const c = useMainContent();
   const localized = useLocalizedHref();
-  const c = content ?? fallback;
   const PROOF = PROOF_VALUES.map((v, i) => ({ v, l: ui.home.proofLabels[i] }));
   const MENTORING_STEPS = MENTORING_NUMBERS.map((n, i) => ({
     n,

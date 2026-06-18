@@ -11,6 +11,7 @@ import {
 import { useRouter, usePathname } from "next/navigation";
 import {
   LOCALE_COOKIE,
+  LOCALE_HTML_LANG,
   localeFromPathname,
   withLocale,
   type Locale,
@@ -83,6 +84,15 @@ export function LocaleProvider({
     };
   }, [pathname, locale]);
 
+  // Keep <html lang> in sync on switch (server only set the initial value).
+  useEffect(() => {
+    try {
+      document.documentElement.lang = LOCALE_HTML_LANG[locale];
+    } catch {
+      /* ignore */
+    }
+  }, [locale]);
+
   const href = useCallback((path: string) => withLocale(path, locale), [locale]);
 
   const switchLocale = useCallback(
@@ -93,7 +103,10 @@ export function LocaleProvider({
       } catch {
         /* ignore */
       }
-      // Swap content instantly, then update the URL without a full reload.
+      // Swap content instantly (all display is client-reactive) and update the URL
+      // without a full reload. The rewrite-based locale routing makes Next treat the
+      // locales as the same route, so server components don't re-render on switch —
+      // hence every locale-dependent piece reads from this context.
       loadClientDictionary(next).then((d) => {
         setState({ locale: next, dict: d });
         router.push(withLocale(pathname || "/", next));
