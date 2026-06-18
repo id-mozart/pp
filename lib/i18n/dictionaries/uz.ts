@@ -101,7 +101,7 @@ export const uz: Dictionary = {
         {
           number: "02",
           title: "Onlayn kurslar",
-          summary: "Tayyor sotuv kurslari — bugundan qoʻllay boshlaysiz.",
+          summary: "Tayyor onlayn sotuv kurslari — bilimlarni bugundanoq amalda qoʻllaysiz.",
           who: "Egalar, menejerlar, rahbarlar",
           result: "Konversiyaning 5% dan 20–30% gacha oʻsishi",
           how: "Tez joriy etish uchun video, materiallar va topshiriqlar",
@@ -111,7 +111,7 @@ export const uz: Dictionary = {
         {
           number: "03",
           title: "Mentorlik va kouching",
-          summary: "Yakkama-yakka yoki 4 kishigacha kichik guruhlarda — oʻqitish va keyslar tahlili.",
+          summary: "Yakkama-yakka yoki 4 kishigacha guruhlarda — oʻqitish va keyslar tahlili.",
           who: "Egalar va rahbarlar",
           result: "Sotuvning +20% dan ×2 gacha oʻsishi",
           how: "Sotuv metodologiyasi, biznes-keyslar tahlili va sessiyalar oraligʻidagi qoʻllab-quvvatlash",

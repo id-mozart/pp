@@ -91,7 +91,7 @@ export const es: Dictionary = {
         {
           number: "01",
           title: "Formación corporativa",
-          summary: "Formación a tu medida, no de catálogo, basada en tus casos reales.",
+          summary: "Formación a tu medida, no de catálogo, basada en tus casos y retos reales.",
           who: "Directores y equipos comerciales",
           result: "Crecimiento de ventas de +20% a ×5, conversión hasta ×2",
           how: "Creación de la metodología y desarrollo de las habilidades que dan resultado",
@@ -101,7 +101,7 @@ export const es: Dictionary = {
         {
           number: "02",
           title: "Cursos online",
-          summary: "Cursos de ventas listos para empezar a aplicar hoy mismo.",
+          summary: "Cursos de ventas listos para empezar a aplicarlos hoy mismo en tu equipo.",
           who: "Propietarios, comerciales, directivos",
           result: "Crecimiento de la conversión del 5% al 20–30%",
           how: "Vídeos, materiales y tareas prácticas para una implementación rápida",
@@ -111,7 +111,7 @@ export const es: Dictionary = {
         {
           number: "03",
           title: "Mentoría y coaching",
-          summary: "De forma individual o en grupos pequeños de hasta 4 personas: formación y análisis de casos.",
+          summary: "Individual o en grupos de hasta 4 personas: formación y análisis de casos.",
           who: "Propietarios y directivos",
           result: "Crecimiento de ventas de +20% a ×2",
           how: "Metodología de ventas, análisis de casos de negocio y apoyo entre sesiones",

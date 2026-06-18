@@ -91,7 +91,7 @@ export const en: Dictionary = {
         {
           number: "01",
           title: "Corporate training",
-          summary: "Training built around your needs — not off the shelf, but on your real cases.",
+          summary: "Training built around your needs — on your real cases, not off the shelf.",
           who: "Sales leaders and teams",
           result: "Sales growth from +20% to ×5, conversion up to ×2",
           how: "Building the methodology and the skills that deliver results",
@@ -101,7 +101,7 @@ export const en: Dictionary = {
         {
           number: "02",
           title: "Online courses",
-          summary: "Ready-made sales courses — start applying them today.",
+          summary: "Ready-made online sales courses — start applying them in practice today.",
           who: "Owners, managers, and leaders",
           result: "Conversion growth from 5% to 20–30%",
           how: "Video, materials, and assignments for fast implementation",
@@ -111,7 +111,7 @@ export const en: Dictionary = {
         {
           number: "03",
           title: "Mentoring and coaching",
-          summary: "One-on-one or in small groups of up to 4 — training and case reviews.",
+          summary: "One-on-one or in small groups of up to four — training and case reviews.",
           who: "Owners and leaders",
           result: "Sales growth from +20% to ×2",
           how: "Sales methodology, business-case reviews, and support between sessions",
