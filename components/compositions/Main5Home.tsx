@@ -1,7 +1,5 @@
 "use client";
 
-import Link from "next/link";
-import { useEffect, useState } from "react";
 import { useUi } from "@/components/providers/LocaleProvider";
 import { Reveal, RevealGroup, RevealItem } from "@/components/ui/Reveal";
 import { ArrowRight } from "@/components/ui/icons";
@@ -48,69 +46,6 @@ function goTo(e: React.MouseEvent, id: string) {
   smoothScrollToEl(el);
 }
 
-/* ---------- хронометр-рейка (desktop) ---------- */
-
-// Рейка-хронометр: ті самі таймстампи, що й на фазах таймлайну справа.
-const RAIL = [
-  { t: "00:00", id: "hour" },
-  { t: "15:00", id: "hp-1" },
-  { t: "40:00", id: "hp-2" },
-  { t: "60:00", id: "book" },
-];
-
-function ChronoRail() {
-  const [active, setActive] = useState<string>("");
-
-  useEffect(() => {
-    const io = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((en) => {
-          if (en.isIntersecting) setActive(en.target.id);
-        });
-      },
-      { rootMargin: "-35% 0px -55% 0px" },
-    );
-    RAIL.forEach((r) => {
-      const el = document.getElementById(r.id);
-      if (el) io.observe(el);
-    });
-    return () => io.disconnect();
-  }, []);
-
-  return (
-    <nav
-      aria-label="Хвилини сесії"
-      className="fixed left-7 top-1/2 z-30 hidden -translate-y-1/2 flex-col gap-6 2xl:flex"
-    >
-      {RAIL.map((r) => {
-        const on = active === r.id;
-        return (
-          <a
-            key={r.id}
-            href={`#${r.id}`}
-            onClick={(e) => goTo(e, r.id)}
-            className="group flex items-center gap-2.5"
-          >
-            <span
-              className="h-1.5 w-1.5 rounded-full transition-all duration-500"
-              style={{
-                background: on ? "#E2A638" : "rgba(82,68,52,.8)",
-                boxShadow: on ? "0 0 10px rgba(226,166,56,.8)" : "none",
-              }}
-            />
-            <span
-              className={`font-mono text-[0.62rem] tracking-[0.2em] transition-colors duration-500 ${on ? "" : "text-faint group-hover:text-muted"}`}
-              style={on ? gradText(GRAD_ACC) : undefined}
-            >
-              {r.t}
-            </span>
-          </a>
-        );
-      })}
-    </nav>
-  );
-}
-
 /* ---------- дані ---------- */
 
 /* Таймкоди фаз — не текст, лишаються на module scope (паруються з ui.consult.phases) */
@@ -142,8 +77,6 @@ export function Main5Home() {
 
   return (
     <>
-      <ChronoRail />
-
       {/* HERO «60:00» — одна година, один CTA */}
       <section className="relative grain overflow-hidden">
         {/* гігантський контурний хронометр на тлі */}
@@ -302,7 +235,7 @@ export function Main5Home() {
           <Reveal className="flex flex-col gap-3">
             <MinuteMark>{ui.consult.minuteMark0}</MinuteMark>
             <span className="eyebrow">{ui.consult.hourEyebrow}</span>
-            <h2 className="max-w-3xl text-[clamp(1.7rem,3.2vw,2.6rem)] leading-[1.05] text-ink">
+            <h2 className="text-[clamp(1.5rem,2.8vw,2.4rem)] leading-[1.1] text-ink lg:whitespace-nowrap">
               {ui.consult.hourTitlePre}
               <em className="italic" style={gradText(GRAD_ACC)}>
                 {ui.consult.hourTitleEm}
@@ -311,13 +244,31 @@ export function Main5Home() {
           </Reveal>
 
           {/* 3 фази в ряд — компактно, на один екран */}
-          <div className="relative mt-9">
+          <div className="relative mt-16 lg:mt-24">
             {/* горизонтальна рейка-хронометр (десктоп) */}
             <span
               aria-hidden
               className="absolute inset-x-0 top-[9px] hidden h-[2px] rounded-full md:block"
               style={{ background: GRAD_GOLD, opacity: 0.35 }}
             />
+            {/* флажок — фініш рейки (60:00) */}
+            <span
+              aria-hidden
+              className="absolute right-0 top-[10px] hidden -translate-y-full md:block"
+            >
+              <svg viewBox="0 0 14 18" className="h-[18px] w-[14px]" fill="none">
+                <line
+                  x1="12.25"
+                  y1="0"
+                  x2="12.25"
+                  y2="18"
+                  stroke="#E2A638"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                />
+                <path d="M12.25 1.5 L2 4.5 L12.25 7.5 Z" fill="#E2A638" />
+              </svg>
+            </span>
             <RevealGroup className="grid gap-6 md:grid-cols-3 lg:gap-8">
               {HOUR_PHASES.map((p, i) => (
                 <RevealItem key={p.title}>
@@ -353,7 +304,7 @@ export function Main5Home() {
           </div>
 
           {/* що на руках */}
-          <Reveal delay={0.1} className="mt-14 lg:mt-20">
+          <Reveal delay={0.1} className="mt-24 lg:mt-32">
             <div
               className="relative flex flex-col items-start justify-between gap-6 rounded-[14px] border border-line/70 p-7 sm:p-9 lg:flex-row lg:items-center"
               style={{ background: CARD_BG, boxShadow: "0 24px 60px rgba(0,0,0,.5)" }}
