@@ -102,7 +102,7 @@ export const uz: Dictionary = {
           number: "02",
           title: "Onlayn kurslar",
           summary: "Tayyor sotuv kurslari — bugundan qoʻllay boshlaysiz.",
-          who: "KOB egalari, menejerlar va rahbarlar",
+          who: "Egalar, menejerlar, rahbarlar",
           result: "Konversiyaning 5% dan 20–30% gacha oʻsishi",
           how: "Tez joriy etish uchun video, materiallar va topshiriqlar",
           href: "/courses",

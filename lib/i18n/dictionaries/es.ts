@@ -102,7 +102,7 @@ export const es: Dictionary = {
           number: "02",
           title: "Cursos online",
           summary: "Cursos de ventas listos para empezar a aplicar hoy mismo.",
-          who: "Propietarios de pymes, comerciales, directivos",
+          who: "Propietarios, comerciales, directivos",
           result: "Crecimiento de la conversión del 5% al 20–30%",
           how: "Vídeos, materiales y tareas prácticas para una implementación rápida",
           href: "/courses",

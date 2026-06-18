@@ -105,10 +105,14 @@ export function FormatsShowcase({ lean = false }: { lean?: boolean } = {}) {
         </Reveal>
 
         <RevealGroup className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {formats.cards.map((card, i) => {
-            const s = SHOWCASE[i % SHOWCASE.length];
+          {/* Порядок показу: тренінги → менторинг → курси (2-га і 3-тя послуги місцями) */}
+          {[0, 2, 1].map((idx, pos) => {
+            const card = formats.cards[idx];
+            if (!card) return null;
+            const s = SHOWCASE[idx];
+            const number = String(pos + 1).padStart(2, "0");
             return (
-              <RevealItem key={card.number}>
+              <RevealItem key={idx}>
                 <Link
                   href={localized(card.href)}
                   className="group relative block overflow-hidden rounded-[14px] border border-line/60 transition-colors duration-500 hover:border-gold/50"
@@ -142,7 +146,7 @@ export function FormatsShowcase({ lean = false }: { lean?: boolean } = {}) {
                   {/* runhead-індекс */}
                   <div className="absolute left-6 right-6 top-5 flex items-center justify-between font-mono text-[0.7rem] font-medium uppercase tracking-[0.22em]">
                     <span style={gradText(GRAD_ACC)}>
-                      {card.number} — {s.kicker}
+                      {number} — {s.kicker}
                     </span>
                     <span className="h-2 w-2 rounded-full" style={{ background: GRAD_GOLD }} />
                   </div>

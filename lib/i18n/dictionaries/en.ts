@@ -102,7 +102,7 @@ export const en: Dictionary = {
           number: "02",
           title: "Online courses",
           summary: "Ready-made sales courses — start applying them today.",
-          who: "SMB owners, managers, and leaders",
+          who: "Owners, managers, and leaders",
           result: "Conversion growth from 5% to 20–30%",
           how: "Video, materials, and assignments for fast implementation",
           href: "/courses",
