@@ -13,7 +13,6 @@ import {
   DEFAULT_MODE,
   MODE_STORAGE_KEY,
   STORAGE_KEY,
-  isConceptId,
   isMode,
   type ConceptId,
   type Mode,
@@ -55,20 +54,14 @@ export function ConceptProvider({ children }: { children: React.ReactNode }) {
 
   // Sync from the value the no-flash script already applied / localStorage.
   useEffect(() => {
-    const fromDom = document.documentElement.getAttribute("data-concept");
-    let stored: string | null = null;
+    // Версія зафіксована на DEFAULT_CONCEPT (main) — перемикач прибрано.
+    setConceptState(DEFAULT_CONCEPT);
+    document.documentElement.setAttribute("data-concept", DEFAULT_CONCEPT);
     try {
-      stored = localStorage.getItem(STORAGE_KEY);
+      localStorage.setItem(STORAGE_KEY, DEFAULT_CONCEPT);
     } catch {
       /* ignore */
     }
-    const initial = isConceptId(stored)
-      ? stored
-      : isConceptId(fromDom)
-        ? fromDom
-        : DEFAULT_CONCEPT;
-    setConceptState(initial);
-    document.documentElement.setAttribute("data-concept", initial);
 
     const modeFromDom = document.documentElement.getAttribute("data-mode");
     let storedMode: string | null = null;

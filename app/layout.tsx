@@ -18,15 +18,12 @@ import { ConceptProvider } from "@/components/providers/ConceptProvider";
 import { SiteHeader } from "@/components/chrome/SiteHeader";
 import { SiteFooter } from "@/components/chrome/SiteFooter";
 import { CtaBanner } from "@/components/chrome/CtaBanner";
-import { ConceptSwitcher } from "@/components/chrome/ConceptSwitcher";
 import { FloatingContacts } from "@/components/chrome/FloatingContacts";
 import { CookieConsent } from "@/components/chrome/CookieConsent";
 import {
   DEFAULT_CONCEPT,
   DEFAULT_MODE,
-  STORAGE_KEY,
   MODE_STORAGE_KEY,
-  CONCEPT_IDS,
 } from "@/lib/concepts";
 
 const spectral = Spectral({
@@ -142,10 +139,8 @@ export const viewport: Viewport = {
   initialScale: 1,
 };
 
-/** Inline, render-blocking: apply persisted concept before first paint (no FOUC). */
-const noFlash = `(function(){try{var d=document.documentElement;var k="${STORAGE_KEY}",v=localStorage.getItem(k),ok=${JSON.stringify(
-  CONCEPT_IDS,
-)};if(v&&ok.indexOf(v)>-1){d.setAttribute("data-concept",v);}var mv=localStorage.getItem("${MODE_STORAGE_KEY}");if(mv==="light"||mv==="dark"){d.setAttribute("data-mode",mv);}}catch(e){}})();`;
+/** Inline, render-blocking: apply persisted light/dark mode before first paint (no FOUC). Версія завжди main. */
+const noFlash = `(function(){try{var d=document.documentElement;var mv=localStorage.getItem("${MODE_STORAGE_KEY}");if(mv==="light"||mv==="dark"){d.setAttribute("data-mode",mv);}}catch(e){}})();`;
 
 export default function RootLayout({
   children,
@@ -178,7 +173,6 @@ export default function RootLayout({
           <main id="main">{children}</main>
           <CtaBanner />
           <SiteFooter />
-          <ConceptSwitcher />
           <FloatingContacts />
           <CookieConsent />
         </ConceptProvider>

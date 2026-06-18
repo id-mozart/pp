@@ -331,12 +331,12 @@ export function Main5Home() {
       </section>
 
       {/* 00:00–60:00 · ХВИЛИНА ЗА ХВИЛИНОЮ — ядро сторінки */}
-      <section id="hour" className="relative grain border-t border-line/50 bg-surface section-pad">
+      <section id="hour" className="relative grain border-t border-line/50 bg-surface py-14 lg:py-20">
         <div className="container-shell">
-          <Reveal className="flex flex-col gap-4">
+          <Reveal className="flex flex-col gap-3">
             <MinuteMark>00:00 · Хвилина за хвилиною</MinuteMark>
             <span className="eyebrow">Що відбувається за 60 хвилин</span>
-            <h2 className="max-w-3xl text-[clamp(2rem,4vw,3.2rem)] leading-[1.05] text-ink">
+            <h2 className="max-w-3xl text-[clamp(1.7rem,3.2vw,2.6rem)] leading-[1.05] text-ink">
               Це не «знайомство». Це{" "}
               <em className="italic" style={gradText(GRAD_ACC)}>
                 робоча сесія
@@ -344,76 +344,71 @@ export function Main5Home() {
             </h2>
           </Reveal>
 
-          {/* таймлайн із золотою рейкою */}
-          <div className="relative mt-12">
+          {/* 3 фази в ряд — компактно, на один екран */}
+          <div className="relative mt-9">
+            {/* горизонтальна рейка-хронометр (десктоп) */}
             <span
               aria-hidden
-              className="absolute bottom-6 left-[7px] top-2 w-[2px] rounded-full lg:left-1/2 lg:-translate-x-1/2"
-              style={{ background: GRAD_GOLD, opacity: 0.5 }}
+              className="absolute inset-x-0 top-[9px] hidden h-[2px] rounded-full md:block"
+              style={{ background: GRAD_GOLD, opacity: 0.35 }}
             />
-            <div className="flex flex-col gap-12 lg:gap-16">
+            <RevealGroup className="grid gap-6 md:grid-cols-3 lg:gap-8">
               {HOUR_PHASES.map((p, i) => (
-                <Reveal
-                  key={p.title}
-                  delay={0.05 * i}
-                  className={`relative grid items-center gap-6 pl-10 lg:grid-cols-2 lg:gap-20 lg:pl-0`}
-                >
-                  {/* якір для рейки-хронометра (фази 2 і 3) */}
-                  {i > 0 && (
-                    <span id={`hp-${i}`} aria-hidden className="absolute -top-24 h-2 w-2" />
-                  )}
-                  {/* вузол на рейці */}
-                  <span
-                    aria-hidden
-                    className="absolute left-0 top-2 grid h-4 w-4 place-items-center rounded-full border border-gold/50 lg:left-1/2 lg:-translate-x-1/2"
-                    style={{ background: "#0b0a09" }}
-                  >
-                    <span className="h-1.5 w-1.5 rounded-full" style={{ background: GRAD_GOLD }} />
-                  </span>
-                  <div className={i % 2 ? "lg:order-2 lg:pl-14" : "lg:pr-14 lg:text-right"}>
-                    <p
-                      className="font-mono text-[0.7rem] font-medium tracking-[0.22em]"
-                      style={gradText(GRAD_ACC)}
-                    >
-                      {p.time}
-                    </p>
-                    <h3 className="mt-3 font-display text-[1.7rem] font-medium leading-tight text-ink">
-                      {p.title}
-                    </h3>
-                    <p className={`mt-3 max-w-md text-base leading-relaxed text-muted ${i % 2 ? "" : "lg:ml-auto"}`}>
-                      {p.text}
-                    </p>
-                  </div>
-                  <div className={i % 2 ? "lg:order-1 lg:pr-14" : "lg:pl-14"}>
+                <RevealItem key={p.title}>
+                  <div id={i > 0 ? `hp-${i}` : undefined} className="relative">
+                    <div className="flex items-center gap-2.5">
+                      <span
+                        aria-hidden
+                        className="grid h-[18px] w-[18px] shrink-0 place-items-center rounded-full border border-gold/50"
+                        style={{ background: "#0b0a09" }}
+                      >
+                        <span
+                          className="h-1.5 w-1.5 rounded-full"
+                          style={{ background: GRAD_GOLD }}
+                        />
+                      </span>
+                      <p
+                        className="font-mono text-[0.66rem] font-medium tracking-[0.2em]"
+                        style={gradText(GRAD_ACC)}
+                      >
+                        {p.time}
+                      </p>
+                    </div>
                     <div
-                      className="relative overflow-hidden rounded-[14px] border border-line/60"
-                      style={{ boxShadow: "0 24px 60px rgba(0,0,0,.5)" }}
+                      className="relative mt-4 overflow-hidden rounded-[14px] border border-line/60"
+                      style={{ boxShadow: "0 18px 50px rgba(0,0,0,.5)" }}
                     >
                       {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img
                         src={p.photo}
                         alt=""
                         aria-hidden
-                        className="aspect-[16/9] w-full object-cover"
+                        className="aspect-[16/10] w-full object-cover"
                         loading="lazy"
                       />
                       <div
                         className="absolute inset-0"
                         style={{
                           background:
-                            "linear-gradient(0deg,rgba(11,7,4,.55) 0%,rgba(12,8,5,.12) 55%,rgba(13,9,5,.3) 100%)",
+                            "linear-gradient(0deg,rgba(11,7,4,.5) 0%,rgba(12,8,5,.1) 55%,rgba(13,9,5,.28) 100%)",
                         }}
                       />
                       <div className="grain absolute inset-0 opacity-20" />
                     </div>
+                    <h3 className="mt-4 font-display text-[1.35rem] font-medium leading-tight text-ink">
+                      {p.title}
+                    </h3>
+                    <p className="mt-2 text-sm leading-relaxed text-muted">
+                      {p.text}
+                    </p>
                   </div>
-                </Reveal>
+                </RevealItem>
               ))}
-            </div>
+            </RevealGroup>
           </div>
 
           {/* що на руках */}
-          <Reveal delay={0.1} className="mt-14">
+          <Reveal delay={0.1} className="mt-8">
             <div
               className="relative flex flex-col items-start justify-between gap-6 rounded-[14px] border border-line/70 p-7 sm:p-9 lg:flex-row lg:items-center"
               style={{ background: CARD_BG, boxShadow: "0 24px 60px rgba(0,0,0,.5)" }}
