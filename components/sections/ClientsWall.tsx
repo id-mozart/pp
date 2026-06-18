@@ -72,7 +72,7 @@ export function ClientsWall({
         </div>
 
         {logoWall ? (
-          /* Logo wall — монохромна плитка логотипів (плейсхолдери до заміни) */
+          /* Logo wall — монохромна плитка реальних клієнтів */
           <RevealGroup className="mt-16 grid grid-cols-3 items-center gap-x-8 gap-y-12 sm:grid-cols-4 lg:grid-cols-5">
             {clients.logoTiles.map((logo) => (
               <RevealItem key={logo.name}>
