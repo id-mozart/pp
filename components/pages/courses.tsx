@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import { useContent, useUi } from "@/components/providers/LocaleProvider";
 import { Reveal, RevealGroup, RevealItem } from "@/components/ui/Reveal";

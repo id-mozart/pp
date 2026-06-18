@@ -1,3 +1,5 @@
+"use client";
+
 import { useContent, useUi } from "@/components/providers/LocaleProvider";
 import { Reveal, RevealGroup, RevealItem } from "@/components/ui/Reveal";
 import { Check } from "@/components/ui/icons";
