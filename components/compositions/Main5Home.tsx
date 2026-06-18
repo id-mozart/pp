@@ -403,55 +403,6 @@ export function Main5Home() {
         }
         lead={ui.consult.chooseLead}
       />
-
-      {/* ФІНАЛ-МАНІФЕСТ — завіса */}
-      <section className="relative grain overflow-hidden">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src="/brand/Tania1-2.webp"
-          alt=""
-          aria-hidden
-          className="absolute inset-0 h-full w-full object-cover opacity-30"
-          style={{ objectPosition: "30% 25%" }}
-          loading="lazy"
-        />
-        <div
-          aria-hidden
-          className="absolute inset-0"
-          style={{
-            background:
-              "linear-gradient(180deg, rgba(9,9,8,.97) 0%, rgba(9,9,8,.72) 45%, rgba(9,9,8,.97) 100%)",
-          }}
-        />
-        <div className="container-shell relative flex flex-col items-center gap-7 py-28 text-center lg:py-36">
-          <p
-            className="max-w-4xl text-balance font-display text-[clamp(1.9rem,4.6vw,3.6rem)] font-medium italic leading-[1.15]"
-            style={gradText(GRAD_GOLD)}
-          >
-            {ui.consult.manifesto1}
-            <br />
-            {ui.consult.manifesto2}
-          </p>
-          <p className="font-display text-lg italic text-ink/85">
-            {ui.consult.manifesto3}
-          </p>
-          <span
-            className="text-4xl leading-none text-gold"
-            style={{ fontFamily: "var(--font-caveat)" }}
-          >
-            {ui.consult.signature}
-          </span>
-          <a
-            href="#book"
-            onClick={(e) => goTo(e, "book")}
-            className="font-display text-lg font-medium italic transition-transform duration-500 ease-lux hover:-translate-y-0.5"
-            style={gradText(GRAD_ACC)}
-          >
-            {ui.consult.finalCta}
-          </a>
-        </div>
-        <Ramp />
-      </section>
     </>
   );
 }
