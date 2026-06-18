@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { useUi } from "@/components/providers/LocaleProvider";
 import { Reveal, RevealGroup, RevealItem } from "@/components/ui/Reveal";
 import { ArrowRight, Target, Dialogue, Compass } from "@/components/ui/icons";
-import { BookingCalendar } from "@/components/sections/BookingCalendar";
+import { ContactForm } from "@/components/sections/ContactForm";
 import { ArchitectSection } from "@/components/sections/ArchitectSection";
 import { smoothScrollToEl } from "@/lib/smoothScroll";
 import { GRAD_ACC, GRAD_GOLD, CARD_BG, CTAG_BG, gradText } from "@/lib/ember";
@@ -380,9 +380,10 @@ export function Main5Home() {
       {/* ХТО ПО ТОЙ БІК ЕКРАНА — той самий блок про Тетяну, що й на головній */}
       <ArchitectSection id="person" />
 
-      {/* РАМПА + ОБЕРІТЬ СВОЮ ГОДИНУ — кульмінація (#book усередині) */}
+      {/* РАМПА + ФОРМА ЗАЯВКИ (та сама, що на головній; #book для CTA) */}
       <Ramp />
-      <BookingCalendar
+      <ContactForm
+        id="book"
         title={
           <>
             {ui.consult.chooseTitlePre}
@@ -391,7 +392,6 @@ export function Main5Home() {
             </em>
           </>
         }
-        lead={ui.consult.chooseLead}
       />
     </>
   );

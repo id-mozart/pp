@@ -18,9 +18,12 @@ type Status = "idle" | "submitting" | "success" | "error";
 
 export function ContactForm({
   title,
+  id = "contact",
 }: {
   /** Override the left-column heading (defaults to «Поговорімо про ваші продажі»). */
   title?: React.ReactNode;
+  /** Section anchor id (defaults to "contact"; consultation page uses "book"). */
+  id?: string;
 } = {}) {
   const { contact, contacts } = useContent();
   const ui = useUi();
@@ -70,7 +73,7 @@ export function ContactForm({
   }
 
   return (
-    <section id="contact" className="section-pad">
+    <section id={id} className="section-pad">
       <div className="container-shell">
         <div className="relative">
           <span
