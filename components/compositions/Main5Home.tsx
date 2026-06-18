@@ -347,25 +347,25 @@ export function Main5Home() {
               {HOUR_PHASES.map((p, i) => (
                 <RevealItem key={p.title}>
                   <div id={i > 0 ? `hp-${i}` : undefined} className="relative">
-                    <div className="flex items-center gap-2.5">
+                    {/* точка — лишається на лінії */}
+                    <span
+                      aria-hidden
+                      className="grid h-[18px] w-[18px] shrink-0 place-items-center rounded-full border border-gold/50"
+                      style={{ background: "#0b0a09" }}
+                    >
                       <span
-                        aria-hidden
-                        className="grid h-[18px] w-[18px] shrink-0 place-items-center rounded-full border border-gold/50"
-                        style={{ background: "#0b0a09" }}
-                      >
-                        <span
-                          className="h-1.5 w-1.5 rounded-full"
-                          style={{ background: GRAD_GOLD }}
-                        />
-                      </span>
-                      <p
-                        className="font-mono text-[0.66rem] font-medium tracking-[0.2em]"
-                        style={gradText(GRAD_ACC)}
-                      >
-                        {p.time}
-                      </p>
-                    </div>
-                    <h3 className="mt-5 font-display text-[1.45rem] font-medium leading-tight text-ink">
+                        className="h-1.5 w-1.5 rounded-full"
+                        style={{ background: GRAD_GOLD }}
+                      />
+                    </span>
+                    {/* діапазон — зміщено вниз, над назвою, щоб рейка не перетинала цифри */}
+                    <p
+                      className="mt-6 font-mono text-[0.66rem] font-medium tracking-[0.2em]"
+                      style={gradText(GRAD_ACC)}
+                    >
+                      {p.time}
+                    </p>
+                    <h3 className="mt-2 font-display text-[1.45rem] font-medium leading-tight text-ink">
                       {p.title}
                     </h3>
                     <p className="mt-3 max-w-sm text-[0.95rem] leading-relaxed text-muted">
