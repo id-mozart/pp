@@ -160,7 +160,7 @@ export function FormatsShowcase({ lean = false }: { lean?: boolean } = {}) {
                       className="absolute left-6 top-0 h-[3px] w-16 -translate-y-1/2 rounded-full"
                       style={{ background: GRAD_GOLD }}
                     />
-                    <h3 className="font-display text-[1.65rem] font-medium leading-[1.1] tracking-[-0.02em] text-ink">
+                    <h3 className="whitespace-nowrap font-display text-[1.3rem] font-medium leading-[1.1] tracking-[-0.03em] text-ink sm:text-[1.05rem] lg:text-[clamp(1.1rem,1.7vw,1.5rem)]">
                       {s.title}
                     </h3>
                     <p className="mt-3 font-display text-[0.98rem] italic leading-snug text-muted">
