@@ -3,7 +3,7 @@
  * Site supports 4 languages with prefixed URLs: /uk, /ru, /en, /es.
  */
 
-export const LOCALES = ["uk", "ru", "en", "es"] as const;
+export const LOCALES = ["uk", "ru", "en", "es", "uz"] as const;
 export type Locale = (typeof LOCALES)[number];
 export const DEFAULT_LOCALE: Locale = "uk";
 
@@ -13,6 +13,7 @@ export const LOCALE_NAMES: Record<Locale, string> = {
   ru: "Русский",
   en: "English",
   es: "Español",
+  uz: "Oʻzbekcha",
 };
 
 /** Short 2-letter marker for the compact switcher trigger. */
@@ -21,6 +22,7 @@ export const LOCALE_SHORT: Record<Locale, string> = {
   ru: "RU",
   en: "EN",
   es: "ES",
+  uz: "UZ",
 };
 
 /** <html lang> value. */
@@ -29,6 +31,7 @@ export const LOCALE_HTML_LANG: Record<Locale, string> = {
   ru: "ru",
   en: "en",
   es: "es",
+  uz: "uz",
 };
 
 /** BCP-47 tag for Intl.* (dates, numbers). */
@@ -37,6 +40,7 @@ export const LOCALE_INTL: Record<Locale, string> = {
   ru: "ru-RU",
   en: "en-US",
   es: "es-ES",
+  uz: "uz-UZ",
 };
 
 /** OpenGraph locale. */
@@ -45,6 +49,7 @@ export const LOCALE_OG: Record<Locale, string> = {
   ru: "ru_RU",
   en: "en_US",
   es: "es_ES",
+  uz: "uz_UZ",
 };
 
 export const LOCALE_COOKIE = "NEXT_LOCALE";
