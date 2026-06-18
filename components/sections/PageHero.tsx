@@ -1,8 +1,11 @@
+"use client";
+
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { Reveal } from "@/components/ui/Reveal";
 import { ArrowRight } from "@/components/ui/icons";
 import { GRAD_ACC, GRAD_GOLD, CTAG_BG, gradText } from "@/lib/ember";
+import { useUi } from "@/components/providers/LocaleProvider";
 
 interface CTA {
   label: string;
@@ -30,6 +33,7 @@ export function PageHero({
   image?: string;
   children?: ReactNode;
 }) {
+  const ui = useUi();
   return (
     <section className="relative grain overflow-hidden pb-16 pt-36 lg:pt-44">
       {/* статичні янтарні переливи (як на Main) */}
@@ -117,7 +121,7 @@ export function PageHero({
                 />
                 <div className="grain absolute inset-0 opacity-20" />
                 <div className="absolute left-6 right-6 top-5 flex items-center justify-between font-mono text-[0.7rem] font-medium uppercase tracking-[0.22em]">
-                  <span style={gradText(GRAD_ACC)}>Pan&amp;Partners</span>
+                  <span style={gradText(GRAD_ACC)}>{ui.pageHero.runhead}</span>
                   <span
                     className="h-2 w-2 rounded-full"
                     style={{ background: GRAD_GOLD }}

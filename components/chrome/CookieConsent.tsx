@@ -2,11 +2,12 @@
 
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { cookie } from "@/lib/content";
+import { useContent } from "@/components/providers/LocaleProvider";
 
 const KEY = "pp-cookie-consent";
 
 export function CookieConsent() {
+  const { cookie } = useContent();
   const [show, setShow] = useState(false);
 
   useEffect(() => {

@@ -1,10 +1,15 @@
 import Link from "next/link";
-import { brand, footer, contacts } from "@/lib/content";
 import { WhatsApp, Telegram } from "@/components/ui/icons";
 import { GRAD_ACC, gradText } from "@/lib/ember";
 import { FooterLeadLink } from "@/components/chrome/FooterLeadLink";
+import { getLocale } from "@/lib/i18n/server";
+import { getDictionary } from "@/lib/i18n/dictionaries";
+import { withLocale } from "@/lib/i18n/config";
 
 export function SiteFooter() {
+  const locale = getLocale();
+  const { content, ui } = getDictionary(locale);
+  const { brand, footer, contacts } = content;
   return (
     <footer className="relative overflow-hidden bg-surface">
       <div className="hairline absolute inset-x-0 top-0" />
@@ -13,7 +18,7 @@ export function SiteFooter() {
         <div className="grid gap-12 lg:grid-cols-[1.4fr_1fr_1fr_1.2fr]">
           {/* Brand */}
           <div>
-            <Link href="/" className="wordmark font-display text-2xl tracking-tight text-ink">
+            <Link href={withLocale("/", locale)} className="wordmark font-display text-2xl tracking-tight text-ink">
               Pan<span className="italic text-gold">&amp;</span>Partners
             </Link>
             <p className="mt-4 max-w-xs font-display text-base italic leading-relaxed text-muted">
@@ -30,7 +35,7 @@ export function SiteFooter() {
               <ul className="mt-4 space-y-2.5">
                 {col.links.map((l) => (
                   <li key={l.href}>
-                    <Link href={l.href} className="lux-link text-sm text-muted">
+                    <Link href={withLocale(l.href, locale)} className="lux-link text-sm text-muted">
                       {l.label}
                     </Link>
                   </li>
@@ -42,7 +47,7 @@ export function SiteFooter() {
           {/* Contacts */}
           <div>
             <p className="font-mono text-xs uppercase tracking-[0.22em] text-faint">
-              Прямий контакт
+              {ui.footer.directContact}
             </p>
             <div className="mt-4 space-y-3">
               <a
@@ -85,7 +90,7 @@ export function SiteFooter() {
         <div className="mt-6 flex flex-col items-center justify-between gap-3 text-xs text-faint lg:flex-row">
           <p>{footer.copyright}</p>
           <p className="font-display text-sm italic" style={gradText(GRAD_ACC)}>
-            Без тиску. Без маніпуляцій. Природно та легко.
+            {ui.footer.manner}
           </p>
           <p className="font-mono uppercase tracking-[0.16em]">{brand.role}</p>
         </div>

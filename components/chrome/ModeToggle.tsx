@@ -1,6 +1,7 @@
 "use client";
 
 import { useConcept } from "@/components/providers/ConceptProvider";
+import { useUi } from "@/components/providers/LocaleProvider";
 import { CONCEPTS } from "@/lib/concepts";
 import { Sun, Moon } from "@/components/ui/icons";
 
@@ -11,6 +12,7 @@ import { Sun, Moon } from "@/components/ui/icons";
  */
 export function ModeToggle() {
   const { concept, mode, toggleMode } = useConcept();
+  const ui = useUi();
   const supports = CONCEPTS.find((c) => c.id === concept)?.modes;
   if (!supports) return null;
 
@@ -18,8 +20,8 @@ export function ModeToggle() {
   return (
     <button
       onClick={toggleMode}
-      aria-label={isDark ? "Увімкнути світлу версію" : "Увімкнути темну версію"}
-      title={isDark ? "Світла версія" : "Темна версія"}
+      aria-label={isDark ? ui.a11y.lightModeOn : ui.a11y.darkModeOn}
+      title={isDark ? ui.a11y.lightModeTitle : ui.a11y.darkModeTitle}
       className="grid h-10 w-10 place-items-center rounded-full border border-line/70 text-ink transition-colors duration-300 hover:border-gold/50 hover:text-gold"
     >
       {isDark ? (

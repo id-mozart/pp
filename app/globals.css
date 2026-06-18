@@ -1737,7 +1737,7 @@ body:has(#pp-admin) #main {
    White on dark concepts; ink on the Concept light mode.
    ================================================================== */
 .logo-wall-img {
-  height: 2.4rem;
+  height: 1.95rem;
   width: auto;
   max-width: 100%;
   object-fit: contain;
@@ -1747,7 +1747,7 @@ body:has(#pp-admin) #main {
 }
 @media (min-width: 640px) {
   .logo-wall-img {
-    height: 3.1rem;
+    height: 2.55rem;
   }
 }
 .logo-wall-img:hover {

@@ -1,6 +1,6 @@
 "use client";
 
-import { requests } from "@/lib/content";
+import { useContent, useUi } from "@/components/providers/LocaleProvider";
 import { smoothScrollToEl } from "@/lib/smoothScroll";
 import { Reveal, RevealGroup, RevealItem } from "@/components/ui/Reveal";
 import { GRAD_ACC, GRAD_GOLD, CTAG_BG, gradText } from "@/lib/ember";
@@ -33,6 +33,8 @@ function goToContact(e: React.MouseEvent, topic?: string) {
 }
 
 export function Requests() {
+  const { requests } = useContent();
+  const ui = useUi();
   return (
     <section className="relative grain overflow-hidden border-y border-line/50 bg-surface section-pad">
       <div className="container-shell relative">
@@ -40,11 +42,11 @@ export function Requests() {
           <Reveal className="flex flex-col gap-5 lg:col-span-4">
             <span className="eyebrow">{requests.eyebrow}</span>
             <h2 className="text-[clamp(2rem,4vw,3.2rem)] leading-[1.05] text-ink">
-              Пʼять{" "}
+              {ui.requests.titlePre}
               <em className="italic" style={gradText(GRAD_ACC)}>
-                запитів
+                {ui.requests.titleEm}
               </em>
-              , з якими до нас звертаються найчастіше
+              {ui.requests.titlePost}
             </h2>
             <span
               aria-hidden
@@ -67,7 +69,7 @@ export function Requests() {
                         href="#contact"
                         onClick={(e) => goToContact(e, item)}
                         className="group flex items-center gap-5 py-5 transition-colors"
-                        aria-label={`${item} — перейти до форми`}
+                        aria-label={`${item}${ui.a11y.goToFormSuffix}`}
                       >
                         <span
                           className="grid h-10 w-10 shrink-0 place-items-center rounded-[10px] border border-line/70 text-gold transition-transform duration-500 ease-lux group-hover:scale-105"
@@ -96,7 +98,7 @@ export function Requests() {
               className="mt-8 inline-block font-display text-lg font-medium italic transition-transform duration-500 ease-lux hover:translate-x-1.5"
               style={gradText(GRAD_ACC)}
             >
-              обговоримо вашу ситуацію →
+              {ui.requests.discuss}
             </a>
           </RevealGroup>
         </div>

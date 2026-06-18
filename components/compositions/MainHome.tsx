@@ -11,43 +11,26 @@ import { ContactForm } from "@/components/sections/ContactForm";
 import { HeroSlideshowBg } from "@/components/sections/HeroSlideshowBg";
 import { HERO_SLIDES } from "@/lib/heroSlides";
 import { GRAD_ACC, GRAD_GOLD, CARD_BG, CTAG_BG, gradText } from "@/lib/ember";
-import { MAIN_CONTENT_DEFAULTS, type MainContent } from "@/lib/mainContent";
+import { type MainContent } from "@/lib/mainContent";
 import { ArchitectSection } from "@/components/sections/ArchitectSection";
+import { useUi, useMainContent, useLocalizedHref } from "@/components/providers/LocaleProvider";
 
-const PROOF = [
-  { v: "25+", l: "років у продажах" },
-  { v: "17+", l: "років навчання" },
-  { v: "90%", l: "продовжують співпрацю" },
-  { v: "15 000+", l: "учнів за методом" },
-  { v: "№2", l: "ТОП-тренерів UBA 2023" },
-  { v: "6", l: "галузей" },
-];
+const PROOF_VALUES = ["25+", "17+", "90%", "15 000+", "№2", "6"];
 
-
-
-const MENTORING_STEPS = [
-  {
-    n: "01",
-    t: "Вирішення особистих",
-    em: "запитів",
-    d: "Працюємо про вас і ваші цілі: будуємо план та стратегію впровадження під вашу ціль і ваші цінності.",
-  },
-  {
-    n: "02",
-    t: "Розбір",
-    em: "ваших кейсів",
-    d: "Працюємо на реальних угодах і переговорах — і формуємо рішення.",
-  },
-  {
-    n: "03",
-    t: "Підтримка",
-    em: "між зустрічами",
-    d: "Ви не залишаєтеся наодинці з питаннями — рухаємося до результату разом.",
-  },
-];
+const MENTORING_NUMBERS = ["01", "02", "03"];
 
 export function MainHome({ content }: { content?: MainContent } = {}) {
-  const c = content ?? MAIN_CONTENT_DEFAULTS;
+  const ui = useUi();
+  const fallback = useMainContent();
+  const localized = useLocalizedHref();
+  const c = content ?? fallback;
+  const PROOF = PROOF_VALUES.map((v, i) => ({ v, l: ui.home.proofLabels[i] }));
+  const MENTORING_STEPS = MENTORING_NUMBERS.map((n, i) => ({
+    n,
+    t: ui.home.mentoringSteps[i].t,
+    em: ui.home.mentoringSteps[i].em,
+    d: ui.home.mentoringSteps[i].d,
+  }));
   return (
     <>
       {/* HERO — моб.: фото зверху + текст під ним; десктоп: full-bleed з текстом праворуч */}
@@ -125,7 +108,7 @@ export function MainHome({ content }: { content?: MainContent } = {}) {
               {c.hero.lead}
             </p>
             <div className="flex flex-wrap gap-3">
-              <Link href="/consultation#book" className="btn btn-primary">
+              <Link href={localized("/consultation#book")} className="btn btn-primary">
                 {c.hero.ctaPrimary} <ArrowRight className="h-4 w-4" />
               </Link>
               <Link href="#formats" className="btn btn-ghost">
@@ -206,7 +189,7 @@ export function MainHome({ content }: { content?: MainContent } = {}) {
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={c.mentoring.image}
-                alt="Тетяна Пан"
+                alt={ui.home.mentoringAlt}
                 className="aspect-[4/5] w-full object-cover"
                 style={{ objectPosition: "center 18%" }}
                 loading="lazy"
@@ -227,7 +210,7 @@ export function MainHome({ content }: { content?: MainContent } = {}) {
               />
               <div className="grain absolute inset-0 opacity-20" />
               <div className="absolute left-6 right-6 top-5 flex items-center justify-between font-mono text-[0.7rem] font-medium uppercase tracking-[0.22em]">
-                <span style={gradText(GRAD_ACC)}>Менторинг · 1:1</span>
+                <span style={gradText(GRAD_ACC)}>{ui.home.mentoringRunhead}</span>
                 <span
                   className="h-2 w-2 rounded-full"
                   style={{ background: GRAD_GOLD }}
@@ -238,13 +221,13 @@ export function MainHome({ content }: { content?: MainContent } = {}) {
                   className="inline-flex items-center rounded-[10px] border border-line/70 px-3.5 py-2 font-mono text-[0.62rem] font-medium uppercase tracking-[0.1em] text-ink"
                   style={{ background: CTAG_BG, borderLeft: "3px solid #E2A638" }}
                 >
-                  міні-група — 2–4 особи
+                  {ui.home.badgeMiniGroup}
                 </span>
                 <span
                   className="inline-flex items-center rounded-[10px] border border-line/70 px-3.5 py-2 font-mono text-[0.62rem] font-medium uppercase tracking-[0.1em] text-ink"
                   style={{ background: CTAG_BG, borderLeft: "3px solid #E2A638" }}
                 >
-                  онлайн / офлайн
+                  {ui.home.badgeOnlineOffline}
                 </span>
               </div>
             </div>
@@ -293,7 +276,7 @@ export function MainHome({ content }: { content?: MainContent } = {}) {
 
             {/* Кому підходить */}
             <Reveal delay={0.06} className="mt-8 flex flex-wrap items-center gap-2">
-              {["Власникам бізнесу", "Керівникам продажів"].map((c) => (
+              {ui.home.audiencePills.map((c) => (
                 <span
                   key={c}
                   className="rounded-full border border-line/70 bg-raised/40 px-3.5 py-1.5 text-sm text-ink/85"
@@ -304,7 +287,7 @@ export function MainHome({ content }: { content?: MainContent } = {}) {
             </Reveal>
 
             <Reveal delay={0.1} className="mt-8 flex flex-wrap items-center gap-x-7 gap-y-3">
-              <Link href="/consultation#book" className="btn btn-primary">
+              <Link href={localized("/consultation#book")} className="btn btn-primary">
                 {c.mentoring.ctaPrimary} <ArrowRight className="h-4 w-4" />
               </Link>
               <a
@@ -327,11 +310,11 @@ export function MainHome({ content }: { content?: MainContent } = {}) {
         <div className="container-shell relative">
           <div className="grid gap-12 lg:grid-cols-12 lg:gap-16">
             <Reveal className="flex flex-col gap-4 lg:col-span-4">
-              <span className="eyebrow">Питання · відповіді</span>
+              <span className="eyebrow">{ui.home.faqEyebrow}</span>
               <h2 className="text-[clamp(2rem,4vw,3.2rem)] leading-[1.05] text-ink">
-                Часті{" "}
+                {ui.home.faqTitlePre}
                 <em className="italic" style={gradText(GRAD_ACC)}>
-                  питання
+                  {ui.home.faqTitleEm}
                 </em>
               </h2>
               <span
@@ -340,14 +323,14 @@ export function MainHome({ content }: { content?: MainContent } = {}) {
                 style={{ background: GRAD_GOLD }}
               />
               <p className="font-display text-lg italic leading-relaxed text-muted">
-                Не знайшли відповідь?
+                {ui.home.faqNotFound}
               </p>
               <a
                 href="#contact"
                 className="w-fit font-display text-lg italic transition-transform duration-500 ease-lux hover:translate-x-1.5"
                 style={gradText(GRAD_ACC)}
               >
-                напишіть нам — відповімо особисто →
+                {ui.home.faqWriteUs}
               </a>
             </Reveal>
             <RevealGroup className="lg:col-span-8">

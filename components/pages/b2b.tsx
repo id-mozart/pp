@@ -1,9 +1,10 @@
-import { b2b } from "@/lib/content";
+import { useContent, useUi } from "@/components/providers/LocaleProvider";
 import { Reveal, RevealGroup, RevealItem } from "@/components/ui/Reveal";
 import { Check } from "@/components/ui/icons";
 import { GRAD_ACC, GRAD_GOLD, CARD_BG, CTAG_BG, gradText } from "@/lib/ember";
 
 export function B2BExperience() {
+  const { b2b } = useContent();
   const { experience } = b2b;
   return (
     <section className="section-pad">
@@ -89,6 +90,8 @@ function Stat({ value, label }: { value: string; label: string }) {
 }
 
 export function B2BSolutions() {
+  const { b2b } = useContent();
+  const ui = useUi();
   const { solutions } = b2b;
   return (
     <section
@@ -99,9 +102,9 @@ export function B2BSolutions() {
         <Reveal className="mb-12 flex flex-col gap-5">
           <span className="eyebrow">{solutions.eyebrow}</span>
           <h2 className="max-w-2xl text-[clamp(2rem,4vw,3.2rem)] leading-[1.05] text-ink">
-            Чотири напрями, що дають{" "}
+            {ui.b2bPage.solutionsTitlePre}
             <em className="italic" style={gradText(GRAD_ACC)}>
-              результат
+              {ui.b2bPage.solutionsTitleEm}
             </em>
           </h2>
           <span
@@ -142,7 +145,7 @@ export function B2BSolutions() {
                   className="relative mt-6 inline-block font-display text-base italic transition-transform duration-500 ease-lux group-hover:translate-x-1.5"
                   style={gradText(GRAD_ACC)}
                 >
-                  обговорити →
+                  {ui.b2bPage.discussCard}
                 </a>
               </div>
             </RevealItem>
@@ -155,7 +158,7 @@ export function B2BSolutions() {
             className="inline-block font-display text-lg font-medium italic transition-transform duration-500 ease-lux hover:translate-x-1.5"
             style={gradText(GRAD_ACC)}
           >
-            обговорити, який напрям ваш →
+            {ui.b2bPage.discussWhich}
           </a>
         </Reveal>
       </div>
@@ -164,6 +167,7 @@ export function B2BSolutions() {
 }
 
 export function B2BApproach() {
+  const { b2b } = useContent();
   const { approach } = b2b;
   return (
     <section className="section-pad">

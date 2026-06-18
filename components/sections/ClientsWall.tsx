@@ -1,6 +1,6 @@
 "use client";
 
-import { clients } from "@/lib/content";
+import { useContent, useUi } from "@/components/providers/LocaleProvider";
 import { Reveal, RevealGroup, RevealItem } from "@/components/ui/Reveal";
 import { GRAD_ACC, GRAD_GOLD, CARD_BG, gradText } from "@/lib/ember";
 
@@ -15,6 +15,8 @@ export function ClientsWall({
   lean = false,
   subtitle,
 }: { logoWall?: boolean; lean?: boolean; subtitle?: string } = {}) {
+  const { clients } = useContent();
+  const ui = useUi();
   return (
     <section className="relative grain section-pad" id="clients">
       <div className="container-shell">
@@ -23,9 +25,9 @@ export function ClientsWall({
           <Reveal className="lg:col-span-6">
             <span className="eyebrow">{clients.eyebrow}</span>
             <h2 className="mt-5 text-[clamp(2rem,4vw,3.2rem)] leading-[1.05] text-ink">
-              Наші{" "}
+              {ui.clientsWall.titlePre}
               <em className="italic" style={gradText(GRAD_ACC)}>
-                клієнти
+                {ui.clientsWall.titleEm}
               </em>
             </h2>
             <p className="mt-4 max-w-md font-display text-base italic leading-relaxed text-muted sm:text-lg xl:max-w-none xl:whitespace-nowrap">
@@ -40,10 +42,9 @@ export function ClientsWall({
                 />
                 <p className="mt-4 font-display text-xl italic leading-snug text-ink">
                   <b className="stat-number align-baseline text-3xl not-italic">
-                    90%
+                    {ui.clientsWall.retentionPct}
                   </b>{" "}
-                  клієнтів продовжують співпрацю з нами та рекомендують нас
-                  своїм партнерам.
+                  {ui.clientsWall.retentionText}
                 </p>
               </div>
             )}
@@ -73,7 +74,7 @@ export function ClientsWall({
 
         {logoWall ? (
           /* Logo wall — монохромна плитка реальних клієнтів */
-          <RevealGroup className="mt-16 grid grid-cols-3 items-center gap-x-8 gap-y-12 sm:grid-cols-4 lg:grid-cols-5">
+          <RevealGroup className="mt-16 grid grid-cols-3 items-center gap-x-12 gap-y-16 sm:grid-cols-4 sm:gap-x-14 sm:gap-y-20 lg:grid-cols-5">
             {clients.logoTiles.map((logo) => (
               <RevealItem key={logo.name}>
                 <div className="flex items-center justify-center" title={logo.name}>

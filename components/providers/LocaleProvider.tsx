@@ -1,0 +1,88 @@
+"use client";
+
+import { createContext, useCallback, useContext, useMemo } from "react";
+import { useRouter, usePathname } from "next/navigation";
+import {
+  LOCALE_COOKIE,
+  withLocale,
+  type Locale,
+} from "@/lib/i18n/config";
+import type { Dictionary, SiteContent, UiStrings } from "@/lib/i18n/types";
+import type { MainContent } from "@/lib/mainContent";
+
+interface LocaleContextValue {
+  locale: Locale;
+  dict: Dictionary;
+  /** Prefix an internal href with the active locale. */
+  href: (path: string) => string;
+  /** Switch to another locale, staying on the current page. */
+  switchLocale: (next: Locale) => void;
+}
+
+const LocaleContext = createContext<LocaleContextValue | null>(null);
+
+export function LocaleProvider({
+  locale,
+  dict,
+  children,
+}: {
+  locale: Locale;
+  dict: Dictionary;
+  children: React.ReactNode;
+}) {
+  const router = useRouter();
+  const pathname = usePathname();
+
+  const href = useCallback((path: string) => withLocale(path, locale), [locale]);
+
+  const switchLocale = useCallback(
+    (next: Locale) => {
+      try {
+        document.cookie = `${LOCALE_COOKIE}=${next};path=/;max-age=31536000;samesite=lax`;
+      } catch {
+        /* ignore */
+      }
+      const target = withLocale(pathname || "/", next);
+      router.push(target);
+      router.refresh();
+    },
+    [pathname, router],
+  );
+
+  const value = useMemo<LocaleContextValue>(
+    () => ({ locale, dict, href, switchLocale }),
+    [locale, dict, href, switchLocale],
+  );
+
+  return <LocaleContext.Provider value={value}>{children}</LocaleContext.Provider>;
+}
+
+function useLocaleContext(): LocaleContextValue {
+  const ctx = useContext(LocaleContext);
+  if (!ctx) throw new Error("useLocale* must be used within LocaleProvider");
+  return ctx;
+}
+
+export function useLocale(): Locale {
+  return useLocaleContext().locale;
+}
+export function useDict(): Dictionary {
+  return useLocaleContext().dict;
+}
+export function useContent(): SiteContent {
+  return useLocaleContext().dict.content;
+}
+export function useUi(): UiStrings {
+  return useLocaleContext().dict.ui;
+}
+export function useMainContent(): MainContent {
+  return useLocaleContext().dict.main;
+}
+/** Prefix an internal href with the active locale. */
+export function useLocalizedHref(): (path: string) => string {
+  return useLocaleContext().href;
+}
+/** Switch language, staying on the current page. */
+export function useSwitchLocale(): (next: Locale) => void {
+  return useLocaleContext().switchLocale;
+}

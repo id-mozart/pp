@@ -1,6 +1,6 @@
 "use client";
 
-import { testimonials, credibility, cases, about } from "@/lib/content";
+import { useContent, useUi } from "@/components/providers/LocaleProvider";
 import { Reveal, RevealGroup, RevealItem } from "@/components/ui/Reveal";
 import { Play } from "@/components/ui/icons";
 import { GRAD_ACC, GRAD_GOLD, CARD_BG, gradText } from "@/lib/ember";
@@ -20,6 +20,8 @@ export function Testimonials({
   /** Override the 3 credibility marks with custom stat tiles (proof-band style). */
   stats?: { v: string; l: string }[];
 } = {}) {
+  const { testimonials, credibility, about } = useContent();
+  const ui = useUi();
   return (
     <section
       id="cases"
@@ -30,9 +32,9 @@ export function Testimonials({
         <Reveal className="mx-auto flex max-w-4xl flex-col items-center gap-5 text-center">
           <span className="eyebrow">{testimonials.eyebrow}</span>
           <h2 className="text-[clamp(2rem,3.4vw,2.8rem)] leading-[1.05] text-ink">
-            Що кажуть клієнти{" "}
+            {ui.testimonials.titlePre}
             <em className="italic" style={gradText(GRAD_ACC)}>
-              після спільної роботи
+              {ui.testimonials.titleEm}
             </em>
           </h2>
           <p className="max-w-2xl font-display text-lg italic leading-relaxed text-muted">
@@ -94,13 +96,13 @@ export function Testimonials({
               style={{ background: GRAD_GOLD }}
             />
             <blockquote className="mt-6 text-pretty font-display text-[clamp(1.6rem,3vw,2.4rem)] leading-snug text-ink">
-              Без тиску. Без маніпуляцій.{" "}
+              {ui.testimonials.pullPre}
               <em className="italic" style={gradText(GRAD_ACC)}>
-                Природно та легко.
+                {ui.testimonials.pullEm}
               </em>
             </blockquote>
             <figcaption className="mt-5 font-mono text-[0.68rem] uppercase tracking-[0.2em] text-muted">
-              — {about.name} · Pan&amp;Partners
+              — {about.name}{ui.testimonials.captionSuffix}
             </figcaption>
           </figure>
         </Reveal>
@@ -165,6 +167,7 @@ function TextCard({ t }: { t: Testimonial }) {
 }
 
 function VideoCard({ t }: { t: Testimonial }) {
+  const ui = useUi();
   return (
     <a
       href={`https://www.youtube.com/watch?v=${t.videoId}`}
@@ -198,7 +201,7 @@ function VideoCard({ t }: { t: Testimonial }) {
           className="absolute bottom-3 right-4 font-display text-sm italic"
           style={gradText(GRAD_ACC)}
         >
-          дивитися відгук →
+          {ui.testimonials.watchReview}
         </span>
       </div>
       <figcaption className="flex items-center gap-3 p-5">

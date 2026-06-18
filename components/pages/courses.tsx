@@ -1,10 +1,11 @@
 import Link from "next/link";
-import { courses } from "@/lib/content";
+import { useContent, useUi } from "@/components/providers/LocaleProvider";
 import { Reveal, RevealGroup, RevealItem } from "@/components/ui/Reveal";
 import { Check } from "@/components/ui/icons";
 import { GRAD_ACC, GRAD_GOLD, CARD_BG, CTAG_BG, gradText } from "@/lib/ember";
 
 export function CoursesIntro() {
+  const { courses } = useContent();
   const { hero } = courses;
   return (
     <section className="pb-4">
@@ -73,32 +74,20 @@ export function CoursesIntro() {
   );
 }
 
-const EXTRA = [
-  {
-    title: "Чек-листи для продажів",
-    short:
-      "Готові чек-листи, щоб швидко перевірити та підсилити вашу систему продажів.",
-    price: "За запитом",
-  },
-  {
-    title: "Скрипти повідомлень",
-    short:
-      "Скрипти перших повідомлень для нових B2B-клієнтів — щоб заходити в діалог упевнено.",
-    price: "За запитом",
-  },
-];
-
 const ctagCls =
   "rounded-[10px] border border-line/70 px-3 py-1.5 font-mono text-[0.62rem] font-medium uppercase tracking-[0.1em] text-ink backdrop-blur-md";
 const ctagStyle = { background: CTAG_BG, borderLeft: "3px solid #E2A638" } as const;
 
 export function CoursesList() {
+  const { courses } = useContent();
+  const ui = useUi();
   const { list } = courses;
+  const EXTRA = ui.coursesPage.extra;
   return (
     <section id="catalog" className="section-pad">
       <div className="container-shell">
         <Reveal className="mb-10 flex flex-col gap-4">
-          <span className="eyebrow">Каталог</span>
+          <span className="eyebrow">{ui.coursesPage.catalog}</span>
           <h2 className="text-[clamp(2rem,4vw,3.2rem)] leading-[1.05] text-ink">
             {list.title}
           </h2>
@@ -148,7 +137,7 @@ export function CoursesList() {
                     {c.cta} →
                   </span>
                   <span className="mt-2 font-mono text-[0.6rem] uppercase tracking-[0.14em] text-faint">
-                    відкриється на сторінці курсу
+                    {ui.coursesPage.opensOnCoursePage}
                   </span>
                 </div>
               </a>
@@ -175,7 +164,7 @@ export function CoursesList() {
                   className="mt-8 inline-flex items-center gap-2 font-display text-base italic transition-transform duration-500 ease-lux group-hover:translate-x-1.5"
                   style={gradText(GRAD_ACC)}
                 >
-                  дізнатися →
+                  {ui.coursesPage.learnMore}
                 </span>
               </Link>
             </RevealItem>

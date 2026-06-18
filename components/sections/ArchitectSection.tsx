@@ -2,22 +2,8 @@
 
 import { Reveal, RevealGroup, RevealItem } from "@/components/ui/Reveal";
 import { GRAD_ACC, GRAD_GOLD, CARD_BG, gradText } from "@/lib/ember";
-import { MAIN_CONTENT_DEFAULTS, type MainContent } from "@/lib/mainContent";
-
-/* Шлях Тетяни — лише факти з джерела */
-const JOURNEY = [
-  { t: "«Олімп»", d: "горілчана компанія", now: false },
-  { t: "Danone", d: "FMCG", now: false },
-  { t: "Coca-Cola", d: "FMCG", now: false },
-  { t: "Власна справа", d: "власний бізнес", now: false },
-  { t: "Pan&Partners", d: "консалтинг", now: true },
-];
-
-const FACTS = [
-  { v: "15 000+", l: "людей продають за її методом" },
-  { v: "6", l: "галузей — від FMCG до B2B-послуг" },
-  { v: "№2", l: "у ТОП тренерів України · UBA 2023" },
-];
+import { type MainContent } from "@/lib/mainContent";
+import { useMainContent, useUi } from "@/components/providers/LocaleProvider";
 
 /**
  * «Архітектор методу» — фігура у м'якому світлі + біо + цитата засновниці +
@@ -25,12 +11,17 @@ const FACTS = [
  * консультації, тож контент про Тетяну скрізь однаковий.
  */
 export function ArchitectSection({
-  architect = MAIN_CONTENT_DEFAULTS.architect,
+  architect,
   id,
 }: {
   architect?: MainContent["architect"];
   id?: string;
 }) {
+  const m = useMainContent();
+  const a = architect ?? m.architect;
+  const ui = useUi();
+  const JOURNEY = ui.architect.journey;
+  const FACTS = ui.architect.facts;
   return (
     <section id={id} className="relative grain border-t border-line/50 section-pad">
       <div className="container-shell grid items-start gap-12 lg:grid-cols-12 lg:gap-16">
@@ -47,8 +38,8 @@ export function ArchitectSection({
             />
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              src={architect.image}
-              alt="Тетяна Пан — засновниця Pan&Partners"
+              src={a.image}
+              alt={ui.architect.portraitAlt}
               className="relative z-[1] mx-auto block w-[72%] max-w-[320px]"
               loading="lazy"
             />
@@ -73,18 +64,18 @@ export function ArchitectSection({
 
         <div className="lg:col-span-7">
           <Reveal className="flex flex-col gap-4">
-            <span className="eyebrow">{architect.eyebrow}</span>
+            <span className="eyebrow">{a.eyebrow}</span>
             <h2 className="font-display text-[clamp(2rem,4vw,3.2rem)] leading-[1.05] text-ink">
-              {architect.nameTop}{" "}
+              {a.nameTop}{" "}
               <em className="italic" style={gradText(GRAD_ACC)}>
-                {architect.nameEm}
+                {a.nameEm}
               </em>
             </h2>
             <p className="max-w-xl text-pretty text-lg leading-relaxed text-muted">
-              {architect.para1}
+              {a.para1}
             </p>
             <p className="max-w-xl text-pretty text-lg leading-relaxed text-muted">
-              {architect.para2}
+              {a.para2}
             </p>
           </Reveal>
 
@@ -99,10 +90,10 @@ export function ArchitectSection({
                 className="text-pretty font-display text-[clamp(1.45rem,2.4vw,1.95rem)] font-medium italic leading-[1.3]"
                 style={gradText(GRAD_ACC)}
               >
-                {architect.quote}
+                {a.quote}
               </blockquote>
               <figcaption className="mt-4 font-mono text-[0.65rem] font-medium uppercase tracking-[0.22em] text-muted">
-                {architect.quoteAuthor}
+                {a.quoteAuthor}
               </figcaption>
             </figure>
           </Reveal>
@@ -112,7 +103,7 @@ export function ArchitectSection({
             <div className="flex items-center gap-4">
               <span className="h-[2px] w-16 rounded-full" style={{ background: GRAD_GOLD }} />
               <span className="font-mono text-[0.65rem] font-medium uppercase tracking-[0.22em] text-faint">
-                Шлях довжиною 25+ років
+                {ui.architect.journeyLabel}
               </span>
             </div>
             <div className="mt-7 flex flex-col sm:flex-row">

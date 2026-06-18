@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
-import { contact, contacts } from "@/lib/content";
+import { useContent, useUi, useLocalizedHref } from "@/components/providers/LocaleProvider";
 import { Reveal } from "@/components/ui/Reveal";
 import { GRAD_ACC, GRAD_GOLD, CTAG_BG, gradText } from "@/lib/ember";
 import { track } from "@/lib/analytics";
@@ -22,6 +22,9 @@ export function ContactForm({
   /** Override the left-column heading (defaults to «Поговорімо про ваші продажі»). */
   title?: React.ReactNode;
 } = {}) {
+  const { contact, contacts } = useContent();
+  const ui = useUi();
+  const localized = useLocalizedHref();
   const [status, setStatus] = useState<Status>("idle");
   const [topic, setTopic] = useState("");
 
@@ -84,9 +87,9 @@ export function ContactForm({
                   <h2 className="text-[clamp(2rem,3.6vw,3rem)] leading-[1.05] text-ink">
                     {title ?? (
                       <>
-                        Звʼяжімося{" "}
+                        {ui.contactForm.titlePre}
                         <em className="italic" style={gradText(GRAD_ACC)}>
-                          з нами
+                          {ui.contactForm.titleEm}
                         </em>
                       </>
                     )}
@@ -99,15 +102,15 @@ export function ContactForm({
                     style={{ background: CTAG_BG, borderLeft: "3px solid #E2A638" }}
                   >
                     <b className="font-semibold" style={gradText(GRAD_ACC)}>
-                      90%
+                      {ui.contactForm.badgePct}
                     </b>{" "}
-                    клієнтів продовжують співпрацю
+                    {ui.contactForm.badgeText}
                   </span>
                 </Reveal>
 
                 <Reveal delay={0.1} className="flex flex-col gap-3">
                   <p className="font-mono text-xs uppercase tracking-[0.22em] text-faint">
-                    Або напишіть напряму
+                    {ui.contactForm.orDirect}
                   </p>
                   <div className="flex flex-wrap gap-3">
                     <a
@@ -155,7 +158,7 @@ export function ContactForm({
                         onClick={() => setStatus("idle")}
                         className="text-sm text-gold lux-link"
                       >
-                        Надіслати ще одну заявку
+                        {ui.contactForm.resend}
                       </button>
                     </motion.div>
                   ) : (
@@ -182,7 +185,7 @@ export function ContactForm({
                           {...f}
                           defaultValue={
                             f.name === "message" && topic
-                              ? `Запит: ${topic} — `
+                              ? `${ui.contactForm.topicPrefix} ${topic} — `
                               : undefined
                           }
                         />
@@ -192,21 +195,19 @@ export function ContactForm({
                         disabled={status === "submitting"}
                         className="btn btn-primary mt-1 w-full disabled:cursor-not-allowed disabled:opacity-70"
                       >
-                        {status === "submitting" ? "Надсилаю…" : contact.submit}
+                        {status === "submitting" ? ui.contactForm.sending : contact.submit}
                         {status !== "submitting" && <ArrowRight className="h-4 w-4" />}
                       </button>
                       <p className="text-xs leading-relaxed text-faint">
-                        Відповідаємо протягом робочого дня. Без дзвінків без
-                        попередження. Надсилаючи форму, ви погоджуєтеся з{" "}
-                        <Link href="/privacy" className="lux-link">
-                          політикою конфіденційності
+                        {ui.contactForm.finePre}
+                        <Link href={localized("/privacy")} className="lux-link">
+                          {ui.contactForm.fineLink}
                         </Link>
-                        .
+                        {ui.contactForm.finePost}
                       </p>
                       {status === "error" && (
                         <p className="text-sm text-ember">
-                          Щось пішло не так. Спробуйте ще раз — або напишіть нам
-                          напряму у WhatsApp чи Telegram.
+                          {ui.contactForm.error}
                         </p>
                       )}
                     </motion.form>

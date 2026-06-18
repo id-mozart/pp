@@ -1,13 +1,19 @@
 import type { Metadata } from "next";
 import { Main5Home } from "@/components/compositions/Main5Home";
 import { StickyBookCta } from "@/components/chrome/StickyBookCta";
+import { getLocale } from "@/lib/i18n/server";
+import { getDictionary } from "@/lib/i18n/dictionaries";
+import { localizedAlternates } from "@/lib/i18n/metadata";
 
-export const metadata: Metadata = {
-  title: "Консультація — онлайн 1:1 з продажів",
-  description:
-    "Одна година — і у ваших продажів є план. Онлайн 1:1 консультація з Тетяною Пан: діагностика вузького місця, розбір вашої ситуації, план дій і конкретні скрипти.",
-  alternates: { canonical: "/consultation" },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const locale = getLocale();
+  const { ui } = getDictionary(locale);
+  return {
+    title: ui.meta.consultation.title,
+    description: ui.meta.consultation.description,
+    alternates: localizedAlternates(locale, "/consultation"),
+  };
+}
 
 export default function ConsultationPage() {
   return (

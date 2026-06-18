@@ -3,7 +3,9 @@
 import { useEffect, useMemo, useState } from "react";
 import type { ReactNode } from "react";
 import { motion } from "framer-motion";
-import { consultation } from "@/lib/content";
+import { useContent, useUi, useLocale, useLocalizedHref } from "@/components/providers/LocaleProvider";
+import { LOCALE_INTL } from "@/lib/i18n/config";
+import type { UiStrings } from "@/lib/i18n/ui";
 import { Reveal } from "@/components/ui/Reveal";
 import { Check, Clock, ArrowRight } from "@/components/ui/icons";
 import { GRAD_ACC, GRAD_GOLD, CARD_BG, CTAG_BG, FIELD_CLS, gradText } from "@/lib/ember";
@@ -26,18 +28,10 @@ function nextBusinessDays(count: number): Date[] {
   return out;
 }
 
-const fmtLong = new Intl.DateTimeFormat("uk-UA", {
-  day: "numeric",
-  month: "long",
-  year: "numeric",
-});
-const fmtShort = new Intl.DateTimeFormat("uk-UA", { day: "numeric", month: "long" });
-const monthFmt = new Intl.DateTimeFormat("uk-UA", { month: "long", year: "numeric" });
-
 const iso = (d: Date) =>
   `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
 
-function icsHref(date: Date, slot: string) {
+function icsHref(date: Date, slot: string, summary: string, description: string) {
   const [h] = slot.split(":").map(Number);
   const start = new Date(date);
   start.setHours(h, 0, 0, 0);
@@ -51,8 +45,8 @@ function icsHref(date: Date, slot: string) {
     "BEGIN:VEVENT",
     `DTSTART:${f(start)}`,
     `DTEND:${f(end)}`,
-    "SUMMARY:Консультація · Pan&Partners (Тетяна Пан)",
-    "DESCRIPTION:Онлайн 1:1 консультація з продажів",
+    `SUMMARY:${summary}`,
+    `DESCRIPTION:${description}`,
     "END:VEVENT",
     "END:VCALENDAR",
   ].join("\r\n");
@@ -67,7 +61,29 @@ export function BookingCalendar({
   title?: ReactNode;
   lead?: string;
 } = {}) {
+  const { consultation } = useContent();
+  const ui = useUi();
+  const locale = useLocale();
+  const localized = useLocalizedHref();
   const { booking } = consultation;
+  const intlLocale = LOCALE_INTL[locale];
+  const fmtLong = useMemo(
+    () =>
+      new Intl.DateTimeFormat(intlLocale, {
+        day: "numeric",
+        month: "long",
+        year: "numeric",
+      }),
+    [intlLocale],
+  );
+  const fmtShort = useMemo(
+    () => new Intl.DateTimeFormat(intlLocale, { day: "numeric", month: "long" }),
+    [intlLocale],
+  );
+  const monthFmt = useMemo(
+    () => new Intl.DateTimeFormat(intlLocale, { month: "long", year: "numeric" }),
+    [intlLocale],
+  );
   const [day, setDay] = useState<Date | null>(null);
   const [slot, setSlot] = useState<string | null>(null);
   const [status, setStatus] = useState<"idle" | "submitting" | "success" | "error">(
@@ -152,7 +168,12 @@ export function BookingCalendar({
               text={booking.success}
               date={day ? fmtLong.format(day) : ""}
               slot={slot ?? ""}
-              ics={day && slot ? icsHref(day, slot) : null}
+              ics={
+                day && slot
+                  ? icsHref(day, slot, ui.booking.icsSummary, ui.booking.icsDescription)
+                  : null
+              }
+              ui={ui}
             />
           ) : (
             <div className="overflow-hidden surface">
@@ -160,13 +181,13 @@ export function BookingCalendar({
                 {/* Left — вибір дати й часу */}
                 <div className="relative grain flex flex-col gap-7 border-b border-line/60 bg-raised p-6 sm:p-8 md:p-10 lg:border-b-0 lg:border-r">
                   <Reveal className="flex flex-col gap-2">
-                    <span className="eyebrow">Бронювання · онлайн · 60 хвилин</span>
+                    <span className="eyebrow">{ui.booking.eyebrow}</span>
                     <h2 className="text-[clamp(1.7rem,3vw,2.4rem)] leading-[1.05] text-ink">
                       {title ?? (
                         <>
-                          Оберіть{" "}
+                          {ui.booking.titlePre}
                           <em className="italic" style={gradText(GRAD_ACC)}>
-                            день і час
+                            {ui.booking.titleEm}
                           </em>
                         </>
                       )}
@@ -180,7 +201,7 @@ export function BookingCalendar({
                         {monthFmt.format(anchor)}
                       </span>
                       <span className="flex items-center gap-1.5 text-[0.65rem] text-faint">
-                        <span className="h-1.5 w-1.5 rounded-full bg-gold" /> вільно
+                        <span className="h-1.5 w-1.5 rounded-full bg-gold" /> {ui.booking.free}
                       </span>
                     </div>
                     <div className="mt-4 grid grid-cols-7 gap-0.5 text-center sm:gap-1.5">
@@ -261,28 +282,6 @@ export function BookingCalendar({
                       </div>
                     )}
                   </div>
-
-                  {/* Довіра + часовий пояс */}
-                  <div className="mt-auto flex flex-col gap-3 pt-2">
-                    <div className="flex items-center gap-3">
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img
-                        src="/brand/Tania4.webp"
-                        alt="Тетяна Пан"
-                        className="h-11 w-11 rounded-full border border-gold/30 object-cover object-top"
-                        style={{ background: CARD_BG }}
-                        loading="lazy"
-                      />
-                      <p className="text-sm leading-snug text-muted">
-                        Проводить особисто{" "}
-                        <b className="font-medium text-ink">Тетяна Пан</b> — №2
-                        ТОП-тренерів UBA 2023
-                      </p>
-                    </div>
-                    <p className="text-xs text-faint">
-                      Час показано за вашим часовим поясом ({tz}).
-                    </p>
-                  </div>
                 </div>
 
                 {/* Right — форма (як на головній) */}
@@ -293,7 +292,7 @@ export function BookingCalendar({
                         className="font-mono text-[0.6rem] font-medium uppercase tracking-[0.18em]"
                         style={gradText(GRAD_ACC)}
                       >
-                        Ваш запит вже записано — лишилось обрати час
+                        {ui.booking.requestSaved}
                       </p>
                     )}
                     <input
@@ -321,7 +320,7 @@ export function BookingCalendar({
                             rows={4}
                             required={f.required}
                             placeholder={f.placeholder}
-                            defaultValue={topic ? `Запит: ${topic} — ` : undefined}
+                            defaultValue={topic ? `${ui.booking.topicPrefix} ${topic} — ` : undefined}
                             className={`${FIELD_CLS} resize-none`}
                           />
                         ) : (
@@ -337,7 +336,7 @@ export function BookingCalendar({
                     ))}
                     <p className="text-xs text-faint">
                       {slot && day
-                        ? `Обрано: ${fmtShort.format(day)}, ${slot}`
+                        ? `${ui.booking.chosenPrefix} ${fmtShort.format(day)}, ${slot}`
                         : booking.pickSlotFirst}
                     </p>
                     <button
@@ -345,22 +344,19 @@ export function BookingCalendar({
                       disabled={!day || !slot || status === "submitting"}
                       className="btn btn-primary w-full disabled:cursor-not-allowed disabled:opacity-50"
                     >
-                      {status === "submitting" ? "Надсилаю…" : booking.submit}
+                      {status === "submitting" ? ui.booking.sending : booking.submit}
                       {status !== "submitting" && <ArrowRight className="h-4 w-4" />}
                     </button>
                     {status === "error" && (
-                      <p className="text-sm text-ember">
-                        Щось пішло не так. Спробуйте ще раз — або напишіть нам
-                        напряму у WhatsApp чи Telegram.
-                      </p>
+                      <p className="text-sm text-ember">{ui.booking.error}</p>
                     )}
                     <p className="text-xs leading-relaxed text-faint">{booking.note}</p>
                     <p className="text-xs leading-relaxed text-faint">
-                      Надсилаючи форму, ви погоджуєтеся з{" "}
-                      <Link href="/privacy" className="lux-link">
-                        політикою конфіденційності
+                      {ui.booking.finePre}
+                      <Link href={localized("/privacy")} className="lux-link">
+                        {ui.booking.fineLink}
                       </Link>
-                      . Дані використовуємо лише для звʼязку щодо вашого запиту.
+                      {ui.booking.finePost}
                     </p>
                   </form>
                 </div>
@@ -378,11 +374,13 @@ function SuccessPanel({
   date,
   slot,
   ics,
+  ui,
 }: {
   text: string;
   date: string;
   slot: string;
   ics: string | null;
+  ui: UiStrings;
 }) {
   return (
     <motion.div
@@ -418,18 +416,18 @@ function SuccessPanel({
         )}
         <div className="mt-2 max-w-md text-left">
           <p className="font-mono text-[0.62rem] uppercase tracking-[0.22em] text-faint">
-            Що далі
+            {ui.booking.whatsNext}
           </p>
           <ol className="mt-3 list-inside list-decimal space-y-1.5 text-sm text-muted">
-            <li>Тетяна підтвердить час у відповідь на email або в месенджері.</li>
-            <li>Ви отримаєте посилання на онлайн-зустріч.</li>
-            <li>60 хвилин — і у вас план дій та конкретні скрипти.</li>
+            <li>{ui.booking.step1}</li>
+            <li>{ui.booking.step2}</li>
+            <li>{ui.booking.step3}</li>
           </ol>
         </div>
         <div className="flex flex-wrap items-center justify-center gap-4">
           {ics && (
             <a href={ics} download="consultation-panpartners.ics" className="btn btn-ghost !px-5 !py-2.5 text-sm">
-              Додати в календар
+              {ui.booking.addToCalendar}
             </a>
           )}
           <a
@@ -439,7 +437,7 @@ function SuccessPanel({
             className="font-display text-base italic"
             style={gradText(GRAD_ACC)}
           >
-            написати в Telegram, якщо час потрібно змінити →
+            {ui.booking.telegramReschedule}
           </a>
         </div>
       </div>

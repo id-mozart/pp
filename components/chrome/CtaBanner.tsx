@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { ArrowRight } from "@/components/ui/icons";
+import { stripLocale } from "@/lib/i18n/config";
+import { useUi, useLocalizedHref } from "@/components/providers/LocaleProvider";
 import { GRAD_ACC, GRAD_GOLD, gradText } from "@/lib/ember";
 
 /**
@@ -12,12 +14,15 @@ import { GRAD_ACC, GRAD_GOLD, gradText } from "@/lib/ember";
  * (там свій StickyBookCta). Прихований на /admin також через globals CSS.
  */
 export function CtaBanner() {
+  const ui = useUi();
+  const localized = useLocalizedHref();
   const pathname = usePathname();
+  const path = stripLocale(pathname || "/");
   const [scrolled, setScrolled] = useState(false);
   const [atForm, setAtForm] = useState(false);
 
   const disabled =
-    pathname.startsWith("/admin") || pathname.startsWith("/consultation");
+    path.startsWith("/admin") || path.startsWith("/consultation");
 
   useEffect(() => {
     if (disabled) return;
@@ -66,18 +71,18 @@ export function CtaBanner() {
           style={{ background: GRAD_GOLD }}
         />
         <p className="hidden font-display text-lg italic leading-snug text-ink sm:block lg:text-xl">
-          Готові посилити{" "}
+          {ui.cta.bannerPre}
           <em className="not-italic" style={gradText(GRAD_ACC)}>
-            свої продажі
+            {ui.cta.bannerEm}
           </em>
-          ?
+          {ui.cta.bannerPost}
         </p>
         <Link
-          href="/consultation#book"
+          href={localized("/consultation#book")}
           className="btn btn-primary w-full justify-center sm:w-auto"
           tabIndex={show ? 0 : -1}
         >
-          Залишити заявку <ArrowRight className="h-4 w-4" />
+          {ui.cta.button} <ArrowRight className="h-4 w-4" />
         </Link>
       </div>
     </div>

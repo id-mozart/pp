@@ -2,9 +2,11 @@
 
 import { useEffect, useState } from "react";
 import { ArrowRight } from "@/components/ui/icons";
+import { useUi } from "@/components/providers/LocaleProvider";
 
 /** Mobile-only sticky CTA for /consultation — hides when #book is in view. */
 export function StickyBookCta() {
+  const ui = useUi();
   const [visible, setVisible] = useState(true);
 
   useEffect(() => {
@@ -23,7 +25,7 @@ export function StickyBookCta() {
   return (
     <div className="fixed inset-x-0 bottom-0 z-[65] p-3 pb-[calc(0.75rem+env(safe-area-inset-bottom))] sm:hidden">
       <a href="#book" className="btn btn-primary w-full shadow-[var(--shadow-lux)]">
-        Забронювати консультацію <ArrowRight className="h-4 w-4" />
+        {ui.stickyCta.book} <ArrowRight className="h-4 w-4" />
       </a>
     </div>
   );

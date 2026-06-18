@@ -15,6 +15,7 @@ import {
 import "./globals.css";
 
 import { ConceptProvider } from "@/components/providers/ConceptProvider";
+import { LocaleProvider } from "@/components/providers/LocaleProvider";
 import { SiteHeader } from "@/components/chrome/SiteHeader";
 import { SiteFooter } from "@/components/chrome/SiteFooter";
 import { CtaBanner } from "@/components/chrome/CtaBanner";
@@ -25,6 +26,9 @@ import {
   DEFAULT_MODE,
   MODE_STORAGE_KEY,
 } from "@/lib/concepts";
+import { getLocale } from "@/lib/i18n/server";
+import { getDictionary } from "@/lib/i18n/dictionaries";
+import { LOCALE_HTML_LANG } from "@/lib/i18n/config";
 
 const spectral = Spectral({
   subsets: ["latin", "latin-ext", "cyrillic"],
@@ -147,9 +151,12 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const locale = getLocale();
+  const dict = getDictionary(locale);
+
   return (
     <html
-      lang="uk"
+      lang={LOCALE_HTML_LANG[locale]}
       data-concept={DEFAULT_CONCEPT}
       data-mode={DEFAULT_MODE}
       className={`${spectral.variable} ${inter.variable} ${playfair.variable} ${sourceSans.variable} ${manrope.variable} ${jetbrains.variable} ${cormorant.variable} ${prata.variable} ${oswald.variable} ${unbounded.variable} ${caveat.variable}`}
@@ -163,18 +170,20 @@ export default function RootLayout({
           src="https://plausible.io/js/script.js"
         />
         <ConceptProvider>
-          <a
-            href="#main"
-            className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-full focus:bg-gold focus:px-4 focus:py-2 focus:text-oncontrast"
-          >
-            До основного вмісту
-          </a>
-          <SiteHeader />
-          <main id="main">{children}</main>
-          <CtaBanner />
-          <SiteFooter />
-          <FloatingContacts />
-          <CookieConsent />
+          <LocaleProvider locale={locale} dict={dict}>
+            <a
+              href="#main"
+              className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-full focus:bg-gold focus:px-4 focus:py-2 focus:text-oncontrast"
+            >
+              {dict.ui.a11y.skipToContent}
+            </a>
+            <SiteHeader />
+            <main id="main">{children}</main>
+            <CtaBanner />
+            <SiteFooter />
+            <FloatingContacts />
+            <CookieConsent />
+          </LocaleProvider>
         </ConceptProvider>
       </body>
     </html>

@@ -2,62 +2,10 @@
 
 import Link from "next/link";
 import type { ReactNode } from "react";
-import { formats } from "@/lib/content";
+import { useContent, useUi, useLocalizedHref } from "@/components/providers/LocaleProvider";
 import { Reveal, RevealGroup, RevealItem } from "@/components/ui/Reveal";
 
 import { GRAD_ACC, GRAD_GOLD, CARD_BG, gradText } from "@/lib/ember";
-
-/* Per-card presentation: photo, framed title with the italic accent, short result */
-const SHOWCASE: {
-  kicker: string;
-  title: ReactNode;
-  photo: string;
-  pos: string;
-  result: string;
-}[] = [
-  {
-    kicker: "Тренінги",
-    title: (
-      <>
-        Корпоративні{" "}
-        <em className="italic" style={gradText(GRAD_ACC)}>
-          тренінги
-        </em>
-      </>
-    ),
-    photo: "/brand/format-trainings.jpg",
-    pos: "center 55%",
-    result: "+20% → ×5",
-  },
-  {
-    kicker: "Курси",
-    title: (
-      <>
-        Онлайн-
-        <em className="italic" style={gradText(GRAD_ACC)}>
-          курси
-        </em>
-      </>
-    ),
-    photo: "/brand/format-courses.jpg",
-    pos: "center 42%",
-    result: "конверсія 5% → 20–30%",
-  },
-  {
-    kicker: "Менторинг",
-    title: (
-      <>
-        Менторинг та{" "}
-        <em className="italic" style={gradText(GRAD_ACC)}>
-          коучинг
-        </em>
-      </>
-    ),
-    photo: "/brand/format-mentoring.jpg",
-    pos: "center 42%",
-    result: "+20% → ×2",
-  },
-];
 
 /**
  * Formats as three tall «cover-slide» cards in the Instagram-story style:
@@ -65,6 +13,62 @@ const SHOWCASE: {
  * accent, gold rule, ctag plates and an italic CTA line.
  */
 export function FormatsShowcase({ lean = false }: { lean?: boolean } = {}) {
+  const { formats } = useContent();
+  const ui = useUi();
+  const localized = useLocalizedHref();
+
+  /* Per-card presentation: photo, framed title with the italic accent, short result */
+  const SHOWCASE: {
+    kicker: string;
+    title: ReactNode;
+    photo: string;
+    pos: string;
+    result: string;
+  }[] = [
+    {
+      kicker: ui.formats.kicker1,
+      title: (
+        <>
+          {ui.formats.title1Pre}
+          <em className="italic" style={gradText(GRAD_ACC)}>
+            {ui.formats.title1Em}
+          </em>
+        </>
+      ),
+      photo: "/brand/format-trainings.jpg",
+      pos: "center 55%",
+      result: ui.formats.result1,
+    },
+    {
+      kicker: ui.formats.kicker2,
+      title: (
+        <>
+          {ui.formats.title2Pre}
+          <em className="italic" style={gradText(GRAD_ACC)}>
+            {ui.formats.title2Em}
+          </em>
+        </>
+      ),
+      photo: "/brand/format-courses.jpg",
+      pos: "center 42%",
+      result: ui.formats.result2,
+    },
+    {
+      kicker: ui.formats.kicker3,
+      title: (
+        <>
+          {ui.formats.title3Pre}
+          <em className="italic" style={gradText(GRAD_ACC)}>
+            {ui.formats.title3Em}
+          </em>
+        </>
+      ),
+      photo: "/brand/format-mentoring.jpg",
+      pos: "center 42%",
+      result: ui.formats.result3,
+    },
+  ];
+
   return (
     <section id="formats" className="relative grain section-pad">
       <div className="container-shell">
@@ -78,20 +82,20 @@ export function FormatsShowcase({ lean = false }: { lean?: boolean } = {}) {
           {lean ? (
             /* lean: заголовок одним рядком на всю ширину, без підзаголовка */
             <h2 className="font-display text-[clamp(2rem,4vw,3.2rem)] leading-[1.05] text-ink">
-              Оберіть{" "}
+              {ui.formats.choosePre}
               <em className="italic" style={gradText(GRAD_ACC)}>
-                спосіб роботи
+                {ui.formats.chooseEm}
               </em>
-              , який відповідає вашій цілі та темпу
+              {ui.formats.choosePost}
             </h2>
           ) : (
             <div className="flex flex-col justify-between gap-6 lg:flex-row lg:items-end">
               <h2 className="max-w-2xl font-display text-[clamp(2rem,4vw,3.2rem)] leading-[1.05] text-ink">
-                Оберіть{" "}
+                {ui.formats.choosePre}
                 <em className="italic" style={gradText(GRAD_ACC)}>
-                  спосіб роботи
+                  {ui.formats.chooseEm}
                 </em>
-                , який відповідає вашій цілі та темпу
+                {ui.formats.choosePost}
               </h2>
               <p className="max-w-sm font-display text-lg italic leading-relaxed text-muted">
                 {formats.subtitle}
@@ -106,7 +110,7 @@ export function FormatsShowcase({ lean = false }: { lean?: boolean } = {}) {
             return (
               <RevealItem key={card.number}>
                 <Link
-                  href={card.href}
+                  href={localized(card.href)}
                   className="group relative block overflow-hidden rounded-[14px] border border-line/60 transition-colors duration-500 hover:border-gold/50"
                   style={{ aspectRatio: "4 / 5.4", backgroundColor: "#0b0a09", boxShadow: "0 24px 60px rgba(0,0,0,.5)" }}
                 >
@@ -168,7 +172,7 @@ export function FormatsShowcase({ lean = false }: { lean?: boolean } = {}) {
                             borderLeft: "3px solid #E2A638",
                           }}
                         >
-                          Результат{" "}
+                          {ui.formats.resultBadge}{" "}
                           <b className="font-semibold" style={gradText(GRAD_ACC)}>
                             {s.result}
                           </b>

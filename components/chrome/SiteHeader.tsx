@@ -4,9 +4,15 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
-import { nav, contacts } from "@/lib/content";
 import { Menu, Close, ArrowUpRight, WhatsApp, Telegram } from "@/components/ui/icons";
 import { ModeToggle } from "@/components/chrome/ModeToggle";
+import { LanguageSwitcher } from "@/components/chrome/LanguageSwitcher";
+import {
+  useContent,
+  useUi,
+  useLocalizedHref,
+} from "@/components/providers/LocaleProvider";
+import { stripLocale } from "@/lib/i18n/config";
 import { GRAD_ACC, GRAD_GOLD, gradText } from "@/lib/ember";
 
 const EASE = [0.16, 1, 0.3, 1] as const;
@@ -18,7 +24,11 @@ function isLinkActive(href: string, pathname: string) {
 }
 
 export function SiteHeader() {
-  const pathname = usePathname();
+  const { nav, contacts } = useContent();
+  const ui = useUi();
+  const localized = useLocalizedHref();
+  const rawPath = usePathname();
+  const pathname = stripLocale(rawPath || "/");
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
 
@@ -52,9 +62,9 @@ export function SiteHeader() {
         <div className="container-shell flex h-[4.6rem] items-center justify-between gap-6">
           {/* Wordmark */}
           <Link
-            href="/"
+            href={localized("/")}
             className="wordmark font-display text-xl tracking-tight text-ink transition-opacity hover:opacity-80"
-            aria-label="Pan&Partners — на головну"
+            aria-label={ui.a11y.wordmarkHome}
           >
             Pan<em className="italic" style={gradText(GRAD_ACC)}>&amp;</em>Partners
           </Link>
@@ -66,7 +76,7 @@ export function SiteHeader() {
               return (
                 <Link
                   key={item.href}
-                  href={item.href}
+                  href={localized(item.href)}
                   aria-current={active ? "page" : undefined}
                   className={`relative text-sm transition-colors ${
                     active ? "text-gold" : "text-ink/85 hover:text-gold"
@@ -87,6 +97,7 @@ export function SiteHeader() {
           {/* Right controls — акуратні контакти замість кнопки */}
           <div className="flex items-center gap-2.5">
             <ModeToggle />
+            <LanguageSwitcher />
             <a
               href={contacts.whatsapp.href}
               target="_blank"
@@ -109,7 +120,7 @@ export function SiteHeader() {
             </a>
             <button
               onClick={() => setMobileOpen(true)}
-              aria-label="Відкрити меню"
+              aria-label={ui.a11y.openMenu}
               className="grid h-10 w-10 place-items-center rounded-full border border-line/70 text-ink lg:hidden"
             >
               <Menu className="h-5 w-5" />
@@ -133,7 +144,7 @@ export function SiteHeader() {
               </span>
               <button
                 onClick={() => setMobileOpen(false)}
-                aria-label="Закрити меню"
+                aria-label={ui.a11y.closeMenu}
                 className="grid h-10 w-10 place-items-center rounded-full border border-line/70 text-ink"
               >
                 <Close className="h-5 w-5" />
@@ -154,7 +165,7 @@ export function SiteHeader() {
                   }}
                 >
                   <Link
-                    href={item.href}
+                    href={localized(item.href)}
                     onClick={() => setMobileOpen(false)}
                     className="flex items-baseline gap-4 border-b border-line/50 py-5 font-display text-3xl text-ink"
                   >
@@ -166,11 +177,11 @@ export function SiteHeader() {
                 </motion.div>
               ))}
               <Link
-                href="/consultation#book"
+                href={localized("/consultation#book")}
                 onClick={() => setMobileOpen(false)}
                 className="btn btn-primary mt-8 w-full"
               >
-                Залишити заявку <ArrowUpRight className="h-4 w-4" />
+                {ui.header.cta} <ArrowUpRight className="h-4 w-4" />
               </Link>
               <div className="mt-6 flex flex-col gap-3">
                 <a
@@ -189,6 +200,9 @@ export function SiteHeader() {
                 >
                   <Telegram className="h-5 w-5 text-gold" /> {contacts.telegram.label}
                 </a>
+              </div>
+              <div className="mt-6">
+                <LanguageSwitcher />
               </div>
             </motion.nav>
           </motion.div>

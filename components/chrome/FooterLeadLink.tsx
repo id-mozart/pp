@@ -2,24 +2,28 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { stripLocale } from "@/lib/i18n/config";
+import { useUi, useLocalizedHref } from "@/components/providers/LocaleProvider";
 import { GRAD_ACC, gradText } from "@/lib/ember";
 
 /** «залишити заявку →» — веде на найближчу форму поточної сторінки. */
 export function FooterLeadLink() {
-  const pathname = usePathname();
+  const ui = useUi();
+  const localized = useLocalizedHref();
+  const path = stripLocale(usePathname() || "/");
   const href =
-    pathname === "/consultation"
+    path === "/consultation"
       ? "#book"
-      : pathname === "/b2b" || pathname === "/courses"
+      : path === "/b2b" || path === "/courses"
         ? "#contact"
-        : "/#contact";
+        : localized("/#contact");
   return (
     <Link
       href={href}
       className="mt-5 inline-block font-display text-base italic transition-transform duration-500 ease-lux hover:translate-x-1.5"
       style={gradText(GRAD_ACC)}
     >
-      залишити заявку →
+      {ui.footerLeadLink}
     </Link>
   );
 }

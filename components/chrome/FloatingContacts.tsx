@@ -2,18 +2,20 @@
 
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { contacts } from "@/lib/content";
 import { WhatsApp, Telegram, Plus } from "@/components/ui/icons";
+import { useContent, useUi } from "@/components/providers/LocaleProvider";
 import { GRAD_GOLD, CTAG_BG } from "@/lib/ember";
 import { track } from "@/lib/analytics";
 
 const EASE = [0.16, 1, 0.3, 1] as const;
 
 export function FloatingContacts() {
+  const { contacts } = useContent();
+  const ui = useUi();
   const [open, setOpen] = useState(false);
 
   return (
-    <div className="fixed bottom-20 right-5 z-[70] flex flex-col items-end gap-3 sm:bottom-5">
+    <div className="fixed bottom-20 right-5 z-[70] hidden flex-col items-end gap-3 sm:bottom-5 sm:flex">
       <AnimatePresence>
         {open && (
           <motion.div
@@ -43,7 +45,7 @@ export function FloatingContacts() {
       <button
         onClick={() => setOpen((o) => !o)}
         aria-expanded={open}
-        aria-label={open ? "Сховати контакти" : "Звʼязатися"}
+        aria-label={open ? ui.a11y.hideContacts : ui.a11y.showContacts}
         style={{ background: GRAD_GOLD }}
         className="group relative grid h-12 w-12 place-items-center rounded-full text-oncontrast shadow-[0_14px_30px_-12px_rgb(var(--c-gold)/0.7)] transition-transform duration-500 ease-lux hover:scale-105"
       >

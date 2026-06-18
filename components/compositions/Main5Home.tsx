@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { useUi } from "@/components/providers/LocaleProvider";
 import { Reveal, RevealGroup, RevealItem } from "@/components/ui/Reveal";
 import { ArrowRight } from "@/components/ui/icons";
 import { BookingCalendar } from "@/components/sections/BookingCalendar";
@@ -112,46 +113,23 @@ function ChronoRail() {
 
 /* ---------- дані ---------- */
 
-/* Репліки — прямою мовою клієнта; topic іде у префіл поля «Запит» */
-const REPLICAS = [
-  { say: "Продажі низькі, і ніхто не розуміє, чому.", topic: "Низькі продажі" },
-  { say: "Цього місяця план є, наступного — провал.", topic: "Нестабільні продажі" },
-  {
-    say: "80–90% B2B-клієнтів відмовляють ще на вході.",
-    topic: "80–90% відмов від B2B-клієнтів",
-  },
-  { say: "«Купимо. Якщо дасте знижку».", topic: "Клієнти вимагають знижки" },
-  {
-    say: "Команда працює, а стабільного результату немає.",
-    topic: "Команда не дає стабільного результату",
-  },
-];
-
-const HOUR_PHASES = [
-  {
-    time: "00:00 — 15:00",
-    title: "Діагностика",
-    text: "Знаходимо, що саме блокує продажі: меседж, офер, переговори чи процес. Ви розповідаєте — Тетяна ставить точні запитання.",
-    photo: "/brand/youwill1.webp",
-  },
-  {
-    time: "15:00 — 40:00",
-    title: "Розбір вашої ситуації",
-    text: "Дивимось на реальні діалоги, відмови та знижки. Знаходимо місце, де клієнти кажуть «ні» — і чому.",
-    photo: "/brand/youwill2.webp",
-  },
-  {
-    time: "40:00 — 60:00",
-    title: "План дій і скрипти",
-    text: "Ви виходите з простим планом наступних кроків і конкретними фразами під ваші кейси — застосувати можна того ж дня.",
-    photo: "/brand/youwill3.webp",
-  },
-];
-
+/* Таймкоди фаз — не текст, лишаються на module scope (паруються з ui.consult.phases) */
+const HOUR_PHASE_TIMES = ["00:00 — 15:00", "15:00 — 40:00", "40:00 — 60:00"];
 
 /* ---------- композиція ---------- */
 
 export function Main5Home() {
+  const ui = useUi();
+
+  /* Репліки — прямою мовою клієнта; topic іде у префіл поля «Запит» */
+  const REPLICAS = ui.consult.replicas;
+
+  const HOUR_PHASES = ui.consult.phases.map((p, i) => ({
+    time: HOUR_PHASE_TIMES[i],
+    title: p.title,
+    text: p.text,
+  }));
+
   function pickReplica(e: React.MouseEvent, topic: string) {
     try {
       sessionStorage.setItem("lead_topic", topic);
@@ -189,13 +167,13 @@ export function Main5Home() {
         />
         <div className="container-shell relative grid items-center gap-12 pb-20 pt-32 lg:grid-cols-12 lg:gap-16 lg:pb-24 lg:pt-40">
           <Reveal className="flex flex-col gap-7 lg:col-span-7">
-            <span className="eyebrow">Онлайн 1:1 · 60 хвилин · план дій і скрипти</span>
+            <span className="eyebrow">{ui.consult.heroEyebrow}</span>
             <h1 className="font-display text-[clamp(2.6rem,5.6vw,5rem)] leading-[1.04] text-ink">
-              Одна{" "}
+              {ui.consult.heroTitlePre}
               <em className="italic" style={gradText(GRAD_ACC)}>
-                година
-              </em>{" "}
-              — і у ваших продажів є план
+                {ui.consult.heroTitleEm}
+              </em>
+              {ui.consult.heroTitlePost}
             </h1>
             <span
               aria-hidden
@@ -203,16 +181,14 @@ export function Main5Home() {
               style={{ background: GRAD_GOLD }}
             />
             <p className="max-w-lg font-display text-lg italic leading-relaxed text-ink/85">
-              Перша консультація з Тетяною Пан: діагностика того, що саме блокує
-              продажі, розбір вашої ситуації та конкретні наступні кроки. Без
-              тиску. Без маніпуляцій.
+              {ui.consult.heroLead}
             </p>
             <div className="flex flex-wrap items-center gap-x-4 gap-y-3">
               <a href="#book" onClick={(e) => goTo(e, "book")} className="btn btn-primary">
-                Забронювати годину <ArrowRight className="h-4 w-4" />
+                {ui.consult.heroCtaBook} <ArrowRight className="h-4 w-4" />
               </a>
               <a href="#hour" onClick={(e) => goTo(e, "hour")} className="btn btn-ghost">
-                Що відбувається за 60 хвилин ↓
+                {ui.consult.heroCtaWhat}
               </a>
             </div>
           </Reveal>
@@ -231,7 +207,7 @@ export function Main5Home() {
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src="/brand/portrait.png"
-                alt="Тетяна Пан — засновниця Pan&Partners"
+                alt={ui.consult.portraitAlt}
                 className="aspect-[4/5] w-full object-cover"
                 style={{ objectPosition: "center 18%" }}
               />
@@ -244,7 +220,7 @@ export function Main5Home() {
               />
               <div className="grain absolute inset-0 opacity-20" />
               <div className="absolute left-6 right-6 top-5 z-10 flex items-center justify-between font-mono text-[0.7rem] font-medium uppercase tracking-[0.22em]">
-                <span style={gradText(GRAD_ACC)}>Ваша година · 1:1</span>
+                <span style={gradText(GRAD_ACC)}>{ui.consult.runhead}</span>
                 <span className="h-2 w-2 rounded-full" style={{ background: GRAD_GOLD }} />
               </div>
               <div className="absolute inset-x-6 bottom-5 z-10 flex flex-wrap items-center justify-between gap-3">
@@ -254,11 +230,11 @@ export function Main5Home() {
                 >
                   №2{" "}
                   <b className="font-semibold" style={gradText(GRAD_ACC)}>
-                    ТОП-тренерів UBA 2023
+                    {ui.consult.badgeTop}
                   </b>
                 </span>
                 <span className="font-mono text-[0.62rem] uppercase tracking-widest text-ink/75">
-                  Тетяна Пан
+                  {ui.consult.caption}
                 </span>
               </div>
             </div>
@@ -271,17 +247,16 @@ export function Main5Home() {
       <section id="before" className="relative grain section-pad">
         <div className="container-shell">
           <Reveal className="flex flex-col gap-4">
-            <MinuteMark>−00:01 · Перед годиною</MinuteMark>
+            <MinuteMark>{ui.consult.minuteMarkPre}</MinuteMark>
             <h2 className="max-w-3xl text-[clamp(2rem,4vw,3.2rem)] leading-[1.05] text-ink">
-              Пʼять реплік, з яких ця{" "}
+              {ui.consult.repTitlePre}
               <em className="italic" style={gradText(GRAD_ACC)}>
-                година
-              </em>{" "}
-              починається
+                {ui.consult.repTitleEm}
+              </em>
+              {ui.consult.repTitlePost}
             </h2>
             <p className="max-w-xl font-display text-lg italic leading-relaxed text-muted">
-              Впізнали свою? Натисніть — і вона вже буде в полі «Запит» поруч із
-              календарем.
+              {ui.consult.repHint}
             </p>
           </Reveal>
 
@@ -300,7 +275,7 @@ export function Main5Home() {
                   <span
                     className="mt-4 inline-block font-mono text-[0.6rem] font-medium uppercase tracking-[0.18em] text-faint transition-colors duration-500 group-hover:text-gold"
                   >
-                    Це про нас → обрати час
+                    {ui.consult.repThisIsUs}
                   </span>
                 </button>
               </RevealItem>
@@ -309,10 +284,10 @@ export function Main5Home() {
               <div className="flex h-full items-center rounded-[12px] p-6">
                 <p className="text-pretty font-display text-[1.2rem] italic leading-snug">
                   <span style={gradText(GRAD_ACC)}>
-                    Кожна репліка — не вирок, а симптом.
+                    {ui.consult.repFoot1}
                   </span>{" "}
                   <span className="text-ink/85">
-                    За 60 хвилин ми знаходимо причину.
+                    {ui.consult.repFoot2}
                   </span>
                 </p>
               </div>
@@ -325,12 +300,12 @@ export function Main5Home() {
       <section id="hour" className="relative grain border-t border-line/50 bg-surface py-14 lg:py-20">
         <div className="container-shell">
           <Reveal className="flex flex-col gap-3">
-            <MinuteMark>00:00 · Хвилина за хвилиною</MinuteMark>
-            <span className="eyebrow">Що відбувається за 60 хвилин</span>
+            <MinuteMark>{ui.consult.minuteMark0}</MinuteMark>
+            <span className="eyebrow">{ui.consult.hourEyebrow}</span>
             <h2 className="max-w-3xl text-[clamp(1.7rem,3.2vw,2.6rem)] leading-[1.05] text-ink">
-              Це не «знайомство». Це{" "}
+              {ui.consult.hourTitlePre}
               <em className="italic" style={gradText(GRAD_ACC)}>
-                робоча сесія
+                {ui.consult.hourTitleEm}
               </em>
             </h2>
           </Reveal>
@@ -378,7 +353,7 @@ export function Main5Home() {
           </div>
 
           {/* що на руках */}
-          <Reveal delay={0.1} className="mt-8">
+          <Reveal delay={0.1} className="mt-14 lg:mt-20">
             <div
               className="relative flex flex-col items-start justify-between gap-6 rounded-[14px] border border-line/70 p-7 sm:p-9 lg:flex-row lg:items-center"
               style={{ background: CARD_BG, boxShadow: "0 24px 60px rgba(0,0,0,.5)" }}
@@ -390,14 +365,14 @@ export function Main5Home() {
               />
               <div>
                 <p className="font-mono text-[0.62rem] font-medium uppercase tracking-[0.22em] text-faint">
-                  На руках після дзвінка
+                  {ui.consult.onHandLabel}
                 </p>
                 <p className="mt-3 max-w-xl font-display text-xl italic leading-snug text-ink">
-                  План дій{" "}
+                  {ui.consult.onHand1}{" "}
                   <span className="text-faint">·</span>{" "}
-                  скрипти під ваші кейси{" "}
+                  {ui.consult.onHand2}{" "}
                   <span className="text-faint">·</span>{" "}
-                  <span style={gradText(GRAD_ACC)}>чіткий перший крок</span>
+                  <span style={gradText(GRAD_ACC)}>{ui.consult.onHand3}</span>
                 </p>
               </div>
               <a
@@ -405,7 +380,7 @@ export function Main5Home() {
                 onClick={(e) => goTo(e, "book")}
                 className="btn btn-primary shrink-0"
               >
-                Забронювати годину <ArrowRight className="h-4 w-4" />
+                {ui.consult.bookCta} <ArrowRight className="h-4 w-4" />
               </a>
             </div>
           </Reveal>
@@ -420,13 +395,13 @@ export function Main5Home() {
       <BookingCalendar
         title={
           <>
-            Оберіть свою{" "}
+            {ui.consult.chooseTitlePre}
             <em className="italic" style={gradText(GRAD_ACC)}>
-              годину
+              {ui.consult.chooseTitleEm}
             </em>
           </>
         }
-        lead="Оберіть день, потім час. Поле «Запит» — необовʼязкове, але корисне."
+        lead={ui.consult.chooseLead}
       />
 
       {/* ФІНАЛ-МАНІФЕСТ — завіса */}
@@ -453,18 +428,18 @@ export function Main5Home() {
             className="max-w-4xl text-balance font-display text-[clamp(1.9rem,4.6vw,3.6rem)] font-medium italic leading-[1.15]"
             style={gradText(GRAD_GOLD)}
           >
-            Без тиску. Без маніпуляцій.
+            {ui.consult.manifesto1}
             <br />
-            Природно та легко.
+            {ui.consult.manifesto2}
           </p>
           <p className="font-display text-lg italic text-ink/85">
-            Перший крок триває одну годину.
+            {ui.consult.manifesto3}
           </p>
           <span
             className="text-4xl leading-none text-gold"
             style={{ fontFamily: "var(--font-caveat)" }}
           >
-            Тетяна Пан
+            {ui.consult.signature}
           </span>
           <a
             href="#book"
@@ -472,7 +447,7 @@ export function Main5Home() {
             className="font-display text-lg font-medium italic transition-transform duration-500 ease-lux hover:-translate-y-0.5"
             style={gradText(GRAD_ACC)}
           >
-            забронювати годину ↑
+            {ui.consult.finalCta}
           </a>
         </div>
         <Ramp />
