@@ -28,15 +28,15 @@ const PROOF = [
 const MENTORING_STEPS = [
   {
     n: "01",
-    t: "Методологія під",
-    em: "ваш бізнес",
-    d: "Жодних шаблонів: будуємо структуру продажів під вашу ціль і вашу реальність.",
+    t: "Вирішення особистих",
+    em: "запитів",
+    d: "Працюємо про вас і ваші цілі: будуємо план та стратегію впровадження під вашу ціль і ваші цінності.",
   },
   {
     n: "02",
     t: "Розбір",
     em: "ваших кейсів",
-    d: "Працюємо на реальних угодах і переговорах — і розбираємо їх до рішення.",
+    d: "Працюємо на реальних угодах і переговорах — і формуємо рішення.",
   },
   {
     n: "03",
@@ -238,7 +238,7 @@ export function MainHome({ content }: { content?: MainContent } = {}) {
                   className="inline-flex items-center rounded-[10px] border border-line/70 px-3.5 py-2 font-mono text-[0.62rem] font-medium uppercase tracking-[0.1em] text-ink"
                   style={{ background: CTAG_BG, borderLeft: "3px solid #E2A638" }}
                 >
-                  міні-група — до 4 осіб
+                  міні-група — 2–4 особи
                 </span>
                 <span
                   className="inline-flex items-center rounded-[10px] border border-line/70 px-3.5 py-2 font-mono text-[0.62rem] font-medium uppercase tracking-[0.1em] text-ink"
@@ -293,11 +293,7 @@ export function MainHome({ content }: { content?: MainContent } = {}) {
 
             {/* Кому підходить */}
             <Reveal delay={0.06} className="mt-8 flex flex-wrap items-center gap-2">
-              {[
-                "Власникам бізнесу",
-                "Керівникам продажів",
-                "Індивідуально або в групі до 4",
-              ].map((c) => (
+              {["Власникам бізнесу", "Керівникам продажів"].map((c) => (
                 <span
                   key={c}
                   className="rounded-full border border-line/70 bg-raised/40 px-3.5 py-1.5 text-sm text-ink/85"

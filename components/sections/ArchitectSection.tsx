@@ -9,7 +9,7 @@ const JOURNEY = [
   { t: "«Олімп»", d: "горілчана компанія", now: false },
   { t: "Danone", d: "FMCG", now: false },
   { t: "Coca-Cola", d: "FMCG", now: false },
-  { t: "Власні магазини", d: "власна справа", now: false },
+  { t: "Власна справа", d: "власний бізнес", now: false },
   { t: "Pan&Partners", d: "консалтинг", now: true },
 ];
 

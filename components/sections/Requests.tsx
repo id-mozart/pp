@@ -96,7 +96,7 @@ export function Requests() {
               className="mt-8 inline-block font-display text-lg font-medium italic transition-transform duration-500 ease-lux hover:translate-x-1.5"
               style={gradText(GRAD_ACC)}
             >
-              обговорімо вашу ситуацію →
+              обговоримо вашу ситуацію →
             </a>
           </RevealGroup>
         </div>
