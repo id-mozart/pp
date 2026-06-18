@@ -116,6 +116,13 @@ export const Compass = (p: IconProps) => (
   </svg>
 );
 
+export const Dialogue = (p: IconProps) => (
+  <svg {...base(p)}>
+    <path d="M4 5.5A2.5 2.5 0 0 1 6.5 3h11A2.5 2.5 0 0 1 20 5.5v7a2.5 2.5 0 0 1-2.5 2.5H10l-4.5 4v-4H6.5A2.5 2.5 0 0 1 4 12.5Z" />
+    <path d="M8.5 9h.01M12 9h.01M15.5 9h.01" />
+  </svg>
+);
+
 export const Spark = (p: IconProps) => (
   <svg {...base(p)}>
     <path d="M12 3c.6 4.5 1.5 5.4 6 6-4.5.6-5.4 1.5-6 6-.6-4.5-1.5-5.4-6-6 4.5-.6 5.4-1.5 6-6Z" />

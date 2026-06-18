@@ -1,12 +1,22 @@
 "use client";
 
+import { motion } from "framer-motion";
 import { useUi } from "@/components/providers/LocaleProvider";
 import { Reveal, RevealGroup, RevealItem } from "@/components/ui/Reveal";
-import { ArrowRight } from "@/components/ui/icons";
+import { ArrowRight, Target, Dialogue, Compass } from "@/components/ui/icons";
 import { BookingCalendar } from "@/components/sections/BookingCalendar";
 import { ArchitectSection } from "@/components/sections/ArchitectSection";
 import { smoothScrollToEl } from "@/lib/smoothScroll";
 import { GRAD_ACC, GRAD_GOLD, CARD_BG, CTAG_BG, gradText } from "@/lib/ember";
+
+const EASE = [0.16, 1, 0.3, 1] as const;
+const IN_VIEW = { once: true, margin: "-60px" } as const;
+
+/** Іконки фаз сесії: діагностика → розбір діалогів → план і скрипти. */
+const PHASE_ICONS = [Target, Dialogue, Compass];
+
+/* Кроковий зсув анімації між колонками — лінія «проводиться» і запалює вузли. */
+const STEP = 0.28;
 
 /**
  * Main 5 · «ГОДИНА» — авторська версія: сторінка-сесія.
@@ -243,18 +253,26 @@ export function Main5Home() {
             </h2>
           </Reveal>
 
-          {/* 3 фази в ряд — компактно, на один екран */}
+          {/* 3 фази в ряд — лінія «проводиться» і запалює вузли-іконки */}
           <div className="relative mt-16 lg:mt-24">
-            {/* горизонтальна рейка-хронометр (десктоп) */}
-            <span
+            {/* горизонтальна рейка-хронометр (десктоп) — малюється зліва направо */}
+            <motion.span
               aria-hidden
-              className="absolute inset-x-0 top-[9px] hidden h-[2px] rounded-full md:block"
+              initial={{ scaleX: 0 }}
+              whileInView={{ scaleX: 1 }}
+              viewport={IN_VIEW}
+              transition={{ duration: 1, ease: EASE, delay: 0.1 }}
+              className="absolute inset-x-0 top-[17px] hidden h-[2px] origin-left rounded-full md:block"
               style={{ background: GRAD_GOLD, opacity: 0.35 }}
             />
             {/* флажок — фініш рейки (60:00) */}
-            <span
+            <motion.span
               aria-hidden
-              className="absolute right-0 top-[10px] hidden -translate-y-full md:block"
+              initial={{ opacity: 0, scale: 0.5 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={IN_VIEW}
+              transition={{ duration: 0.5, ease: EASE, delay: 1 }}
+              className="absolute right-0 top-[18px] hidden -translate-y-full md:block"
             >
               <svg viewBox="0 0 14 18" className="h-[18px] w-[14px]" fill="none">
                 <line
@@ -268,39 +286,60 @@ export function Main5Home() {
                 />
                 <path d="M12.25 1.5 L2 4.5 L12.25 7.5 Z" fill="#E2A638" />
               </svg>
-            </span>
-            <RevealGroup className="grid gap-6 md:grid-cols-3 lg:gap-8">
-              {HOUR_PHASES.map((p, i) => (
-                <RevealItem key={p.title}>
-                  <div id={i > 0 ? `hp-${i}` : undefined} className="relative">
-                    {/* точка — лишається на лінії */}
-                    <span
-                      aria-hidden
-                      className="grid h-[18px] w-[18px] shrink-0 place-items-center rounded-full border border-gold/50"
+            </motion.span>
+            <div className="grid gap-6 md:grid-cols-3 lg:gap-8">
+              {HOUR_PHASES.map((p, i) => {
+                const Icon = PHASE_ICONS[i] ?? Target;
+                return (
+                  <div
+                    key={p.title}
+                    id={i > 0 ? `hp-${i}` : undefined}
+                    className="group relative"
+                  >
+                    {/* вузол-іконка на лінії */}
+                    <motion.span
+                      initial={{ opacity: 0, scale: 0.4 }}
+                      whileInView={{ opacity: 1, scale: 1 }}
+                      viewport={IN_VIEW}
+                      transition={{ duration: 0.5, ease: EASE, delay: 0.25 + i * STEP }}
+                      className="relative grid h-9 w-9 place-items-center rounded-full border border-gold/50 text-gold transition-[border-color,box-shadow,transform] duration-500 ease-lux group-hover:-translate-y-0.5 group-hover:border-gold group-hover:shadow-[0_0_22px_-6px_rgba(226,166,56,.75)]"
                       style={{ background: "#0b0a09" }}
                     >
-                      <span
-                        className="h-1.5 w-1.5 rounded-full"
-                        style={{ background: GRAD_GOLD }}
-                      />
-                    </span>
-                    {/* діапазон — зміщено вниз, над назвою, щоб рейка не перетинала цифри */}
-                    <p
+                      <Icon className="h-[18px] w-[18px]" strokeWidth={1.5} />
+                    </motion.span>
+                    {/* діапазон — над назвою */}
+                    <motion.p
+                      initial={{ opacity: 0, y: 12 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={IN_VIEW}
+                      transition={{ duration: 0.6, ease: EASE, delay: 0.42 + i * STEP }}
                       className="mt-6 font-mono text-[0.66rem] font-medium tracking-[0.2em]"
                       style={gradText(GRAD_ACC)}
                     >
                       {p.time}
-                    </p>
-                    <h3 className="mt-2 font-display text-[1.45rem] font-medium leading-tight text-ink">
+                    </motion.p>
+                    <motion.h3
+                      initial={{ opacity: 0, y: 12 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={IN_VIEW}
+                      transition={{ duration: 0.6, ease: EASE, delay: 0.5 + i * STEP }}
+                      className="mt-2 font-display text-[1.45rem] font-medium leading-tight text-ink"
+                    >
                       {p.title}
-                    </h3>
-                    <p className="mt-3 max-w-sm text-[0.95rem] leading-relaxed text-muted">
+                    </motion.h3>
+                    <motion.p
+                      initial={{ opacity: 0, y: 12 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={IN_VIEW}
+                      transition={{ duration: 0.7, ease: EASE, delay: 0.58 + i * STEP }}
+                      className="mt-3 max-w-sm text-[0.95rem] leading-relaxed text-muted"
+                    >
                       {p.text}
-                    </p>
+                    </motion.p>
                   </div>
-                </RevealItem>
-              ))}
-            </RevealGroup>
+                );
+              })}
+            </div>
           </div>
 
           {/* що на руках */}
