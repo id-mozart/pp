@@ -139,264 +139,235 @@ export function BookingCalendar({
   }
 
   return (
-    <section id="book" className="relative border-t border-line/50 bg-surface section-pad">
+    <section id="book" className="section-pad">
       <div className="container-shell">
-        <Reveal className="mb-8 flex flex-col gap-4">
-          <span className="eyebrow">Бронювання</span>
-          <h2 className="text-[clamp(2rem,4vw,3.2rem)] leading-[1.05] text-ink">
-            {title ?? (
-              <>
-                Бронювання{" "}
-                <em className="italic" style={gradText(GRAD_ACC)}>
-                  консультації
-                </em>
-              </>
-            )}
-          </h2>
+        <div className="relative">
           <span
             aria-hidden
-            className="h-[2px] w-16 rounded-full"
+            className="absolute left-10 top-0 z-10 h-[3px] w-20 -translate-y-1/2 rounded-full"
             style={{ background: GRAD_GOLD }}
           />
-          <p className="max-w-xl font-display text-lg italic leading-relaxed text-muted">
-            {lead ?? booking.intro}
-          </p>
-        </Reveal>
+          {status === "success" ? (
+            <SuccessPanel
+              text={booking.success}
+              date={day ? fmtLong.format(day) : ""}
+              slot={slot ?? ""}
+              ics={day && slot ? icsHref(day, slot) : null}
+            />
+          ) : (
+            <div className="overflow-hidden surface">
+              <div className="grid lg:grid-cols-2">
+                {/* Left — вибір дати й часу */}
+                <div className="relative grain flex flex-col gap-7 border-b border-line/60 bg-raised p-6 sm:p-8 md:p-10 lg:border-b-0 lg:border-r">
+                  <Reveal className="flex flex-col gap-2">
+                    <span className="eyebrow">Бронювання · онлайн · 60 хвилин</span>
+                    <h2 className="text-[clamp(1.7rem,3vw,2.4rem)] leading-[1.05] text-ink">
+                      {title ?? (
+                        <>
+                          Оберіть{" "}
+                          <em className="italic" style={gradText(GRAD_ACC)}>
+                            день і час
+                          </em>
+                        </>
+                      )}
+                    </h2>
+                  </Reveal>
 
-        {/* Trust-полоса */}
-        <Reveal delay={0.05} className="mb-10">
-          <div className="flex flex-wrap items-center gap-4">
-            <div className="flex items-center gap-3">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src="/brand/Tania4.webp"
-                alt="Тетяна Пан"
-                className="h-12 w-12 rounded-full border border-gold/30 object-cover object-top"
-                style={{ background: CARD_BG }}
-                loading="lazy"
-              />
-              <p className="text-sm leading-snug text-muted">
-                Консультацію проводить особисто{" "}
-                <b className="font-medium text-ink">Тетяна Пан</b> — №2
-                ТОП-тренерів UBA 2023
-              </p>
-            </div>
-            <span
-              className="inline-flex items-center gap-2 rounded-[10px] border border-line/70 px-3.5 py-2 font-mono text-[0.62rem] font-medium uppercase tracking-[0.1em] text-ink"
-              style={{ background: CTAG_BG, borderLeft: "3px solid #E2A638" }}
-            >
-              <b className="font-semibold" style={gradText(GRAD_ACC)}>
-                90%
-              </b>{" "}
-              клієнтів продовжують співпрацю
-            </span>
-          </div>
-        </Reveal>
-
-        {status === "success" ? (
-          <SuccessPanel
-            text={booking.success}
-            date={day ? fmtLong.format(day) : ""}
-            slot={slot ?? ""}
-            ics={day && slot ? icsHref(day, slot) : null}
-          />
-        ) : (
-          <div className="grid gap-6 lg:grid-cols-2">
-            {/* Calendar */}
-            <div className="relative">
-              <span
-                aria-hidden
-                className="absolute left-8 top-0 z-10 h-[3px] w-16 -translate-y-1/2 rounded-full"
-                style={{ background: GRAD_GOLD }}
-              />
-              <div
-                className="rounded-[14px] border border-line/70 p-4 sm:p-8"
-                style={{ background: CARD_BG }}
-              >
-                <div className="flex items-center justify-between">
-                  <span className="font-display text-xl capitalize text-ink">
-                    {monthFmt.format(anchor)}
-                  </span>
-                  <span className="flex items-center gap-1.5 text-[0.65rem] text-faint">
-                    <span className="h-1.5 w-1.5 rounded-full bg-gold" /> вільно
-                  </span>
-                </div>
-
-                <div className="mt-6 grid grid-cols-7 gap-0.5 text-center sm:gap-1.5">
-                  {booking.weekdays.map((w) => (
-                    <div
-                      key={w}
-                      className="pb-2 font-mono text-[0.7rem] uppercase tracking-wider text-faint"
-                    >
-                      {w}
+                  {/* Календар */}
+                  <div>
+                    <div className="flex items-center justify-between">
+                      <span className="font-display text-lg capitalize text-ink">
+                        {monthFmt.format(anchor)}
+                      </span>
+                      <span className="flex items-center gap-1.5 text-[0.65rem] text-faint">
+                        <span className="h-1.5 w-1.5 rounded-full bg-gold" /> вільно
+                      </span>
                     </div>
-                  ))}
-                  {cells.map((d, i) => {
-                    if (d === null) return <div key={`b${i}`} />;
-                    const isAvail = availableIso.has(iso(d));
-                    const selected = day !== null && iso(d) === iso(day);
-                    return (
-                      <button
-                        key={iso(d)}
-                        disabled={!isAvail}
-                        onClick={() => {
-                          setDay(d);
-                          setSlot(null);
-                        }}
-                        className={[
-                          "relative aspect-square rounded-lg text-sm transition-all duration-300",
-                          isAvail
-                            ? "text-ink hover:bg-gold/10"
-                            : "cursor-not-allowed text-faint/50",
-                          selected ? "bg-gold/15 ring-1 ring-gold" : "",
-                        ].join(" ")}
-                      >
-                        {d.getDate()}
-                        {isAvail && (
-                          <span className="absolute bottom-1.5 left-1/2 h-1 w-1 -translate-x-1/2 rounded-full bg-gold" />
-                        )}
-                      </button>
-                    );
-                  })}
-                </div>
-                <p className="mt-5 text-xs text-faint">
-                  Час показано за вашим часовим поясом ({tz}).
-                </p>
-              </div>
-            </div>
-
-            {/* Slots + form */}
-            <div className="relative">
-              <span
-                aria-hidden
-                className="absolute left-8 top-0 z-10 h-[3px] w-16 -translate-y-1/2 rounded-full"
-                style={{ background: GRAD_GOLD }}
-              />
-              <div
-                className="rounded-[14px] border border-line/70 p-4 sm:p-8"
-                style={{ background: CARD_BG }}
-              >
-                <div className="flex items-center justify-between gap-3">
-                  <span className="font-display text-xl text-ink">
-                    {booking.slotsHeading}
-                  </span>
-                  <span
-                    className="inline-flex items-center rounded-[10px] border border-line/70 px-3 py-1.5 font-mono text-[0.62rem] font-medium uppercase tracking-[0.1em] text-ink"
-                    style={{ background: CTAG_BG, borderLeft: "3px solid #E2A638" }}
-                  >
-                    {day ? fmtShort.format(day) : booking.chooseDay}
-                  </span>
-                </div>
-
-                {!day ? (
-                  <p className="mt-6 text-sm leading-relaxed text-muted">
-                    {booking.slotsPlaceholder}
-                  </p>
-                ) : (
-                  <div className="mt-5 grid grid-cols-2 gap-2 sm:grid-cols-3">
-                    {slots.map((s) => (
-                      <button
-                        key={s.value}
-                        onClick={() => setSlot(s.value)}
-                        className={[
-                          "flex items-center justify-center gap-1.5 whitespace-nowrap rounded-lg border px-2 py-3 text-xs transition-all duration-300 sm:py-2.5",
-                          slot === s.value
-                            ? "border-gold bg-gold/15 text-gold"
-                            : "border-line/60 text-ink hover:border-gold/50",
-                        ].join(" ")}
-                      >
-                        <Clock className="h-3 w-3" />
-                        {s.value}
-                      </button>
-                    ))}
+                    <div className="mt-4 grid grid-cols-7 gap-0.5 text-center sm:gap-1.5">
+                      {booking.weekdays.map((w) => (
+                        <div
+                          key={w}
+                          className="pb-2 font-mono text-[0.7rem] uppercase tracking-wider text-faint"
+                        >
+                          {w}
+                        </div>
+                      ))}
+                      {cells.map((d, i) => {
+                        if (d === null) return <div key={`b${i}`} />;
+                        const isAvail = availableIso.has(iso(d));
+                        const selected = day !== null && iso(d) === iso(day);
+                        return (
+                          <button
+                            key={iso(d)}
+                            type="button"
+                            disabled={!isAvail}
+                            onClick={() => {
+                              setDay(d);
+                              setSlot(null);
+                            }}
+                            className={[
+                              "relative aspect-square rounded-lg text-sm transition-all duration-300",
+                              isAvail
+                                ? "text-ink hover:bg-gold/10"
+                                : "cursor-not-allowed text-faint/50",
+                              selected ? "bg-gold/15 ring-1 ring-gold" : "",
+                            ].join(" ")}
+                          >
+                            {d.getDate()}
+                            {isAvail && (
+                              <span className="absolute bottom-1.5 left-1/2 h-1 w-1 -translate-x-1/2 rounded-full bg-gold" />
+                            )}
+                          </button>
+                        );
+                      })}
+                    </div>
                   </div>
-                )}
 
-                <div className="my-6 hairline" />
+                  {/* Слоти часу */}
+                  <div>
+                    <div className="flex items-center justify-between gap-3">
+                      <span className="font-mono text-[0.7rem] uppercase tracking-[0.2em] text-faint">
+                        {booking.slotsHeading}
+                      </span>
+                      <span
+                        className="inline-flex items-center rounded-[10px] border border-line/70 px-3 py-1.5 font-mono text-[0.6rem] font-medium uppercase tracking-[0.1em] text-ink"
+                        style={{ background: CTAG_BG, borderLeft: "3px solid #E2A638" }}
+                      >
+                        {day ? fmtShort.format(day) : booking.chooseDay}
+                      </span>
+                    </div>
+                    {!day ? (
+                      <p className="mt-4 text-sm leading-relaxed text-muted">
+                        {booking.slotsPlaceholder}
+                      </p>
+                    ) : (
+                      <div className="mt-4 grid grid-cols-3 gap-2 sm:grid-cols-4">
+                        {slots.map((s) => (
+                          <button
+                            key={s.value}
+                            type="button"
+                            onClick={() => setSlot(s.value)}
+                            className={[
+                              "flex items-center justify-center gap-1.5 whitespace-nowrap rounded-lg border px-2 py-2.5 text-xs transition-all duration-300",
+                              slot === s.value
+                                ? "border-gold bg-gold/15 text-gold"
+                                : "border-line/60 text-ink hover:border-gold/50",
+                            ].join(" ")}
+                          >
+                            <Clock className="h-3 w-3" />
+                            {s.value}
+                          </button>
+                        ))}
+                      </div>
+                    )}
+                  </div>
 
-                <form onSubmit={onSubmit} className="flex flex-col gap-4">
-                  <p className="font-mono text-xs uppercase tracking-[0.22em] text-faint">
-                    {booking.formLabel}
-                  </p>
-                  {topic && (
-                    <p
-                      className="-mt-1 font-mono text-[0.6rem] font-medium uppercase tracking-[0.18em]"
-                      style={gradText(GRAD_ACC)}
-                    >
-                      Ваш запит вже записано — лишилось обрати час
+                  {/* Довіра + часовий пояс */}
+                  <div className="mt-auto flex flex-col gap-3 pt-2">
+                    <div className="flex items-center gap-3">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src="/brand/Tania4.webp"
+                        alt="Тетяна Пан"
+                        className="h-11 w-11 rounded-full border border-gold/30 object-cover object-top"
+                        style={{ background: CARD_BG }}
+                        loading="lazy"
+                      />
+                      <p className="text-sm leading-snug text-muted">
+                        Проводить особисто{" "}
+                        <b className="font-medium text-ink">Тетяна Пан</b> — №2
+                        ТОП-тренерів UBA 2023
+                      </p>
+                    </div>
+                    <p className="text-xs text-faint">
+                      Час показано за вашим часовим поясом ({tz}).
                     </p>
-                  )}
-                  <input
-                    type="text"
-                    name="website_url"
-                    tabIndex={-1}
-                    autoComplete="off"
-                    aria-hidden="true"
-                    className="pointer-events-none absolute -left-[9999px] h-0 w-0 opacity-0"
-                  />
-                  {booking.fields.map((f) => (
-                    <label
-                      key={f.name === "message" ? `message-${topic}` : f.name}
-                      className="flex flex-col gap-2"
-                    >
-                      {f.label && (
-                        <span className="font-mono text-[0.68rem] uppercase tracking-[0.18em] text-muted">
-                          {f.label}
-                          {f.required && <span className="text-gold"> *</span>}
-                        </span>
-                      )}
-                      {f.type === "textarea" ? (
-                        <textarea
-                          name={f.name}
-                          rows={4}
-                          required={f.required}
-                          placeholder={f.placeholder}
-                          defaultValue={topic ? `Запит: ${topic} — ` : undefined}
-                          className={`${FIELD_CLS} resize-none`}
-                        />
-                      ) : (
-                        <input
-                          type={f.type}
-                          name={f.name}
-                          required={f.required}
-                          placeholder={f.placeholder}
-                          className={FIELD_CLS}
-                        />
-                      )}
-                    </label>
-                  ))}
-                  <p className="text-xs text-faint">
-                    {slot && day
-                      ? `Обрано: ${fmtShort.format(day)}, ${slot}`
-                      : booking.pickSlotFirst}
-                  </p>
-                  <button
-                    type="submit"
-                    disabled={!day || !slot || status === "submitting"}
-                    className="btn btn-primary w-full disabled:cursor-not-allowed disabled:opacity-50"
-                  >
-                    {status === "submitting" ? "Надсилаю…" : booking.submit}
-                    {status !== "submitting" && <ArrowRight className="h-4 w-4" />}
-                  </button>
-                  {status === "error" && (
-                    <p className="text-sm text-ember">
-                      Щось пішло не так. Спробуйте ще раз — або напишіть нам
-                      напряму у WhatsApp чи Telegram.
+                  </div>
+                </div>
+
+                {/* Right — форма (як на головній) */}
+                <div className="p-6 sm:p-8 md:p-12">
+                  <form onSubmit={onSubmit} className="flex flex-col gap-5">
+                    {topic && (
+                      <p
+                        className="font-mono text-[0.6rem] font-medium uppercase tracking-[0.18em]"
+                        style={gradText(GRAD_ACC)}
+                      >
+                        Ваш запит вже записано — лишилось обрати час
+                      </p>
+                    )}
+                    <input
+                      type="text"
+                      name="website_url"
+                      tabIndex={-1}
+                      autoComplete="off"
+                      aria-hidden="true"
+                      className="pointer-events-none absolute -left-[9999px] h-0 w-0 opacity-0"
+                    />
+                    {booking.fields.map((f) => (
+                      <label
+                        key={f.name === "message" ? `message-${topic}` : f.name}
+                        className="flex flex-col gap-2"
+                      >
+                        {f.label && (
+                          <span className="font-mono text-[0.68rem] uppercase tracking-[0.18em] text-muted">
+                            {f.label}
+                            {f.required && <span className="text-gold"> *</span>}
+                          </span>
+                        )}
+                        {f.type === "textarea" ? (
+                          <textarea
+                            name={f.name}
+                            rows={4}
+                            required={f.required}
+                            placeholder={f.placeholder}
+                            defaultValue={topic ? `Запит: ${topic} — ` : undefined}
+                            className={`${FIELD_CLS} resize-none`}
+                          />
+                        ) : (
+                          <input
+                            type={f.type}
+                            name={f.name}
+                            required={f.required}
+                            placeholder={f.placeholder}
+                            className={FIELD_CLS}
+                          />
+                        )}
+                      </label>
+                    ))}
+                    <p className="text-xs text-faint">
+                      {slot && day
+                        ? `Обрано: ${fmtShort.format(day)}, ${slot}`
+                        : booking.pickSlotFirst}
                     </p>
-                  )}
-                  <p className="text-xs leading-relaxed text-faint">{booking.note}</p>
-                  <p className="text-xs leading-relaxed text-faint">
-                    Надсилаючи форму, ви погоджуєтеся з{" "}
-                    <Link href="/privacy" className="lux-link">
-                      політикою конфіденційності
-                    </Link>
-                    . Дані використовуємо лише для звʼязку щодо вашого запиту.
-                  </p>
-                </form>
+                    <button
+                      type="submit"
+                      disabled={!day || !slot || status === "submitting"}
+                      className="btn btn-primary w-full disabled:cursor-not-allowed disabled:opacity-50"
+                    >
+                      {status === "submitting" ? "Надсилаю…" : booking.submit}
+                      {status !== "submitting" && <ArrowRight className="h-4 w-4" />}
+                    </button>
+                    {status === "error" && (
+                      <p className="text-sm text-ember">
+                        Щось пішло не так. Спробуйте ще раз — або напишіть нам
+                        напряму у WhatsApp чи Telegram.
+                      </p>
+                    )}
+                    <p className="text-xs leading-relaxed text-faint">{booking.note}</p>
+                    <p className="text-xs leading-relaxed text-faint">
+                      Надсилаючи форму, ви погоджуєтеся з{" "}
+                      <Link href="/privacy" className="lux-link">
+                        політикою конфіденційності
+                      </Link>
+                      . Дані використовуємо лише для звʼязку щодо вашого запиту.
+                    </p>
+                  </form>
+                </div>
               </div>
             </div>
-          </div>
-        )}
+          )}
+        </div>
       </div>
     </section>
   );

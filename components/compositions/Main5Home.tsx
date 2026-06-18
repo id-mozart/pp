@@ -215,15 +215,6 @@ export function Main5Home() {
                 Що відбувається за 60 хвилин ↓
               </a>
             </div>
-            <span
-              className="inline-flex w-fit items-center gap-2 rounded-[10px] border border-line/70 px-3.5 py-2 font-mono text-[0.62rem] font-medium uppercase tracking-[0.1em] text-ink"
-              style={{ background: CTAG_BG, borderLeft: "3px solid #E2A638" }}
-            >
-              Найближчий вільний слот —{" "}
-              <b className="font-semibold" style={gradText(GRAD_ACC)}>
-                у календарі нижче
-              </b>
-            </span>
           </Reveal>
 
           {/* портретна плита */}
@@ -374,31 +365,10 @@ export function Main5Home() {
                         {p.time}
                       </p>
                     </div>
-                    <div
-                      className="relative mt-4 overflow-hidden rounded-[14px] border border-line/60"
-                      style={{ boxShadow: "0 18px 50px rgba(0,0,0,.5)" }}
-                    >
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img
-                        src={p.photo}
-                        alt=""
-                        aria-hidden
-                        className="aspect-[16/10] w-full object-cover"
-                        loading="lazy"
-                      />
-                      <div
-                        className="absolute inset-0"
-                        style={{
-                          background:
-                            "linear-gradient(0deg,rgba(11,7,4,.5) 0%,rgba(12,8,5,.1) 55%,rgba(13,9,5,.28) 100%)",
-                        }}
-                      />
-                      <div className="grain absolute inset-0 opacity-20" />
-                    </div>
-                    <h3 className="mt-4 font-display text-[1.35rem] font-medium leading-tight text-ink">
+                    <h3 className="mt-5 font-display text-[1.45rem] font-medium leading-tight text-ink">
                       {p.title}
                     </h3>
-                    <p className="mt-2 text-sm leading-relaxed text-muted">
+                    <p className="mt-3 max-w-sm text-[0.95rem] leading-relaxed text-muted">
                       {p.text}
                     </p>
                   </div>
