@@ -74,7 +74,7 @@ export function ClientsWall({
 
         {logoWall ? (
           /* Logo wall — монохромна плитка реальних клієнтів */
-          <RevealGroup className="mt-16 grid grid-cols-3 items-center gap-x-12 gap-y-16 sm:grid-cols-4 sm:gap-x-14 sm:gap-y-20 lg:grid-cols-5">
+          <RevealGroup className="mt-24 grid grid-cols-3 items-center gap-x-12 gap-y-16 sm:grid-cols-4 sm:gap-x-14 sm:gap-y-20 lg:mt-28 lg:grid-cols-5">
             {clients.logoTiles.map((logo) => (
               <RevealItem key={logo.name}>
                 <div className="flex items-center justify-center" title={logo.name}>
@@ -102,7 +102,7 @@ export function ClientsWall({
           </RevealGroup>
         )}
 
-        <Reveal className="mx-auto mt-14 max-w-2xl text-center">
+        <Reveal className="mx-auto mt-20 max-w-2xl text-center lg:mt-24">
           <span
             aria-hidden
             className="mx-auto mb-5 block h-[2px] w-16 rounded-full"
