@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import type { ChangeEvent, ReactNode } from "react";
+import type { ChangeEvent, CSSProperties, ReactNode } from "react";
 import { toPng } from "html-to-image";
 
 /* =====================================================================
@@ -34,6 +34,11 @@ interface ContentData extends Frame {
   kicker: string;
   title: string;
   body: string;
+  /* «Нотатки» template only */
+  attop?: boolean;
+  scrim?: "bottom" | "t" | "tstrong";
+  nowrap?: boolean;
+  h2px?: number;
 }
 interface ClosingData extends Frame {
   eyebrow: string;
@@ -41,10 +46,15 @@ interface ClosingData extends Frame {
   quote: string;
   ctaText: string;
   ctaLink: string;
+  /* «Нотатки» template only */
+  sign?: string;
 }
+
+type TemplateId = "ember" | "notes";
 
 /* A full carousel project = everything needed to reproduce a layout. */
 interface Project {
+  template?: TemplateId;
   brand: string;
   meta: string;
   logo: string | null;
@@ -147,6 +157,100 @@ const DEFAULT_CLOSING: ClosingData = {
   zoom: 1.07,
 };
 
+/* ---- «Нотатки дружини · Рік у шлюбі» (full-bleed) defaults ---- */
+
+const NOTES_COVER: CoverData = {
+  eyebrow: "Нотатки дружини",
+  title: "Чого мене навчив\nперший *рік* у шлюбі",
+  sub: "",
+  tag: "",
+  photo: "/brand/notes/kiss.jpg",
+  pos: "center 44%",
+  tx: 0,
+  ty: 0,
+  zoom: 1,
+};
+
+const NOTES_SLIDES: ContentData[] = [
+  {
+    kicker: "Думка перша",
+    title: "Усе складається, коли поруч — *твоя людина*.",
+    body: "Не ідеально. Але по-справжньому —\nі саме це виявилось головним.",
+    photo: "/brand/notes/registry.jpg",
+    pos: "center 12%",
+    attop: false,
+    scrim: "bottom",
+    tx: 0,
+    ty: 0,
+    zoom: 1,
+  },
+  {
+    kicker: "Думка друга",
+    title: "Ідеальних не існує — ні *чоловіків*, ні *дружин*.",
+    body: "Головне, щоб збігалося головне: цінності, погляди, напрям. Решта — деталі.",
+    photo: "/brand/notes/toast.jpg",
+    pos: "center 50%",
+    attop: true,
+    scrim: "tstrong",
+    tx: 0,
+    ty: 0,
+    zoom: 1,
+  },
+  {
+    kicker: "Думка третя",
+    title: "Є речі, де можна просто *промовчати*.",
+    body: "Не все, що дратує, варте суперечки. Що для мене не критично — відпускаю.",
+    photo: "/brand/notes/murmuradores.jpg",
+    pos: "center 38%",
+    attop: true,
+    scrim: "t",
+    nowrap: true,
+    h2px: 60,
+    tx: 0,
+    ty: 0,
+    zoom: 1,
+  },
+  {
+    kicker: "Думка четверта",
+    title: "А є речі, де треба *відстояти своє*.",
+    body: "І найскладніше за весь рік — навчитися\nне плутати одне з іншим.",
+    photo: "/brand/notes/holding.jpg",
+    pos: "center 14%",
+    attop: true,
+    scrim: "t",
+    tx: 0,
+    ty: 0,
+    zoom: 1,
+  },
+  {
+    kicker: "Думка п'ята",
+    title: "Можна бути щасливою з тим, хто *зовсім інший*.",
+    body: "Інша культура, мова, звички, спосіб життя —\nі це справді працює.",
+    photo: "/brand/notes/pool-hug.jpg",
+    pos: "center 13%",
+    attop: true,
+    scrim: "t",
+    tx: 0,
+    ty: 0,
+    zoom: 1.16,
+  },
+];
+
+const NOTES_CLOSING: ClosingData = {
+  eyebrow: "І наостанок",
+  title: "А ще він мене щодня *дивує*.",
+  quote:
+    "Дуже серйозний — і водночас неможливо романтичний. Навіть пес уже звик до наших танців біля басейну.",
+  ctaText: "",
+  ctaLink: "",
+  sign: "рік разом — і це лише початок",
+  photo: "/brand/notes/bride-bed.jpg",
+  pos: "center 22%",
+  tx: 0,
+  ty: 0,
+  zoom: 1,
+};
+
 /* `*текст*` → <em>, `**текст**` → <b> (як у макеті) */
 function rich(text: string): ReactNode[] {
   return text.split(/(\*\*[^*]+\*\*|\*[^*]+\*)/g).map((part, i) => {
@@ -165,6 +269,70 @@ function readFileAsDataURL(file: File): Promise<string> {
     r.onerror = rej;
     r.readAsDataURL(file);
   });
+}
+
+/** Minimal font-embed CSS: only the @font-face rules whose family is actually
+    used inside `node` (the site ships ~190 faces; a slide uses ~3 families).
+    Lets html-to-image embed fonts in ~1–2s instead of ~25s. */
+async function buildSlideFontCss(node: HTMLElement): Promise<string> {
+  const used = new Set<string>();
+  const collect = (el: Element) => {
+    getComputedStyle(el)
+      .fontFamily.split(",")
+      .forEach((f) => used.add(f.trim().replace(/^["']|["']$/g, "").toLowerCase()));
+  };
+  collect(node);
+  node.querySelectorAll("*").forEach(collect);
+
+  const faces: CSSFontFaceRule[] = [];
+  for (const sheet of Array.from(document.styleSheets)) {
+    let rules: CSSRuleList;
+    try {
+      rules = sheet.cssRules;
+    } catch {
+      continue;
+    }
+    for (const r of Array.from(rules)) {
+      if (r.type === CSSRule.FONT_FACE_RULE) {
+        const fam = (r as CSSFontFaceRule).style
+          .getPropertyValue("font-family")
+          .replace(/^["']|["']$/g, "")
+          .trim()
+          .toLowerCase();
+        if (used.has(fam)) faces.push(r as CSSFontFaceRule);
+      }
+    }
+  }
+
+  const toDataUrl = async (url: string): Promise<string | null> => {
+    try {
+      const res = await fetch(new URL(url, location.href).href);
+      const blob = await res.blob();
+      return await new Promise<string>((resolve) => {
+        const fr = new FileReader();
+        fr.onload = () => resolve(String(fr.result));
+        fr.readAsDataURL(blob);
+      });
+    } catch {
+      return null;
+    }
+  };
+
+  const parts = await Promise.all(
+    faces.map(async (rule) => {
+      let css = rule.cssText;
+      const urls = Array.from(
+        rule.style.getPropertyValue("src").matchAll(/url\(["']?([^"')]+)["']?\)/g),
+      ).map((m) => m[1]);
+      for (const u of urls) {
+        if (u.startsWith("data:")) continue;
+        const data = await toDataUrl(u);
+        if (data) css = css.split(u).join(data);
+      }
+      return css;
+    }),
+  );
+  return parts.join("\n");
 }
 
 /* ------------------------------ slides ------------------------------ */
@@ -297,6 +465,188 @@ function ClosingSlide({
     </section>
   );
 }
+
+/* -------------------- «Нотатки» (full-bleed) slides -------------------- */
+
+function NotesCover({
+  d,
+}: {
+  d: CoverData;
+  brand: string;
+  logo: string | null;
+  meta: string;
+}) {
+  return (
+    <section className="nt-slide nt-cover">
+      <div className="ph">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src={d.photo} alt="" style={{ objectPosition: d.pos, transform: imgTransform(d) }} />
+      </div>
+      <div className="scrim top" />
+      <div className="edge" />
+      <div className="ct">
+        <div className="eyebrow">
+          <span className="ln" />
+          <span className="label">{d.eyebrow}</span>
+          <span className="ln" />
+        </div>
+        <h1>{rich(d.title)}</h1>
+      </div>
+    </section>
+  );
+}
+
+function NotesContent({
+  d,
+}: {
+  d: ContentData;
+  n: number;
+  brand: string;
+  meta: string;
+}) {
+  const scrimCls = d.attop
+    ? d.scrim === "tstrong"
+      ? "scrim tstrong"
+      : "scrim t"
+    : "scrim";
+  const h2style: CSSProperties = {};
+  if (d.h2px) h2style.fontSize = `${d.h2px}px`;
+  if (d.nowrap) h2style.whiteSpace = "nowrap";
+  return (
+    <section className="nt-slide">
+      <div className="ph">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src={d.photo} alt="" style={{ objectPosition: d.pos, transform: imgTransform(d) }} />
+      </div>
+      <div className={scrimCls} />
+      <div className="edge" />
+      <div className={`tx${d.attop ? " attop" : ""}`}>
+        <div className="row">
+          <span className="label">{d.kicker}</span>
+        </div>
+        <h2 style={h2style}>{rich(d.title)}</h2>
+        <p>{rich(d.body)}</p>
+      </div>
+    </section>
+  );
+}
+
+function NotesFinal({
+  d,
+}: {
+  d: ClosingData;
+  brand: string;
+  logo: string | null;
+  meta: string;
+}) {
+  return (
+    <section className="nt-slide nt-final">
+      <div className="ph">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src={d.photo} alt="" style={{ objectPosition: d.pos, transform: imgTransform(d) }} />
+      </div>
+      <div className="scrim" />
+      <div className="edge" />
+      <div className="corner-dark" />
+      <div className="fin-top">
+        <span className="label">{d.eyebrow}</span>
+      </div>
+      <div className="tx">
+        <h2>{rich(d.title)}</h2>
+        <p>{rich(d.quote)}</p>
+        {d.sign ? <div className="sign">{d.sign}</div> : null}
+      </div>
+    </section>
+  );
+}
+
+/* --------------------------- template registry --------------------------- */
+
+interface TemplateDef {
+  id: TemplateId;
+  label: string;
+  Cover: (p: {
+    d: CoverData;
+    brand: string;
+    logo: string | null;
+    meta: string;
+  }) => JSX.Element;
+  Content: (p: {
+    d: ContentData;
+    n: number;
+    brand: string;
+    meta: string;
+  }) => JSX.Element;
+  Closing: (p: {
+    d: ClosingData;
+    brand: string;
+    logo: string | null;
+    meta: string;
+  }) => JSX.Element;
+  defaults: Project;
+  /* per-section editor extras shown only for this template */
+  hasGeneral: boolean;
+  newSlide: () => ContentData;
+}
+
+const TEMPLATES: Record<TemplateId, TemplateDef> = {
+  ember: {
+    id: "ember",
+    label: "Ember · Сільпо",
+    Cover: CoverSlide,
+    Content: ContentSlide,
+    Closing: ClosingSlide,
+    hasGeneral: true,
+    defaults: {
+      template: "ember",
+      brand: "Сільпо-Фуд",
+      meta: "Київ · 2026",
+      logo: null,
+      cover: DEFAULT_COVER,
+      slides: DEFAULT_SLIDES,
+      closing: DEFAULT_CLOSING,
+    },
+    newSlide: () => ({
+      kicker: "Новий слайд",
+      title: "Заголовок з *акцентом*",
+      body: "Текст слайда…",
+      photo: "/brand/ph/p1.jpg",
+      pos: "center 30%",
+      tx: 0,
+      ty: 0,
+      zoom: 1,
+    }),
+  },
+  notes: {
+    id: "notes",
+    label: "Нотатки · Рік у шлюбі",
+    Cover: NotesCover,
+    Content: NotesContent,
+    Closing: NotesFinal,
+    hasGeneral: false,
+    defaults: {
+      template: "notes",
+      brand: "",
+      meta: "",
+      logo: null,
+      cover: NOTES_COVER,
+      slides: NOTES_SLIDES,
+      closing: NOTES_CLOSING,
+    },
+    newSlide: () => ({
+      kicker: "Думка наступна",
+      title: "Короткий заголовок з *акцентом*.",
+      body: "Текст думки у два рядки —\nкороткий і теплий.",
+      photo: "/brand/notes/kiss.jpg",
+      pos: "center 30%",
+      attop: true,
+      scrim: "t",
+      tx: 0,
+      ty: 0,
+      zoom: 1,
+    }),
+  },
+};
 
 /* ------------------------------ editor ------------------------------ */
 
@@ -584,6 +934,7 @@ function SlideRow({
 /* ------------------------------ studio ------------------------------ */
 
 export function CarouselStudio() {
+  const [template, setTemplate] = useState<TemplateId>("ember");
   const [brand, setBrand] = useState("Сільпо-Фуд");
   const [meta, setMeta] = useState("Київ · 2026");
   const [logo, setLogo] = useState<string | null>(null);
@@ -591,6 +942,9 @@ export function CarouselStudio() {
   const [slides, setSlides] = useState<ContentData[]>(DEFAULT_SLIDES);
   const [closing, setClosing] = useState<ClosingData>(DEFAULT_CLOSING);
   const [busy, setBusy] = useState<string | null>(null);
+
+  const T = TEMPLATES[template];
+  const fontCssRef = useRef<string | null>(null); // cached minimal font-embed CSS
 
   /* Saved layouts (localStorage) + per-section collapse state */
   const [projects, setProjects] = useState<SavedProject[]>([]);
@@ -614,6 +968,7 @@ export function CarouselStudio() {
     );
 
   const currentProject = (): Project => ({
+    template,
     brand,
     meta,
     logo,
@@ -623,12 +978,23 @@ export function CarouselStudio() {
   });
 
   const applyProject = (d: Project) => {
+    setTemplate(d.template ?? "ember");
     setBrand(d.brand);
     setMeta(d.meta);
     setLogo(d.logo);
     setCover(clone(d.cover));
     setSlides(clone(d.slides));
     setClosing(clone(d.closing));
+  };
+
+  const switchTemplate = (id: TemplateId) => {
+    if (id === template) return;
+    fontCssRef.current = null; // fonts differ per template — recompute on next export
+    applyProject(TEMPLATES[id].defaults);
+    setActiveId(null);
+    setProjectName("");
+    setCollapsed({});
+    setSaveError(null);
   };
 
   const saveLayout = (asCopy: boolean) => {
@@ -669,16 +1035,10 @@ export function CarouselStudio() {
   };
 
   const newLayout = () => {
-    applyProject({
-      brand: "Сільпо-Фуд",
-      meta: "Київ · 2026",
-      logo: null,
-      cover: DEFAULT_COVER,
-      slides: DEFAULT_SLIDES,
-      closing: DEFAULT_CLOSING,
-    });
+    applyProject(TEMPLATES[template].defaults);
     setActiveId(null);
     setProjectName("");
+    setCollapsed({});
     setSaveError(null);
   };
 
@@ -696,38 +1056,50 @@ export function CarouselStudio() {
 
   const addSlide = () => {
     const idx = slides.length;
-    setSlides((s) => [
-      ...s,
-      {
-        kicker: "Новий слайд",
-        title: "Заголовок з *акцентом*",
-        body: "Текст слайда…",
-        photo: "/brand/ph/p1.jpg",
-        pos: "center 30%",
-        tx: 0,
-        ty: 0,
-        zoom: 1,
-      },
-    ]);
+    setSlides((s) => [...s, T.newSlide()]);
     setCollapsed((c) => ({ ...c, [`s${idx}`]: false })); // open the new slide
   };
 
   const removeSlide = (i: number) =>
     setSlides((s) => s.filter((_, k) => k !== i));
 
+  // The site ships ~190 @font-face rules; html-to-image base64-embeds ALL of them
+  // on every export (~25s). Instead we embed only the few families this slide
+  // actually uses, then cache the result (cleared when the template changes).
+  const ensureFontCss = useCallback(async (node: HTMLElement) => {
+    if (fontCssRef.current === null) {
+      try {
+        fontCssRef.current = await buildSlideFontCss(node);
+      } catch {
+        fontCssRef.current = "";
+      }
+    }
+    return fontCssRef.current;
+  }, []);
+
+  useEffect(() => {
+    const id = setTimeout(() => {
+      const node = refs.current[0];
+      if (node) void ensureFontCss(node);
+    }, 700);
+    return () => clearTimeout(id);
+  }, [ensureFontCss, template]);
+
   const exportOne = useCallback(
     async (idx: number) => {
       const node = refs.current[idx];
       if (!node) return null;
+      const fontEmbedCSS = await ensureFontCss(node);
       const dataUrl = await toPng(node, {
         width: W,
         height: H,
         pixelRatio: 1,
         style: { transform: "none" },
+        fontEmbedCSS,
       });
       return dataUrl;
     },
-    [],
+    [ensureFontCss],
   );
 
   const download = (dataUrl: string, name: string) => {
@@ -769,7 +1141,7 @@ export function CarouselStudio() {
 
   return (
     <section className="container-shell pb-24 pt-28">
-      <style dangerouslySetInnerHTML={{ __html: SLIDE_CSS }} />
+      <style dangerouslySetInnerHTML={{ __html: SLIDE_CSS + NOTES_CSS }} />
 
       <header className="mb-5 flex flex-wrap items-end justify-between gap-4">
         <div>
@@ -791,6 +1163,29 @@ export function CarouselStudio() {
           {busy ? `Генеруємо ${busy}…` : `Усі PNG (${total})`}
         </button>
       </header>
+
+      {/* Template picker */}
+      <div className="mb-4 flex flex-wrap items-center gap-2">
+        <span className="mr-1 font-mono text-xs uppercase tracking-[0.18em] text-gold">
+          Шаблон
+        </span>
+        {Object.values(TEMPLATES).map((t) => (
+          <button
+            key={t.id}
+            onClick={() => switchTemplate(t.id)}
+            className={`rounded-full border px-4 py-1.5 text-sm transition-colors ${
+              template === t.id
+                ? "border-gold/60 bg-gold/15 text-gold"
+                : "border-line/70 text-muted hover:border-gold/40 hover:text-gold"
+            }`}
+          >
+            {t.label}
+          </button>
+        ))}
+        <span className="text-xs text-faint">
+          · {total} слайдів · 1080×1350
+        </span>
+      </div>
 
       {/* Saved layouts */}
       <div className="mb-4 rounded-2xl border border-line/50 bg-surface/60 p-4">
@@ -876,6 +1271,7 @@ export function CarouselStudio() {
           </button>
         </div>
 
+        {T.hasGeneral && (
         <Panel title="Загальне">
           <div className="grid gap-3 sm:grid-cols-2">
             <Field label="Бренд клієнта (зліва в лого та шапці)">
@@ -919,6 +1315,7 @@ export function CarouselStudio() {
             )}
           </div>
         </Panel>
+        )}
 
         <SlideRow
           title="Обкладинка"
@@ -933,34 +1330,50 @@ export function CarouselStudio() {
           onDrag={(dx, dy) =>
             setCover((c) => ({ ...c, tx: c.tx + dx, ty: c.ty + dy }))
           }
-          slide={<CoverSlide d={cover} brand={brand} logo={logo} meta={meta} />}
+          slide={<T.Cover d={cover} brand={brand} logo={logo} meta={meta} />}
         >
-          <Field label="Eyebrow">
+          <Field
+            label={
+              template === "notes"
+                ? "Скрипт-підпис зверху (від руки)"
+                : "Eyebrow"
+            }
+          >
             <TextInput
               value={cover.eyebrow}
               onChange={(v) => setCover({ ...cover, eyebrow: v })}
             />
           </Field>
-          <Field label="Заголовок">
+          <Field
+            label={
+              template === "notes"
+                ? "Заголовок · Enter = новий рядок, *слово* = акцент"
+                : "Заголовок"
+            }
+          >
             <TextInput
               rows={2}
               value={cover.title}
               onChange={(v) => setCover({ ...cover, title: v })}
             />
           </Field>
-          <Field label="Підзаголовок">
-            <TextInput
-              rows={2}
-              value={cover.sub}
-              onChange={(v) => setCover({ ...cover, sub: v })}
-            />
-          </Field>
-          <Field label="Плашка внизу праворуч">
-            <TextInput
-              value={cover.tag}
-              onChange={(v) => setCover({ ...cover, tag: v })}
-            />
-          </Field>
+          {template === "ember" && (
+            <>
+              <Field label="Підзаголовок">
+                <TextInput
+                  rows={2}
+                  value={cover.sub}
+                  onChange={(v) => setCover({ ...cover, sub: v })}
+                />
+              </Field>
+              <Field label="Плашка внизу праворуч">
+                <TextInput
+                  value={cover.tag}
+                  onChange={(v) => setCover({ ...cover, tag: v })}
+                />
+              </Field>
+            </>
+          )}
           <PhotoInput
             photo={cover.photo}
             zoom={cover.zoom}
@@ -990,28 +1403,77 @@ export function CarouselStudio() {
                 ),
               )
             }
-            slide={<ContentSlide d={s} n={i + 1} brand={brand} meta={meta} />}
+            slide={<T.Content d={s} n={i + 1} brand={brand} meta={meta} />}
           >
-            <Field label="Кікер (після номера)">
+            <Field
+              label={
+                template === "notes"
+                  ? "Скрипт-підпис (Думка перша…)"
+                  : "Кікер (після номера)"
+              }
+            >
               <TextInput
                 value={s.kicker}
                 onChange={(v) => patchSlide(i, { kicker: v })}
               />
             </Field>
-            <Field label="Заголовок">
+            <Field label="Заголовок · *слово* = акцент">
               <TextInput
                 rows={2}
                 value={s.title}
                 onChange={(v) => patchSlide(i, { title: v })}
               />
             </Field>
-            <Field label="Текст">
+            <Field
+              label={
+                template === "notes" ? "Текст · Enter = новий рядок" : "Текст"
+              }
+            >
               <TextInput
                 rows={3}
                 value={s.body}
                 onChange={(v) => patchSlide(i, { body: v })}
               />
             </Field>
+            {template === "notes" && (
+              <div className="grid grid-cols-2 gap-3">
+                <Field label="Підпис">
+                  <div className="flex rounded-lg border border-line/60 p-0.5 text-sm">
+                    {([
+                      ["низ", false],
+                      ["верх", true],
+                    ] as const).map(([lbl, v]) => (
+                      <button
+                        key={lbl}
+                        onClick={() => patchSlide(i, { attop: v })}
+                        className={`flex-1 rounded-md px-2 py-1.5 transition-colors ${
+                          !!s.attop === v
+                            ? "bg-gold/15 text-gold"
+                            : "text-muted hover:text-gold"
+                        }`}
+                      >
+                        {lbl}
+                      </button>
+                    ))}
+                  </div>
+                </Field>
+                <Field label="Затемнення">
+                  <select
+                    className={inputCls}
+                    value={s.scrim ?? (s.attop ? "t" : "bottom")}
+                    onChange={(e) =>
+                      patchSlide(i, {
+                        scrim: e.target.value as ContentData["scrim"],
+                      })
+                    }
+                  >
+                    <option value="bottom">знизу</option>
+                    <option value="t">зверху</option>
+                    <option value="tstrong">зверху сильне</option>
+                  </select>
+                </Field>
+              </div>
+            )}
             <PhotoInput
               photo={s.photo}
               zoom={s.zoom}
@@ -1042,9 +1504,13 @@ export function CarouselStudio() {
           onDrag={(dx, dy) =>
             setClosing((c) => ({ ...c, tx: c.tx + dx, ty: c.ty + dy }))
           }
-          slide={<ClosingSlide d={closing} brand={brand} logo={logo} meta={meta} />}
+          slide={<T.Closing d={closing} brand={brand} logo={logo} meta={meta} />}
         >
-          <Field label="Eyebrow">
+          <Field
+            label={
+              template === "notes" ? "Скрипт зверху (І наостанок)" : "Eyebrow"
+            }
+          >
             <TextInput
               value={closing.eyebrow}
               onChange={(v) => setClosing({ ...closing, eyebrow: v })}
@@ -1056,25 +1522,36 @@ export function CarouselStudio() {
               onChange={(v) => setClosing({ ...closing, title: v })}
             />
           </Field>
-          <Field label="Цитата">
+          <Field label={template === "notes" ? "Текст" : "Цитата"}>
             <TextInput
               rows={3}
               value={closing.quote}
               onChange={(v) => setClosing({ ...closing, quote: v })}
             />
           </Field>
-          <Field label="CTA — текст">
-            <TextInput
-              value={closing.ctaText}
-              onChange={(v) => setClosing({ ...closing, ctaText: v })}
-            />
-          </Field>
-          <Field label="CTA — лінк-фраза">
-            <TextInput
-              value={closing.ctaLink}
-              onChange={(v) => setClosing({ ...closing, ctaLink: v })}
-            />
-          </Field>
+          {template === "ember" ? (
+            <>
+              <Field label="CTA — текст">
+                <TextInput
+                  value={closing.ctaText}
+                  onChange={(v) => setClosing({ ...closing, ctaText: v })}
+                />
+              </Field>
+              <Field label="CTA — лінк-фраза">
+                <TextInput
+                  value={closing.ctaLink}
+                  onChange={(v) => setClosing({ ...closing, ctaLink: v })}
+                />
+              </Field>
+            </>
+          ) : (
+            <Field label="Підпис від руки (унизу)">
+              <TextInput
+                value={closing.sign ?? ""}
+                onChange={(v) => setClosing({ ...closing, sign: v })}
+              />
+            </Field>
+          )}
           <PhotoInput
             photo={closing.photo}
             zoom={closing.zoom}
@@ -1193,4 +1670,48 @@ const SLIDE_CSS = `
 .ig-cta{margin-top:24px;padding-top:22px;border-top:1px solid var(--igline);display:block;}
 .ig-cta-text{font-family:var(--font-spectral),serif;font-style:italic;font-size:31px;color:var(--igmut);}
 .ig-cta-link{margin-left:.45em;font-family:var(--font-spectral),serif;font-style:italic;font-weight:500;font-size:31px;background:var(--ga);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent;}
+`;
+
+/* ------------- «Нотатки дружини · Рік у шлюбі» (full-bleed) ------------- */
+/* Шрифти беремо з уже завантажених сайтом (cyrillic, same-origin → надійний
+   експорт): cormorant ≈ Cormorant Garamond, spectral ≈ EB Garamond, caveat. */
+const NOTES_CSS = `
+.nt-slide{position:relative;width:1080px;height:1350px;overflow:hidden;background:#1a1612;
+  color:#F5E9D7;font-family:var(--font-spectral),serif;-webkit-font-smoothing:antialiased;
+  --cream:#F5E9D7;--gold:#E2A638;--gold-soft:#EFBE6A;--terra:#D2773A;}
+.nt-slide *{margin:0;padding:0;box-sizing:border-box;}
+.nt-slide .ph{position:absolute;inset:0;}
+.nt-slide .ph img{width:100%;height:100%;object-fit:cover;display:block;}
+.nt-slide .scrim{position:absolute;inset:0;
+  background:linear-gradient(0deg, rgba(22,14,7,.9) 0%, rgba(22,14,7,.54) 26%, rgba(22,14,7,.06) 52%, transparent 70%);}
+.nt-slide .scrim.t{background:linear-gradient(180deg, rgba(22,14,7,.92) 0%, rgba(22,14,7,.6) 24%, rgba(22,14,7,.12) 48%, transparent 70%);}
+.nt-slide .scrim.tstrong{background:linear-gradient(180deg, rgba(22,14,7,.96) 0%, rgba(22,14,7,.88) 18%, rgba(22,14,7,.72) 30%, rgba(22,14,7,.4) 40%, transparent 53%);}
+.nt-slide .edge{position:absolute;inset:34px;border:1px solid rgba(246,239,226,.4);z-index:3;pointer-events:none;}
+.nt-slide .label{font-family:var(--font-caveat),cursive;font-weight:600;font-size:48px;letter-spacing:.01em;line-height:1;
+  color:var(--gold-soft);display:inline-block;transform:rotate(-1.5deg);}
+.nt-slide .tx{position:absolute;left:74px;right:74px;bottom:84px;z-index:4;}
+.nt-slide .tx.attop{top:80px;bottom:auto;}
+.nt-slide .tx .row{display:flex;align-items:center;gap:16px;margin-bottom:24px;white-space:nowrap;}
+.nt-slide .tx h2{font-family:var(--font-cormorant),serif;font-weight:600;font-size:86px;line-height:1.0;letter-spacing:-.01em;
+  color:#fff;text-shadow:0 2px 26px rgba(0,0,0,.55);text-wrap:balance;}
+.nt-slide .tx h2 em{font-style:italic;color:var(--gold-soft);}
+.nt-slide .tx p{margin-top:20px;font-family:var(--font-spectral),serif;font-size:40px;line-height:1.32;color:#F5E9D7;
+  max-width:930px;text-shadow:0 1px 16px rgba(0,0,0,.6);white-space:pre-line;}
+/* cover */
+.nt-cover .scrim.top{background:linear-gradient(180deg, rgba(22,14,7,.56) 0%, rgba(22,14,7,.1) 16%, rgba(22,14,7,0) 38%, rgba(22,14,7,0) 52%, rgba(22,14,7,.4) 66%, rgba(22,14,7,.6) 82%, rgba(22,14,7,.92) 100%);}
+.nt-cover .ct{position:absolute;left:0;right:0;top:76%;transform:translateY(-50%);z-index:4;text-align:center;padding:0 84px;}
+.nt-cover .eyebrow{display:flex;align-items:center;justify-content:center;gap:18px;margin-bottom:22px;line-height:1;}
+.nt-cover .eyebrow .label{font-size:50px;color:var(--gold-soft);white-space:nowrap;}
+.nt-cover .eyebrow .ln{width:58px;height:1px;background:rgba(255,255,255,.82);}
+.nt-cover h1{font-family:var(--font-cormorant),serif;font-weight:600;font-size:90px;line-height:1.04;color:#fff;
+  text-shadow:0 3px 30px rgba(0,0,0,.6);white-space:pre-line;}
+.nt-cover h1 em{font-style:italic;color:var(--gold-soft);}
+/* final */
+.nt-final .tx{bottom:80px;}
+.nt-final .tx h2{font-size:76px;white-space:nowrap;}
+.nt-final .corner-dark{position:absolute;top:0;left:0;width:64%;height:27%;z-index:2;pointer-events:none;
+  background:linear-gradient(155deg, rgba(22,14,7,.68) 0%, rgba(22,14,7,.22) 50%, transparent 78%);}
+.nt-final .fin-top{position:absolute;top:70px;left:74px;z-index:4;}
+.nt-final .fin-top .label{color:#F8DEA8;white-space:nowrap;}
+.nt-final .sign{margin-top:22px;font-family:var(--font-caveat),cursive;font-weight:600;font-size:48px;color:var(--gold-soft);}
 `;
