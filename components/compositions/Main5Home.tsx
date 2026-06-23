@@ -3,7 +3,7 @@
 import { motion } from "framer-motion";
 import { useUi } from "@/components/providers/LocaleProvider";
 import { Reveal, RevealGroup, RevealItem } from "@/components/ui/Reveal";
-import { ArrowRight, Target, Dialogue, Compass } from "@/components/ui/icons";
+import { ArrowRight, Target, Dialogue, Compass, Check } from "@/components/ui/icons";
 import { ContactForm } from "@/components/sections/ContactForm";
 import { ArchitectSection } from "@/components/sections/ArchitectSection";
 import { smoothScrollToEl } from "@/lib/smoothScroll";
@@ -265,28 +265,24 @@ export function Main5Home() {
               className="absolute inset-x-0 top-[17px] hidden h-[2px] origin-left rounded-full md:block"
               style={{ background: GRAD_GOLD, opacity: 0.35 }}
             />
-            {/* флажок — фініш рейки (60:00) */}
-            <motion.span
+            {/* фініш рейки (60:00) — галочка в кружечку (центрована на рейці).
+                Позиціювання — на статичній обгортці, бо Framer-трансформ (scale)
+                перебив би -translate-y-1/2. */}
+            <span
               aria-hidden
-              initial={{ opacity: 0, scale: 0.5 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={IN_VIEW}
-              transition={{ duration: 0.5, ease: EASE, delay: 1 }}
-              className="absolute right-0 top-[18px] hidden -translate-y-full md:block"
+              className="absolute right-0 top-[18px] hidden -translate-y-1/2 md:block"
             >
-              <svg viewBox="0 0 14 18" className="h-[18px] w-[14px]" fill="none">
-                <line
-                  x1="12.25"
-                  y1="0"
-                  x2="12.25"
-                  y2="18"
-                  stroke="#E2A638"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                />
-                <path d="M12.25 1.5 L2 4.5 L12.25 7.5 Z" fill="#E2A638" />
-              </svg>
-            </motion.span>
+              <motion.span
+                initial={{ opacity: 0, scale: 0.5 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={IN_VIEW}
+                transition={{ duration: 0.5, ease: EASE, delay: 1 }}
+                className="grid h-9 w-9 place-items-center rounded-full border border-gold/50 text-gold"
+                style={{ background: "#0b0a09" }}
+              >
+                <Check className="h-[18px] w-[18px]" strokeWidth={1.8} />
+              </motion.span>
+            </span>
             <div className="grid gap-6 md:grid-cols-3 lg:gap-8">
               {HOUR_PHASES.map((p, i) => {
                 const Icon = PHASE_ICONS[i] ?? Target;
@@ -380,8 +376,7 @@ export function Main5Home() {
       {/* ХТО ПО ТОЙ БІК ЕКРАНА — той самий блок про Тетяну, що й на головній */}
       <ArchitectSection id="person" />
 
-      {/* РАМПА + ФОРМА ЗАЯВКИ (та сама, що на головній; #book для CTA) */}
-      <Ramp />
+      {/* ФОРМА ЗАЯВКИ (та сама, що на головній; #book для CTA) */}
       <ContactForm
         id="book"
         title={
