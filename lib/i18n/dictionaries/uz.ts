@@ -428,9 +428,9 @@ export const uz: Dictionary = {
         eyebrow: "Tayyor yechimlar",
         title: "Sotuvingiz uchun tayyor yechimlar",
         items: [
-          { n: "01", title: "Sotuv va muzokaralar", sub: "Onlayn kurslar", image: "/brand/courses/bubbles.jpg" },
-          { n: "02", title: "Sotuv chek-listlari", sub: "Joriy etishga tayyor", image: "/brand/courses/checklist.jpg" },
-          { n: "03", title: "Xabar skriptlari", sub: "Yangi mijozlar uchun", image: "/brand/courses/scripts.jpg" },
+          { n: "01", title: "Sotuv va muzokaralar", sub: "Onlayn kurslar" },
+          { n: "02", title: "Sotuv chek-listlari", sub: "Joriy etishga tayyor" },
+          { n: "03", title: "Xabar skriptlari", sub: "Yangi mijozlar uchun" },
         ],
         lead: "Bu yerda sotuvingizni tez kuchaytirish va sotuv tizimingizda nimani yaxshilash kerakligini aniq tushunish uchun tayyor yechimlarni topasiz.",
         features: [
@@ -452,7 +452,7 @@ export const uz: Dictionary = {
             title: "Javob beriladigan xabarlar",
             short: "5 kunlik amaliy mini-kurs: 10 mijozdan 7 nafari javob beradigan birinchi xabarlarni qanday yozish kerak.",
             price: "1100 ₴",
-            image: "/brand/course1.png",
+            image: "/brand/courses/bubbles.jpg",
             href: "/courses/messages",
             cta: "Qoʻshilish",
           },
@@ -852,12 +852,14 @@ export const uz: Dictionary = {
           short:
             "Sotuv tizimingizni tez tekshirib, kuchaytirish uchun tayyor chek-listlar.",
           price: "Soʻrov boʻyicha",
+          image: "/brand/courses/checklist.jpg",
         },
         {
           title: "Xabar skriptlari",
           short:
             "Yangi B2B mijozlar uchun birinchi xabar skriptlari — suhbatni ishonch bilan boshlash uchun.",
           price: "Soʻrov boʻyicha",
+          image: "/brand/courses/scripts.jpg",
         },
       ],
       catalog: "Katalog",

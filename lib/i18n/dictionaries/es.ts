@@ -428,9 +428,9 @@ export const es: Dictionary = {
         eyebrow: "Soluciones listas",
         title: "Soluciones listas para tus ventas",
         items: [
-          { n: "01", title: "Ventas y negociación", sub: "Cursos online", image: "/brand/courses/bubbles.jpg" },
-          { n: "02", title: "Checklists de ventas", sub: "Listos para implementar", image: "/brand/courses/checklist.jpg" },
-          { n: "03", title: "Scripts de mensajes", sub: "Para nuevos clientes", image: "/brand/courses/scripts.jpg" },
+          { n: "01", title: "Ventas y negociación", sub: "Cursos online" },
+          { n: "02", title: "Checklists de ventas", sub: "Listos para implementar" },
+          { n: "03", title: "Scripts de mensajes", sub: "Para nuevos clientes" },
         ],
         lead: "Aquí encontrarás soluciones listas para reforzar rápidamente tus ventas y entender con claridad qué necesita mejorar tu sistema de ventas.",
         features: [
@@ -452,7 +452,7 @@ export const es: Dictionary = {
             title: "Mensajes que reciben respuesta",
             short: "Minicurso práctico de 5 días: cómo escribir primeros mensajes que responden 7 de cada 10 clientes.",
             price: "1100 ₴",
-            image: "/brand/course1.png",
+            image: "/brand/courses/bubbles.jpg",
             href: "/courses/messages",
             cta: "Apuntarme",
           },
@@ -852,12 +852,14 @@ export const es: Dictionary = {
           short:
             "Checklists listos para revisar y reforzar rápidamente tu sistema de ventas.",
           price: "A consultar",
+          image: "/brand/courses/checklist.jpg",
         },
         {
           title: "Scripts de mensajes",
           short:
             "Scripts de los primeros mensajes para nuevos clientes B2B, para entrar al diálogo con seguridad.",
           price: "A consultar",
+          image: "/brand/courses/scripts.jpg",
         },
       ],
       catalog: "Catálogo",

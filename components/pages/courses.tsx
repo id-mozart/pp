@@ -17,35 +17,21 @@ export function CoursesIntro() {
           {hero.items.map((it) => (
             <RevealItem key={it.n}>
               <div
-                className="group flex h-full flex-col overflow-hidden rounded-[14px] border border-line/70 transition-colors duration-500 ease-lux hover:border-gold/40"
+                className="relative h-full rounded-[14px] border border-line/70 p-7"
                 style={{ background: CARD_BG }}
               >
-                <div className="relative overflow-hidden">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src={it.image}
-                    alt={it.title}
-                    className="aspect-[4/3] w-full object-cover transition-transform duration-700 ease-lux group-hover:scale-[1.04]"
-                    loading="lazy"
-                  />
-                  <div
-                    aria-hidden
-                    className="absolute inset-x-0 bottom-0 h-20"
-                    style={{
-                      background:
-                        "linear-gradient(0deg,rgba(19,12,6,.97),rgba(19,12,6,.5) 48%,transparent)",
-                    }}
-                  />
-                </div>
-                <div className="relative -mt-7 flex flex-1 flex-col px-7 pb-7">
-                  <span className="font-display text-3xl" style={gradText(GRAD_ACC)}>
-                    {it.n}
-                  </span>
-                  <h3 className="mt-2 font-display text-lg font-medium text-ink">
-                    {it.title}
-                  </h3>
-                  <p className="mt-1 text-sm text-muted">{it.sub}</p>
-                </div>
+                <span
+                  aria-hidden
+                  className="absolute left-7 top-0 h-[3px] w-10 -translate-y-1/2 rounded-full"
+                  style={{ background: GRAD_GOLD }}
+                />
+                <span className="font-display text-3xl" style={gradText(GRAD_ACC)}>
+                  {it.n}
+                </span>
+                <h3 className="mt-3 font-display text-lg font-medium text-ink">
+                  {it.title}
+                </h3>
+                <p className="mt-1 text-sm text-muted">{it.sub}</p>
               </div>
             </RevealItem>
           ))}
@@ -127,8 +113,13 @@ export function CoursesList() {
                   <img
                     src={c.image}
                     alt={c.title}
-                    className="aspect-[16/10] w-full object-cover transition-transform duration-700 ease-lux group-hover:scale-105"
+                    className="aspect-[5/4] w-full object-cover transition-transform duration-700 ease-lux group-hover:scale-105"
                     loading="lazy"
+                  />
+                  <div
+                    aria-hidden
+                    className="pointer-events-none absolute inset-x-0 bottom-0 h-16"
+                    style={{ background: "linear-gradient(0deg,rgba(19,12,6,.96),transparent)" }}
                   />
                   <span className={`absolute right-3 top-3 ${ctagCls}`} style={ctagStyle}>
                     {c.price}
@@ -178,24 +169,36 @@ export function CoursesList() {
             <RevealItem key={c.title}>
               <Link
                 href="#contact"
-                className="group flex h-full flex-col justify-between rounded-[14px] border border-line/70 p-6 transition-all duration-500 ease-lux hover:-translate-y-1.5 hover:border-gold/40"
+                className="group flex h-full flex-col overflow-hidden rounded-[14px] border border-line/70 transition-all duration-500 ease-lux hover:-translate-y-1.5 hover:border-gold/40"
                 style={{ background: CARD_BG }}
               >
-                <div>
-                  <span className={`inline-flex ${ctagCls}`} style={ctagStyle}>
+                <div className="relative overflow-hidden">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={c.image}
+                    alt={c.title}
+                    className="aspect-[5/4] w-full object-cover transition-transform duration-700 ease-lux group-hover:scale-105"
+                    loading="lazy"
+                  />
+                  <div
+                    aria-hidden
+                    className="pointer-events-none absolute inset-x-0 bottom-0 h-16"
+                    style={{ background: "linear-gradient(0deg,rgba(19,12,6,.96),transparent)" }}
+                  />
+                  <span className={`absolute right-3 top-3 ${ctagCls}`} style={ctagStyle}>
                     {c.price}
                   </span>
-                  <h3 className="mt-5 font-display text-xl font-medium text-ink">
-                    {c.title}
-                  </h3>
-                  <p className="mt-2 text-sm leading-relaxed text-muted">{c.short}</p>
                 </div>
-                <span
-                  className="mt-8 inline-flex items-center gap-2 font-display text-base italic transition-transform duration-500 ease-lux group-hover:translate-x-1.5"
-                  style={gradText(GRAD_ACC)}
-                >
-                  {ui.coursesPage.learnMore}
-                </span>
+                <div className="flex flex-1 flex-col p-6">
+                  <h3 className="font-display text-xl font-medium text-ink">{c.title}</h3>
+                  <p className="mt-2 flex-1 text-sm leading-relaxed text-muted">{c.short}</p>
+                  <span
+                    className="mt-5 inline-flex items-center gap-2 font-display text-base italic transition-transform duration-500 ease-lux group-hover:translate-x-1.5"
+                    style={gradText(GRAD_ACC)}
+                  >
+                    {ui.coursesPage.learnMore}
+                  </span>
+                </div>
               </Link>
             </RevealItem>
           ))}

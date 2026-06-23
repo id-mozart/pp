@@ -428,9 +428,9 @@ export const ru: Dictionary = {
         eyebrow: "Готовые решения",
         title: "Готовые решения для ваших продаж",
         items: [
-          { n: "01", title: "Продажи и переговоры", sub: "Онлайн-курсы", image: "/brand/courses/bubbles.jpg" },
-          { n: "02", title: "Чек-листы для продаж", sub: "Готовы к внедрению", image: "/brand/courses/checklist.jpg" },
-          { n: "03", title: "Скрипты сообщений", sub: "Для новых клиентов", image: "/brand/courses/scripts.jpg" },
+          { n: "01", title: "Продажи и переговоры", sub: "Онлайн-курсы" },
+          { n: "02", title: "Чек-листы для продаж", sub: "Готовы к внедрению" },
+          { n: "03", title: "Скрипты сообщений", sub: "Для новых клиентов" },
         ],
         lead: "Здесь вы найдёте готовые решения, чтобы быстро усилить свои продажи и чётко понять, что нуждается в улучшении в вашей системе продаж.",
         features: [
@@ -452,7 +452,7 @@ export const ru: Dictionary = {
             title: "Сообщения, на которые отвечают",
             short: "5-дневный практический мини-курс: как писать первые сообщения, на которые отвечают 7 из 10 клиентов.",
             price: "1100 грн",
-            image: "/brand/course1.png",
+            image: "/brand/courses/bubbles.jpg",
             href: "/courses/messages",
             cta: "Присоединиться",
           },
@@ -852,12 +852,14 @@ export const ru: Dictionary = {
           short:
             "Готовые чек-листы, чтобы быстро проверить и усилить вашу систему продаж.",
           price: "По запросу",
+          image: "/brand/courses/checklist.jpg",
         },
         {
           title: "Скрипты сообщений",
           short:
             "Скрипты первых сообщений для новых B2B-клиентов — чтобы заходить в диалог уверенно.",
           price: "По запросу",
+          image: "/brand/courses/scripts.jpg",
         },
       ],
       catalog: "Каталог",

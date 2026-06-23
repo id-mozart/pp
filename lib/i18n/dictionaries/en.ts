@@ -428,9 +428,9 @@ export const en: Dictionary = {
         eyebrow: "Ready-made solutions",
         title: "Ready-made solutions for your sales",
         items: [
-          { n: "01", title: "Sales and negotiations", sub: "Online courses", image: "/brand/courses/bubbles.jpg" },
-          { n: "02", title: "Sales checklists", sub: "Ready to implement", image: "/brand/courses/checklist.jpg" },
-          { n: "03", title: "Message scripts", sub: "For new clients", image: "/brand/courses/scripts.jpg" },
+          { n: "01", title: "Sales and negotiations", sub: "Online courses" },
+          { n: "02", title: "Sales checklists", sub: "Ready to implement" },
+          { n: "03", title: "Message scripts", sub: "For new clients" },
         ],
         lead: "Here you'll find ready-made solutions to quickly strengthen your sales and clearly see what your sales system needs to improve.",
         features: [
@@ -452,7 +452,7 @@ export const en: Dictionary = {
             title: "Messages that get replies",
             short: "A 5-day hands-on mini-course: how to write first messages that 7 out of 10 clients reply to.",
             price: "1100 ₴",
-            image: "/brand/course1.png",
+            image: "/brand/courses/bubbles.jpg",
             href: "/courses/messages",
             cta: "Join",
           },
@@ -852,12 +852,14 @@ export const en: Dictionary = {
           short:
             "Ready-made checklists to quickly review and strengthen your sales system.",
           price: "On request",
+          image: "/brand/courses/checklist.jpg",
         },
         {
           title: "Message scripts",
           short:
             "First-message scripts for new B2B clients — so you start the conversation with confidence.",
           price: "On request",
+          image: "/brand/courses/scripts.jpg",
         },
       ],
       catalog: "Catalog",
