@@ -7,12 +7,12 @@ import { GRAD_ACC, GRAD_GOLD, CARD_BG, gradText } from "@/lib/ember";
 import { localizedAlternates } from "@/lib/i18n/metadata";
 import { getLocale } from "@/lib/i18n/server";
 
-/* Лендинг курсу «Повідомлення, на які відповідають» — контент із
-   tetianapan.weblium.site, оформлено в стилі сайту. Купівля — на платіжній
-   сторінці курсу (CHECKOUT_URL). */
+/* Лендинг курсу «Повідомлення, на які відповідають» — контент оформлено в
+   стилі сайту. Купівля — одразу на захищеній сторінці оплати WayForPay
+   (CHECKOUT_URL). */
 
 const CHECKOUT_URL =
-  "https://tetianapan.weblium.site/?utm_source=panpartners&utm_medium=site&utm_campaign=course_messages";
+  "https://secure.wayforpay.com/page?vkh=6a3a7c6f-2dc4-496f-93b0-116522d1dba8";
 const PRICE = "1100 грн";
 
 const HERO_BULLETS = [
