@@ -20,7 +20,7 @@ export function CoursesPageBody() {
           </>
         }
         lead={courses.hero.lead}
-        image="/brand/ph/p6.jpg"
+        image="/brand/format-courses.jpg"
         primary={{ label: ui.coursesPage.heroPrimary, href: "#catalog" }}
         secondary={{ label: ui.coursesPage.heroSecondary, href: "#contact" }}
       />
