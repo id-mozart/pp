@@ -547,11 +547,11 @@ export const courses = {
     subtitle: "Обирайте програму, яка відповідає вашим цілям та рівню.",
     cards: [
       {
-        title: "Продажі та переговори — базовий курс",
-        short: "Стартовий онлайн-курс: прості інструменти продажів і переговорів, які можна застосувати вже сьогодні.",
-        price: "120 €",
+        title: "Повідомлення, на які відповідають",
+        short: "5-денний практичний мінікурс: як писати перші повідомлення, на які відповідають 7 із 10 клієнтів.",
+        price: "1100 грн",
         image: "/brand/course1.png",
-        href: "https://tetianapan.weblium.site/?utm_source=panpartners&utm_medium=site&utm_campaign=course_basic",
+        href: "/courses/messages",
         cta: "Приєднатися",
       },
     ] as CourseCard[],

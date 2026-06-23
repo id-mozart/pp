@@ -449,11 +449,11 @@ export const uz: Dictionary = {
         subtitle: "Maqsadlaringiz va darajangizga mos dasturni tanlang.",
         cards: [
           {
-            title: "Sotuv va muzokaralar — boshlangʻich kurs",
-            short: "Boshlangʻich onlayn kurs: bugundan qoʻllashingiz mumkin boʻlgan oddiy sotuv va muzokara vositalari.",
-            price: "120 €",
+            title: "Javob beriladigan xabarlar",
+            short: "5 kunlik amaliy mini-kurs: 10 mijozdan 7 nafari javob beradigan birinchi xabarlarni qanday yozish kerak.",
+            price: "1100 ₴",
             image: "/brand/course1.png",
-            href: "https://tetianapan.weblium.site/?utm_source=panpartners&utm_medium=site&utm_campaign=course_basic",
+            href: "/courses/messages",
             cta: "Qoʻshilish",
           },
         ],

@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useContent, useUi } from "@/components/providers/LocaleProvider";
+import { useContent, useUi, useLocalizedHref } from "@/components/providers/LocaleProvider";
 import { Reveal, RevealGroup, RevealItem } from "@/components/ui/Reveal";
 import { Check } from "@/components/ui/icons";
 import { GRAD_ACC, GRAD_GOLD, CARD_BG, CTAG_BG, gradText } from "@/lib/ember";
@@ -83,6 +83,7 @@ const ctagStyle = { background: CTAG_BG, borderLeft: "3px solid #E2A638" } as co
 export function CoursesList() {
   const { courses } = useContent();
   const ui = useUi();
+  const localizedHref = useLocalizedHref();
   const { list } = courses;
   const EXTRA = ui.coursesPage.extra;
   return (
@@ -104,15 +105,12 @@ export function CoursesList() {
         </Reveal>
 
         <RevealGroup className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {list.cards.map((c) => (
-            <RevealItem key={c.title}>
-              <a
-                href={c.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group flex h-full flex-col overflow-hidden rounded-[14px] border border-line/70 transition-all duration-500 ease-lux hover:-translate-y-1.5 hover:border-gold/40"
-                style={{ background: CARD_BG }}
-              >
+          {list.cards.map((c) => {
+            const internal = c.href.startsWith("/");
+            const cardCls =
+              "group flex h-full flex-col overflow-hidden rounded-[14px] border border-line/70 transition-all duration-500 ease-lux hover:-translate-y-1.5 hover:border-gold/40";
+            const inner = (
+              <>
                 <div className="relative overflow-hidden">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
@@ -142,9 +140,28 @@ export function CoursesList() {
                     {ui.coursesPage.opensOnCoursePage}
                   </span>
                 </div>
-              </a>
-            </RevealItem>
-          ))}
+              </>
+            );
+            return (
+              <RevealItem key={c.title}>
+                {internal ? (
+                  <Link href={localizedHref(c.href)} className={cardCls} style={{ background: CARD_BG }}>
+                    {inner}
+                  </Link>
+                ) : (
+                  <a
+                    href={c.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={cardCls}
+                    style={{ background: CARD_BG }}
+                  >
+                    {inner}
+                  </a>
+                )}
+              </RevealItem>
+            );
+          })}
 
           {EXTRA.map((c) => (
             <RevealItem key={c.title}>

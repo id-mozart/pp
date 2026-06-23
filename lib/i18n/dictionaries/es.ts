@@ -449,11 +449,11 @@ export const es: Dictionary = {
         subtitle: "Elige el programa que se ajuste a tus objetivos y a tu nivel.",
         cards: [
           {
-            title: "Ventas y negociación — curso básico",
-            short: "Curso online de iniciación: herramientas simples de ventas y negociación que puedes aplicar hoy mismo.",
-            price: "120 €",
+            title: "Mensajes que reciben respuesta",
+            short: "Minicurso práctico de 5 días: cómo escribir primeros mensajes que responden 7 de cada 10 clientes.",
+            price: "1100 ₴",
             image: "/brand/course1.png",
-            href: "https://tetianapan.weblium.site/?utm_source=panpartners&utm_medium=site&utm_campaign=course_basic",
+            href: "/courses/messages",
             cta: "Apuntarme",
           },
         ],

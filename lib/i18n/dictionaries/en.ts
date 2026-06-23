@@ -449,11 +449,11 @@ export const en: Dictionary = {
         subtitle: "Choose the program that matches your goals and level.",
         cards: [
           {
-            title: "Sales and negotiations — foundation course",
-            short: "A starter online course: simple sales and negotiation tools you can apply today.",
-            price: "120 €",
+            title: "Messages that get replies",
+            short: "A 5-day hands-on mini-course: how to write first messages that 7 out of 10 clients reply to.",
+            price: "1100 ₴",
             image: "/brand/course1.png",
-            href: "https://tetianapan.weblium.site/?utm_source=panpartners&utm_medium=site&utm_campaign=course_basic",
+            href: "/courses/messages",
             cta: "Join",
           },
         ],

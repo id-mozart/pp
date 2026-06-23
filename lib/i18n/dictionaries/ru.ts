@@ -449,11 +449,11 @@ export const ru: Dictionary = {
         subtitle: "Выбирайте программу, которая отвечает вашим целям и уровню.",
         cards: [
           {
-            title: "Продажи и переговоры — базовый курс",
-            short: "Стартовый онлайн-курс: простые инструменты продаж и переговоров, которые можно применить уже сегодня.",
-            price: "120 €",
+            title: "Сообщения, на которые отвечают",
+            short: "5-дневный практический мини-курс: как писать первые сообщения, на которые отвечают 7 из 10 клиентов.",
+            price: "1100 грн",
             image: "/brand/course1.png",
-            href: "https://tetianapan.weblium.site/?utm_source=panpartners&utm_medium=site&utm_campaign=course_basic",
+            href: "/courses/messages",
             cta: "Присоединиться",
           },
         ],
