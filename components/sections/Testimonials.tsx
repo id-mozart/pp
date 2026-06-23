@@ -6,6 +6,14 @@ import { Play } from "@/components/ui/icons";
 import { GRAD_ACC, GRAD_GOLD, CARD_BG, gradText } from "@/lib/ember";
 import type { Testimonial } from "@/lib/content";
 
+/** Логотипи компаній для текстових відгуків — за позицією в items[]
+    (порядок однаковий у всіх мовах). Автори без компанії лишаються з ініціалами. */
+const ITEM_LOGOS: (string | undefined)[] = [
+  "/brand/clients/vodafone.png", // Литвиненко · Vodafone
+  "/brand/clients/ids-ukraine.png", // Дзюба · ІДС Аква Сервіс
+  "/brand/clients/synevo.png", // Чуніхіна · Synevo
+];
+
 function initials(name: string) {
   return name
     .split(" ")
@@ -112,8 +120,8 @@ export function Testimonials({
           {testimonials.videos.map((t) => (
             <VideoCard key={t.name} t={t} />
           ))}
-          {testimonials.items.map((t) => (
-            <TextCard key={t.name} t={t} />
+          {testimonials.items.map((t, i) => (
+            <TextCard key={t.name} t={t} logo={ITEM_LOGOS[i]} />
           ))}
         </div>
       </div>
@@ -129,6 +137,16 @@ function Avatar({ name }: { name: string }) {
   );
 }
 
+/** Лого-плашка замість аватара — для авторів із впізнаваною компанією. */
+function BrandPlate({ src }: { src: string }) {
+  return (
+    <span className="grid h-11 w-fit shrink-0 place-items-center rounded-[12px] bg-gold/10 px-4 ring-1 ring-gold/20">
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img src={src} alt="" className="max-h-[18px] w-auto max-w-[64px] object-contain opacity-90" />
+    </span>
+  );
+}
+
 function Meta({ t }: { t: Testimonial }) {
   return (
     <div className="min-w-0">
@@ -139,7 +157,7 @@ function Meta({ t }: { t: Testimonial }) {
   );
 }
 
-function TextCard({ t }: { t: Testimonial }) {
+function TextCard({ t, logo }: { t: Testimonial; logo?: string }) {
   return (
     <figure
       className="mb-6 break-inside-avoid rounded-[14px] border border-line/60 p-6"
@@ -159,7 +177,7 @@ function TextCard({ t }: { t: Testimonial }) {
         {t.quote}
       </blockquote>
       <figcaption className="mt-5 flex items-center gap-3 border-t border-line/50 pt-4">
-        <Avatar name={t.name} />
+        {logo ? <BrandPlate src={logo} /> : <Avatar name={t.name} />}
         <Meta t={t} />
       </figcaption>
     </figure>
