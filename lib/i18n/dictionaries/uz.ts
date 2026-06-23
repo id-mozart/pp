@@ -707,7 +707,6 @@ export const uz: Dictionary = {
         { t: "«Олімп»", d: "spirtli ichimliklar kompaniyasi", now: false },
         { t: "Danone", d: "FMCG", now: false },
         { t: "Coca-Cola", d: "FMCG", now: false },
-        { t: "Oʻz biznesi", d: "tadbirkorlik", now: false },
         { t: "Pan&Partners", d: "konsalting", now: true },
       ],
       facts: [

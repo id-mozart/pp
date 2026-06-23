@@ -707,7 +707,6 @@ export const en: Dictionary = {
         { t: "«Олімп»", d: "spirits company", now: false },
         { t: "Danone", d: "FMCG", now: false },
         { t: "Coca-Cola", d: "FMCG", now: false },
-        { t: "Own business", d: "entrepreneurship", now: false },
         { t: "Pan&Partners", d: "consulting", now: true },
       ],
       facts: [

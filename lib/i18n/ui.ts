@@ -186,7 +186,6 @@ export const uiUk = {
       { t: "«Олімп»", d: "горілчана компанія", now: false },
       { t: "Danone", d: "FMCG", now: false },
       { t: "Coca-Cola", d: "FMCG", now: false },
-      { t: "Власна справа", d: "власний бізнес", now: false },
       { t: "Pan&Partners", d: "консалтинг", now: true },
     ],
     facts: [

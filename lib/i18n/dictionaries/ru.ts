@@ -707,7 +707,6 @@ export const ru: Dictionary = {
         { t: "«Олімп»", d: "водочная компания", now: false },
         { t: "Danone", d: "FMCG", now: false },
         { t: "Coca-Cola", d: "FMCG", now: false },
-        { t: "Своё дело", d: "собственный бизнес", now: false },
         { t: "Pan&Partners", d: "консалтинг", now: true },
       ],
       facts: [
