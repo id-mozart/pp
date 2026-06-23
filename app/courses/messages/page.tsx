@@ -195,32 +195,27 @@ export default function CourseMessagesPage() {
                 <img
                   src="/brand/courses/bubbles.jpg"
                   alt="Повідомлення, на які відповідають"
-                  className="aspect-[16/10] w-full object-cover"
+                  className="aspect-[16/11] w-full object-cover"
                 />
                 <div
                   aria-hidden
-                  className="absolute inset-x-0 bottom-0 h-24"
+                  className="absolute inset-x-0 bottom-0 h-20"
                   style={{
                     background:
-                      "linear-gradient(0deg,rgba(19,12,6,.98),rgba(19,12,6,.45) 55%,transparent)",
+                      "linear-gradient(0deg,rgba(19,12,6,.97),rgba(19,12,6,.32) 60%,transparent)",
                   }}
                 />
               </div>
-              <div className="relative -mt-6 px-7 pb-8 sm:px-9">
-                <p className="font-mono text-[0.66rem] font-medium uppercase tracking-[0.22em] text-faint">
+              <div className="relative px-8 pb-10 pt-6 sm:px-10">
+                <p className="font-mono text-[0.62rem] font-medium uppercase tracking-[0.22em] text-faint">
                   Втрачаєш клієнтів, які не відповідають?
                 </p>
-                <p className="mt-4 font-display text-2xl italic leading-snug text-ink">
+                <p className="mt-6 font-display text-[1.7rem] italic leading-snug text-ink">
                   Без структури немає відповідей. Без відповідей{" "}
                   <em className="not-italic" style={gradText(GRAD_ACC)}>
                     немає продажів
                   </em>
                   .
-                </p>
-                <p className="mt-5 text-[0.98rem] leading-relaxed text-muted">
-                  Неважливо, що ти продаєш — важливо, за якою структурою ти ведеш
-                  клієнта до рішення. Я покажу, як писати так, щоб люди самі хотіли
-                  відповісти.
                 </p>
               </div>
             </div>
