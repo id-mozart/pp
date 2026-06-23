@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Reveal, RevealGroup, RevealItem } from "@/components/ui/Reveal";
+import { ArchitectSection } from "@/components/sections/ArchitectSection";
 import { ArrowRight, Check } from "@/components/ui/icons";
 import { GRAD_ACC, GRAD_GOLD, CARD_BG, gradText } from "@/lib/ember";
 import { localizedAlternates } from "@/lib/i18n/metadata";
@@ -319,71 +320,8 @@ export default function CourseMessagesPage() {
         </div>
       </section>
 
-      {/* АВТОР */}
-      <section className="relative grain border-t border-line/50 section-pad">
-        <div className="container-shell grid items-center gap-10 lg:grid-cols-12 lg:gap-16">
-          <Reveal className="lg:col-span-5">
-            <div className="relative">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src="/brand/portrait.png"
-                alt="Тетяна Пан — авторка курсу"
-                className="mx-auto block w-[70%] max-w-[300px]"
-                loading="lazy"
-              />
-            </div>
-          </Reveal>
-          <Reveal delay={0.06} className="lg:col-span-7">
-            <span className="eyebrow">Авторка курсу</span>
-            <h2 className="mt-3 font-display text-[clamp(1.8rem,3.4vw,2.6rem)] leading-tight text-ink">
-              Тетяна <em className="italic" style={gradText(GRAD_ACC)}>Пан</em>
-            </h2>
-            <p className="mt-4 max-w-xl text-lg leading-relaxed text-muted">
-              Експертка з продажів і переговорів. 25+ років у продажах і 17+ років
-              навчаю команди та підприємців продавати впевнено й природньо.
-            </p>
-            <p className="mt-3 max-w-xl text-lg leading-relaxed text-muted">
-              У мене вчились Coca-Cola, ДТЕК, Київстар, ПриватБанк, Моршинська,
-              Synevo та 500+ підприємців. Понад 15 000 учнів застосовують мою
-              технологію продажів і збільшують продажі у 2–5 разів. У 2023 —
-              №2 серед ТОП-тренерів з продажів України (UBA).
-            </p>
-          </Reveal>
-        </div>
-      </section>
-
-      {/* ЦІНА / CTA */}
-      <section className="relative grain border-t border-line/50 section-pad">
-        <div className="container-shell">
-          <Reveal>
-            <div
-              className="relative mx-auto flex max-w-3xl flex-col items-center gap-6 rounded-[18px] border border-line/70 p-9 text-center sm:p-12"
-              style={{ background: CARD_BG, boxShadow: "0 24px 60px rgba(0,0,0,.5)" }}
-            >
-              <span
-                aria-hidden
-                className="absolute left-10 top-0 h-[3px] w-24 -translate-y-1/2 rounded-full"
-                style={{ background: GRAD_GOLD }}
-              />
-              <span className="eyebrow">Чому така ціна</span>
-              <p className="max-w-2xl font-display text-2xl italic leading-snug text-ink">
-                Хочу, щоб ти почав(-ла) заробляти вже зараз. Це{" "}
-                <em className="not-italic" style={gradText(GRAD_ACC)}>
-                  повноцінний курс
-                </em>
-                , який поверне вкладене новими клієнтами.
-              </p>
-              <div className="font-display text-5xl" style={gradText(GRAD_GOLD)}>
-                {PRICE}
-              </div>
-              <CtaButton className="!px-8 !py-3.5 text-base" />
-              <p className="text-sm text-faint">
-                Гарантія повернення коштів — 14 днів, якщо курс вам не підійде.
-              </p>
-            </div>
-          </Reveal>
-        </div>
-      </section>
+      {/* АВТОР — спільний блок про Тетяну (як на головній) */}
+      <ArchitectSection />
 
       {/* FAQ */}
       <section className="relative grain border-t border-line/50 section-pad">
@@ -407,21 +345,52 @@ export default function CourseMessagesPage() {
               </details>
             ))}
           </div>
+        </div>
+      </section>
 
-          <Reveal className="mt-14 text-center">
-            <h3 className="font-display text-2xl italic text-ink">
+      {/* ЦІНА / ФІНАЛЬНИЙ CTA — останній блок */}
+      <section className="relative grain border-t border-line/50 section-pad">
+        <div className="container-shell">
+          <Reveal className="mb-10 text-center">
+            <h2 className="font-display text-[clamp(1.9rem,3.6vw,2.8rem)] leading-tight text-ink">
               Хочеш, щоб клієнти{" "}
-              <em className="not-italic" style={gradText(GRAD_ACC)}>
+              <em className="italic" style={gradText(GRAD_ACC)}>
                 відповідали
               </em>
               ?
-            </h3>
+            </h2>
             <p className="mt-2 text-muted">5 днів — і ти побачиш результат.</p>
-            <div className="mt-6 flex flex-wrap items-center justify-center gap-4">
-              <CtaButton className="!px-8 !py-3.5 text-base" />
-              <Link href="/#contact" className="btn btn-ghost">
-                Поставити запитання
-              </Link>
+          </Reveal>
+          <Reveal delay={0.06}>
+            <div
+              className="relative mx-auto flex max-w-3xl flex-col items-center gap-6 rounded-[18px] border border-line/70 p-9 text-center sm:p-12"
+              style={{ background: CARD_BG, boxShadow: "0 24px 60px rgba(0,0,0,.5)" }}
+            >
+              <span
+                aria-hidden
+                className="absolute left-10 top-0 h-[3px] w-24 -translate-y-1/2 rounded-full"
+                style={{ background: GRAD_GOLD }}
+              />
+              <span className="eyebrow">Чому така ціна</span>
+              <p className="max-w-2xl font-display text-2xl italic leading-snug text-ink">
+                Хочу, щоб ти почав(-ла) заробляти вже зараз. Це{" "}
+                <em className="not-italic" style={gradText(GRAD_ACC)}>
+                  повноцінний курс
+                </em>
+                , який поверне вкладене новими клієнтами.
+              </p>
+              <div className="font-display text-5xl" style={gradText(GRAD_GOLD)}>
+                {PRICE}
+              </div>
+              <div className="flex flex-wrap items-center justify-center gap-4">
+                <CtaButton className="!px-8 !py-3.5 text-base" />
+                <Link href="/#contact" className="btn btn-ghost">
+                  Поставити запитання
+                </Link>
+              </div>
+              <p className="text-sm text-faint">
+                Гарантія повернення коштів — 14 днів, якщо курс вам не підійде.
+              </p>
             </div>
           </Reveal>
         </div>

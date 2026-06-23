@@ -10,8 +10,9 @@ import { GRAD_ACC, GRAD_GOLD, gradText } from "@/lib/ember";
 
 /**
  * Липкий CTA-банер, що випливає знизу під час прокрутки і ховається, коли
- * видно фінальну форму (#contact). Не рендериться на /admin і на /consultation
- * (там свій StickyBookCta). Прихований на /admin також через globals CSS.
+ * видно фінальну форму (#contact). Не рендериться на /admin, /consultation
+ * (там свій StickyBookCta) і на сторінці курсу /courses/messages (там власні
+ * CTA). Прихований на /admin також через globals CSS.
  */
 export function CtaBanner() {
   const ui = useUi();
@@ -22,7 +23,9 @@ export function CtaBanner() {
   const [atForm, setAtForm] = useState(false);
 
   const disabled =
-    path.startsWith("/admin") || path.startsWith("/consultation");
+    path.startsWith("/admin") ||
+    path.startsWith("/consultation") ||
+    path.startsWith("/courses/messages");
 
   useEffect(() => {
     if (disabled) return;
