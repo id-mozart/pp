@@ -17,24 +17,35 @@ export function CoursesIntro() {
           {hero.items.map((it) => (
             <RevealItem key={it.n}>
               <div
-                className="relative h-full rounded-[14px] border border-line/70 p-7"
+                className="group flex h-full flex-col overflow-hidden rounded-[14px] border border-line/70 transition-colors duration-500 ease-lux hover:border-gold/40"
                 style={{ background: CARD_BG }}
               >
-                <span
-                  aria-hidden
-                  className="absolute left-7 top-0 h-[3px] w-10 -translate-y-1/2 rounded-full"
-                  style={{ background: GRAD_GOLD }}
-                />
-                <span
-                  className="font-display text-3xl"
-                  style={gradText(GRAD_ACC)}
-                >
-                  {it.n}
-                </span>
-                <h3 className="mt-3 font-display text-lg font-medium text-ink">
-                  {it.title}
-                </h3>
-                <p className="mt-1 text-sm text-muted">{it.sub}</p>
+                <div className="relative overflow-hidden">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={it.image}
+                    alt={it.title}
+                    className="aspect-[4/3] w-full object-cover transition-transform duration-700 ease-lux group-hover:scale-[1.04]"
+                    loading="lazy"
+                  />
+                  <div
+                    aria-hidden
+                    className="absolute inset-x-0 bottom-0 h-20"
+                    style={{
+                      background:
+                        "linear-gradient(0deg,rgba(19,12,6,.97),rgba(19,12,6,.5) 48%,transparent)",
+                    }}
+                  />
+                </div>
+                <div className="relative -mt-7 flex flex-1 flex-col px-7 pb-7">
+                  <span className="font-display text-3xl" style={gradText(GRAD_ACC)}>
+                    {it.n}
+                  </span>
+                  <h3 className="mt-2 font-display text-lg font-medium text-ink">
+                    {it.title}
+                  </h3>
+                  <p className="mt-1 text-sm text-muted">{it.sub}</p>
+                </div>
               </div>
             </RevealItem>
           ))}

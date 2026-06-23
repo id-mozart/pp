@@ -428,9 +428,9 @@ export const es: Dictionary = {
         eyebrow: "Soluciones listas",
         title: "Soluciones listas para tus ventas",
         items: [
-          { n: "01", title: "Ventas y negociación", sub: "Cursos online" },
-          { n: "02", title: "Checklists de ventas", sub: "Listos para implementar" },
-          { n: "03", title: "Scripts de mensajes", sub: "Para nuevos clientes" },
+          { n: "01", title: "Ventas y negociación", sub: "Cursos online", image: "/brand/courses/bubbles.jpg" },
+          { n: "02", title: "Checklists de ventas", sub: "Listos para implementar", image: "/brand/courses/checklist.jpg" },
+          { n: "03", title: "Scripts de mensajes", sub: "Para nuevos clientes", image: "/brand/courses/scripts.jpg" },
         ],
         lead: "Aquí encontrarás soluciones listas para reforzar rápidamente tus ventas y entender con claridad qué necesita mejorar tu sistema de ventas.",
         features: [

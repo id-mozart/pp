@@ -428,9 +428,9 @@ export const uz: Dictionary = {
         eyebrow: "Tayyor yechimlar",
         title: "Sotuvingiz uchun tayyor yechimlar",
         items: [
-          { n: "01", title: "Sotuv va muzokaralar", sub: "Onlayn kurslar" },
-          { n: "02", title: "Sotuv chek-listlari", sub: "Joriy etishga tayyor" },
-          { n: "03", title: "Xabar skriptlari", sub: "Yangi mijozlar uchun" },
+          { n: "01", title: "Sotuv va muzokaralar", sub: "Onlayn kurslar", image: "/brand/courses/bubbles.jpg" },
+          { n: "02", title: "Sotuv chek-listlari", sub: "Joriy etishga tayyor", image: "/brand/courses/checklist.jpg" },
+          { n: "03", title: "Xabar skriptlari", sub: "Yangi mijozlar uchun", image: "/brand/courses/scripts.jpg" },
         ],
         lead: "Bu yerda sotuvingizni tez kuchaytirish va sotuv tizimingizda nimani yaxshilash kerakligini aniq tushunish uchun tayyor yechimlarni topasiz.",
         features: [

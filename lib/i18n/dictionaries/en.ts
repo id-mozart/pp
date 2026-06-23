@@ -428,9 +428,9 @@ export const en: Dictionary = {
         eyebrow: "Ready-made solutions",
         title: "Ready-made solutions for your sales",
         items: [
-          { n: "01", title: "Sales and negotiations", sub: "Online courses" },
-          { n: "02", title: "Sales checklists", sub: "Ready to implement" },
-          { n: "03", title: "Message scripts", sub: "For new clients" },
+          { n: "01", title: "Sales and negotiations", sub: "Online courses", image: "/brand/courses/bubbles.jpg" },
+          { n: "02", title: "Sales checklists", sub: "Ready to implement", image: "/brand/courses/checklist.jpg" },
+          { n: "03", title: "Message scripts", sub: "For new clients", image: "/brand/courses/scripts.jpg" },
         ],
         lead: "Here you'll find ready-made solutions to quickly strengthen your sales and clearly see what your sales system needs to improve.",
         features: [

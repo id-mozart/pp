@@ -187,29 +187,42 @@ export default function CourseMessagesPage() {
 
           <Reveal delay={0.08} className="lg:col-span-5">
             <div
-              className="relative rounded-[16px] border border-line/60 p-7 sm:p-9"
+              className="relative overflow-hidden rounded-[16px] border border-line/60"
               style={{ background: CARD_BG, boxShadow: "0 24px 60px rgba(0,0,0,.5)" }}
             >
-              <span
-                aria-hidden
-                className="absolute left-8 top-0 h-[3px] w-20 -translate-y-1/2 rounded-full"
-                style={{ background: GRAD_GOLD }}
-              />
-              <p className="font-mono text-[0.66rem] font-medium uppercase tracking-[0.22em] text-faint">
-                Втрачаєш клієнтів, які не відповідають?
-              </p>
-              <p className="mt-4 font-display text-2xl italic leading-snug text-ink">
-                Без структури немає відповідей. Без відповідей{" "}
-                <em className="not-italic" style={gradText(GRAD_ACC)}>
-                  немає продажів
-                </em>
-                .
-              </p>
-              <p className="mt-5 text-[0.98rem] leading-relaxed text-muted">
-                Неважливо, що ти продаєш — важливо, за якою структурою ти ведеш
-                клієнта до рішення. Я покажу, як писати так, щоб люди самі хотіли
-                відповісти.
-              </p>
+              <div className="relative">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src="/brand/courses/bubbles.jpg"
+                  alt="Повідомлення, на які відповідають"
+                  className="aspect-[16/10] w-full object-cover"
+                />
+                <div
+                  aria-hidden
+                  className="absolute inset-x-0 bottom-0 h-24"
+                  style={{
+                    background:
+                      "linear-gradient(0deg,rgba(19,12,6,.98),rgba(19,12,6,.45) 55%,transparent)",
+                  }}
+                />
+              </div>
+              <div className="relative -mt-6 px-7 pb-8 sm:px-9">
+                <p className="font-mono text-[0.66rem] font-medium uppercase tracking-[0.22em] text-faint">
+                  Втрачаєш клієнтів, які не відповідають?
+                </p>
+                <p className="mt-4 font-display text-2xl italic leading-snug text-ink">
+                  Без структури немає відповідей. Без відповідей{" "}
+                  <em className="not-italic" style={gradText(GRAD_ACC)}>
+                    немає продажів
+                  </em>
+                  .
+                </p>
+                <p className="mt-5 text-[0.98rem] leading-relaxed text-muted">
+                  Неважливо, що ти продаєш — важливо, за якою структурою ти ведеш
+                  клієнта до рішення. Я покажу, як писати так, щоб люди самі хотіли
+                  відповісти.
+                </p>
+              </div>
             </div>
           </Reveal>
         </div>
