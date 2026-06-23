@@ -1,9 +1,11 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { WhatsApp, Telegram } from "@/components/ui/icons";
 import { GRAD_ACC, gradText } from "@/lib/ember";
 import { FooterLeadLink } from "@/components/chrome/FooterLeadLink";
+import { stripLocale } from "@/lib/i18n/config";
 import {
   useContent,
   useUi,
@@ -14,6 +16,9 @@ export function SiteFooter() {
   const { brand, footer, contacts } = useContent();
   const ui = useUi();
   const localized = useLocalizedHref();
+  // Внутрішній генератор — без сайтового футера.
+  const pathname = stripLocale(usePathname() || "/");
+  if (pathname.startsWith("/admin/story_gen")) return null;
   return (
     <footer className="relative overflow-hidden bg-surface">
       <div className="hairline absolute inset-x-0 top-0" />

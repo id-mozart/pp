@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
 import { useContent } from "@/components/providers/LocaleProvider";
 
@@ -31,6 +32,9 @@ export function CookieConsent() {
     }
     setShow(false);
   };
+
+  const pathname = usePathname() || "";
+  if (pathname.includes("/admin/story_gen")) return null;
 
   return (
     <AnimatePresence>

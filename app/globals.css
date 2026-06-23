@@ -1775,3 +1775,47 @@ body:has(#pp-admin) #main {
     transition-duration: 0.001ms !important;
   }
 }
+
+/* ==================================================================
+   STUDIO NEUTRAL — світла нейтральна тема для внутрішнього генератора
+   (/admin/story_gen). Перевизначає лише UI-хром студії через --c-
+   токени; шаблони слайдів (класи ig- та nt-) лишаються брендовими.
+   Має бути в кінці файлу, щоб перебити концептні правила (data-concept).
+   ================================================================== */
+.studio-neutral {
+  --c-canvas: 247 247 246;
+  --c-surface: 255 255 255;
+  --c-raised: 255 255 255;
+  --c-line: 226 226 224;
+  --c-ink: 28 28 30;
+  --c-muted: 92 92 96;
+  --c-faint: 142 142 148;
+  --c-gold: 70 70 74;
+  --c-gold-soft: 120 120 126;
+  --c-ember: 70 70 74;
+  --c-action: 38 38 42;
+  --c-action-ink: 255 255 255;
+  --c-oncontrast: 255 255 255;
+
+  min-height: 100vh;
+  background: rgb(var(--c-canvas));
+  color: rgb(var(--c-ink));
+}
+/* без хедера зверху — менше відступу */
+.studio-neutral > section {
+  padding-top: 2.5rem;
+}
+/* у концепті "main" .btn-primary — захардкоджений золотий градієнт; нейтралізуємо */
+.studio-neutral .btn-primary {
+  background: #26262a;
+  color: #fff;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    0 12px 26px -16px rgba(0, 0, 0, 0.45);
+}
+.studio-neutral .btn-primary:hover {
+  background: #36363c;
+}
+.studio-neutral input[type="range"] {
+  accent-color: #6b6b70;
+}

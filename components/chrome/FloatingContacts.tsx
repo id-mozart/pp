@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { usePathname } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
 import { WhatsApp, Telegram, Plus } from "@/components/ui/icons";
 import { useContent, useUi } from "@/components/providers/LocaleProvider";
@@ -13,6 +14,9 @@ export function FloatingContacts() {
   const { contacts } = useContent();
   const ui = useUi();
   const [open, setOpen] = useState(false);
+  const pathname = usePathname() || "";
+  // Внутрішній генератор — без плаваючих контактів.
+  if (pathname.includes("/admin/story_gen")) return null;
 
   return (
     <div className="fixed bottom-20 right-5 z-[70] hidden flex-col items-end gap-3 sm:bottom-5 sm:flex">

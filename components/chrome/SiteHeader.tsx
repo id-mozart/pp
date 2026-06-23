@@ -50,6 +50,9 @@ export function SiteHeader() {
     };
   }, [mobileOpen]);
 
+  // Внутрішній генератор — без сайтового хедера.
+  if (pathname.startsWith("/admin/story_gen")) return null;
+
   return (
     <>
       <header
