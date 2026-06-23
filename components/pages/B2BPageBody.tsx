@@ -21,7 +21,7 @@ export function B2BPageBody() {
           </>
         }
         lead={b2b.hero.lead}
-        image="/brand/tania-portrait.jpg"
+        image="/brand/tania-barcamp.jpg"
         primary={{ label: ui.b2bPage.heroPrimary, href: "#contact" }}
         secondary={{ label: ui.b2bPage.heroSecondary, href: "#solutions" }}
       />
