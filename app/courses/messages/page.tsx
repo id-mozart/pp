@@ -2,17 +2,17 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Reveal, RevealGroup, RevealItem } from "@/components/ui/Reveal";
 import { ArchitectSection } from "@/components/sections/ArchitectSection";
+import { ContactForm } from "@/components/sections/ContactForm";
 import { ArrowRight, Check } from "@/components/ui/icons";
 import { GRAD_ACC, GRAD_GOLD, CARD_BG, gradText } from "@/lib/ember";
 import { localizedAlternates } from "@/lib/i18n/metadata";
 import { getLocale } from "@/lib/i18n/server";
 
 /* Лендинг курсу «Повідомлення, на які відповідають» — контент оформлено в
-   стилі сайту. Купівля — одразу на захищеній сторінці оплати WayForPay
-   (CHECKOUT_URL). */
+   стилі сайту. Поки що кнопки «Хочу курс» ведуть на форму заявки внизу
+   сторінки (#contact). Майбутній чекаут WayForPay:
+   https://secure.wayforpay.com/page?vkh=6a3a7c6f-2dc4-496f-93b0-116522d1dba8 */
 
-const CHECKOUT_URL =
-  "https://secure.wayforpay.com/page?vkh=6a3a7c6f-2dc4-496f-93b0-116522d1dba8";
 const PRICE = "1100 грн";
 
 const HERO_BULLETS = [
@@ -127,12 +127,7 @@ export async function generateMetadata(): Promise<Metadata> {
 
 function CtaButton({ className = "" }: { className?: string }) {
   return (
-    <a
-      href={CHECKOUT_URL}
-      target="_blank"
-      rel="noopener noreferrer"
-      className={`btn btn-primary ${className}`}
-    >
+    <a href="#contact" className={`btn btn-primary ${className}`}>
       Хочу курс <ArrowRight className="h-4 w-4" />
     </a>
   );
@@ -392,7 +387,7 @@ export default function CourseMessagesPage() {
               </div>
               <div className="flex flex-wrap items-center justify-center gap-4">
                 <CtaButton className="!px-8 !py-3.5 text-base" />
-                <Link href="/#contact" className="btn btn-ghost">
+                <Link href="#contact" className="btn btn-ghost">
                   Поставити запитання
                 </Link>
               </div>
@@ -403,6 +398,17 @@ export default function CourseMessagesPage() {
           </Reveal>
         </div>
       </section>
+
+      <ContactForm
+        title={
+          <>
+            Залиш заявку на{" "}
+            <em className="italic" style={gradText(GRAD_ACC)}>
+              курс
+            </em>
+          </>
+        }
+      />
     </>
   );
 }
