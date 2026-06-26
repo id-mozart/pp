@@ -279,6 +279,7 @@ export const uiUk = {
     pullEm: "Природно та легко.",
     captionSuffix: " · Pan&Partners",
     watchReview: "дивитися відгук →",
+    closeVideo: "Закрити відео",
   },
 
   requests: {

@@ -800,6 +800,7 @@ export const es: Dictionary = {
       pullEm: "Con naturalidad y soltura.",
       captionSuffix: " · Pan&Partners",
       watchReview: "ver el testimonio →",
+      closeVideo: "Cerrar vídeo",
     },
 
     requests: {

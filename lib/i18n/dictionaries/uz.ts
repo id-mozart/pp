@@ -800,6 +800,7 @@ export const uz: Dictionary = {
       pullEm: "Tabiiy va oson.",
       captionSuffix: " · Pan&Partners",
       watchReview: "sharhni koʻrish →",
+      closeVideo: "Videoni yopish",
     },
 
     requests: {

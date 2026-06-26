@@ -800,6 +800,7 @@ export const ru: Dictionary = {
       pullEm: "Естественно и легко.",
       captionSuffix: " · Pan&Partners",
       watchReview: "смотреть отзыв →",
+      closeVideo: "Закрыть видео",
     },
 
     requests: {
