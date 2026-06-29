@@ -8,7 +8,7 @@ import {
   useMemo,
   useState,
 } from "react";
-import { useRouter, usePathname } from "next/navigation";
+import { usePathname } from "next/navigation";
 import {
   LOCALE_COOKIE,
   LOCALE_HTML_LANG,
@@ -59,7 +59,6 @@ export function LocaleProvider({
   dict: Dictionary;
   children: React.ReactNode;
 }) {
-  const router = useRouter();
   const pathname = usePathname();
   // Active locale/dict live in client state so a language switch (or back/forward)
   // updates the whole tree instantly — the root layout is preserved across
@@ -104,15 +103,22 @@ export function LocaleProvider({
         /* ignore */
       }
       // Swap content instantly (all display is client-reactive) and update the URL
-      // without a full reload. The rewrite-based locale routing makes Next treat the
-      // locales as the same route, so server components don't re-render on switch —
-      // hence every locale-dependent piece reads from this context.
+      // in place. We deliberately AVOID router.push here: it refetches the route (RSC)
+      // and remounts the section tree, which resets every scroll-reveal animation to
+      // opacity:0 — and during a client transition those don't reliably re-fire, so
+      // blocks stay invisible until a hard reload. The History API updates the address
+      // bar without a navigation/remount (Next syncs its router state); every
+      // locale-dependent piece already reads from this context.
       loadClientDictionary(next).then((d) => {
         setState({ locale: next, dict: d });
-        router.push(withLocale(pathname || "/", next));
+        try {
+          window.history.pushState(null, "", withLocale(pathname || "/", next));
+        } catch {
+          /* ignore */
+        }
       });
     },
-    [locale, pathname, router],
+    [locale, pathname],
   );
 
   const value = useMemo<LocaleContextValue>(
