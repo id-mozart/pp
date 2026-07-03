@@ -79,7 +79,7 @@ const CSS = `
 
   #pp-profile .num { font-size:7.5pt; font-weight:500; letter-spacing:.18em; color:var(--acc); }
   #pp-profile .footrow { display:flex; align-items:flex-end; justify-content:space-between;
-    border-top:1px solid var(--line); padding-top:3mm; margin-top:auto; }
+    border-top:1px solid var(--line); padding-top:2mm; margin-top:auto; }
 
   #pp-profile .no-print { position:fixed; right:18px; top:14px; z-index:50;
     font-size:11px; letter-spacing:.12em; text-transform:uppercase; color:#E8A93C;
@@ -310,7 +310,7 @@ export default function ProfilePage({
                 key={p.lead}
                 style={{
                   display: "flex", gap: "4mm", alignItems: "baseline",
-                  padding: "2mm 0", borderTop: "1px solid var(--line)",
+                  padding: "1.6mm 0", borderTop: "1px solid var(--line)",
                 }}
               >
                 <span className="num mono">0{i + 1}</span>
@@ -328,7 +328,7 @@ export default function ProfilePage({
         </div>
 
         {/* образование */}
-        <div style={{ marginTop: "4.5mm" }}>
+        <div style={{ marginTop: "3.5mm" }}>
           <span className="eyebrow mono">Образование и сертификации</span>
           <div style={{ marginTop: "2.5mm", display: "grid", gridTemplateColumns: "1fr 1fr", columnGap: "8mm", rowGap: "1.7mm" }}>
             {EDUCATION.map((e) => (
@@ -354,7 +354,7 @@ export default function ProfilePage({
         </div>
 
         {/* проекты + лого */}
-        <div style={{ marginTop: "3.5mm" }}>
+        <div style={{ marginTop: "2.5mm" }}>
           <div style={{ display: "flex", alignItems: "baseline", gap: "4mm" }}>
             <span className="serif grad" style={{ fontSize: "20pt", lineHeight: 1 }}>1500+</span>
             <p className="body" style={{ fontSize: "8.2pt" }}>
@@ -379,16 +379,35 @@ export default function ProfilePage({
         </div>
 
         <div className="footrow">
-          <div>
-            <p className="mono" style={{ fontSize: "7pt", letterSpacing: ".14em", color: "var(--ink)" }}>
-              +38 050 448 14 11&nbsp;&nbsp;·&nbsp;&nbsp;tatiana.g.pan@gmail.com
-            </p>
-            <p className="mono" style={{ fontSize: "7pt", letterSpacing: ".14em", color: "var(--faint)", marginTop: "1.4mm" }}>
-              FB&nbsp;facebook.com/PanandPartners&nbsp;&nbsp;·&nbsp;&nbsp;IG&nbsp;instagram.com/tetiana_pan.sales
-            </p>
-            <p className="body" style={{ fontSize: "7.6pt", marginTop: "1.6mm" }}>
-              С уважением, Татьяна Пан и команда Pan&amp;Partners
-            </p>
+          <div style={{ display: "flex", gap: "4.5mm", alignItems: "flex-end" }}>
+            <div
+              style={{
+                flex: "none", background: "var(--logoplate)",
+                border: "1px solid var(--line)", borderRadius: "8px",
+                padding: "1.5mm", lineHeight: 0,
+              }}
+            >
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/brand/qr-site.svg"
+                alt="QR-код на сайт pan-partners.agency"
+                style={{ display: "block", width: "14mm", height: "14mm" }}
+              />
+            </div>
+            <div>
+              <p className="mono grad" style={{ fontSize: "8.4pt", fontWeight: 600, letterSpacing: ".05em" }}>
+                pan-partners.agency
+              </p>
+              <p className="mono" style={{ fontSize: "7pt", letterSpacing: ".14em", color: "var(--ink)", marginTop: "1.7mm" }}>
+                +38 050 448 14 11&nbsp;&nbsp;·&nbsp;&nbsp;tatiana.g.pan@gmail.com
+              </p>
+              <p className="mono" style={{ fontSize: "7pt", letterSpacing: ".14em", color: "var(--faint)", marginTop: "1.4mm" }}>
+                FB&nbsp;facebook.com/PanandPartners&nbsp;&nbsp;·&nbsp;&nbsp;IG&nbsp;instagram.com/tetiana_pan.sales
+              </p>
+              <p className="body" style={{ fontSize: "7.6pt", marginTop: "1.6mm" }}>
+                С уважением, Татьяна Пан и команда Pan&amp;Partners
+              </p>
+            </div>
           </div>
           <div style={{ textAlign: "right" }}>
             <span className="hand" style={{ fontSize: "20pt", color: "var(--acc)", lineHeight: 1 }}>Татьяна Пан</span>
