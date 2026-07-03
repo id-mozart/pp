@@ -3,7 +3,22 @@
 import { Reveal, RevealGroup, RevealItem } from "@/components/ui/Reveal";
 import { GRAD_ACC, GRAD_GOLD, CARD_BG, gradText } from "@/lib/ember";
 import { type MainContent } from "@/lib/mainContent";
-import { useMainContent, useUi } from "@/components/providers/LocaleProvider";
+import { useMainContent, useUi, useLocale } from "@/components/providers/LocaleProvider";
+
+/** Профайл Тетяни у PDF — 4 мови. Файли лежать у /public/profiles. */
+const PROFILE_PDFS = [
+  { lang: "uk", name: "Українська", file: "/profiles/tetiana-pan-uk.pdf", dl: "Tetiana Pan — Profile (UA).pdf" },
+  { lang: "ru", name: "Русский", file: "/profiles/tetiana-pan-ru.pdf", dl: "Tetiana Pan — Profile (RU).pdf" },
+  { lang: "en", name: "English", file: "/profiles/tetiana-pan-en.pdf", dl: "Tetiana Pan — Profile (EN).pdf" },
+  { lang: "uz", name: "Oʻzbekcha", file: "/profiles/tetiana-pan-uz.pdf", dl: "Tetiana Pan — Profile (UZ).pdf" },
+];
+const PROFILE_HEADING: Record<string, string> = {
+  uk: "Профайл Тетяни · PDF",
+  ru: "Профайл Татьяны · PDF",
+  en: "Tetiana’s profile · PDF",
+  es: "Perfil de Tetiana · PDF",
+  uz: "Tetiana profili · PDF",
+};
 
 /**
  * «Архітектор методу» — фігура у м'якому світлі + біо + цитата засновниці +
@@ -20,6 +35,7 @@ export function ArchitectSection({
   const m = useMainContent();
   const a = architect ?? m.architect;
   const ui = useUi();
+  const locale = useLocale();
   const JOURNEY = ui.architect.journey;
   const FACTS = ui.architect.facts;
   return (
@@ -149,6 +165,40 @@ export function ArchitectSection({
               </RevealItem>
             ))}
           </RevealGroup>
+
+          {/* Профайл у PDF — 4 мови (можна дати пряме посилання) */}
+          <Reveal delay={0.12} className="mt-12">
+            <div className="flex items-center gap-4">
+              <span className="h-[2px] w-16 rounded-full" style={{ background: GRAD_GOLD }} />
+              <span className="font-mono text-[0.65rem] font-medium uppercase tracking-[0.22em] text-faint">
+                {PROFILE_HEADING[locale] ?? PROFILE_HEADING.en}
+              </span>
+            </div>
+            <div className="mt-6 flex flex-wrap gap-2.5">
+              {PROFILE_PDFS.map((p) => (
+                <a
+                  key={p.lang}
+                  href={p.file}
+                  download={p.dl}
+                  className="group inline-flex items-center gap-2 rounded-full border border-line/70 px-4 py-2 text-sm text-ink transition-colors duration-300 hover:border-gold/50 hover:text-gold"
+                >
+                  {p.name}
+                  <svg
+                    aria-hidden
+                    viewBox="0 0 24 24"
+                    className="h-3.5 w-3.5 text-faint transition-colors group-hover:text-gold"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.8"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path d="M12 3v12m0 0 4-4m-4 4-4-4M4 21h16" />
+                  </svg>
+                </a>
+              ))}
+            </div>
+          </Reveal>
         </div>
       </div>
     </section>
