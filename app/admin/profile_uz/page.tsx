@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Profil — Tatyana Pan · Pan&Partners (UZ)",
+  title: "Profil — Tetiana Pan · Pan&Partners (UZ)",
   robots: { index: false, follow: false },
 };
 
@@ -226,7 +226,7 @@ export default function ProfileUzPage() {
         <div className="hero">
           <div>
             <h1 className="serif">
-              Tatyana <em className="grad it">Pan</em>
+              Tetiana <em className="grad it">Pan</em>
             </h1>
             <p className="role">
               <span className="grad" style={{ fontWeight: 600 }}>
@@ -247,7 +247,7 @@ export default function ProfileUzPage() {
           <div>
             <div className="portrait">
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/brand/profile2-portrait.png" alt="Tatyana Pan" />
+              <img src="/brand/profile2-portrait.png" alt="Tetiana Pan" />
               <span className="brk" />
             </div>
             <p className="cap mono">Pan&amp;Partners asoschisi</p>
