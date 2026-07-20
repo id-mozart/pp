@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<base href="/talk/sf2026/">
+<meta name="robots" content="noindex, nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sales Forum 2026 · Енергія команди як архітектура дохідності</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  deck-stage:not(:defined){visibility:hidden}
+  :root{
+    --canvas:#17100B;--ink:#F4E6CC;--muted:#B8A386;--faint:#7C6A52;--line:#4A3B28;
+    --panel:rgba(255,255,255,.035);--panel-line:rgba(216,162,74,.16);
+    --gold:#E2A638;--gold-soft:#EFBE6A;
+    --grad-head:linear-gradient(96deg,#FFD888 0%,#F4A93E 40%,#E87A22 78%,#D85F18 100%);
+    --grad-acc:linear-gradient(95deg,#F7B658 0%,#EE8C2C 52%,#DC6716 100%);
+    --glow:rgba(226,166,56,.14);--sil-off:rgba(184,163,134,.24);
+  }
+  html.light{
+    --canvas:#F5EEE1;--ink:#2A1D10;--muted:#7A6A50;--faint:#B2A184;--line:#E2D4BC;
+    --panel:rgba(120,78,20,.045);--panel-line:rgba(197,120,40,.20);
+    --gold:#C6791C;--gold-soft:#D89433;
+    --grad-head:linear-gradient(96deg,#E7A22B 0%,#DB7E1E 45%,#C85E14 100%);
+    --grad-acc:linear-gradient(95deg,#E29a2b 0%,#D57718 52%,#C05610 100%);
+    --glow:rgba(197,120,40,.12);--sil-off:rgba(120,90,50,.20);
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--canvas);}
+  deck-stage{--dur:.55s}
+  section{background:var(--canvas);color:var(--ink);font-family:'Inter',sans-serif;overflow:hidden;
+    transition:background .5s ease,color .5s ease;}
+  .bg{position:absolute;inset:0;z-index:0;pointer-events:none;}
+  .bg::before,.bg::after{content:"";position:absolute;border-radius:50%;filter:blur(10px);}
+  .bg::before{width:1100px;height:1100px;right:-260px;top:-320px;
+    background:radial-gradient(circle,var(--glow),transparent 62%);}
+  .bg::after{width:900px;height:900px;left:-240px;bottom:-320px;
+    background:radial-gradient(circle,var(--glow),transparent 64%);}
+  .pad{position:absolute;inset:0;z-index:2;padding:96px 120px;display:flex;flex-direction:column;}
+  .runhead{display:flex;align-items:center;justify-content:space-between;gap:24px;}
+  .brand{display:flex;align-items:center;gap:20px;}
+  .brand img{height:46px;display:block;}
+  html:not(.light) .logo-dark{display:none}
+  html.light .logo-light{display:none}
+  .tedx{font-family:'JetBrains Mono',monospace;font-size:22px;letter-spacing:.28em;text-transform:uppercase;color:var(--muted);}
+  .tedx b{color:var(--ink);font-weight:600;letter-spacing:.02em;}
+  .forum{font-family:'Inter',sans-serif;display:flex;align-items:center;gap:14px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--ink);font-size:26px;}
+  .forum .bar{width:2px;height:26px;background:var(--gold);}
+  .forum .yr{background:var(--grad-acc);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent;}
+  .forum small{display:block;font-size:14px;letter-spacing:.24em;color:var(--gold-soft);font-weight:600;margin-top:5px;}
+  .evt{display:flex;align-items:center;gap:14px;font-family:'JetBrains Mono',monospace;font-size:22px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);}
+  .evt .pill{background:var(--grad-acc);color:#241a12;font-weight:600;border-radius:8px;padding:5px 13px;letter-spacing:.1em;}
+  .evt .sep{color:var(--faint);}
+  .ix{font-family:'JetBrains Mono',monospace;font-size:23px;letter-spacing:.22em;text-transform:uppercase;
+    display:flex;align-items:center;gap:16px;color:var(--muted);}
+  .ix .num{background:var(--grad-acc);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent;font-weight:600;}
+  .rule{height:7px;border-radius:4px;background:repeating-linear-gradient(65deg,#F0C26E 0 6px,#C5872B 6px 9px,#96641a 9px 11px);
+    box-shadow:0 1px 0 rgba(255,255,255,.18) inset,0 6px 16px rgba(150,90,20,.3);}
+  .eyebrow{font-family:'JetBrains Mono',monospace;font-size:24px;letter-spacing:.24em;text-transform:uppercase;
+    color:var(--gold-soft);display:flex;align-items:center;gap:18px;}
+  .eyebrow .dot{width:9px;height:9px;border-radius:50%;background:var(--grad-acc);}
+  h1,h2{font-family:'Spectral',serif;margin:0;font-weight:500;line-height:1.06;letter-spacing:-.015em;color:var(--ink);}
+  em.g{font-style:italic;font-weight:500;background:var(--grad-head);-webkit-background-clip:text;background-clip:text;
+    -webkit-text-fill-color:transparent;color:transparent;}
+  .sub{font-size:30px;line-height:1.5;color:var(--muted);max-width:900px;}
+  .src{font-family:'JetBrains Mono',monospace;font-size:20px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);font-weight:500;}
+  .thesis .body{flex:1;display:grid;grid-template-columns:1.15fr .85fr;gap:80px;align-items:center;}
+  .thesis .txt{display:flex;flex-direction:column;gap:34px;}
+  .thesis h2{font-size:66px;}
+  .vis{display:flex;align-items:center;justify-content:center;}
+  .center{align-items:center;text-align:center;justify-content:center;}
+  .center .inner{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:44px;}
+  .foot{display:flex;align-items:center;justify-content:space-between;color:var(--muted);
+    font-family:'JetBrains Mono',monospace;font-size:22px;letter-spacing:.14em;}
+  .foot .name b{color:var(--ink);font-weight:600;}
+  .foot .amp,.amp{font-family:'Spectral',serif;font-style:italic;background:var(--grad-head);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;}
+  .battery{display:inline-flex;align-items:center;gap:14px;}
+  .batt-body{height:170px;border:5px solid var(--gold);border-radius:22px;padding:16px;display:flex;gap:14px;}
+  .batt-cap{width:22px;height:64px;border-radius:0 10px 10px 0;background:var(--gold);}
+  .cell{flex:1;border-radius:10px;background:var(--sil-off);}
+  .cell.on{background:var(--grad-acc);box-shadow:0 0 22px var(--glow);}
+  svg{display:block}
+  .stroke{fill:none;stroke:var(--gold);stroke-width:3.4;stroke-linecap:round;stroke-linejoin:round;}
+  .strokeM{fill:none;stroke:var(--faint);stroke-width:3;stroke-linecap:round;stroke-linejoin:round;}
+  .fillG{fill:var(--gold);}
+  .sil{color:var(--gold);}
+  .sil.off{color:var(--sil-off);}
+  .steps{display:flex;flex-direction:column;gap:22px;width:100%;max-width:640px;}
+  .chip{display:flex;align-items:center;gap:22px;padding:26px 30px;border-radius:16px;background:var(--panel);
+    border:1px solid var(--panel-line);}
+  .chip .n{font-family:'JetBrains Mono',monospace;font-size:26px;font-weight:600;
+    background:var(--grad-acc);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;}
+  .chip .t{font-family:'Spectral',serif;font-size:34px;color:var(--ink);}
+  .nodes{display:flex;align-items:flex-end;gap:0;}
+  .node{display:flex;flex-direction:column;align-items:center;gap:16px;width:150px;}
+  .node .ball{width:104px;height:104px;border-radius:50%;border:3px solid var(--faint);display:flex;align-items:center;justify-content:center;
+    font-family:'Spectral',serif;font-size:34px;color:var(--muted);}
+  .node.lead .ball{border:none;background:var(--grad-acc);color:#241a12;box-shadow:0 12px 34px var(--glow);width:120px;height:120px;font-size:38px;font-weight:600;}
+  .node.down{transform:translateY(30px);opacity:.72;}
+  .node .cap{font-family:'JetBrains Mono',monospace;font-size:18px;letter-spacing:.08em;color:var(--faint);text-transform:uppercase;text-align:center;}
+  .connect{flex:1;height:3px;background:var(--line);margin-bottom:52px;min-width:26px;}
+  #theme{position:fixed;z-index:9999;right:18px;bottom:16px;font-family:'JetBrains Mono',monospace;font-size:13px;
+    letter-spacing:.14em;text-transform:uppercase;color:var(--muted);background:var(--panel);border:1px solid var(--panel-line);
+    border-radius:999px;padding:9px 16px;cursor:pointer;display:flex;align-items:center;gap:9px;backdrop-filter:blur(8px);}
+  #theme:hover{color:var(--ink);}
+  #theme .sw{width:30px;height:16px;border-radius:999px;background:var(--grad-acc);position:relative;}
+  #theme .sw::after{content:"";position:absolute;top:2px;left:2px;width:12px;height:12px;border-radius:50%;background:#fff;transition:left .25s;}
+  html.light #theme .sw::after{left:16px;}
+  @media print{#theme{display:none}}
+  @media (prefers-reduced-motion:no-preference){
+    [data-deck-active] .anim{animation:rise .6s both cubic-bezier(.22,.7,.2,1);}
+    [data-deck-active] .anim2{animation:rise .6s .1s both cubic-bezier(.22,.7,.2,1);}
+    [data-deck-active] .anim3{animation:rise .6s .2s both cubic-bezier(.22,.7,.2,1);}
+    @keyframes rise{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
+  }
+</style>
+</head>
+<body>
+<button id="theme" aria-label="Перемкнути тему"><span class="sw"></span><span id="theme-label">Світла</span></button>
+<deck-stage width="1920" height="1080">
+
+  <section class="center">
+    <div class="bg"></div>
+    <div class="pad center">
+      <div class="runhead" style="width:100%">
+        <div class="forum"><span>Sales&nbsp;Forum</span><span class="bar"></span><span class="yr">2026</span></div>
+        <div class="tedx">Київ · <b>24 липня</b></div>
+      </div>
+      <div class="inner">
+        <h1 class="anim2" style="font-size:104px;max-width:1500px;">Енергія команди як<br><em class="g">архітектура дохідності</em></h1>
+        <div class="sub anim3" style="text-align:center;max-width:1180px;">Як керівнику побачити невидимі сигнали виснаження, поки вони не стали втратами для бізнесу.</div>
+      </div>
+      <div class="foot" style="width:100%">
+        <span class="name" style="font-size:30px">Бізнес-тренерка <b>Тетяна Пан</b></span>
+        <span></span>
+      </div>
+    </div>
+  </section>
+
+  <section class="center">
+    <div class="bg"></div>
+    <div class="pad center">
+      <div class="runhead" style="width:100%"><div class="eyebrow"><span class="dot"></span>Вступ · Вправа</div><div class="ix"><span class="num">02</span> / 16</div></div>
+      <div class="inner">
+        <h2 class="anim" style="font-size:84px;max-width:1420px;">Скільки у вас зараз енергії — <em class="g">від 1 до 5?</em></h2>
+        <div class="battery anim2">
+          <div class="batt-body" style="width:520px"><span class="cell on"></span><span class="cell on"></span><span class="cell on"></span><span class="cell"></span><span class="cell"></span></div>
+          <div class="batt-cap"></div>
+        </div>
+        <div class="sub anim3" style="text-align:center;">Покажіть пальцями. За хвилину «зарядки» стан змінюється — але команда продажів не відновлює ресурс однією хвилиною.</div>
+      </div>
+      <div class="foot" style="width:100%"><span class="evt">Sales Forum<span class="sep">·</span>2026</span><span></span></div>
+    </div>
+  </section>
+
+  <section class="thesis">
+    <div class="bg"></div>
+    <div class="pad center">
+      <div class="runhead" style="width:100%"><div class="eyebrow"><span class="dot"></span>Вступ · Вправа</div><div class="ix"><span class="num">03</span> / 16</div></div>
+      <div class="inner">
+        <h2 class="anim" style="font-size:60px;max-width:1460px;line-height:1.12;">Вправа<br><em class="g">«Повертаємо енергію»</em><br>одна хвилина</h2>
+        <div class="anim2" style="display:grid;grid-template-columns:repeat(4,1fr);gap:26px;max-width:1560px;width:100%;margin-top:8px;">
+          <div style="background:var(--panel);border:1px solid var(--panel-line);border-radius:20px;padding:34px 30px;text-align:left;display:flex;flex-direction:column;gap:18px;"><div style="font-family:'JetBrains Mono',monospace;font-size:28px;font-weight:600;letter-spacing:.08em;background:var(--grad-acc);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent;">01</div><p style="font-size:26px;line-height:1.42;color:var(--ink);margin:0;">Стати на носочки й потягнутися вгору маківкою якнайвище.</p><div style="display:flex;align-items:center;gap:6px;margin-top:auto;"><div style="width:164px;flex:none;display:flex;gap:7px;border:3px solid var(--gold);border-radius:10px;padding:8px;height:56px;"><span class="cell on" style="border-radius:5px"></span><span class="cell on" style="border-radius:5px"></span><span class="cell" style="border-radius:5px"></span><span class="cell" style="border-radius:5px"></span><span class="cell" style="border-radius:5px"></span></div><div style="width:12px;height:34px;border-radius:0 7px 7px 0;background:var(--gold)"></div></div></div>
+          <div style="background:var(--panel);border:1px solid var(--panel-line);border-radius:20px;padding:34px 30px;text-align:left;display:flex;flex-direction:column;gap:18px;"><div style="font-family:'JetBrains Mono',monospace;font-size:28px;font-weight:600;letter-spacing:.08em;background:var(--grad-acc);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent;">02</div><p style="font-size:26px;line-height:1.42;color:var(--ink);margin:0;">Плечима: два круги вперед і два круги назад, повільно.</p><div style="display:flex;align-items:center;gap:6px;margin-top:auto;"><div style="width:164px;flex:none;display:flex;gap:7px;border:3px solid var(--gold);border-radius:10px;padding:8px;height:56px;"><span class="cell on" style="border-radius:5px"></span><span class="cell on" style="border-radius:5px"></span><span class="cell on" style="border-radius:5px"></span><span class="cell" style="border-radius:5px"></span><span class="cell" style="border-radius:5px"></span></div><div style="width:12px;height:34px;border-radius:0 7px 7px 0;background:var(--gold)"></div></div></div>
+          <div style="background:var(--panel);border:1px solid var(--panel-line);border-radius:20px;padding:34px 30px;text-align:left;display:flex;flex-direction:column;gap:18px;"><div style="font-family:'JetBrains Mono',monospace;font-size:28px;font-weight:600;letter-spacing:.08em;background:var(--grad-acc);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent;">03</div><p style="font-size:26px;line-height:1.42;color:var(--ink);margin:0;">Глибокий вдих носом, затримка, повільний видих ротом. Тричі.</p><div style="display:flex;align-items:center;gap:6px;margin-top:auto;"><div style="width:164px;flex:none;display:flex;gap:7px;border:3px solid var(--gold);border-radius:10px;padding:8px;height:56px;"><span class="cell on" style="border-radius:5px"></span><span class="cell on" style="border-radius:5px"></span><span class="cell on" style="border-radius:5px"></span><span class="cell on" style="border-radius:5px"></span><span class="cell" style="border-radius:5px"></span></div><div style="width:12px;height:34px;border-radius:0 7px 7px 0;background:var(--gold)"></div></div></div>
+          <div style="background:var(--panel);border:1px solid var(--panel-line);border-radius:20px;padding:34px 30px;text-align:left;display:flex;flex-direction:column;gap:18px;"><div style="font-family:'JetBrains Mono',monospace;font-size:28px;font-weight:600;letter-spacing:.08em;background:var(--grad-acc);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent;">04</div><p style="font-size:26px;line-height:1.42;color:var(--ink);margin:0;">Посміхнутися сусідам праворуч і ліворуч від себе.</p><div style="display:flex;align-items:center;gap:6px;margin-top:auto;"><div style="width:164px;flex:none;display:flex;gap:7px;border:3px solid var(--gold);border-radius:10px;padding:8px;height:56px;"><span class="cell on" style="border-radius:5px"></span><span class="cell on" style="border-radius:5px"></span><span class="cell on" style="border-radius:5px"></span><span class="cell on" style="border-radius:5px"></span><span class="cell on" style="border-radius:5px"></span></div><div style="width:12px;height:34px;border-radius:0 7px 7px 0;background:var(--gold)"></div></div></div>
+        </div>
+        <div class="sub anim3" style="text-align:center;">А тепер ще раз покажіть: скільки у вас енергії <em class="g">від 1 до 5?</em></div>
+      </div>
+      <div class="foot" style="width:100%"><span class="evt">Sales Forum<span class="sep">·</span>2026</span><span></span></div>
+    </div>
+  </section>
+
+  <section class="thesis">
+    <div class="bg"></div>
+    <div class="pad">
+      <div class="runhead"><div class="eyebrow"><span class="dot"></span>Вступ</div><div class="ix"><span class="num">04</span> / 16</div></div>
+      <div class="body">
+        <div class="txt">
+          <div class="rule anim" style="width:96px"></div>
+          <h2 class="anim2"><em class="g">Понад 70%</em> українців відчували симптоми тривоги, депресії або сильного стресу.</h2>
+          <div class="src anim3">Джерело: ВООЗ · 2025 · і лише кожен п’ятий звертався по допомогу</div>
+        </div>
+        <div class="vis anim2">
+          <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:26px 30px;">
+            <svg class="sil" width="70" height="112" viewBox="0 0 40 64"><circle cx="20" cy="13" r="11" fill="currentColor"/><path d="M2 64a18 18 0 0 1 36 0z" fill="currentColor"/></svg>
+            <svg class="sil" width="70" height="112" viewBox="0 0 40 64"><circle cx="20" cy="13" r="11" fill="currentColor"/><path d="M2 64a18 18 0 0 1 36 0z" fill="currentColor"/></svg>
+            <svg class="sil" width="70" height="112" viewBox="0 0 40 64"><circle cx="20" cy="13" r="11" fill="currentColor"/><path d="M2 64a18 18 0 0 1 36 0z" fill="currentColor"/></svg>
+            <svg class="sil" width="70" height="112" viewBox="0 0 40 64"><circle cx="20" cy="13" r="11" fill="currentColor"/><path d="M2 64a18 18 0 0 1 36 0z" fill="currentColor"/></svg>
+            <svg class="sil" width="70" height="112" viewBox="0 0 40 64"><circle cx="20" cy="13" r="11" fill="currentColor"/><path d="M2 64a18 18 0 0 1 36 0z" fill="currentColor"/></svg>
+            <svg class="sil" width="70" height="112" viewBox="0 0 40 64"><circle cx="20" cy="13" r="11" fill="currentColor"/><path d="M2 64a18 18 0 0 1 36 0z" fill="currentColor"/></svg>
+            <svg class="sil" width="70" height="112" viewBox="0 0 40 64"><circle cx="20" cy="13" r="11" fill="currentColor"/><path d="M2 64a18 18 0 0 1 36 0z" fill="currentColor"/></svg>
+            <svg class="sil off" width="70" height="112" viewBox="0 0 40 64"><circle cx="20" cy="13" r="11" fill="currentColor"/><path d="M2 64a18 18 0 0 1 36 0z" fill="currentColor"/></svg>
+            <svg class="sil off" width="70" height="112" viewBox="0 0 40 64"><circle cx="20" cy="13" r="11" fill="currentColor"/><path d="M2 64a18 18 0 0 1 36 0z" fill="currentColor"/></svg>
+            <svg class="sil off" width="70" height="112" viewBox="0 0 40 64"><circle cx="20" cy="13" r="11" fill="currentColor"/><path d="M2 64a18 18 0 0 1 36 0z" fill="currentColor"/></svg>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="thesis">
+    <div class="bg"></div>
+    <div class="pad">
+      <div class="runhead"><div class="eyebrow"><span class="dot"></span>Вступ · Ключова теза</div><div class="ix"><span class="num">05</span> / 16</div></div>
+      <div class="body">
+        <div class="txt">
+          <div class="rule anim" style="width:96px"></div>
+          <h2 class="anim2">Бізнес планує зростання, спираючись на ресурс людей, <em class="g">якого вже може не бути.</em></h2>
+        </div>
+        <div class="vis anim2">
+          <svg width="440" height="380" viewBox="0 0 440 380">
+            <path class="strokeM" d="M60 340 H400 M60 340 V40"/>
+            <path class="stroke" d="M80 300 L180 250 L260 180 L360 70" style="stroke-width:5"/>
+            <path class="fillG" d="M360 70 l-30 6 l16 26 z"/>
+            <g transform="translate(120,300)">
+              <rect x="0" y="0" width="150" height="66" rx="12" class="stroke"/>
+              <rect x="150" y="18" width="12" height="30" rx="4" class="fillG"/>
+              <rect x="10" y="10" width="30" height="46" rx="5" class="fillG"/>
+              <rect x="46" y="10" width="30" height="46" rx="5" fill="var(--sil-off)"/>
+              <rect x="82" y="10" width="30" height="46" rx="5" fill="var(--sil-off)"/>
+              <rect x="118" y="10" width="24" height="46" rx="5" fill="var(--sil-off)"/>
+            </g>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="thesis">
+    <div class="bg"></div>
+    <div class="pad">
+      <div class="runhead"><div class="eyebrow"><span class="dot"></span>Проблема</div><div class="ix"><span class="num">06</span> / 16</div></div>
+      <div class="body">
+        <div class="txt">
+          <div class="rule anim" style="width:96px"></div>
+          <h2 class="anim2" style="font-size:78px">Немає енергії — <em class="g">немає нових клієнтів.</em></h2>
+          <div class="sub anim3">Менше дзвінків, ніяких нових контактів, уникання складних клієнтів.</div>
+        </div>
+        <div class="vis anim2">
+          <svg width="380" height="380" viewBox="0 0 380 380">
+            <path class="strokeM" d="M40 60 H340 L250 210 V300 a30 20 0 0 1 -120 0 V210 Z"/>
+            <circle cx="120" cy="100" r="9" class="fillG"/><circle cx="200" cy="110" r="9" class="fillG"/><circle cx="270" cy="96" r="9" fill="var(--sil-off)"/>
+            <circle cx="165" cy="150" r="8" fill="var(--sil-off)"/>
+            <path class="strokeM" d="M150 320 h80" style="stroke-dasharray:2 12;stroke-width:4"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="thesis">
+    <div class="bg"></div>
+    <div class="pad">
+      <div class="runhead"><div class="eyebrow"><span class="dot"></span>Проблема</div><div class="ix"><span class="num">07</span> / 16</div></div>
+      <div class="body">
+        <div class="txt">
+          <div class="rule anim" style="width:96px"></div>
+          <h2 class="anim2" style="font-size:60px">Виснаження <em class="g">маскується</em> під прокрастинацію, брак ініціативи та «ринок зараз не той».</h2>
+        </div>
+        <div class="vis anim2">
+          <svg width="400" height="380" viewBox="0 0 400 380">
+            <g opacity=".4"><rect x="150" y="150" width="150" height="66" rx="12" class="strokeM"/><rect x="300" y="168" width="12" height="30" rx="4" fill="var(--faint)"/><rect x="160" y="160" width="30" height="46" rx="5" fill="var(--sil-off)"/></g>
+            <path class="stroke" d="M110 70 C60 90 60 200 120 280 C160 330 240 330 280 280 C340 200 340 90 290 70 C240 52 160 52 110 70 Z" style="stroke-width:4.5"/>
+            <path class="fillG" d="M150 150 q30 -22 60 0 q-30 14 -60 0Z"/>
+            <path class="fillG" d="M240 150 q30 -22 60 0 q-30 14 -60 0Z"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="thesis">
+    <div class="bg"></div>
+    <div class="pad">
+      <div class="runhead"><div class="eyebrow"><span class="dot"></span>Проблема · 4 інтелекти</div><div class="ix"><span class="num">08</span> / 16</div></div>
+      <div class="body">
+        <div class="txt">
+          <div class="rule anim" style="width:96px"></div>
+          <h2 class="anim2">Коли знижується <em class="g">VQ</em> — просідають EQ, AQ та SQ.</h2>
+          <div class="sub anim3">VQ — життєва енергія та здатність заряджати інших. Разом із нею падає все решта.</div>
+        </div>
+        <div class="vis anim2">
+          <div class="nodes">
+            <div class="node lead"><div class="ball">VQ</div><div class="cap">Життєва<br>енергія</div></div>
+            <div class="connect"></div>
+            <div class="node down"><div class="ball">EQ</div><div class="cap">Емоції</div></div>
+            <div class="connect"></div>
+            <div class="node down"><div class="ball">AQ</div><div class="cap">Адаптація</div></div>
+            <div class="connect"></div>
+            <div class="node down"><div class="ball">SQ</div><div class="cap">Взаємодія</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="thesis">
+    <div class="bg"></div>
+    <div class="pad">
+      <div class="runhead"><div class="eyebrow"><span class="dot"></span>Проблема · Ключова теза</div><div class="ix"><span class="num">09</span> / 16</div></div>
+      <div class="body">
+        <div class="txt">
+          <div class="rule anim" style="width:96px"></div>
+          <h2 class="anim2">Менеджер знає, що потрібно робити. Але не має енергії витримати <em class="g">ще одну відмову.</em></h2>
+        </div>
+        <div class="vis anim2">
+          <svg width="360" height="360" viewBox="0 0 360 360">
+            <circle cx="180" cy="150" r="96" class="stroke" style="stroke-width:5"/>
+            <path class="fillG" d="M150 118 c-6 -6 -6 -6 2 -14 l14 -14 c6 -6 12 -4 14 4 c2 12 6 22 12 30 c4 6 2 10 -4 14 c14 22 30 38 52 52 c4 -6 8 -8 14 -4 c8 6 18 10 30 12 c8 2 10 8 4 14 l-14 14 c-8 8 -8 8 -14 2 c-56 -18 -102 -64 -120 -120Z" transform="translate(22,20) scale(0.86)"/>
+            <path class="strokeM" d="M120 300 q60 -34 120 0" style="stroke-dasharray:2 14;stroke-width:4"/>
+            <circle cx="180" cy="292" r="7" fill="var(--faint)"/><circle cx="150" cy="300" r="6" fill="var(--faint)"/><circle cx="210" cy="300" r="6" fill="var(--faint)"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="thesis">
+    <div class="bg"></div>
+    <div class="pad">
+      <div class="runhead"><div class="eyebrow"><span class="dot"></span>Рішення · Профілактика</div><div class="ix"><span class="num">10</span> / 16</div></div>
+      <div class="body">
+        <div class="txt">
+          <div class="rule anim" style="width:96px"></div>
+          <h2 class="anim2" style="font-size:60px"><em class="g">Профілактика</em> — поки команда ще має ресурс.</h2>
+        </div>
+        <div class="vis anim2">
+          <div class="steps">
+            <div class="chip"><span class="n">01</span><span class="t">Помічати стан команди</span></div>
+            <div class="chip" style="margin-left:40px"><span class="n">02</span><span class="t">Підтримувати прогрес</span></div>
+            <div class="chip" style="margin-left:80px"><span class="n">03</span><span class="t">Створювати умови</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="thesis">
+    <div class="bg"></div>
+    <div class="pad">
+      <div class="runhead"><div class="eyebrow"><span class="dot"></span>Рішення · Відновлення</div><div class="ix"><span class="num">11</span> / 16</div></div>
+      <div class="body">
+        <div class="txt">
+          <div class="rule anim" style="width:96px"></div>
+          <h2 class="anim2" style="font-size:56px">Коли енергії вже немає — <em class="g">дробити цілі.</em></h2>
+        </div>
+        <div class="vis anim2">
+          <div class="steps" style="gap:16px">
+            <div class="chip"><span class="n">01</span><span class="t">Визнати</span></div>
+            <div class="chip" style="margin-left:34px"><span class="n">02</span><span class="t">Прибрати зайве</span></div>
+            <div class="chip" style="margin-left:68px"><span class="n">03</span><span class="t">Повернути вплив</span></div>
+            <div class="chip" style="margin-left:102px"><span class="n">04</span><span class="t">Дробити цілі</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="thesis">
+    <div class="bg"></div>
+    <div class="pad">
+      <div class="runhead"><div class="eyebrow"><span class="dot"></span>Наслідки</div><div class="ix"><span class="num">12</span> / 16</div></div>
+      <div class="body">
+        <div class="txt">
+          <div class="rule anim" style="width:96px"></div>
+          <h2 class="anim2" style="font-size:58px">Клієнт не знає, що менеджер виснажений. Але <em class="g">відчуває</em> неуважність і байдужий tone of voice.</h2>
+        </div>
+        <div class="vis anim2">
+          <svg width="420" height="300" viewBox="0 0 420 300">
+            <g class="sil"><circle cx="70" cy="70" r="34" fill="currentColor"/><path d="M14 220a56 56 0 0 1 112 0z" fill="currentColor"/></g>
+            <g class="sil off"><circle cx="350" cy="70" r="34" fill="currentColor"/><path d="M294 220a56 56 0 0 1 112 0z" fill="currentColor"/></g>
+            <path class="strokeM" d="M120 90 H300" style="stroke-dasharray:3 16;stroke-width:4"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="thesis">
+    <div class="bg"></div>
+    <div class="pad">
+      <div class="runhead"><div class="eyebrow"><span class="dot"></span>Наслідки · Ключова теза</div><div class="ix"><span class="num">13</span> / 16</div></div>
+      <div class="body">
+        <div class="txt">
+          <div class="rule anim" style="width:96px"></div>
+          <h2 class="anim2">Втрата енергії стає видимою <em class="g">спочатку клієнту</em> — і лише потім у звітах.</h2>
+        </div>
+        <div class="vis anim2">
+          <svg width="440" height="330" viewBox="0 0 440 330">
+            <path class="strokeM" d="M50 290 H410 M50 290 V30"/>
+            <path class="stroke" d="M60 120 H210 C280 120 300 150 340 250 L360 290" style="stroke-width:5"/>
+            <g transform="translate(150,70)"><circle cx="0" cy="0" r="16" class="fillG"/><path d="M-26 46a26 26 0 0 1 52 0z" class="fillG"/></g>
+            <text x="118" y="46" fill="var(--gold-soft)" font-family="JetBrains Mono" font-size="19" letter-spacing="1">клієнт</text>
+            <text x="300" y="248" fill="var(--faint)" font-family="JetBrains Mono" font-size="19" letter-spacing="1">звіти</text>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="center">
+    <div class="bg"></div>
+    <div class="pad center">
+      <div class="runhead" style="width:100%"><div class="eyebrow"><span class="dot"></span>Завершення · Вправа</div><div class="ix"><span class="num">14</span> / 16</div></div>
+      <div class="inner">
+        <svg class="anim" width="240" height="150" viewBox="0 0 240 150">
+          <path class="stroke" d="M20 130 H90 V90 H160 V50 H220"/>
+          <g transform="translate(206,18)"><path d="M0 0 v40 M0 2 h34 l-8 9 l8 9 h-34" stroke="var(--gold)" stroke-width="4" fill="var(--gold)" stroke-linejoin="round"/></g>
+          <circle cx="90" cy="90" r="7" class="fillG"/>
+        </svg>
+        <h2 class="anim2" style="font-size:80px;max-width:1420px;">Назвіть одну <em class="g">маленьку перемогу</em> своєї команди за останній місяць.</h2>
+        <div class="sub anim3" style="text-align:center;">Поверніться до людини поруч. Назвіть перемогу. Подякуйте одне одному.</div>
+      </div>
+      <div class="foot" style="width:100%"><span class="evt">Sales Forum<span class="sep">·</span>2026</span><span></span></div>
+    </div>
+  </section>
+
+  <section class="thesis">
+    <div class="bg"></div>
+    <div class="pad">
+      <div class="runhead"><div class="eyebrow"><span class="dot"></span>Завершення · Фінальні тези</div><div class="ix"><span class="num">15</span> / 16</div></div>
+      <div class="body">
+        <div class="txt">
+          <div class="rule anim" style="width:96px"></div>
+          <h2 class="anim2">Наші люди не стали слабшими — вони <em class="g">занадто довго</em> змушені бути сильними.</h2>
+          <div class="sub anim3">Завдання керівника — не вимагати ще більше, а підтримувати здатність команди діяти.</div>
+        </div>
+        <div class="vis anim2">
+          <svg width="360" height="360" viewBox="0 0 360 360">
+            <rect x="250" y="40" width="14" height="300" rx="6" class="fillG" opacity=".9"/>
+            <g class="sil" transform="rotate(12 180 200)"><circle cx="150" cy="90" r="40" fill="currentColor"/><path d="M86 250a64 64 0 0 1 128 0z" fill="currentColor"/></g>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="center">
+    <div class="bg"></div>
+    <div class="pad center">
+      <div class="runhead" style="width:100%">
+        <div class="forum"><span>Sales&nbsp;Forum</span><span class="bar"></span><span class="yr">2026</span></div>
+        <div class="ix"><span class="num">16</span> / 16</div>
+      </div>
+      <div class="inner">
+        <div class="eyebrow anim"><span class="dot"></span>Головна думка</div>
+        <h2 class="anim2" style="font-size:78px;max-width:1520px;">Енергія команди — не про настрій.<br>Це <em class="g">випереджальний показник</em> майбутнього доходу.</h2>
+        <svg class="anim3" width="520" height="70" viewBox="0 0 520 70"><path class="stroke" d="M10 58 L150 46 L280 30 L420 14 L510 6" style="stroke-width:5"/><path class="fillG" d="M510 6 l-26 2 l12 22 z"/></svg>
+      </div>
+      <div class="foot" style="width:100%"><span class="name">Бізнес-тренерка <b>Тетяна Пан</b></span><span class="evt">Sales Forum<span class="sep">·</span>2026</span></div>
+    </div>
+  </section>
+
+</deck-stage>
+<script src="deck-stage.js"></script>
+<script>
+  (function(){
+    var KEY='tp-tedx-theme';
+    var lbl=document.getElementById('theme-label');
+    function apply(t){document.documentElement.classList.toggle('light',t==='light');lbl.textContent=t==='light'?'Темна':'Світла';}
+    var saved=localStorage.getItem(KEY)||'dark';apply(saved);
+    document.getElementById('theme').addEventListener('click',function(){
+      var t=document.documentElement.classList.contains('light')?'dark':'light';
+      localStorage.setItem(KEY,t);apply(t);
+    });
+  })();
+</script>
+</body>
+</html>

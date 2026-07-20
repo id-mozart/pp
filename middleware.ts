@@ -34,6 +34,19 @@ export async function middleware(req: NextRequest) {
     return NextResponse.next();
   }
 
+  // ---- Секретні розділи /talk/<slug>: статичний дек, без локалізації. ----
+  // Файли з крапкою (deck-stage.js, assets/*.svg) matcher і так пропускає;
+  // тут лише переписуємо «гарний» URL на index.html.
+  if (pathname === "/talk" || pathname.startsWith("/talk/")) {
+    const slug = pathname.replace(/^\/talk\/?/, "").replace(/\/$/, "");
+    if (!slug) return NextResponse.next(); // /talk без слага — 404 роутера
+    const url = req.nextUrl.clone();
+    url.pathname = `/talk/${slug}/index.html`;
+    const res = NextResponse.rewrite(url);
+    res.headers.set("X-Robots-Tag", "noindex, nofollow");
+    return res;
+  }
+
   // ---- Public site: locale routing. ----
   const seg = pathname.split("/")[1];
 
