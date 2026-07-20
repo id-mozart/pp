@@ -111,12 +111,13 @@
   /* Версії слайда: шари + перемикач справа-знизу (у друк не потрапляє) */
   section>.variant{position:absolute;inset:0;}
   .variant[hidden]{display:none!important;}
-  .vswitch{position:absolute;right:34px;bottom:24px;z-index:60;display:flex;gap:6px;}
-  .vswitch button{font-family:'JetBrains Mono',monospace;font-size:19px;letter-spacing:.06em;
-    width:52px;height:44px;border-radius:12px;border:1.5px solid var(--panel-line);
-    background:var(--panel);color:var(--muted);cursor:pointer;transition:color .2s,border-color .2s;}
-  .vswitch button:hover{color:var(--ink);border-color:var(--gold);}
-  .vswitch button.on{background:var(--grad-acc);color:#fff;border-color:transparent;font-weight:600;}
+  .vswitch{position:absolute;right:38px;bottom:26px;z-index:60;display:flex;gap:16px;
+    opacity:.28;transition:opacity .25s;}
+  .vswitch:hover{opacity:1;}
+  .vswitch button{font-family:'JetBrains Mono',monospace;font-size:15px;letter-spacing:.1em;
+    padding:6px 2px;border:0;background:none;color:var(--faint);cursor:pointer;transition:color .2s;}
+  .vswitch button:hover{color:var(--ink);}
+  .vswitch button.on{color:var(--gold);}
   @media print{.vswitch{display:none}}
 
   /* Друк/PDF: background-clip:text у Chromium лишає крайові шви градієнта —
