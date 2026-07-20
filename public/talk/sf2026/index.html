@@ -56,8 +56,6 @@
   .ix{font-family:'JetBrains Mono',monospace;font-size:23px;letter-spacing:.22em;text-transform:uppercase;
     display:flex;align-items:center;gap:16px;color:var(--muted);}
   .ix .num{background:var(--grad-acc);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent;font-weight:600;}
-  .rule{height:7px;border-radius:4px;background:repeating-linear-gradient(65deg,#F0C26E 0 6px,#C5872B 6px 9px,#96641a 9px 11px);
-    box-shadow:0 1px 0 rgba(255,255,255,.18) inset,0 6px 16px rgba(150,90,20,.3);}
   .eyebrow{font-family:'JetBrains Mono',monospace;font-size:24px;letter-spacing:.24em;text-transform:uppercase;
     color:var(--gold-soft);display:flex;align-items:center;gap:18px;}
   .eyebrow .dot{width:9px;height:9px;border-radius:50%;background:var(--grad-acc);}
@@ -112,7 +110,7 @@
   /* Друк/PDF: background-clip:text у Chromium лишає крайові шви градієнта —
      на папері акцент робимо суцільним золотом замість градієнта. */
   @media print{
-    em.g,.g,.num,.forum b,
+    em.g,.g,.num,.forum b,.forum .yr,
     [style*="-webkit-background-clip"],[style*="background-clip"]{
       background:none !important;
       -webkit-text-fill-color:var(--gold) !important;
@@ -139,7 +137,6 @@
         <div class="tedx">Київ · <b>24 липня</b></div>
       </div>
       <div class="inner" style="gap:0">
-        <div class="rule anim" style="width:220px"></div>
         <h1 class="anim2" style="font-size:106px;max-width:1560px;margin-top:48px">Енергія команди як<br><em class="g">архітектура дохідності</em></h1>
         <div class="sub anim3" style="text-align:center;max-width:1060px;font-size:34px;line-height:1.45;margin-top:36px">Як керівнику побачити невидимі сигнали виснаження, поки вони не стали втратами для бізнесу.</div>
       </div>
@@ -158,7 +155,6 @@
         <span style="font-family:'JetBrains Mono',monospace;font-size:20px;letter-spacing:.26em;text-transform:uppercase;color:var(--faint)">варіант B</span>
       </div>
       <div style="flex:1;display:flex;flex-direction:column;justify-content:center;align-items:flex-start">
-        <div class="rule anim" style="width:300px"></div>
         <h1 class="anim2" style="font-size:148px;line-height:1.03;margin-top:44px;max-width:1640px">Енергія команди<br>як <em class="g">архітектура<br>дохідності</em></h1>
         <div class="sub anim3" style="font-size:31px;max-width:860px;margin-top:40px">Як керівнику побачити невидимі сигнали виснаження, поки вони не стали втратами для бізнесу.</div>
       </div>
@@ -290,7 +286,6 @@
       <div class="runhead"><div class="eyebrow"><span class="dot"></span>Вступ</div><div class="ix"><span class="num">04</span> / 16</div></div>
       <div class="body">
         <div class="txt" style="justify-content:center;">
-          <div class="rule anim" style="width:96px"></div>
           <h2 class="anim2"><em class="g">Понад 70%</em> українців відчували симптоми тривоги, депресії або сильного стресу.</h2>
           <div class="src anim3">Джерело: ВООЗ · 2025 · і лише кожен п’ятий звертався по допомогу</div>
         </div>
@@ -347,7 +342,6 @@
       <div class="runhead"><div class="eyebrow"><span class="dot"></span>Вступ · Ключова теза</div><div class="ix"><span class="num">05</span> / 16</div></div>
       <div class="body">
         <div class="txt">
-          <div class="rule anim" style="width:96px"></div>
           <h2 class="anim2">Бізнес планує зростання, спираючись на ресурс людей, <em class="g">якого вже може не бути.</em></h2>
         </div>
         <div class="vis anim2">
@@ -376,7 +370,6 @@
       <div class="runhead"><div class="eyebrow"><span class="dot"></span>Вступ · Ключова теза · варіант B</div><div class="ix"><span class="num">05</span> / 16</div></div>
       <div class="body">
         <div class="txt">
-          <div class="rule anim" style="width:96px"></div>
           <h2 class="anim2">Бізнес планує зростання, спираючись на ресурс людей, <em class="g">якого вже може не бути.</em></h2>
         </div>
         <div class="vis anim2">
@@ -401,7 +394,6 @@
       <div class="runhead"><div class="eyebrow"><span class="dot"></span>Проблема</div><div class="ix"><span class="num">06</span> / 16</div></div>
       <div class="body">
         <div class="txt">
-          <div class="rule anim" style="width:96px"></div>
           <h2 class="anim2" style="font-size:78px">Немає енергії — <em class="g">немає нових клієнтів.</em></h2>
           <div class="sub anim3">Менше дзвінків, ніяких нових контактів, уникання складних клієнтів.</div>
         </div>
@@ -427,7 +419,6 @@
       <div class="runhead"><div class="eyebrow"><span class="dot"></span>Проблема · варіант B</div><div class="ix"><span class="num">06</span> / 16</div></div>
       <div class="body">
         <div class="txt">
-          <div class="rule anim" style="width:96px"></div>
           <h2 class="anim2" style="font-size:78px">Немає енергії — <em class="g">немає нових клієнтів.</em></h2>
         </div>
         <div class="vis">
@@ -456,7 +447,6 @@
       <div class="runhead"><div class="eyebrow"><span class="dot"></span>Проблема</div><div class="ix"><span class="num">07</span> / 16</div></div>
       <div class="body">
         <div class="txt">
-          <div class="rule anim" style="width:96px"></div>
           <h2 class="anim2" style="font-size:60px">Виснаження <em class="g">маскується</em> під прокрастинацію, брак ініціативи та «ринок зараз не той».</h2>
         </div>
         <div class="vis anim2">
@@ -488,7 +478,6 @@
       <div class="runhead"><div class="eyebrow"><span class="dot"></span>Проблема · варіант B</div><div class="ix"><span class="num">07</span> / 16</div></div>
       <div class="body">
         <div class="txt">
-          <div class="rule anim" style="width:96px"></div>
           <h2 class="anim2" style="font-size:60px">Виснаження <em class="g">маскується</em> під прокрастинацію, брак ініціативи та «ринок зараз не той».</h2>
         </div>
         <div class="vis anim2">
@@ -518,7 +507,6 @@
       <div class="runhead"><div class="eyebrow"><span class="dot"></span>Проблема · 4 інтелекти</div><div class="ix"><span class="num">08</span> / 16</div></div>
       <div class="body">
         <div class="txt">
-          <div class="rule anim" style="width:96px"></div>
           <h2 class="anim2">Коли знижується <em class="g">VQ</em> — просідають EQ, AQ та SQ.</h2>
           <div class="sub anim3">VQ — життєва енергія та здатність заряджати інших. Разом із нею падає все решта.</div>
         </div>
@@ -620,7 +608,6 @@
       <div class="runhead"><div class="eyebrow"><span class="dot"></span>Проблема · Ключова теза</div><div class="ix"><span class="num">09</span> / 16</div></div>
       <div class="body">
         <div class="txt">
-          <div class="rule anim" style="width:96px"></div>
           <h2 class="anim2">Менеджер знає, що потрібно робити. Але не має енергії витримати <em class="g">ще одну відмову.</em></h2>
         </div>
         <div class="vis anim3">
@@ -665,7 +652,6 @@
           <circle cx="1272" cy="145" r="92" stroke="var(--sil-off)" stroke-width="5" stroke-linecap="round" stroke-dasharray="0.1 14.35"/>
           <path d="M1252 125 L1292 165 M1292 125 L1252 165" stroke="var(--faint)" stroke-width="3.4" stroke-linecap="round"/>
         </svg>
-        <div class="rule anim2" style="width:96px"></div>
         <h2 class="anim3" style="font-size:62px;line-height:1.16;max-width:1380px;">Менеджер знає, що потрібно робити.<br>Але не має енергії витримати <em class="g">ще одну відмову.</em></h2>
       </div>
     </div>
@@ -677,7 +663,6 @@
       <div class="runhead"><div class="eyebrow"><span class="dot"></span>Рішення · Профілактика</div><div class="ix"><span class="num">10</span> / 16</div></div>
       <div class="body" style="grid-template-columns:1fr 1.1fr;gap:96px">
         <div class="txt">
-          <div class="rule anim" style="width:96px"></div>
           <h2 class="anim2" style="font-size:60px"><em class="g">Профілактика</em> — поки команда ще має ресурс.</h2>
         </div>
         <div class="vis">
@@ -697,7 +682,6 @@
       <div class="runhead"><div class="eyebrow"><span class="dot"></span>Рішення · Профілактика · варіант B</div><div class="ix"><span class="num">10</span> / 16</div></div>
       <div class="body" style="display:flex;flex-direction:column;align-items:stretch;justify-content:center;gap:70px">
         <div class="txt" style="gap:30px">
-          <div class="rule anim" style="width:96px"></div>
           <h2 class="anim2" style="font-size:60px;max-width:1150px"><em class="g">Профілактика</em> — поки команда ще має ресурс.</h2>
         </div>
         <div class="anim3" style="display:flex;align-items:center;gap:130px">
@@ -732,7 +716,6 @@
       <div class="runhead"><div class="eyebrow"><span class="dot"></span>Рішення · Відновлення</div><div class="ix"><span class="num">11</span> / 16</div></div>
       <div class="body">
         <div class="txt">
-          <div class="rule anim" style="width:96px"></div>
           <h2 class="anim2" style="font-size:60px;max-width:680px">Коли енергії вже немає — <em class="g">дробити цілі.</em></h2>
           <svg class="anim3" width="400" height="150" viewBox="0 0 400 150" aria-hidden="true">
             <circle class="stroke" cx="64" cy="75" r="40"/>
@@ -768,7 +751,6 @@
       <div class="runhead"><div class="eyebrow"><span class="dot"></span>Рішення · Відновлення · варіант B</div><div class="ix"><span class="num">11</span> / 16</div></div>
       <div style="flex:1;display:flex;flex-direction:column;justify-content:center;gap:72px">
         <div style="display:flex;flex-direction:column;gap:32px">
-          <div class="rule anim" style="width:96px"></div>
           <h2 class="anim2" style="font-size:62px">Коли енергії вже немає — <em class="g">дробити цілі.</em></h2>
         </div>
         <svg class="anim3" viewBox="0 0 1680 432" style="width:100%;height:auto" aria-hidden="true">
@@ -814,7 +796,6 @@
       <div class="runhead"><div class="eyebrow"><span class="dot"></span>Наслідки</div><div class="ix"><span class="num">12</span> / 16</div></div>
       <div class="body">
         <div class="txt">
-          <div class="rule anim" style="width:96px"></div>
           <h2 class="anim2" style="font-size:58px">Клієнт не знає, що менеджер виснажений. Але <em class="g">відчуває</em> неуважність і байдужий tone of voice.</h2>
         </div>
         <div class="vis anim2">
@@ -840,7 +821,6 @@
       <div class="runhead"><div class="eyebrow"><span class="dot"></span>Наслідки · варіант B</div><div class="ix"><span class="num">12</span> / 16</div></div>
       <div class="body">
         <div class="txt">
-          <div class="rule anim" style="width:96px"></div>
           <h2 class="anim2" style="font-size:58px">Клієнт не знає, що менеджер виснажений. Але <em class="g">відчуває</em> неуважність і байдужий tone of voice.</h2>
         </div>
         <div class="vis anim3">
@@ -872,7 +852,6 @@
       <div class="runhead"><div class="eyebrow"><span class="dot"></span>Наслідки · Ключова теза</div><div class="ix"><span class="num">13</span> / 16</div></div>
       <div class="body">
         <div class="txt">
-          <div class="rule anim" style="width:96px"></div>
           <h2 class="anim2">Втрата енергії стає видимою <em class="g">спочатку клієнту</em> — і лише потім у звітах.</h2>
         </div>
         <div class="vis anim3">
@@ -902,7 +881,6 @@
       <div class="runhead"><div class="eyebrow"><span class="dot"></span>Наслідки · Ключова теза · варіант B</div><div class="ix"><span class="num">13</span> / 16</div></div>
       <div class="body" style="display:flex;flex-direction:column;justify-content:center;align-items:flex-start;gap:52px">
         <div class="txt" style="gap:30px">
-          <div class="rule anim" style="width:96px"></div>
           <h2 class="anim2">Втрата енергії стає видимою <em class="g">спочатку клієнту</em> —<br>і лише потім у звітах.</h2>
         </div>
         <div class="anim3" style="align-self:center">
@@ -963,7 +941,6 @@
         </svg>
         <h2 class="anim2" style="font-size:84px;max-width:1360px;">Назвіть одну <em class="g">маленьку перемогу</em><br>своєї команди за останній місяць.</h2>
         <div class="anim3" style="display:flex;flex-direction:column;align-items:center;gap:38px;">
-          <div class="rule" style="width:300px;"></div>
           <div class="sub" style="text-align:center;">Поверніться до людини поруч. Назвіть перемогу. Подякуйте одне одному.</div>
         </div>
       </div>
@@ -977,7 +954,6 @@
       <div class="runhead"><div class="eyebrow"><span class="dot"></span>Завершення · Фінальні тези</div><div class="ix"><span class="num">15</span> / 16</div></div>
       <div class="body">
         <div class="txt">
-          <div class="rule anim" style="width:96px"></div>
           <h2 class="anim2">Наші люди не стали слабшими — вони <em class="g">занадто довго</em> змушені бути сильними.</h2>
           <div class="sub anim3">Завдання керівника — не вимагати ще більше, а підтримувати здатність команди діяти.</div>
         </div>
@@ -1018,7 +994,6 @@
           </svg>
         </div>
         <div class="txt">
-          <div class="rule anim" style="width:96px"></div>
           <h2 class="anim2">Наші люди не стали слабшими — вони <em class="g">занадто довго</em> змушені бути сильними.</h2>
           <div class="sub anim3">Завдання керівника — не вимагати ще більше, а підтримувати здатність команди діяти.</div>
         </div>
@@ -1055,7 +1030,6 @@
         <div class="ix"><span class="num">16</span> / 16</div>
       </div>
       <div class="inner" style="gap:52px">
-        <div class="rule anim" style="width:220px"></div>
         <div class="eyebrow anim"><span class="dot"></span>Головна думка&nbsp;·&nbsp;варіант B</div>
         <h2 class="anim2" style="font-size:76px;max-width:1480px;">Енергія команди — не про настрій.<br>Це <em class="g">випереджальний показник</em><br>майбутнього доходу.</h2>
         <svg class="anim3" width="460" height="140" viewBox="0 0 460 140" role="img" aria-label="Зростання: 5 точок">
