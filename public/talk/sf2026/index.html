@@ -107,6 +107,18 @@
   #theme .sw::after{content:"";position:absolute;top:2px;left:2px;width:12px;height:12px;border-radius:50%;background:#fff;transition:left .25s;}
   html.light #theme .sw::after{left:16px;}
   @media print{#theme{display:none}}
+
+  /* Версії слайда: шари + перемикач справа-знизу (у друк не потрапляє) */
+  section>.variant{position:absolute;inset:0;}
+  .variant[hidden]{display:none!important;}
+  .vswitch{position:absolute;right:34px;bottom:24px;z-index:60;display:flex;gap:6px;}
+  .vswitch button{font-family:'JetBrains Mono',monospace;font-size:19px;letter-spacing:.06em;
+    width:52px;height:44px;border-radius:12px;border:1.5px solid var(--panel-line);
+    background:var(--panel);color:var(--muted);cursor:pointer;transition:color .2s,border-color .2s;}
+  .vswitch button:hover{color:var(--ink);border-color:var(--gold);}
+  .vswitch button.on{background:var(--grad-acc);color:#fff;border-color:transparent;font-weight:600;}
+  @media print{.vswitch{display:none}}
+
   /* Друк/PDF: background-clip:text у Chromium лишає крайові шви градієнта —
      на папері акцент робимо суцільним золотом замість градієнта. */
   @media print{
@@ -129,7 +141,8 @@
 <button id="theme" aria-label="Перемкнути тему"><span class="sw"></span><span id="theme-label">Світла</span></button>
 <deck-stage width="1920" height="1080">
 
-  <section class="center">
+  <section data-slide="01">
+    <div class="variant center" data-v="A">
     <div class="bg"></div>
     <div class="pad center">
       <div class="runhead" style="width:100%">
@@ -145,14 +158,13 @@
         <span class="ix"><span class="num">01</span><span>/&nbsp;16</span></span>
       </div>
     </div>
-  </section>
-
-  <section>
+  </div>
+    <div class="variant " data-v="B" hidden>
     <div class="bg"></div>
     <div class="pad">
       <div class="runhead" style="width:100%">
         <div class="forum"><span>Sales&nbsp;Forum</span><span class="bar"></span><span class="yr">2026</span></div>
-        <span style="font-family:'JetBrains Mono',monospace;font-size:20px;letter-spacing:.26em;text-transform:uppercase;color:var(--faint)">варіант B</span>
+        <span></span>
       </div>
       <div style="flex:1;display:flex;flex-direction:column;justify-content:center;align-items:flex-start">
         <h1 class="anim2" style="font-size:148px;line-height:1.03;margin-top:44px;max-width:1640px">Енергія команди<br>як <em class="g">архітектура<br>дохідності</em></h1>
@@ -170,9 +182,12 @@
         </div>
       </div>
     </div>
+  </div>
+    <div class="vswitch" aria-label="Версії слайда"><button type="button" data-v="A" class="on">A</button><button type="button" data-v="B">B</button></div>
   </section>
 
-  <section class="center">
+  <section data-slide="02">
+    <div class="variant center" data-v="A">
     <div class="bg"></div>
     <div class="pad center">
       <div class="runhead" style="width:100%"><div class="eyebrow"><span class="dot"></span>Вступ · Вправа</div><div class="ix"><span class="num">02</span> / 16</div></div>
@@ -192,12 +207,11 @@
       </div>
       <div class="foot" style="width:100%"><span class="evt">Sales Forum<span class="sep">·</span>2026</span><span></span></div>
     </div>
-  </section>
-
-  <section class="center">
+  </div>
+    <div class="variant center" data-v="B" hidden>
     <div class="bg"></div>
     <div class="pad center">
-      <div class="runhead" style="width:100%"><div class="eyebrow"><span class="dot"></span>Вступ · Вправа · варіант B</div><div class="ix"><span class="num">02</span> / 16</div></div>
+      <div class="runhead" style="width:100%"><div class="eyebrow"><span class="dot"></span>Вступ · Вправа</div><div class="ix"><span class="num">02</span> / 16</div></div>
       <div class="inner" style="gap:52px;">
         <h2 class="anim" style="font-size:80px;max-width:1380px;">Скільки у вас зараз енергії — <em class="g">від 1 до 5?</em></h2>
         <div class="anim2" style="display:flex;align-items:flex-end;gap:36px;">
@@ -226,9 +240,12 @@
       </div>
       <div class="foot" style="width:100%"><span class="evt">Sales Forum<span class="sep">·</span>2026</span><span></span></div>
     </div>
+  </div>
+    <div class="vswitch" aria-label="Версії слайда"><button type="button" data-v="A" class="on">A</button><button type="button" data-v="B">B</button></div>
   </section>
 
-  <section class="thesis">
+  <section data-slide="03">
+    <div class="variant thesis" data-v="A">
     <div class="bg"></div>
     <div class="pad center">
       <div class="runhead" style="width:100%"><div class="eyebrow"><span class="dot"></span>Вступ · Вправа</div><div class="ix"><span class="num">03</span> / 16</div></div>
@@ -244,30 +261,11 @@
       </div>
       <div class="foot" style="width:100%"><span class="evt">Sales Forum<span class="sep">·</span>2026</span><span></span></div>
     </div>
-  </section>
-
-  <section class="thesis">
+  </div>
+    <div class="variant thesis" data-v="B" hidden>
     <div class="bg"></div>
     <div class="pad center">
-      <div class="runhead" style="width:100%"><div class="eyebrow"><span class="dot"></span>Вступ · Вправа · варіант C</div><div class="ix"><span class="num">03</span> / 16</div></div>
-      <div class="inner" style="padding-bottom:36px">
-        <h2 class="anim" style="font-size:62px;max-width:1520px;line-height:1.08;">Вправа<br><em class="g">«Повертаємо енергію»</em><br>одна хвилина</h2>
-        <div class="anim2" style="display:grid;grid-template-columns:repeat(4,1fr);gap:30px;max-width:1680px;width:100%;margin-top:16px;">
-          <div style="background:var(--panel);background:color-mix(in srgb,var(--gold) 11%,transparent);border:2px solid var(--panel-line);border-color:color-mix(in srgb,var(--gold) 46%,transparent);border-radius:22px;padding:36px 34px 32px;text-align:left;display:flex;flex-direction:column;gap:18px;"><div style="font-family:'JetBrains Mono',monospace;font-size:44px;font-weight:700;letter-spacing:.06em;background:var(--grad-acc);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent;">01</div><p style="font-size:30px;line-height:1.35;color:var(--ink);margin:0;">Стати на носочки й потягнутися вгору маківкою якнайвище.</p><div style="display:flex;align-items:center;margin-top:auto;padding-top:26px;"><div style="width:212px;height:66px;flex:none;display:flex;gap:7px;border:3.5px solid var(--gold);border-radius:14px;padding:8px;"><span class="cell on" style="border-radius:5px"></span><span class="cell on" style="border-radius:5px"></span><span class="cell" style="border-radius:5px"></span><span class="cell" style="border-radius:5px"></span><span class="cell" style="border-radius:5px"></span></div><div style="flex:none;width:14px;height:32px;border-radius:0 7px 7px 0;background:var(--gold);"></div></div></div>
-          <div style="background:var(--panel);background:color-mix(in srgb,var(--gold) 11%,transparent);border:2px solid var(--panel-line);border-color:color-mix(in srgb,var(--gold) 46%,transparent);border-radius:22px;padding:36px 34px 32px;text-align:left;display:flex;flex-direction:column;gap:18px;"><div style="font-family:'JetBrains Mono',monospace;font-size:44px;font-weight:700;letter-spacing:.06em;background:var(--grad-acc);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent;">02</div><p style="font-size:30px;line-height:1.35;color:var(--ink);margin:0;">Плечима: два круги вперед і два круги назад, повільно.</p><div style="display:flex;align-items:center;margin-top:auto;padding-top:26px;"><div style="width:212px;height:66px;flex:none;display:flex;gap:7px;border:3.5px solid var(--gold);border-radius:14px;padding:8px;"><span class="cell on" style="border-radius:5px"></span><span class="cell on" style="border-radius:5px"></span><span class="cell on" style="border-radius:5px"></span><span class="cell" style="border-radius:5px"></span><span class="cell" style="border-radius:5px"></span></div><div style="flex:none;width:14px;height:32px;border-radius:0 7px 7px 0;background:var(--gold);"></div></div></div>
-          <div style="background:var(--panel);background:color-mix(in srgb,var(--gold) 11%,transparent);border:2px solid var(--panel-line);border-color:color-mix(in srgb,var(--gold) 46%,transparent);border-radius:22px;padding:36px 34px 32px;text-align:left;display:flex;flex-direction:column;gap:18px;"><div style="font-family:'JetBrains Mono',monospace;font-size:44px;font-weight:700;letter-spacing:.06em;background:var(--grad-acc);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent;">03</div><p style="font-size:30px;line-height:1.35;color:var(--ink);margin:0;">Глибокий вдих носом, затримка, повільний видих ротом. Тричі.</p><div style="display:flex;align-items:center;margin-top:auto;padding-top:26px;"><div style="width:212px;height:66px;flex:none;display:flex;gap:7px;border:3.5px solid var(--gold);border-radius:14px;padding:8px;"><span class="cell on" style="border-radius:5px"></span><span class="cell on" style="border-radius:5px"></span><span class="cell on" style="border-radius:5px"></span><span class="cell on" style="border-radius:5px"></span><span class="cell" style="border-radius:5px"></span></div><div style="flex:none;width:14px;height:32px;border-radius:0 7px 7px 0;background:var(--gold);"></div></div></div>
-          <div style="background:var(--panel);background:color-mix(in srgb,var(--gold) 11%,transparent);border:2px solid var(--panel-line);border-color:color-mix(in srgb,var(--gold) 46%,transparent);border-radius:22px;padding:36px 34px 32px;text-align:left;display:flex;flex-direction:column;gap:18px;"><div style="font-family:'JetBrains Mono',monospace;font-size:44px;font-weight:700;letter-spacing:.06em;background:var(--grad-acc);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent;">04</div><p style="font-size:30px;line-height:1.35;color:var(--ink);margin:0;">Посміхнутися сусідам праворуч і ліворуч від себе.</p><div style="display:flex;align-items:center;margin-top:auto;padding-top:26px;"><div style="width:212px;height:66px;flex:none;display:flex;gap:7px;border:3.5px solid var(--gold);border-radius:14px;padding:8px;"><span class="cell on" style="border-radius:5px"></span><span class="cell on" style="border-radius:5px"></span><span class="cell on" style="border-radius:5px"></span><span class="cell on" style="border-radius:5px"></span><span class="cell on" style="border-radius:5px"></span></div><div style="flex:none;width:14px;height:32px;border-radius:0 7px 7px 0;background:var(--gold);"></div></div></div>
-        </div>
-        <div class="sub anim3" style="text-align:center;font-size:36px;margin-top:22px;max-width:1560px;">А тепер ще раз покажіть: скільки у вас енергії <em class="g">від 1 до 5?</em></div>
-      </div>
-      <div class="foot" style="width:100%"><span class="evt">Sales Forum<span class="sep">·</span>2026</span><span></span></div>
-    </div>
-  </section>
-
-  <section class="thesis">
-    <div class="bg"></div>
-    <div class="pad center">
-      <div class="runhead" style="width:100%"><div class="eyebrow"><span class="dot"></span>Вступ · Вправа · варіант B</div><div class="ix"><span class="num">03</span> / 16</div></div>
+      <div class="runhead" style="width:100%"><div class="eyebrow"><span class="dot"></span>Вступ · Вправа</div><div class="ix"><span class="num">03</span> / 16</div></div>
       <div class="inner" style="gap:56px;">
         <h2 class="anim" style="font-size:60px;max-width:1500px;line-height:1.12;">Вправа <em class="g">«Повертаємо енергію»</em><br>одна хвилина</h2>
         <div class="anim2" style="display:flex;width:100%;max-width:1640px;">
@@ -296,9 +294,29 @@
       </div>
       <div class="foot" style="width:100%"><span class="evt">Sales Forum<span class="sep">·</span>2026</span><span></span></div>
     </div>
+  </div>
+    <div class="variant thesis" data-v="C" hidden>
+    <div class="bg"></div>
+    <div class="pad center">
+      <div class="runhead" style="width:100%"><div class="eyebrow"><span class="dot"></span>Вступ · Вправа</div><div class="ix"><span class="num">03</span> / 16</div></div>
+      <div class="inner" style="padding-bottom:36px">
+        <h2 class="anim" style="font-size:62px;max-width:1520px;line-height:1.08;">Вправа<br><em class="g">«Повертаємо енергію»</em><br>одна хвилина</h2>
+        <div class="anim2" style="display:grid;grid-template-columns:repeat(4,1fr);gap:30px;max-width:1680px;width:100%;margin-top:16px;">
+          <div style="background:var(--panel);background:color-mix(in srgb,var(--gold) 11%,transparent);border:2px solid var(--panel-line);border-color:color-mix(in srgb,var(--gold) 46%,transparent);border-radius:22px;padding:36px 34px 32px;text-align:left;display:flex;flex-direction:column;gap:18px;"><div style="font-family:'JetBrains Mono',monospace;font-size:44px;font-weight:700;letter-spacing:.06em;background:var(--grad-acc);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent;">01</div><p style="font-size:30px;line-height:1.35;color:var(--ink);margin:0;">Стати на носочки й потягнутися вгору маківкою якнайвище.</p><div style="display:flex;align-items:center;margin-top:auto;padding-top:26px;"><div style="width:212px;height:66px;flex:none;display:flex;gap:7px;border:3.5px solid var(--gold);border-radius:14px;padding:8px;"><span class="cell on" style="border-radius:5px"></span><span class="cell on" style="border-radius:5px"></span><span class="cell" style="border-radius:5px"></span><span class="cell" style="border-radius:5px"></span><span class="cell" style="border-radius:5px"></span></div><div style="flex:none;width:14px;height:32px;border-radius:0 7px 7px 0;background:var(--gold);"></div></div></div>
+          <div style="background:var(--panel);background:color-mix(in srgb,var(--gold) 11%,transparent);border:2px solid var(--panel-line);border-color:color-mix(in srgb,var(--gold) 46%,transparent);border-radius:22px;padding:36px 34px 32px;text-align:left;display:flex;flex-direction:column;gap:18px;"><div style="font-family:'JetBrains Mono',monospace;font-size:44px;font-weight:700;letter-spacing:.06em;background:var(--grad-acc);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent;">02</div><p style="font-size:30px;line-height:1.35;color:var(--ink);margin:0;">Плечима: два круги вперед і два круги назад, повільно.</p><div style="display:flex;align-items:center;margin-top:auto;padding-top:26px;"><div style="width:212px;height:66px;flex:none;display:flex;gap:7px;border:3.5px solid var(--gold);border-radius:14px;padding:8px;"><span class="cell on" style="border-radius:5px"></span><span class="cell on" style="border-radius:5px"></span><span class="cell on" style="border-radius:5px"></span><span class="cell" style="border-radius:5px"></span><span class="cell" style="border-radius:5px"></span></div><div style="flex:none;width:14px;height:32px;border-radius:0 7px 7px 0;background:var(--gold);"></div></div></div>
+          <div style="background:var(--panel);background:color-mix(in srgb,var(--gold) 11%,transparent);border:2px solid var(--panel-line);border-color:color-mix(in srgb,var(--gold) 46%,transparent);border-radius:22px;padding:36px 34px 32px;text-align:left;display:flex;flex-direction:column;gap:18px;"><div style="font-family:'JetBrains Mono',monospace;font-size:44px;font-weight:700;letter-spacing:.06em;background:var(--grad-acc);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent;">03</div><p style="font-size:30px;line-height:1.35;color:var(--ink);margin:0;">Глибокий вдих носом, затримка, повільний видих ротом. Тричі.</p><div style="display:flex;align-items:center;margin-top:auto;padding-top:26px;"><div style="width:212px;height:66px;flex:none;display:flex;gap:7px;border:3.5px solid var(--gold);border-radius:14px;padding:8px;"><span class="cell on" style="border-radius:5px"></span><span class="cell on" style="border-radius:5px"></span><span class="cell on" style="border-radius:5px"></span><span class="cell on" style="border-radius:5px"></span><span class="cell" style="border-radius:5px"></span></div><div style="flex:none;width:14px;height:32px;border-radius:0 7px 7px 0;background:var(--gold);"></div></div></div>
+          <div style="background:var(--panel);background:color-mix(in srgb,var(--gold) 11%,transparent);border:2px solid var(--panel-line);border-color:color-mix(in srgb,var(--gold) 46%,transparent);border-radius:22px;padding:36px 34px 32px;text-align:left;display:flex;flex-direction:column;gap:18px;"><div style="font-family:'JetBrains Mono',monospace;font-size:44px;font-weight:700;letter-spacing:.06em;background:var(--grad-acc);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent;">04</div><p style="font-size:30px;line-height:1.35;color:var(--ink);margin:0;">Посміхнутися сусідам праворуч і ліворуч від себе.</p><div style="display:flex;align-items:center;margin-top:auto;padding-top:26px;"><div style="width:212px;height:66px;flex:none;display:flex;gap:7px;border:3.5px solid var(--gold);border-radius:14px;padding:8px;"><span class="cell on" style="border-radius:5px"></span><span class="cell on" style="border-radius:5px"></span><span class="cell on" style="border-radius:5px"></span><span class="cell on" style="border-radius:5px"></span><span class="cell on" style="border-radius:5px"></span></div><div style="flex:none;width:14px;height:32px;border-radius:0 7px 7px 0;background:var(--gold);"></div></div></div>
+        </div>
+        <div class="sub anim3" style="text-align:center;font-size:36px;margin-top:22px;max-width:1560px;">А тепер ще раз покажіть: скільки у вас енергії <em class="g">від 1 до 5?</em></div>
+      </div>
+      <div class="foot" style="width:100%"><span class="evt">Sales Forum<span class="sep">·</span>2026</span><span></span></div>
+    </div>
+  </div>
+    <div class="vswitch" aria-label="Версії слайда"><button type="button" data-v="A" class="on">A</button><button type="button" data-v="B">B</button><button type="button" data-v="C">C</button></div>
   </section>
 
-  <section class="thesis">
+  <section data-slide="04">
+    <div class="variant thesis" data-v="A">
     <div class="bg"></div>
     <div class="pad">
       <div class="runhead"><div class="eyebrow"><span class="dot"></span>Вступ</div><div class="ix"><span class="num">04</span> / 16</div></div>
@@ -323,12 +341,11 @@
         </div>
       </div>
     </div>
-  </section>
-
-  <section class="thesis">
+  </div>
+    <div class="variant thesis" data-v="B" hidden>
     <div class="bg"></div>
     <div class="pad">
-      <div class="runhead"><div class="eyebrow"><span class="dot"></span>Вступ · варіант B</div><div class="ix"><span class="num">04</span> / 16</div></div>
+      <div class="runhead"><div class="eyebrow"><span class="dot"></span>Вступ</div><div class="ix"><span class="num">04</span> / 16</div></div>
       <div style="flex:1;display:flex;align-items:center;gap:110px;min-height:0;">
         <div class="anim" style="display:flex;flex-direction:column;gap:10px;flex:0 0 auto;">
           <div style="font-family:'JetBrains Mono',monospace;font-size:27px;letter-spacing:.3em;text-transform:uppercase;color:var(--gold-soft);padding-left:12px;">Понад</div>
@@ -352,9 +369,12 @@
       </div>
       <div class="src anim3">Джерело: ВООЗ · 2025 · і лише кожен п’ятий звертався по допомогу</div>
     </div>
+  </div>
+    <div class="vswitch" aria-label="Версії слайда"><button type="button" data-v="A" class="on">A</button><button type="button" data-v="B">B</button></div>
   </section>
 
-  <section class="thesis">
+  <section data-slide="05">
+    <div class="variant thesis" data-v="A">
     <div class="bg"></div>
     <div class="pad">
       <div class="runhead"><div class="eyebrow"><span class="dot"></span>Вступ · Ключова теза</div><div class="ix"><span class="num">05</span> / 16</div></div>
@@ -380,12 +400,11 @@
         </div>
       </div>
     </div>
-  </section>
-
-  <section class="thesis">
+  </div>
+    <div class="variant thesis" data-v="B" hidden>
     <div class="bg"></div>
     <div class="pad">
-      <div class="runhead"><div class="eyebrow"><span class="dot"></span>Вступ · Ключова теза · варіант B</div><div class="ix"><span class="num">05</span> / 16</div></div>
+      <div class="runhead"><div class="eyebrow"><span class="dot"></span>Вступ · Ключова теза</div><div class="ix"><span class="num">05</span> / 16</div></div>
       <div class="body">
         <div class="txt">
           <h2 class="anim2">Бізнес планує зростання, спираючись на ресурс людей, <em class="g">якого вже може не бути.</em></h2>
@@ -404,9 +423,12 @@
         </div>
       </div>
     </div>
+  </div>
+    <div class="vswitch" aria-label="Версії слайда"><button type="button" data-v="A" class="on">A</button><button type="button" data-v="B">B</button></div>
   </section>
 
-  <section class="thesis">
+  <section data-slide="06">
+    <div class="variant thesis" data-v="A">
     <div class="bg"></div>
     <div class="pad">
       <div class="runhead"><div class="eyebrow"><span class="dot"></span>Проблема</div><div class="ix"><span class="num">06</span> / 16</div></div>
@@ -429,12 +451,11 @@
         </div>
       </div>
     </div>
-  </section>
-
-  <section class="thesis">
+  </div>
+    <div class="variant thesis" data-v="B" hidden>
     <div class="bg"></div>
     <div class="pad">
-      <div class="runhead"><div class="eyebrow"><span class="dot"></span>Проблема · варіант B</div><div class="ix"><span class="num">06</span> / 16</div></div>
+      <div class="runhead"><div class="eyebrow"><span class="dot"></span>Проблема</div><div class="ix"><span class="num">06</span> / 16</div></div>
       <div class="body">
         <div class="txt">
           <h2 class="anim2" style="font-size:78px">Немає енергії — <em class="g">немає нових клієнтів.</em></h2>
@@ -457,9 +478,12 @@
         </div>
       </div>
     </div>
+  </div>
+    <div class="vswitch" aria-label="Версії слайда"><button type="button" data-v="A" class="on">A</button><button type="button" data-v="B">B</button></div>
   </section>
 
-  <section class="thesis">
+  <section data-slide="07">
+    <div class="variant thesis" data-v="A">
     <div class="bg"></div>
     <div class="pad">
       <div class="runhead"><div class="eyebrow"><span class="dot"></span>Проблема</div><div class="ix"><span class="num">07</span> / 16</div></div>
@@ -488,12 +512,11 @@
         </div>
       </div>
     </div>
-  </section>
-
-  <section class="thesis">
+  </div>
+    <div class="variant thesis" data-v="B" hidden>
     <div class="bg"></div>
     <div class="pad">
-      <div class="runhead"><div class="eyebrow"><span class="dot"></span>Проблема · варіант B</div><div class="ix"><span class="num">07</span> / 16</div></div>
+      <div class="runhead"><div class="eyebrow"><span class="dot"></span>Проблема</div><div class="ix"><span class="num">07</span> / 16</div></div>
       <div class="body">
         <div class="txt">
           <h2 class="anim2" style="font-size:60px">Виснаження <em class="g">маскується</em> під прокрастинацію, брак ініціативи та «ринок зараз не той».</h2>
@@ -517,9 +540,12 @@
         </div>
       </div>
     </div>
+  </div>
+    <div class="vswitch" aria-label="Версії слайда"><button type="button" data-v="A" class="on">A</button><button type="button" data-v="B">B</button></div>
   </section>
 
-  <section class="thesis">
+  <section data-slide="08">
+    <div class="variant thesis" data-v="A">
     <div class="bg"></div>
     <div class="pad">
       <div class="runhead"><div class="eyebrow"><span class="dot"></span>Проблема · 4 інтелекти</div><div class="ix"><span class="num">08</span> / 16</div></div>
@@ -570,12 +596,11 @@
         </div>
       </div>
     </div>
-  </section>
-
-  <section class="center">
+  </div>
+    <div class="variant center" data-v="B" hidden>
     <div class="bg"></div>
     <div class="pad">
-      <div class="runhead"><div class="eyebrow"><span class="dot"></span>Проблема · 4 інтелекти · варіант B</div><div class="ix"><span class="num">08</span> / 16</div></div>
+      <div class="runhead"><div class="eyebrow"><span class="dot"></span>Проблема · 4 інтелекти</div><div class="ix"><span class="num">08</span> / 16</div></div>
       <div class="inner">
         <h2 class="anim" style="font-size:52px;max-width:1400px">Коли знижується <em class="g">VQ</em> — просідають EQ, AQ та SQ.</h2>
         <div class="vis anim2">
@@ -618,9 +643,12 @@
         <div class="sub anim3" style="max-width:1080px">VQ — життєва енергія та здатність заряджати інших. Разом із нею падає все решта.</div>
       </div>
     </div>
+  </div>
+    <div class="vswitch" aria-label="Версії слайда"><button type="button" data-v="A" class="on">A</button><button type="button" data-v="B">B</button></div>
   </section>
 
-  <section class="thesis">
+  <section data-slide="09">
+    <div class="variant thesis" data-v="A">
     <div class="bg"></div>
     <div class="pad">
       <div class="runhead"><div class="eyebrow"><span class="dot"></span>Проблема · Ключова теза</div><div class="ix"><span class="num">09</span> / 16</div></div>
@@ -639,12 +667,11 @@
         </div>
       </div>
     </div>
-  </section>
-
-  <section class="center">
+  </div>
+    <div class="variant center" data-v="B" hidden>
     <div class="bg"></div>
     <div class="pad">
-      <div class="runhead"><div class="eyebrow"><span class="dot"></span>Проблема · Ключова теза · варіант B</div><div class="ix"><span class="num">09</span> / 16</div></div>
+      <div class="runhead"><div class="eyebrow"><span class="dot"></span>Проблема · Ключова теза</div><div class="ix"><span class="num">09</span> / 16</div></div>
       <div class="inner">
         <svg class="anim" viewBox="0 0 1424 280" fill="none" style="width:1180px;max-width:100%;height:auto">
           <!-- дзвінок 1: повна енергія -->
@@ -673,9 +700,12 @@
         <h2 class="anim3" style="font-size:62px;line-height:1.16;max-width:1380px;">Менеджер знає, що потрібно робити.<br>Але не має енергії витримати <em class="g">ще одну відмову.</em></h2>
       </div>
     </div>
+  </div>
+    <div class="vswitch" aria-label="Версії слайда"><button type="button" data-v="A" class="on">A</button><button type="button" data-v="B">B</button></div>
   </section>
 
-  <section class="thesis">
+  <section data-slide="10">
+    <div class="variant thesis" data-v="A">
     <div class="bg"></div>
     <div class="pad">
       <div class="runhead"><div class="eyebrow"><span class="dot"></span>Рішення · Профілактика</div><div class="ix"><span class="num">10</span> / 16</div></div>
@@ -692,12 +722,11 @@
         </div>
       </div>
     </div>
-  </section>
-
-  <section class="thesis">
+  </div>
+    <div class="variant thesis" data-v="B" hidden>
     <div class="bg"></div>
     <div class="pad">
-      <div class="runhead"><div class="eyebrow"><span class="dot"></span>Рішення · Профілактика · варіант B</div><div class="ix"><span class="num">10</span> / 16</div></div>
+      <div class="runhead"><div class="eyebrow"><span class="dot"></span>Рішення · Профілактика</div><div class="ix"><span class="num">10</span> / 16</div></div>
       <div class="body" style="display:flex;flex-direction:column;align-items:stretch;justify-content:center;gap:70px">
         <div class="txt" style="gap:30px">
           <h2 class="anim2" style="font-size:60px;max-width:1150px"><em class="g">Профілактика</em> — поки команда ще має ресурс.</h2>
@@ -726,9 +755,12 @@
         </div>
       </div>
     </div>
+  </div>
+    <div class="vswitch" aria-label="Версії слайда"><button type="button" data-v="A" class="on">A</button><button type="button" data-v="B">B</button></div>
   </section>
 
-  <section class="thesis">
+  <section data-slide="11">
+    <div class="variant thesis" data-v="A">
     <div class="bg"></div>
     <div class="pad">
       <div class="runhead"><div class="eyebrow"><span class="dot"></span>Рішення · Відновлення</div><div class="ix"><span class="num">11</span> / 16</div></div>
@@ -761,12 +793,11 @@
         </div>
       </div>
     </div>
-  </section>
-
-  <section class="thesis">
+  </div>
+    <div class="variant thesis" data-v="B" hidden>
     <div class="bg"></div>
     <div class="pad">
-      <div class="runhead"><div class="eyebrow"><span class="dot"></span>Рішення · Відновлення · варіант B</div><div class="ix"><span class="num">11</span> / 16</div></div>
+      <div class="runhead"><div class="eyebrow"><span class="dot"></span>Рішення · Відновлення</div><div class="ix"><span class="num">11</span> / 16</div></div>
       <div style="flex:1;display:flex;flex-direction:column;justify-content:center;gap:72px">
         <div style="display:flex;flex-direction:column;gap:32px">
           <h2 class="anim2" style="font-size:62px">Коли енергії вже немає — <em class="g">дробити цілі.</em></h2>
@@ -806,9 +837,12 @@
         </svg>
       </div>
     </div>
+  </div>
+    <div class="vswitch" aria-label="Версії слайда"><button type="button" data-v="A" class="on">A</button><button type="button" data-v="B">B</button></div>
   </section>
 
-  <section class="thesis">
+  <section data-slide="12">
+    <div class="variant thesis" data-v="A">
     <div class="bg"></div>
     <div class="pad">
       <div class="runhead"><div class="eyebrow"><span class="dot"></span>Наслідки</div><div class="ix"><span class="num">12</span> / 16</div></div>
@@ -831,12 +865,11 @@
         </div>
       </div>
     </div>
-  </section>
-
-  <section class="thesis">
+  </div>
+    <div class="variant thesis" data-v="B" hidden>
     <div class="bg"></div>
     <div class="pad">
-      <div class="runhead"><div class="eyebrow"><span class="dot"></span>Наслідки · варіант B</div><div class="ix"><span class="num">12</span> / 16</div></div>
+      <div class="runhead"><div class="eyebrow"><span class="dot"></span>Наслідки</div><div class="ix"><span class="num">12</span> / 16</div></div>
       <div class="body">
         <div class="txt">
           <h2 class="anim2" style="font-size:58px">Клієнт не знає, що менеджер виснажений. Але <em class="g">відчуває</em> неуважність і байдужий tone of voice.</h2>
@@ -862,9 +895,12 @@
         </div>
       </div>
     </div>
+  </div>
+    <div class="vswitch" aria-label="Версії слайда"><button type="button" data-v="A" class="on">A</button><button type="button" data-v="B">B</button></div>
   </section>
 
-  <section class="thesis">
+  <section data-slide="13">
+    <div class="variant thesis" data-v="A">
     <div class="bg"></div>
     <div class="pad">
       <div class="runhead"><div class="eyebrow"><span class="dot"></span>Наслідки · Ключова теза</div><div class="ix"><span class="num">13</span> / 16</div></div>
@@ -891,12 +927,11 @@
         </div>
       </div>
     </div>
-  </section>
-
-  <section class="thesis">
+  </div>
+    <div class="variant thesis" data-v="B" hidden>
     <div class="bg"></div>
     <div class="pad">
-      <div class="runhead"><div class="eyebrow"><span class="dot"></span>Наслідки · Ключова теза · варіант B</div><div class="ix"><span class="num">13</span> / 16</div></div>
+      <div class="runhead"><div class="eyebrow"><span class="dot"></span>Наслідки · Ключова теза</div><div class="ix"><span class="num">13</span> / 16</div></div>
       <div class="body" style="display:flex;flex-direction:column;justify-content:center;align-items:flex-start;gap:52px">
         <div class="txt" style="gap:30px">
           <h2 class="anim2">Втрата енергії стає видимою <em class="g">спочатку клієнту</em> —<br>і лише потім у звітах.</h2>
@@ -924,9 +959,12 @@
         </div>
       </div>
     </div>
+  </div>
+    <div class="vswitch" aria-label="Версії слайда"><button type="button" data-v="A" class="on">A</button><button type="button" data-v="B">B</button></div>
   </section>
 
-  <section class="center">
+  <section data-slide="14">
+    <div class="variant center" data-v="A">
     <div class="bg"></div>
     <div class="pad center">
       <div class="runhead" style="width:100%"><div class="eyebrow"><span class="dot"></span>Завершення · Вправа</div><div class="ix"><span class="num">14</span> / 16</div></div>
@@ -945,28 +983,11 @@
       </div>
       <div class="foot" style="width:100%"><span class="evt">Sales Forum<span class="sep">·</span>2026</span><span></span></div>
     </div>
-  </section>
-
-  <section class="thesis">
+  </div>
+    <div class="variant center" data-v="B" hidden>
     <div class="bg"></div>
     <div class="pad center">
-      <div class="runhead" style="width:100%"><div class="eyebrow"><span class="dot"></span>Завершення · Вправа · варіант C</div><div class="ix"><span class="num">14</span> / 16</div></div>
-      <div class="inner" style="padding-bottom:36px">
-        <h2 class="anim" style="font-size:62px;max-width:1520px;line-height:1.12;">Назвіть одну <em class="g">маленьку перемогу</em><br>своєї команди за останній місяць.</h2>
-        <div class="anim2" style="display:grid;grid-template-columns:repeat(3,1fr);gap:30px;max-width:1460px;width:100%;margin-top:20px;">
-          <div style="background:var(--panel);background:color-mix(in srgb,var(--gold) 11%,transparent);border:2px solid var(--panel-line);border-color:color-mix(in srgb,var(--gold) 46%,transparent);border-radius:22px;padding:36px 34px 32px;text-align:left;display:flex;flex-direction:column;gap:18px;"><div style="font-family:'JetBrains Mono',monospace;font-size:44px;font-weight:700;letter-spacing:.06em;background:var(--grad-acc);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent;">01</div><p style="font-size:32px;line-height:1.35;color:var(--ink);margin:0;">Поверніться до людини поруч.</p><div style="display:flex;align-items:center;margin-top:auto;padding-top:26px;"><svg width="150" height="80" viewBox="0 0 120 64"><g fill="var(--gold)"><circle cx="30" cy="18" r="12"/><path d="M8 52 q22 -20 44 0 l0 6 -44 0 Z"/></g><g fill="var(--gold)" opacity=".55"><circle cx="90" cy="18" r="12"/><path d="M68 52 q22 -20 44 0 l0 6 -44 0 Z"/></g><path d="M48 30 q12 -10 24 0" fill="none" stroke="var(--gold)" stroke-width="3" stroke-linecap="round" stroke-dasharray="2 6"/></svg></div></div>
-          <div style="background:var(--panel);background:color-mix(in srgb,var(--gold) 11%,transparent);border:2px solid var(--panel-line);border-color:color-mix(in srgb,var(--gold) 46%,transparent);border-radius:22px;padding:36px 34px 32px;text-align:left;display:flex;flex-direction:column;gap:18px;"><div style="font-family:'JetBrains Mono',monospace;font-size:44px;font-weight:700;letter-spacing:.06em;background:var(--grad-acc);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent;">02</div><p style="font-size:32px;line-height:1.35;color:var(--ink);margin:0;">Назвіть перемогу.</p><div style="display:flex;align-items:center;margin-top:auto;padding-top:26px;"><svg width="150" height="80" viewBox="0 0 120 64"><path d="M30 60 L30 8" stroke="var(--gold)" stroke-width="5" stroke-linecap="round"/><path d="M33 9 q20 -8 38 0 q10 4 20 2 l0 20 q-10 2 -20 -2 q-18 -8 -38 0 Z" fill="var(--gold)"/></svg></div></div>
-          <div style="background:var(--panel);background:color-mix(in srgb,var(--gold) 11%,transparent);border:2px solid var(--panel-line);border-color:color-mix(in srgb,var(--gold) 46%,transparent);border-radius:22px;padding:36px 34px 32px;text-align:left;display:flex;flex-direction:column;gap:18px;"><div style="font-family:'JetBrains Mono',monospace;font-size:44px;font-weight:700;letter-spacing:.06em;background:var(--grad-acc);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent;">03</div><p style="font-size:32px;line-height:1.35;color:var(--ink);margin:0;">Подякуйте одне одному.</p><div style="display:flex;align-items:center;margin-top:auto;padding-top:26px;"><svg width="150" height="80" viewBox="0 0 120 64"><path d="M40 58 C20 44 10 30 12 20 C14 10 26 6 34 12 C38 15 40 18 40 18 C40 18 42 15 46 12 C54 6 66 10 68 20 C70 30 60 44 40 58 Z" fill="var(--gold)"/><g stroke="var(--gold)" stroke-width="3" stroke-linecap="round" opacity=".7"><path d="M84 22 L92 14"/><path d="M90 32 L101 30"/><path d="M84 42 L92 50"/></g></svg></div></div>
-        </div>
-      </div>
-      <div class="foot" style="width:100%"><span class="evt">Sales Forum<span class="sep">·</span>2026</span><span></span></div>
-    </div>
-  </section>
-
-  <section class="center">
-    <div class="bg"></div>
-    <div class="pad center">
-      <div class="runhead" style="width:100%"><div class="eyebrow"><span class="dot"></span>Завершення · Вправа · варіант B</div><div class="ix"><span class="num">14</span> / 16</div></div>
+      <div class="runhead" style="width:100%"><div class="eyebrow"><span class="dot"></span>Завершення · Вправа</div><div class="ix"><span class="num">14</span> / 16</div></div>
       <div class="inner" style="gap:48px;">
         <svg class="anim" width="320" height="130" viewBox="0 0 320 130" aria-hidden="true">
           <path fill="var(--gold)" d="M160 34 Q165 65 196 70 Q165 75 160 106 Q155 75 124 70 Q155 65 160 34 Z"/>
@@ -980,9 +1001,27 @@
       </div>
       <div class="foot" style="width:100%"><span class="evt">Sales Forum<span class="sep">·</span>2026</span><span></span></div>
     </div>
+  </div>
+    <div class="variant thesis" data-v="C" hidden>
+    <div class="bg"></div>
+    <div class="pad center">
+      <div class="runhead" style="width:100%"><div class="eyebrow"><span class="dot"></span>Завершення · Вправа</div><div class="ix"><span class="num">14</span> / 16</div></div>
+      <div class="inner" style="padding-bottom:36px">
+        <h2 class="anim" style="font-size:62px;max-width:1520px;line-height:1.12;">Назвіть одну <em class="g">маленьку перемогу</em><br>своєї команди за останній місяць.</h2>
+        <div class="anim2" style="display:grid;grid-template-columns:repeat(3,1fr);gap:30px;max-width:1460px;width:100%;margin-top:20px;">
+          <div style="background:var(--panel);background:color-mix(in srgb,var(--gold) 11%,transparent);border:2px solid var(--panel-line);border-color:color-mix(in srgb,var(--gold) 46%,transparent);border-radius:22px;padding:36px 34px 32px;text-align:left;display:flex;flex-direction:column;gap:18px;"><div style="font-family:'JetBrains Mono',monospace;font-size:44px;font-weight:700;letter-spacing:.06em;background:var(--grad-acc);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent;">01</div><p style="font-size:32px;line-height:1.35;color:var(--ink);margin:0;">Поверніться до людини поруч.</p><div style="display:flex;align-items:center;margin-top:auto;padding-top:26px;"><svg width="150" height="80" viewBox="0 0 120 64"><g fill="var(--gold)"><circle cx="30" cy="18" r="12"/><path d="M8 52 q22 -20 44 0 l0 6 -44 0 Z"/></g><g fill="var(--gold)" opacity=".55"><circle cx="90" cy="18" r="12"/><path d="M68 52 q22 -20 44 0 l0 6 -44 0 Z"/></g><path d="M48 30 q12 -10 24 0" fill="none" stroke="var(--gold)" stroke-width="3" stroke-linecap="round" stroke-dasharray="2 6"/></svg></div></div>
+          <div style="background:var(--panel);background:color-mix(in srgb,var(--gold) 11%,transparent);border:2px solid var(--panel-line);border-color:color-mix(in srgb,var(--gold) 46%,transparent);border-radius:22px;padding:36px 34px 32px;text-align:left;display:flex;flex-direction:column;gap:18px;"><div style="font-family:'JetBrains Mono',monospace;font-size:44px;font-weight:700;letter-spacing:.06em;background:var(--grad-acc);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent;">02</div><p style="font-size:32px;line-height:1.35;color:var(--ink);margin:0;">Назвіть перемогу.</p><div style="display:flex;align-items:center;margin-top:auto;padding-top:26px;"><svg width="150" height="80" viewBox="0 0 120 64"><path d="M30 60 L30 8" stroke="var(--gold)" stroke-width="5" stroke-linecap="round"/><path d="M33 9 q20 -8 38 0 q10 4 20 2 l0 20 q-10 2 -20 -2 q-18 -8 -38 0 Z" fill="var(--gold)"/></svg></div></div>
+          <div style="background:var(--panel);background:color-mix(in srgb,var(--gold) 11%,transparent);border:2px solid var(--panel-line);border-color:color-mix(in srgb,var(--gold) 46%,transparent);border-radius:22px;padding:36px 34px 32px;text-align:left;display:flex;flex-direction:column;gap:18px;"><div style="font-family:'JetBrains Mono',monospace;font-size:44px;font-weight:700;letter-spacing:.06em;background:var(--grad-acc);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent;">03</div><p style="font-size:32px;line-height:1.35;color:var(--ink);margin:0;">Подякуйте одне одному.</p><div style="display:flex;align-items:center;margin-top:auto;padding-top:26px;"><svg width="150" height="80" viewBox="0 0 120 64"><path d="M40 58 C20 44 10 30 12 20 C14 10 26 6 34 12 C38 15 40 18 40 18 C40 18 42 15 46 12 C54 6 66 10 68 20 C70 30 60 44 40 58 Z" fill="var(--gold)"/><g stroke="var(--gold)" stroke-width="3" stroke-linecap="round" opacity=".7"><path d="M84 22 L92 14"/><path d="M90 32 L101 30"/><path d="M84 42 L92 50"/></g></svg></div></div>
+        </div>
+      </div>
+      <div class="foot" style="width:100%"><span class="evt">Sales Forum<span class="sep">·</span>2026</span><span></span></div>
+    </div>
+  </div>
+    <div class="vswitch" aria-label="Версії слайда"><button type="button" data-v="A" class="on">A</button><button type="button" data-v="B">B</button><button type="button" data-v="C">C</button></div>
   </section>
 
-  <section class="thesis">
+  <section data-slide="15">
+    <div class="variant thesis" data-v="A">
     <div class="bg"></div>
     <div class="pad">
       <div class="runhead"><div class="eyebrow"><span class="dot"></span>Завершення · Фінальні тези</div><div class="ix"><span class="num">15</span> / 16</div></div>
@@ -1007,12 +1046,11 @@
         </div>
       </div>
     </div>
-  </section>
-
-  <section class="thesis">
+  </div>
+    <div class="variant thesis" data-v="B" hidden>
     <div class="bg"></div>
     <div class="pad">
-      <div class="runhead"><div class="eyebrow"><span class="dot"></span>Завершення · Фінальні тези · варіант B</div><div class="ix"><span class="num">15</span> / 16</div></div>
+      <div class="runhead"><div class="eyebrow"><span class="dot"></span>Завершення · Фінальні тези</div><div class="ix"><span class="num">15</span> / 16</div></div>
       <div class="body" style="grid-template-columns:.9fr 1.1fr">
         <div class="vis anim">
           <svg width="483" height="460" viewBox="0 0 420 400" role="img" aria-label="Силует людини із золотою дугою підтримки за спиною">
@@ -1033,9 +1071,12 @@
         </div>
       </div>
     </div>
+  </div>
+    <div class="vswitch" aria-label="Версії слайда"><button type="button" data-v="A" class="on">A</button><button type="button" data-v="B">B</button></div>
   </section>
 
-  <section class="center">
+  <section data-slide="16">
+    <div class="variant center" data-v="A">
     <div class="bg"></div>
     <div class="pad center">
       <div class="runhead" style="width:100%">
@@ -1054,9 +1095,8 @@
       </div>
       <div class="foot" style="width:100%"><span class="name">Бізнес-тренерка <b>Тетяна Пан</b></span><span class="evt">Sales Forum<span class="sep">·</span>2026</span></div>
     </div>
-  </section>
-
-  <section class="center">
+  </div>
+    <div class="variant center" data-v="B" hidden>
     <div class="bg"></div>
     <div class="pad center">
       <div class="runhead" style="width:100%">
@@ -1078,10 +1118,24 @@
       </div>
       <div class="foot" style="width:100%"><span class="name">Бізнес-тренерка <b>Тетяна Пан</b></span><span class="evt">Sales Forum<span class="sep">·</span>2026</span></div>
     </div>
+  </div>
+    <div class="vswitch" aria-label="Версії слайда"><button type="button" data-v="A" class="on">A</button><button type="button" data-v="B">B</button></div>
   </section>
 
 </deck-stage>
 <script src="deck-stage.js"></script>
+<script>
+  // Перемикач версій слайда: показує один шар .variant, анімації входу програються заново.
+  document.querySelectorAll('.vswitch').forEach(function(sw){
+    sw.addEventListener('click', function(e){
+      var b = e.target.closest('button[data-v]'); if(!b) return;
+      e.stopPropagation();
+      var sec = sw.closest('section');
+      sec.querySelectorAll(':scope > .variant').forEach(function(v){ v.hidden = v.dataset.v !== b.dataset.v; });
+      sw.querySelectorAll('button').forEach(function(x){ x.classList.toggle('on', x === b); });
+    });
+  });
+</script>
 <script>
   (function(){
     var KEY='tp-tedx-theme';
