@@ -839,9 +839,9 @@
   <path d="M638 397 L648 402 L638 407" fill="none" stroke="var(--line)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
   <path d="M402 196 V402" fill="none" stroke="color-mix(in srgb,var(--faint) 60%,transparent)" stroke-width="1.6" stroke-dasharray="2 9" stroke-linecap="round"/>
   <!-- що вже видно -->
-  <path d="M116 150 L188 156 L260 166 L330 176 L402 188" fill="none" stroke="url(#s11a-line)" stroke-width="3.6" stroke-linecap="round"/>
+  <path d="M116 150 C 210 156, 320 172, 402 188" fill="none" stroke="url(#s11a-line)" stroke-width="3.6" stroke-linecap="round"/>
   <!-- куди піде без втручання -->
-  <path d="M402 188 L452 216 L512 254 L570 300 L644 362" fill="none" stroke="color-mix(in srgb,var(--faint) 92%,transparent)" stroke-width="2.6" stroke-linecap="round" stroke-dasharray="3 11"/>
+  <path d="M402 188 C 486 204, 566 282, 644 362" fill="none" stroke="color-mix(in srgb,var(--faint) 92%,transparent)" stroke-width="2.6" stroke-linecap="round" stroke-dasharray="3 11"/>
   <!-- момент, коли ще можна втрутитися -->
   <circle cx="402" cy="188" r="27" fill="var(--glow)"/>
   <path d="M402 175 V141" fill="none" stroke="var(--gold)" stroke-width="2.4" stroke-linecap="round"/>
@@ -871,8 +871,8 @@
   <path d="M638 397 L648 402 L638 407" fill="none" stroke="var(--line)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
   <path d="M402 196 V402" fill="none" stroke="color-mix(in srgb,var(--faint) 60%,transparent)" stroke-width="1.6" stroke-dasharray="2 9" stroke-linecap="round"/>
   <!-- крок 1 лишається на місці, кадр у кадр -->
-  <path d="M116 150 L188 156 L260 166 L330 176 L402 188" fill="none" stroke="url(#s11b-line)" stroke-width="3.6" stroke-linecap="round"/>
-  <path d="M402 188 L452 216 L512 254 L570 300 L644 362" fill="none" stroke="color-mix(in srgb,var(--faint) 92%,transparent)" stroke-width="2.6" stroke-linecap="round" stroke-dasharray="3 11"/>
+  <path d="M116 150 C 210 156, 320 172, 402 188" fill="none" stroke="url(#s11b-line)" stroke-width="3.6" stroke-linecap="round"/>
+  <path d="M402 188 C 486 204, 566 282, 644 362" fill="none" stroke="color-mix(in srgb,var(--faint) 92%,transparent)" stroke-width="2.6" stroke-linecap="round" stroke-dasharray="3 11"/>
   <text x="644" y="386" text-anchor="end" style="font-family:'JetBrains Mono',monospace;font-size:16.8px;letter-spacing:.18em;text-transform:uppercase" fill="var(--muted)">без підтримки</text>
   <circle cx="402" cy="188" r="27" fill="var(--glow)"/>
   <circle cx="402" cy="188" r="13" fill="none" stroke="var(--gold)" stroke-width="2.6"/>
@@ -881,9 +881,9 @@
   <path d="M402 188 L441 186 L480 175 L519 173 L558 162 L597 160 L636 150" fill="none" stroke="url(#s11b-hold)" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/>
   <!-- невеликі регулярні імпульси, що тримають лінію -->
   <g stroke="var(--gold-soft)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" fill="none">
-    <path d="M441 202 V191"/><path d="M435 198 L441 189 L447 198"/>
-    <path d="M519 189 V178"/><path d="M513 185 L519 176 L525 185"/>
-    <path d="M597 176 V165"/><path d="M591 172 L597 163 L603 172"/>
+    <path d="M460 200 V186"/><path d="M454 193 L460 184 L466 193"/>
+    <path d="M538 187 V173"/><path d="M532 180 L538 171 L544 180"/>
+    <path d="M616 174 V160"/><path d="M610 167 L616 158 L622 167"/>
   </g>
   <circle cx="636" cy="150" r="5.5" fill="var(--gold)"/>
   <text x="636" y="122" text-anchor="end" style="font-family:'Spectral',serif;font-style:italic;font-size:32.5px" fill="var(--gold)">рівень тримається</text>
@@ -904,15 +904,15 @@
   <path d="M638 397 L648 402 L638 407" fill="none" stroke="var(--line)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
   <!-- та сама лінія y=212, що й на кроках 1–2, тільки тепер збудована -->
   <path d="M100 212 H636" fill="none" stroke="var(--gold)" stroke-width="3.2" stroke-linecap="round"/>
+  <path d="M396 212 H496" fill="none" stroke="var(--gold-soft)" stroke-width="5.4" stroke-linecap="round"/>
   <!-- опори -->
-  <path d="M168 212 V402 M268 212 V402 M368 212 V402 M568 212 V402" fill="none" stroke="color-mix(in srgb,var(--faint) 62%,transparent)" stroke-width="2" stroke-linecap="round"/>
-  <path d="M468 212 V402" fill="none" stroke="color-mix(in srgb,var(--gold) 52%,transparent)" stroke-width="2.6" stroke-linecap="round"/>
+  <path d="M168 212 V402 M268 212 V402 M368 212 V402 M468 212 V402 M568 212 V402" fill="none" stroke="color-mix(in srgb,var(--faint) 62%,transparent)" stroke-width="2" stroke-linecap="round"/>
   <g fill="var(--gold)">
     <circle cx="168" cy="212" r="4.6"/><circle cx="268" cy="212" r="4.6"/><circle cx="368" cy="212" r="4.6"/>
-    <circle cx="468" cy="212" r="6.4"/><circle cx="568" cy="212" r="4.6"/>
+    <circle cx="468" cy="212" r="4.6"/><circle cx="568" cy="212" r="4.6"/>
   </g>
   <!-- лінія коливається, але вниз її вже не пускають -->
-  <path d="M116 168 L176 156 L236 170 L296 158 L356 174 L412 188 L468 202 L524 180 L572 164 L636 170" fill="none" stroke="url(#s11c-line)" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M116 172 C 146 158, 172 152, 200 158 C 228 164, 244 184, 272 186 C 300 188, 316 162, 344 158 C 372 154, 392 176, 418 192 C 436 202, 456 201, 476 191 C 500 179, 512 160, 538 157 C 566 154, 590 166, 626 160" fill="none" stroke="url(#s11c-line)" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/>
   <text x="636" y="122" text-anchor="end" style="font-family:'Spectral',serif;font-style:italic;font-size:32.5px" fill="var(--gold)">середовище тримає рівень</text>
   <text x="112" y="432" text-anchor="start" style="font-family:'JetBrains Mono',monospace;font-size:16.8px;letter-spacing:.18em;text-transform:uppercase" fill="var(--faint)">опори · умови</text>
   <text x="112" y="80" text-anchor="start" style="font-family:'JetBrains Mono',monospace;font-size:16.8px;letter-spacing:.2em;text-transform:uppercase" fill="var(--faint)">Енергія</text>
