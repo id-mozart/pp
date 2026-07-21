@@ -116,14 +116,12 @@
   /* Службові контроли — єдина компактна панель у правому нижньому куті,
      одним низьким рядком (не лізе вгору на слайд). Номер per-slide лишається
      тільки для друку. */
-  .pagenum{display:none;}
-  @media print{.pagenum{display:block;position:absolute;right:60px;bottom:52px;}}
+  /* Номер слайда — колонцифра в правому нижньому куті слайда, на лінії футера. */
+  .pagenum{position:absolute;right:120px;bottom:96px;z-index:55;}
 
   #deck-controls{position:fixed;left:0;right:0;bottom:0;height:62px;z-index:9999;
     display:flex;align-items:center;justify-content:flex-end;gap:28px;
     padding:0 34px;background:var(--canvas);border-top:1px solid var(--line);}
-  #deck-pn{font-family:'JetBrains Mono',monospace;font-size:19px;letter-spacing:.16em;color:var(--muted);}
-  #deck-pn .num{background:var(--grad-acc);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent;font-weight:600;}
   .vswitch{display:flex;gap:13px;align-items:center;}
   .vswitch button{font-family:'JetBrains Mono',monospace;font-size:19px;letter-spacing:.1em;
     padding:6px 3px;border:0;background:none;color:var(--muted);cursor:pointer;transition:color .2s;}
@@ -1923,7 +1921,6 @@
 </deck-stage>
 <script src="deck-stage.js"></script>
 <div id="deck-controls">
-  <span id="deck-pn"></span>
   <div class="vswitch" id="vswitch-global" aria-label="Версії слайда"></div>
   <button id="theme" aria-label="Перемкнути тему"><span class="sw"></span><span id="theme-label">Світла</span></button>
 </div>
@@ -1931,13 +1928,9 @@
   // Глобальний перемикач версій активного слайда (поза межами слайда).
   (function(){
     var box = document.getElementById('vswitch-global');
-    var pn = document.getElementById('deck-pn');
     function active(){ return document.querySelector('section[data-deck-active]'); }
     function render(){
       var sec = active();
-      // номер активного слайда — завжди
-      var src = sec ? sec.querySelector(':scope > .pagenum') : null;
-      if(pn) pn.innerHTML = src ? src.innerHTML : '';
       var vars = sec ? sec.querySelectorAll(':scope > .variant') : [];
       if(!sec || vars.length < 2){ box.style.display = 'none'; return; }
       box.style.display = 'flex';
