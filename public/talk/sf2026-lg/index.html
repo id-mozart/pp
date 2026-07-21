@@ -1,0 +1,1279 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<base href="/talk/sf2026/">
+<meta name="robots" content="noindex, nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sales Forum 2026 · Енергія команди (великий шрифт)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  deck-stage:not(:defined){visibility:hidden}
+  :root{
+    --canvas:#17100B;--ink:#F4E6CC;--muted:#B8A386;--faint:#7C6A52;--line:#4A3B28;
+    --panel:rgba(255,255,255,.035);--panel-line:rgba(216,162,74,.16);
+    --gold:#E2A638;--gold-soft:#EFBE6A;
+    --grad-head:linear-gradient(96deg,#FFD888 0%,#F4A93E 40%,#E87A22 78%,#D85F18 100%);
+    --grad-acc:linear-gradient(95deg,#F7B658 0%,#EE8C2C 52%,#DC6716 100%);
+    --glow:rgba(226,166,56,.14);--sil-off:rgba(184,163,134,.24);
+  }
+  html.light{
+    --canvas:#F5EEE1;--ink:#2A1D10;--muted:#7A6A50;--faint:#B2A184;--line:#E2D4BC;
+    --panel:rgba(120,78,20,.045);--panel-line:rgba(197,120,40,.20);
+    --gold:#C6791C;--gold-soft:#D89433;
+    --grad-head:linear-gradient(96deg,#E7A22B 0%,#DB7E1E 45%,#C85E14 100%);
+    --grad-acc:linear-gradient(95deg,#E29a2b 0%,#D57718 52%,#C05610 100%);
+    --glow:rgba(197,120,40,.12);--sil-off:rgba(120,90,50,.20);
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--canvas);}
+  /* Лишаємо 62px знизу під панель контролів — слайд туди не залазить. */
+  deck-stage{--dur:.55s; bottom:62px !important;}
+  @media print{deck-stage{bottom:0 !important;}}
+  section{background:var(--canvas);color:var(--ink);font-family:'Inter',sans-serif;overflow:hidden;
+    transition:background .5s ease,color .5s ease;}
+  .bg{position:absolute;inset:0;z-index:0;pointer-events:none;}
+  .bg::before,.bg::after{content:"";position:absolute;border-radius:50%;filter:blur(10px);}
+  .bg::before{width:1100px;height:1100px;right:-260px;top:-320px;
+    background:radial-gradient(circle,var(--glow),transparent 62%);}
+  .bg::after{width:900px;height:900px;left:-240px;bottom:-320px;
+    background:radial-gradient(circle,var(--glow),transparent 64%);}
+  .pad{position:absolute;inset:0;z-index:2;padding:96px 120px;display:flex;flex-direction:column;}
+  .runhead{display:flex;align-items:center;justify-content:space-between;gap:24px;}
+  .brand{display:flex;align-items:center;gap:20px;}
+  .brand img{height:46px;display:block;}
+  html:not(.light) .logo-dark{display:none}
+  html.light .logo-light{display:none}
+  .tedx{font-family:'JetBrains Mono',monospace;font-size:21.3px;letter-spacing:.28em;text-transform:uppercase;color:var(--muted);}
+  .tedx b{color:var(--ink);font-weight:600;letter-spacing:.02em;}
+  .forum{font-family:'Inter',sans-serif;display:flex;align-items:center;gap:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--ink);font-size:24.6px;}
+  .forum .bar{width:2px;height:26px;background:var(--gold);}
+  .forum .yr{background:var(--grad-acc);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent;}
+  .forum small{display:block;font-size:15.7px;letter-spacing:.24em;color:var(--gold-soft);font-weight:600;margin-top:5px;}
+  .evt{display:flex;align-items:center;gap:12px;font-family:'JetBrains Mono',monospace;font-size:21.3px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);}
+  .evt .pill{background:var(--grad-acc);color:#241a12;font-weight:600;border-radius:8px;padding:5px 13px;letter-spacing:.1em;}
+  .evt .sep{color:var(--faint);}
+  .ix{font-family:'JetBrains Mono',monospace;font-size:22.4px;letter-spacing:.22em;text-transform:uppercase;
+    display:flex;align-items:center;gap:16px;color:var(--muted);}
+  .ix .num{background:var(--grad-acc);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent;font-weight:600;}
+  .eyebrow{font-family:'JetBrains Mono',monospace;font-size:23.5px;letter-spacing:.24em;text-transform:uppercase;
+    color:var(--gold-soft);display:flex;align-items:center;gap:18px;}
+  .eyebrow .dot{width:9px;height:9px;border-radius:50%;background:var(--grad-acc);}
+  h1,h2{font-family:'Spectral',serif;margin:0;font-weight:500;line-height:1.06;letter-spacing:-.015em;color:var(--ink);}
+  em.g{font-style:italic;font-weight:500;background:var(--grad-head);-webkit-background-clip:text;background-clip:text;
+    -webkit-text-fill-color:transparent;color:transparent;}
+  .sub{font-size:33.6px;line-height:1.5;color:var(--muted);max-width:900px;}
+  .src{font-family:'JetBrains Mono',monospace;font-size:20.2px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);font-weight:500;}
+  .thesis .body{flex:1;display:grid;grid-template-columns:1.15fr .85fr;gap:80px;align-items:center;}
+  .thesis .txt{display:flex;flex-direction:column;gap:34px;}
+  .thesis h2{font-size:73.9px;}
+  .vis{display:flex;align-items:center;justify-content:center;}
+  .center{align-items:center;text-align:center;justify-content:center;}
+  .center .inner{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:44px;}
+  .foot{display:flex;align-items:center;justify-content:space-between;color:var(--muted);
+    font-family:'JetBrains Mono',monospace;font-size:21.3px;letter-spacing:.14em;}
+  .foot .name b{color:var(--ink);font-weight:600;}
+  .foot .amp,.amp{font-family:'Spectral',serif;font-style:italic;background:var(--grad-head);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;}
+  .battery{display:inline-flex;align-items:center;gap:14px;}
+  .batt-body{height:170px;border:5px solid var(--gold);border-radius:22px;padding:16px;display:flex;gap:14px;}
+  .batt-cap{width:22px;height:64px;border-radius:0 10px 10px 0;background:var(--gold);}
+  .cell{flex:1;border-radius:10px;background:var(--sil-off);}
+  .cell.on{background:color-mix(in srgb,var(--gold) 72%,var(--canvas));box-shadow:none;}
+  svg{display:block}
+  .stroke{fill:none;stroke:var(--gold);stroke-width:3.4;stroke-linecap:round;stroke-linejoin:round;}
+  .strokeM{fill:none;stroke:var(--faint);stroke-width:3;stroke-linecap:round;stroke-linejoin:round;}
+  .fillG{fill:var(--gold);}
+  .sil{color:var(--gold);}
+  .sil.off{color:var(--sil-off);}
+  .steps{display:flex;flex-direction:column;gap:22px;width:100%;max-width:640px;}
+  .chip{display:flex;align-items:center;gap:22px;padding:26px 30px;border-radius:16px;background:var(--panel);
+    border:1px solid var(--panel-line);}
+  .chip .n{font-family:'JetBrains Mono',monospace;font-size:29.1px;font-weight:600;
+    background:var(--grad-acc);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;}
+  .chip .t{font-family:'Spectral',serif;font-size:38.1px;color:var(--ink);}
+  .nodes{display:flex;align-items:flex-end;gap:0;}
+  .node{display:flex;flex-direction:column;align-items:center;gap:16px;width:150px;}
+  .node .ball{width:104px;height:104px;border-radius:50%;border:3px solid var(--faint);display:flex;align-items:center;justify-content:center;
+    font-family:'Spectral',serif;font-size:38.1px;color:var(--muted);}
+  .node.lead .ball{border:none;background:var(--grad-acc);color:#241a12;box-shadow:0 12px 34px var(--glow);width:120px;height:120px;font-size:42.6px;font-weight:600;}
+  .node.down{transform:translateY(30px);opacity:.72;}
+  .node .cap{font-family:'JetBrains Mono',monospace;font-size:20.2px;letter-spacing:.08em;color:var(--faint);text-transform:uppercase;text-align:center;}
+  .connect{flex:1;height:3px;background:var(--line);margin-bottom:52px;min-width:26px;}
+  #theme{font-family:'JetBrains Mono',monospace;font-size:14.6px;
+    letter-spacing:.14em;text-transform:uppercase;color:var(--muted);background:var(--panel);border:1px solid var(--panel-line);
+    border-radius:999px;padding:6px 14px;cursor:pointer;display:flex;align-items:center;gap:9px;backdrop-filter:blur(8px);}
+  #theme:hover{color:var(--ink);}
+  #theme .sw{width:30px;height:16px;border-radius:999px;background:var(--grad-acc);position:relative;}
+  #theme .sw::after{content:"";position:absolute;top:2px;left:2px;width:12px;height:12px;border-radius:50%;background:#fff;transition:left .25s;}
+  html.light #theme .sw::after{left:16px;}
+  @media print{#theme{display:none}}
+
+  /* Версії слайда: шари + перемикач справа-знизу (у друк не потрапляє) */
+  section>.variant{position:absolute;inset:0;}
+  .variant[hidden]{display:none!important;}
+  /* Службові контроли — єдина компактна панель у правому нижньому куті,
+     одним низьким рядком (не лізе вгору на слайд). Номер per-slide лишається
+     тільки для друку. */
+  /* Номер слайда — колонцифра в правому нижньому куті слайда, на лінії футера. */
+  .pagenum{position:absolute;right:120px;bottom:96px;z-index:55;}
+  .deckfoot{position:absolute;left:120px;bottom:96px;z-index:55;font-family:'JetBrains Mono',monospace;
+    font-size:21.3px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);}
+
+  #deck-controls{position:fixed;left:0;right:0;bottom:0;height:62px;z-index:9999;
+    display:flex;align-items:center;justify-content:flex-end;gap:28px;
+    padding:0 34px;background:var(--canvas);border-top:1px solid var(--line);}
+  #deck-controls .export{display:flex;gap:10px;align-items:center;margin-right:auto;}
+  #deck-controls .export button,#deck-controls .export a{font-family:'JetBrains Mono',monospace;
+    font-size:15.7px;letter-spacing:.12em;color:var(--muted);text-decoration:none;cursor:pointer;
+    border:1px solid var(--panel-line);background:none;border-radius:8px;padding:7px 14px;
+    transition:color .2s,border-color .2s;}
+  #deck-controls .export button:hover,#deck-controls .export a:hover{color:var(--gold);border-color:var(--gold);}
+  .vswitch{display:flex;gap:13px;align-items:center;}
+  .vswitch button{font-family:'JetBrains Mono',monospace;font-size:21.3px;letter-spacing:.1em;
+    padding:6px 3px;border:0;background:none;color:var(--muted);cursor:pointer;transition:color .2s;}
+  .vswitch button:hover{color:var(--ink);}
+  .vswitch button.on{color:var(--gold);}
+  @media print{#deck-controls{display:none}}
+
+  /* Друк/PDF: background-clip:text у Chromium лишає крайові шви градієнта —
+     на папері акцент робимо суцільним золотом замість градієнта. */
+  @media print{
+    em.g,.g,.num,.forum b,.forum .yr,
+    [style*="-webkit-background-clip"],[style*="background-clip"]{
+      background:none !important;
+      -webkit-text-fill-color:var(--gold) !important;
+      color:var(--gold) !important;
+    }
+  }
+  @media (prefers-reduced-motion:no-preference){
+    [data-deck-active] .anim{animation:rise .6s both cubic-bezier(.22,.7,.2,1);}
+    [data-deck-active] .anim2{animation:rise .6s .1s both cubic-bezier(.22,.7,.2,1);}
+    [data-deck-active] .anim3{animation:rise .6s .2s both cubic-bezier(.22,.7,.2,1);}
+    @keyframes rise{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
+  }
+</style>
+</head>
+<body>
+<deck-stage width="1920" height="1080">
+
+  <section data-slide="01">
+    <div class="variant " data-v="A">
+    <div class="bg"></div>
+    <div class="pad">
+      <div class="runhead" style="width:100%">
+        <div class="forum"><span>Sales&nbsp;Forum</span><span class="bar"></span><span class="yr">2026</span></div>
+        <span></span>
+      </div>
+      <div style="flex:1;display:flex;flex-direction:column;justify-content:center;align-items:flex-start">
+        <h1 class="anim2" style="font-size:165.8px;line-height:1.03;margin-top:44px;max-width:1640px">Енергія команди<br>як <em class="g">архітектура<br>дохідності</em></h1>
+        <div class="sub anim3" style="font-size:34.7px;max-width:860px;margin-top:40px">Як керівнику побачити невидимі сигнали виснаження, поки вони не стали втратами для бізнесу.</div>
+      </div>
+      <div class="foot" style="width:100%;align-items:flex-end;justify-content:flex-start">
+        <div class="anim3" style="display:flex;align-items:stretch;gap:26px;text-align:left">
+          <div style="width:3px;border-radius:2px;background:linear-gradient(180deg,var(--gold-soft),var(--gold))"></div>
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <span style="font-family:'Spectral',serif;font-size:51.5px;line-height:1.08;color:var(--ink)">Тетяна Пан</span>
+            <span style="font-family:'Inter',sans-serif;font-size:22.4px;line-height:1.5;color:var(--muted)">Бізнес-тренерка, фасилітаторка, коуч, менторка, засновниця компанії «Pan&Partners»</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="variant center" data-v="B" hidden>
+    <div class="bg"></div>
+    <div class="pad center">
+      <div class="runhead" style="width:100%;justify-content:center">
+        <div class="forum" style="margin-top:30px"><span>Sales&nbsp;Forum</span><span class="bar"></span><span class="yr">2026</span></div>
+      </div>
+      <div class="inner" style="gap:0">
+        <h1 class="anim2" style="font-size:118.7px;max-width:1560px;margin-top:48px">Енергія команди як<br><em class="g">архітектура дохідності</em></h1>
+        <div class="sub anim3" style="text-align:center;max-width:1060px;font-size:38.1px;line-height:1.45;margin-top:36px">Як керівнику побачити невидимі сигнали виснаження, поки вони не стали втратами для бізнесу.</div>
+      </div>
+      <div class="foot" style="width:100%;flex-direction:column;align-items:center;gap:10px;text-align:center;">
+        <span class="name" style="font-family:'Spectral',serif;font-size:53.8px;letter-spacing:normal;color:var(--ink)"><b>Тетяна Пан</b></span>
+        <span style="font-family:'Inter',sans-serif;font-size:23.5px;line-height:1.5;letter-spacing:normal;color:var(--muted);max-width:960px;">Бізнес-тренерка, фасилітаторка, коуч, менторка,<br>засновниця компанії «Pan&Partners»</span>
+      </div>
+    </div>
+  </div>
+      <div class="anim3" style="position:absolute;right:120px;bottom:92px;z-index:55;display:flex;gap:26px;align-items:flex-end">
+      <div style="display:flex;flex-direction:column;align-items:center;gap:9px">
+        <img src="assets/qr-site.png" alt="QR pan-partners.agency" width="122" height="122" style="display:block;border-radius:10px"/>
+        <span style="font-family:'JetBrains Mono',monospace;font-size:14.6px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)">Сайт</span>
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:9px">
+        <img src="assets/qr-linkedin.png" alt="QR LinkedIn" width="122" height="122" style="display:block;border-radius:10px"/>
+        <span style="font-family:'JetBrains Mono',monospace;font-size:14.6px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)">LinkedIn</span>
+      </div>
+    </div>
+  </section>
+  <section data-slide="02">
+    <div class="variant thesis" data-v="A"><div class="bg"></div><div class="pad">
+      <div class="runhead" style="width:100%"><div class="eyebrow"><span class="dot"></span>Спікерка</div><div class="ix">Тетяна Пан</div></div>
+      <div class="body" style="width:100%;grid-template-columns:.8fr 1.2fr;gap:84px;align-items:center">
+        <div class="vis anim2" style="justify-self:start">
+          <img src="assets/tetiana.jpg" alt="Тетяна Пан" style="width:100%;max-width:480px;display:block;border-radius:16px;box-shadow:0 26px 64px rgba(0,0,0,.42)"/>
+        </div>
+        <div class="txt">
+          <h2 class="anim2" style="font-size:73.9px;margin:0;line-height:1.04">Тетяна <em class="g">Пан</em></h2>
+          <div class="anim3" style="font-family:'JetBrains Mono',monospace;font-size:20.2px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold-soft);margin-top:16px">Бізнес-тренерка · фасилітаторка · коуч · менторка</div>
+          <div class="sub anim3" style="max-width:780px;margin-top:28px;font-size:29.1px;line-height:1.5">Тетяна не вивчала продажі з книжок — вона пройшла цей шлях сама: від менеджерки й керівниці з продажів в «Олімпі», Danone та Coca-Cola до власної консалтингової компанії. Понад 25 років переговорів, реальних угод і сильних торгових команд.</div>
+          <div class="sub anim3" style="max-width:780px;margin-top:18px;font-size:29.1px;line-height:1.5">17 років тому вона почала вчити цього інших — так особистий досвід став методом Pan&amp;Partners: чітким, структурованим і природним, щоб результат був очікуваним, а клієнти поверталися.</div>
+          <div class="anim3" style="display:flex;gap:56px;margin-top:34px">
+            <div><div style="font-family:'Spectral',serif;font-size:51.5px;line-height:1;color:var(--gold)">25+</div><div style="font-family:'Inter',sans-serif;font-size:20.2px;color:var(--muted);margin-top:6px">років у продажах</div></div>
+            <div><div style="font-family:'Spectral',serif;font-size:51.5px;line-height:1;color:var(--gold)">17</div><div style="font-family:'Inter',sans-serif;font-size:20.2px;color:var(--muted);margin-top:6px">років навчає команди</div></div>
+            <div><div style="font-family:'Spectral',serif;font-size:51.5px;line-height:1;color:var(--gold)">Pan&amp;Partners</div><div style="font-family:'Inter',sans-serif;font-size:20.2px;color:var(--muted);margin-top:6px">засновниця компанії</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="foot" style="width:100%"><span></span><span></span></div>
+    </div></div>
+    <div class="deckfoot">Sales Forum · 2026</div>
+    <div class="ix pagenum"><span class="num">02</span> / 17</div>
+  </section>
+
+  <section data-slide="03">
+    <div class="variant center" data-v="A">
+    <div class="bg"></div>
+    <div class="pad center">
+      <div class="runhead" style="width:100%"><div class="eyebrow"><span class="dot"></span>Вступ · Вправа</div><div class="ix">Тетяна Пан</div></div>
+      <div class="inner">
+        <div class="battery anim" style="gap:8px;margin-bottom:16px;">
+          <div class="batt-body" style="width:262px;height:82px;border-width:3px;border-radius:12px;padding:8px;gap:7px;background:var(--panel);">
+            <span class="cell on" style="flex:none;width:43px;border-radius:5px;"></span>
+            <span class="cell on" style="flex:none;width:43px;border-radius:5px;"></span>
+            <span class="cell on" style="flex:none;width:43px;border-radius:5px;background:color-mix(in srgb,var(--gold-soft) 38%,var(--canvas));"></span>
+          </div>
+          <div class="batt-cap" style="width:16px;height:46px;border-radius:3px 7px 7px 3px;background:color-mix(in srgb,var(--gold) 72%,var(--canvas));"></div>
+        </div>
+        <h2 class="anim2" style="font-size:65px;white-space:nowrap;">Скільки у вас зараз енергії — <em class="g">від 1 до 5?</em></h2>
+        <div class="sub anim3" style="text-align:center;max-width:1040px;margin-top:8px;">Покажіть пальцями. За хвилину «зарядки» стан змінюється — але команда продажів не відновлює ресурс однією хвилиною.</div>
+      </div>
+      <div class="foot" style="width:100%"><span></span><span></span></div>
+    </div>
+  </div>
+    <div class="variant center" data-v="B" hidden>
+    <div class="bg"></div>
+    <div class="pad center">
+      <div class="runhead" style="width:100%"><div class="eyebrow"><span class="dot"></span>Вступ · Вправа</div><div class="ix">Тетяна Пан</div></div>
+      <div class="inner" style="gap:52px;">
+        <h2 class="anim" style="font-size:89.6px;max-width:1380px;">Скільки у вас зараз енергії — <em class="g">від 1 до 5?</em></h2>
+        <div class="anim2" style="display:flex;align-items:flex-end;gap:36px;">
+          <div style="display:flex;flex-direction:column;align-items:center;gap:22px;">
+            <div style="width:92px;height:150px;border-radius:46px;border:3px solid transparent;background:color-mix(in srgb,var(--gold) 72%,var(--canvas));"></div>
+            <div style="font-family:'JetBrains Mono',monospace;font-size:30.2px;font-weight:600;background:var(--grad-acc);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent;">1</div>
+          </div>
+          <div style="display:flex;flex-direction:column;align-items:center;gap:22px;">
+            <div style="width:92px;height:185px;border-radius:46px;border:3px solid transparent;background:color-mix(in srgb,var(--gold) 72%,var(--canvas));"></div>
+            <div style="font-family:'JetBrains Mono',monospace;font-size:30.2px;font-weight:600;background:var(--grad-acc);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent;">2</div>
+          </div>
+          <div style="display:flex;flex-direction:column;align-items:center;gap:22px;">
+            <div style="width:92px;height:220px;border-radius:46px;border:3px solid transparent;background:color-mix(in srgb,var(--gold) 72%,var(--canvas));"></div>
+            <div style="font-family:'JetBrains Mono',monospace;font-size:30.2px;font-weight:600;background:var(--grad-acc);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent;">3</div>
+          </div>
+          <div style="display:flex;flex-direction:column;align-items:center;gap:22px;">
+            <div style="width:92px;height:255px;border-radius:46px;border:3px solid var(--faint);background:var(--panel);"></div>
+            <div style="font-family:'JetBrains Mono',monospace;font-size:30.2px;font-weight:600;color:var(--faint);">4</div>
+          </div>
+          <div style="display:flex;flex-direction:column;align-items:center;gap:22px;">
+            <div style="width:92px;height:290px;border-radius:46px;border:3px solid var(--faint);background:var(--panel);"></div>
+            <div style="font-family:'JetBrains Mono',monospace;font-size:30.2px;font-weight:600;color:var(--faint);">5</div>
+          </div>
+        </div>
+        <div class="sub anim3" style="text-align:center;max-width:840px;text-wrap:balance;">Покажіть пальцями. За хвилину «зарядки» стан змінюється — але команда продажів не відновлює ресурс однією хвилиною.</div>
+      </div>
+      <div class="foot" style="width:100%"><span></span><span></span></div>
+    </div>
+  </div>
+    <div class="variant center" data-v="C" hidden>
+    <div class="bg"></div>
+    <div class="pad center">
+      <div class="runhead" style="width:100%"><div class="eyebrow"><span class="dot"></span>Вступ · Вправа</div><div class="ix">Тетяна Пан</div></div>
+      <div class="inner">
+        <div class="battery anim" style="gap:16px;margin-bottom:8px;">
+          <div class="batt-body" style="width:560px;background:var(--panel);">
+            <span class="cell on" style="flex:none;width:92.4px;"></span>
+            <span class="cell on" style="flex:none;width:92.4px;"></span>
+            <span class="cell on" style="flex:none;width:92.4px;background:color-mix(in srgb,var(--gold-soft) 38%,var(--canvas));"></span>
+          </div>
+          <div class="batt-cap" style="width:34px;height:96px;border-radius:6px 14px 14px 6px;background:color-mix(in srgb,var(--gold) 72%,var(--canvas));"></div>
+        </div>
+        <h2 class="anim2" style="font-size:94.1px;max-width:1420px;">Скільки у вас зараз енергії — <em class="g">від 1 до 5?</em></h2>
+        <div class="sub anim3" style="text-align:center;max-width:820px;text-wrap:balance;">Покажіть пальцями. За хвилину «зарядки» стан змінюється — але команда продажів не відновлює ресурс однією хвилиною.</div>
+      </div>
+      <div class="foot" style="width:100%"><span></span><span></span></div>
+    </div>
+  </div>
+    <div class="variant center" data-v="D" hidden>
+    <div class="bg"></div>
+    <div class="pad center">
+      <div class="runhead" style="width:100%"><div class="eyebrow"><span class="dot"></span>Вступ · Вправа</div><div class="ix">Тетяна Пан</div></div>
+      <div class="inner">
+        <h2 class="anim" style="font-size:94.1px;max-width:1420px;">Скільки у вас зараз енергії — <em class="g">від 1 до 5?</em></h2>
+        <div class="battery anim2" style="gap:16px;">
+          <div class="batt-body" style="width:560px;background:var(--panel);">
+            <span class="cell on" style="flex:none;width:92.4px;"></span>
+            <span class="cell on" style="flex:none;width:92.4px;"></span>
+            <span class="cell on" style="flex:none;width:92.4px;background:color-mix(in srgb,var(--gold-soft) 38%,var(--canvas));"></span>
+          </div>
+          <div class="batt-cap" style="width:34px;height:96px;border-radius:6px 14px 14px 6px;background:color-mix(in srgb,var(--gold) 72%,var(--canvas));"></div>
+        </div>
+        <div class="sub anim3" style="text-align:center;max-width:820px;text-wrap:balance;">Покажіть пальцями. За хвилину «зарядки» стан змінюється — але команда продажів не відновлює ресурс однією хвилиною.</div>
+      </div>
+      <div class="foot" style="width:100%"><span></span><span></span></div>
+    </div>
+  </div>
+    <div class="deckfoot">Sales Forum · 2026</div>
+    <div class="ix pagenum"><span class="num">03</span> / 17</div>
+  </section>
+
+  <section data-slide="04">
+    <div class="variant thesis" data-v="A">
+    <div class="bg"></div>
+    <div class="pad center">
+      <div class="runhead" style="width:100%"><div class="eyebrow"><span class="dot"></span>Вступ · Вправа</div><div class="ix">Тетяна Пан</div></div>
+      <div class="inner" style="padding-bottom:20px">
+        <h2 class="anim" style="font-size:67.2px;max-width:1460px;line-height:1.12;"><em class="g">«Повертаємо енергію»</em></h2><div class="anim" style="font-family:'Inter',sans-serif;font-size:29.1px;letter-spacing:.03em;color:var(--muted);margin-top:-32px;">вправа · одна хвилина</div>
+        <div class="anim2" style="display:grid;grid-template-columns:repeat(4,1fr);gap:30px;max-width:1680px;width:100%;margin-top:34px;"><div style="background:var(--panel);background:color-mix(in srgb,var(--gold) 11%,transparent);border:1.85px solid var(--panel-line);border-color:color-mix(in srgb,var(--gold) 26%,transparent);border-radius:22px;padding:40px 36px 36px;text-align:left;display:flex;flex-direction:column;gap:20px;min-height:340px;"><div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;"><div style="font-family:'JetBrains Mono',monospace;font-size:34.7px;font-weight:600;letter-spacing:.07em;color:color-mix(in srgb,var(--gold-soft) 72%,var(--canvas));">01</div><div style="margin-top:6px;"><div style="display:flex;align-items:center;gap:2px;"><div style="width:84px;height:30px;flex:none;display:flex;gap:5px;align-items:stretch;border:2px solid color-mix(in srgb,var(--gold-soft) 72%,var(--canvas));border-radius:9px;padding:5px;"><span style="width:10px;border-radius:2.5px;background:color-mix(in srgb,var(--gold-soft) 72%,var(--canvas))"></span><span style="width:10px;border-radius:2.5px;background:color-mix(in srgb,var(--gold-soft) 72%,var(--canvas))"></span></div><div style="flex:none;width:5px;height:14px;border-radius:0 3px 3px 0;background:color-mix(in srgb,var(--gold-soft) 72%,var(--canvas));"></div></div></div></div><p style="font-size:32.5px;line-height:1.4;color:color-mix(in srgb,var(--ink) 52%,transparent);margin:auto 0 0;">Стати на носочки й потягнутися вгору маківкою якнайвище.</p></div><div style="background:var(--panel);background:color-mix(in srgb,var(--gold) 11%,transparent);border:1.85px solid var(--panel-line);border-color:color-mix(in srgb,var(--gold) 40%,transparent);border-radius:22px;padding:40px 36px 36px;text-align:left;display:flex;flex-direction:column;gap:20px;min-height:340px;box-shadow:0 0 16px color-mix(in srgb,var(--gold) 10%,transparent);"><div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;"><div style="font-family:'JetBrains Mono',monospace;font-size:34.7px;font-weight:600;letter-spacing:.07em;color:color-mix(in srgb,var(--gold-soft) 80%,var(--canvas));">02</div><div style="margin-top:6px;"><div style="display:flex;align-items:center;gap:2px;"><div style="width:84px;height:30px;flex:none;display:flex;gap:5px;align-items:stretch;border:2px solid color-mix(in srgb,var(--gold-soft) 80%,var(--canvas));border-radius:9px;padding:5px;"><span style="width:10px;border-radius:2.5px;background:color-mix(in srgb,var(--gold-soft) 80%,var(--canvas))"></span><span style="width:10px;border-radius:2.5px;background:color-mix(in srgb,var(--gold-soft) 80%,var(--canvas))"></span><span style="width:10px;border-radius:2.5px;background:color-mix(in srgb,var(--gold-soft) 80%,var(--canvas))"></span></div><div style="flex:none;width:5px;height:14px;border-radius:0 3px 3px 0;background:color-mix(in srgb,var(--gold-soft) 80%,var(--canvas));"></div></div></div></div><p style="font-size:32.5px;line-height:1.4;color:color-mix(in srgb,var(--ink) 68%,transparent);margin:auto 0 0;">Плечима: два круги вперед і два круги назад, повільно.</p></div><div style="background:var(--panel);background:color-mix(in srgb,var(--gold) 11%,transparent);border:1.85px solid var(--panel-line);border-color:color-mix(in srgb,var(--gold) 56%,transparent);border-radius:22px;padding:40px 36px 36px;text-align:left;display:flex;flex-direction:column;gap:20px;min-height:340px;box-shadow:0 0 26px color-mix(in srgb,var(--gold) 17%,transparent);"><div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;"><div style="font-family:'JetBrains Mono',monospace;font-size:34.7px;font-weight:600;letter-spacing:.07em;color:color-mix(in srgb,var(--gold-soft) 88%,var(--canvas));">03</div><div style="margin-top:6px;"><div style="display:flex;align-items:center;gap:2px;"><div style="width:84px;height:30px;flex:none;display:flex;gap:5px;align-items:stretch;border:2px solid color-mix(in srgb,var(--gold-soft) 88%,var(--canvas));border-radius:9px;padding:5px;"><span style="width:10px;border-radius:2.5px;background:color-mix(in srgb,var(--gold-soft) 88%,var(--canvas))"></span><span style="width:10px;border-radius:2.5px;background:color-mix(in srgb,var(--gold-soft) 88%,var(--canvas))"></span><span style="width:10px;border-radius:2.5px;background:color-mix(in srgb,var(--gold-soft) 88%,var(--canvas))"></span><span style="width:10px;border-radius:2.5px;background:color-mix(in srgb,var(--gold-soft) 88%,var(--canvas))"></span></div><div style="flex:none;width:5px;height:14px;border-radius:0 3px 3px 0;background:color-mix(in srgb,var(--gold-soft) 88%,var(--canvas));"></div></div></div></div><p style="font-size:32.5px;line-height:1.4;color:color-mix(in srgb,var(--ink) 84%,transparent);margin:auto 0 0;">Глибокий вдих носом, затримка, повільний видих ротом. Тричі.</p></div><div style="background:var(--panel);background:color-mix(in srgb,var(--gold) 11%,transparent);border:1.85px solid var(--panel-line);border-color:color-mix(in srgb,var(--gold) 74%,transparent);border-radius:22px;padding:40px 36px 36px;text-align:left;display:flex;flex-direction:column;gap:20px;min-height:340px;box-shadow:0 5px 36px color-mix(in srgb,var(--gold) 25%,transparent);"><div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;"><div style="font-family:'JetBrains Mono',monospace;font-size:34.7px;font-weight:600;letter-spacing:.07em;color:color-mix(in srgb,var(--gold-soft) 95%,var(--canvas));">04</div><div style="margin-top:6px;"><div style="display:flex;align-items:center;gap:2px;"><div style="width:84px;height:30px;flex:none;display:flex;gap:5px;align-items:stretch;border:2px solid color-mix(in srgb,var(--gold-soft) 95%,var(--canvas));border-radius:9px;padding:5px;"><span style="width:10px;border-radius:2.5px;background:color-mix(in srgb,var(--gold-soft) 95%,var(--canvas))"></span><span style="width:10px;border-radius:2.5px;background:color-mix(in srgb,var(--gold-soft) 95%,var(--canvas))"></span><span style="width:10px;border-radius:2.5px;background:color-mix(in srgb,var(--gold-soft) 95%,var(--canvas))"></span><span style="width:10px;border-radius:2.5px;background:color-mix(in srgb,var(--gold-soft) 95%,var(--canvas))"></span><span style="width:10px;border-radius:2.5px;background:color-mix(in srgb,var(--gold-soft) 95%,var(--canvas))"></span></div><div style="flex:none;width:5px;height:14px;border-radius:0 3px 3px 0;background:color-mix(in srgb,var(--gold-soft) 95%,var(--canvas));"></div></div></div></div><p style="font-size:32.5px;line-height:1.4;color:color-mix(in srgb,var(--gold) 32%,var(--ink));margin:auto 0 0;">Посміхнутися сусідам праворуч і ліворуч від себе.</p></div></div>
+        <div class="sub anim3" style="text-align:center;font-size:29.1px;margin-top:26px;max-width:1560px;">А тепер ще раз покажіть: скільки у вас енергії <em class="g" style="font-style:normal">від 1 до 5?</em></div>
+      </div>
+      <div class="foot" style="width:100%"><span></span><span></span></div>
+    </div>
+  </div>
+    <div class="variant thesis" data-v="B" hidden>
+    <div class="bg"></div>
+    <div class="pad center">
+      <div class="runhead" style="width:100%"><div class="eyebrow"><span class="dot"></span>Вступ · Вправа</div><div class="ix">Тетяна Пан</div></div>
+      <div class="inner" style="padding-bottom:36px">
+        <h2 class="anim" style="font-size:67.2px;max-width:1460px;line-height:1.12;"><em class="g">«Повертаємо енергію»</em></h2><div class="anim" style="font-family:'Inter',sans-serif;font-size:29.1px;letter-spacing:.03em;color:var(--muted);margin-top:-32px;">вправа · одна хвилина</div>
+        <div class="anim2" style="display:grid;grid-template-columns:repeat(4,1fr);gap:30px;max-width:1680px;width:100%;margin-top:34px;">
+          <div style="background:var(--panel);background:color-mix(in srgb,var(--gold) 11%,transparent);border:2.35px solid var(--panel-line);border-color:color-mix(in srgb,var(--gold-soft) 58%,transparent);border-radius:22px;padding:36px 34px 32px;text-align:left;display:flex;flex-direction:column;gap:18px;"><div style="font-family:'JetBrains Mono',monospace;font-size:49.3px;font-weight:700;letter-spacing:.06em;background:var(--grad-acc);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent;">01</div><p style="font-size:33.6px;line-height:1.35;color:color-mix(in srgb,var(--ink) 52%,transparent);margin:0;">Стати на носочки й потягнутися вгору маківкою якнайвище.</p><div style="display:flex;align-items:center;margin-top:auto;padding-top:26px;"><div style="width:212px;height:66px;flex:none;display:flex;gap:7px;border:3.5px solid var(--gold);border-radius:14px;padding:8px;"><span class="cell on" style="border-radius:5px"></span><span class="cell on" style="border-radius:5px"></span><span class="cell" style="border-radius:5px"></span><span class="cell" style="border-radius:5px"></span><span class="cell" style="border-radius:5px"></span></div><div style="flex:none;width:14px;height:32px;border-radius:0 7px 7px 0;background:var(--gold);"></div></div></div>
+          <div style="background:var(--panel);background:color-mix(in srgb,var(--gold) 11%,transparent);border:2.35px solid var(--panel-line);border-color:color-mix(in srgb,var(--gold-soft) 72%,transparent);border-radius:22px;padding:36px 34px 32px;text-align:left;display:flex;flex-direction:column;gap:18px;box-shadow:0 0 16px color-mix(in srgb,var(--gold) 10%,transparent);"><div style="font-family:'JetBrains Mono',monospace;font-size:49.3px;font-weight:700;letter-spacing:.06em;background:var(--grad-acc);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent;">02</div><p style="font-size:33.6px;line-height:1.35;color:color-mix(in srgb,var(--ink) 68%,transparent);margin:0;">Плечима: два круги вперед і два круги назад, повільно.</p><div style="display:flex;align-items:center;margin-top:auto;padding-top:26px;"><div style="width:212px;height:66px;flex:none;display:flex;gap:7px;border:3.5px solid var(--gold);border-radius:14px;padding:8px;"><span class="cell on" style="border-radius:5px"></span><span class="cell on" style="border-radius:5px"></span><span class="cell on" style="border-radius:5px"></span><span class="cell" style="border-radius:5px"></span><span class="cell" style="border-radius:5px"></span></div><div style="flex:none;width:14px;height:32px;border-radius:0 7px 7px 0;background:var(--gold);"></div></div></div>
+          <div style="background:var(--panel);background:color-mix(in srgb,var(--gold) 11%,transparent);border:2.35px solid var(--panel-line);border-color:color-mix(in srgb,var(--gold-soft) 86%,transparent);border-radius:22px;padding:36px 34px 32px;text-align:left;display:flex;flex-direction:column;gap:18px;box-shadow:0 0 26px color-mix(in srgb,var(--gold) 17%,transparent);"><div style="font-family:'JetBrains Mono',monospace;font-size:49.3px;font-weight:700;letter-spacing:.06em;background:var(--grad-acc);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent;">03</div><p style="font-size:33.6px;line-height:1.35;color:color-mix(in srgb,var(--ink) 84%,transparent);margin:0;">Глибокий вдих носом, затримка, повільний видих ротом. Тричі.</p><div style="display:flex;align-items:center;margin-top:auto;padding-top:26px;"><div style="width:212px;height:66px;flex:none;display:flex;gap:7px;border:3.5px solid var(--gold);border-radius:14px;padding:8px;"><span class="cell on" style="border-radius:5px"></span><span class="cell on" style="border-radius:5px"></span><span class="cell on" style="border-radius:5px"></span><span class="cell on" style="border-radius:5px"></span><span class="cell" style="border-radius:5px"></span></div><div style="flex:none;width:14px;height:32px;border-radius:0 7px 7px 0;background:var(--gold);"></div></div></div>
+          <div style="background:var(--panel);background:color-mix(in srgb,var(--gold) 11%,transparent);border:2.35px solid var(--panel-line);border-color:color-mix(in srgb,var(--gold-soft) 100%,transparent);border-radius:22px;padding:36px 34px 32px;text-align:left;display:flex;flex-direction:column;gap:18px;box-shadow:0 5px 36px color-mix(in srgb,var(--gold) 25%,transparent);"><div style="font-family:'JetBrains Mono',monospace;font-size:49.3px;font-weight:700;letter-spacing:.06em;background:var(--grad-acc);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent;">04</div><p style="font-size:33.6px;line-height:1.35;color:color-mix(in srgb,var(--gold) 32%,var(--ink));margin:0;">Посміхнутися сусідам праворуч і ліворуч від себе.</p><div style="display:flex;align-items:center;margin-top:auto;padding-top:26px;"><div style="width:212px;height:66px;flex:none;display:flex;gap:7px;border:3.5px solid var(--gold);border-radius:14px;padding:8px;"><span class="cell on" style="border-radius:5px"></span><span class="cell on" style="border-radius:5px"></span><span class="cell on" style="border-radius:5px"></span><span class="cell on" style="border-radius:5px"></span><span class="cell on" style="border-radius:5px"></span></div><div style="flex:none;width:14px;height:32px;border-radius:0 7px 7px 0;background:var(--gold);"></div></div></div>
+        </div>
+        <div class="sub anim3" style="text-align:center;font-size:29.1px;margin-top:26px;max-width:1560px;">А тепер ще раз покажіть: скільки у вас енергії <em class="g" style="font-style:normal">від 1 до 5?</em></div>
+      </div>
+      <div class="foot" style="width:100%"><span></span><span></span></div>
+    </div>
+  </div>
+    <div class="variant thesis" data-v="C" hidden>
+    <div class="bg"></div>
+    <div class="pad center">
+      <div class="runhead" style="width:100%"><div class="eyebrow"><span class="dot"></span>Вступ · Вправа</div><div class="ix">Тетяна Пан</div></div>
+      <div class="inner">
+        <h2 class="anim" style="font-size:67.2px;max-width:1460px;line-height:1.12;"><em class="g">«Повертаємо енергію»</em></h2><div class="anim" style="font-family:'Inter',sans-serif;font-size:29.1px;letter-spacing:.03em;color:var(--muted);margin-top:-32px;">вправа · одна хвилина</div>
+        <div class="anim2" style="display:grid;grid-template-columns:repeat(4,1fr);gap:26px;max-width:1560px;width:100%;margin-top:26px;">
+          <div style="background:var(--panel);background:color-mix(in srgb,var(--gold) 8%,transparent);border:1.85px solid var(--panel-line);border-color:color-mix(in srgb,var(--gold) 26%,transparent);border-radius:20px;padding:32px 30px 28px;text-align:left;display:flex;flex-direction:column;gap:16px;"><div style="font-family:'JetBrains Mono',monospace;font-size:31.4px;font-weight:600;letter-spacing:.08em;background:var(--grad-acc);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent;">01</div><p style="font-size:29.1px;line-height:1.42;color:color-mix(in srgb,var(--ink) 52%,transparent);margin:0;">Стати на носочки й потягнутися вгору маківкою якнайвище.</p><div style="display:flex;align-items:center;margin-top:auto;padding-top:22px;"><div style="width:168px;height:54px;flex:none;display:flex;gap:6px;border:3px solid var(--gold);border-radius:12px;padding:7px;"><span class="cell on" style="flex:none;width:24.8px;border-radius:5px"></span><span class="cell on" style="flex:none;width:24.8px;border-radius:5px"></span></div><div style="flex:none;width:11px;height:26px;border-radius:0 6px 6px 0;background:var(--gold);"></div></div></div>
+          <div style="background:var(--panel);background:color-mix(in srgb,var(--gold) 8%,transparent);border:1.85px solid var(--panel-line);border-color:color-mix(in srgb,var(--gold) 40%,transparent);border-radius:20px;padding:32px 30px 28px;text-align:left;display:flex;flex-direction:column;gap:16px;box-shadow:0 0 16px color-mix(in srgb,var(--gold) 10%,transparent);"><div style="font-family:'JetBrains Mono',monospace;font-size:31.4px;font-weight:600;letter-spacing:.08em;background:var(--grad-acc);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent;">02</div><p style="font-size:29.1px;line-height:1.42;color:color-mix(in srgb,var(--ink) 68%,transparent);margin:0;">Плечима: два круги вперед і два круги назад, повільно.</p><div style="display:flex;align-items:center;margin-top:auto;padding-top:22px;"><div style="width:168px;height:54px;flex:none;display:flex;gap:6px;border:3px solid var(--gold);border-radius:12px;padding:7px;"><span class="cell on" style="flex:none;width:24.8px;border-radius:5px"></span><span class="cell on" style="flex:none;width:24.8px;border-radius:5px"></span><span class="cell on" style="flex:none;width:24.8px;border-radius:5px"></span></div><div style="flex:none;width:11px;height:26px;border-radius:0 6px 6px 0;background:var(--gold);"></div></div></div>
+          <div style="background:var(--panel);background:color-mix(in srgb,var(--gold) 8%,transparent);border:1.85px solid var(--panel-line);border-color:color-mix(in srgb,var(--gold) 56%,transparent);border-radius:20px;padding:32px 30px 28px;text-align:left;display:flex;flex-direction:column;gap:16px;box-shadow:0 0 26px color-mix(in srgb,var(--gold) 17%,transparent);"><div style="font-family:'JetBrains Mono',monospace;font-size:31.4px;font-weight:600;letter-spacing:.08em;background:var(--grad-acc);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent;">03</div><p style="font-size:29.1px;line-height:1.42;color:color-mix(in srgb,var(--ink) 84%,transparent);margin:0;">Глибокий вдих носом, затримка, повільний видих ротом. Тричі.</p><div style="display:flex;align-items:center;margin-top:auto;padding-top:22px;"><div style="width:168px;height:54px;flex:none;display:flex;gap:6px;border:3px solid var(--gold);border-radius:12px;padding:7px;"><span class="cell on" style="flex:none;width:24.8px;border-radius:5px"></span><span class="cell on" style="flex:none;width:24.8px;border-radius:5px"></span><span class="cell on" style="flex:none;width:24.8px;border-radius:5px"></span><span class="cell on" style="flex:none;width:24.8px;border-radius:5px"></span></div><div style="flex:none;width:11px;height:26px;border-radius:0 6px 6px 0;background:var(--gold);"></div></div></div>
+          <div style="background:var(--panel);background:color-mix(in srgb,var(--gold) 8%,transparent);border:1.85px solid var(--panel-line);border-color:color-mix(in srgb,var(--gold) 74%,transparent);border-radius:20px;padding:32px 30px 28px;text-align:left;display:flex;flex-direction:column;gap:16px;box-shadow:0 5px 36px color-mix(in srgb,var(--gold) 25%,transparent);"><div style="font-family:'JetBrains Mono',monospace;font-size:31.4px;font-weight:600;letter-spacing:.08em;background:var(--grad-acc);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent;">04</div><p style="font-size:29.1px;line-height:1.42;color:color-mix(in srgb,var(--gold) 32%,var(--ink));margin:0;">Посміхнутися сусідам праворуч і ліворуч від себе.</p><div style="display:flex;align-items:center;margin-top:auto;padding-top:22px;"><div style="width:168px;height:54px;flex:none;display:flex;gap:6px;border:3px solid var(--gold);border-radius:12px;padding:7px;"><span class="cell on" style="flex:none;width:24.8px;border-radius:5px"></span><span class="cell on" style="flex:none;width:24.8px;border-radius:5px"></span><span class="cell on" style="flex:none;width:24.8px;border-radius:5px"></span><span class="cell on" style="flex:none;width:24.8px;border-radius:5px"></span><span class="cell on" style="flex:none;width:24.8px;border-radius:5px"></span></div><div style="flex:none;width:11px;height:26px;border-radius:0 6px 6px 0;background:var(--gold);"></div></div></div>
+        </div>
+        <div class="sub anim3" style="text-align:center;font-size:29.1px;margin-top:26px;max-width:1560px;">А тепер ще раз покажіть: скільки у вас енергії <em class="g" style="font-style:normal">від 1 до 5?</em></div>
+      </div>
+      <div class="foot" style="width:100%"><span></span><span></span></div>
+    </div>
+  </div>
+    <div class="deckfoot">Sales Forum · 2026</div>
+    <div class="ix pagenum"><span class="num">04</span> / 17</div>
+  </section>
+
+  <section data-slide="05">
+    <div class="variant thesis" data-v="A">
+    <div class="bg"></div>
+    <div class="pad">
+      <div class="runhead"><div class="eyebrow"><span class="dot"></span>Вступ</div><div class="ix">Тетяна Пан</div></div>
+      <div class="body" style="grid-template-columns:.92fr 1.08fr;">
+        <div class="txt" style="justify-content:center;padding-left:48px;">
+          <h2 class="anim2"><span style="display:block;font-size:94.1px;line-height:1;"><em class="g">Понад 70%</em></span><span class="sub" style="display:block;font-family:'Inter',sans-serif;margin-top:22px;text-wrap:wrap;font-weight:400;max-width:640px;font-size:35.8px;line-height:1.62;color:color-mix(in srgb,var(--muted) 80%,var(--canvas));">українців відчували симптоми тривоги, депресії або сильного стресу. Лише кожен п’ятий звертався по допомогу.</span></h2>
+          <div class="anim3" style="font-family:'JetBrains Mono',monospace;font-size:20.2px;letter-spacing:.24em;text-transform:uppercase;color:var(--faint);margin-top:32px;">Джерело: ВООЗ · 2025</div>
+        </div>
+        <div class="vis anim2">
+          <div style="display:grid;grid-template-columns:repeat(5,82px);gap:64px 46px;justify-content:center;align-content:center;transform:translateY(-18px);">
+            <svg class="sil" style="color:color-mix(in srgb,var(--gold) 46%,color-mix(in srgb,var(--faint) 22%,var(--canvas)) 54%)" width="82" height="148" viewBox="0 -12 40 72" aria-hidden="true"><g fill="currentColor"><circle cx="20" cy="20.5" r="11"/><path d="M2 60v-6a18 18 0 0 1 36 0v6z"/></g></svg>
+            <svg class="sil" style="color:color-mix(in srgb,var(--gold) 46%,color-mix(in srgb,var(--faint) 22%,var(--canvas)) 54%)" width="82" height="148" viewBox="0 -12 40 72" aria-hidden="true"><g fill="currentColor"><circle cx="20" cy="20.5" r="11"/><path d="M2 60v-6a18 18 0 0 1 36 0v6z"/></g></svg>
+            <svg class="sil" style="color:color-mix(in srgb,var(--gold) 46%,color-mix(in srgb,var(--faint) 22%,var(--canvas)) 54%)" width="82" height="148" viewBox="0 -12 40 72" aria-hidden="true"><g fill="currentColor"><circle cx="20" cy="20.5" r="11"/><path d="M2 60v-6a18 18 0 0 1 36 0v6z"/></g></svg>
+            <svg class="sil off" style="color:color-mix(in srgb,var(--faint) 86%,var(--canvas))" width="82" height="148" viewBox="0 -12 40 72" aria-hidden="true"><circle cx="20" cy="1.2" r="2.7" fill="color-mix(in srgb,var(--gold) 46%,color-mix(in srgb,var(--faint) 22%,var(--canvas)) 54%)"/><g fill="currentColor"><circle cx="20" cy="20.5" r="11"/><path d="M2 60v-6a18 18 0 0 1 36 0v6z"/></g><path d="M15 25.5 Q20 21 25 25.5" fill="none" stroke="var(--canvas)" stroke-width="2.2" stroke-linecap="round"/></svg>
+            <svg class="sil off" style="color:color-mix(in srgb,var(--faint) 86%,var(--canvas))" width="82" height="148" viewBox="0 -12 40 72" aria-hidden="true"><circle cx="20" cy="1.2" r="2.7" fill="color-mix(in srgb,var(--gold) 46%,color-mix(in srgb,var(--faint) 22%,var(--canvas)) 54%)"/><g fill="currentColor"><circle cx="20" cy="20.5" r="11"/><path d="M2 60v-6a18 18 0 0 1 36 0v6z"/></g><path d="M15 25.5 Q20 21 25 25.5" fill="none" stroke="var(--canvas)" stroke-width="2.2" stroke-linecap="round"/></svg>
+            <svg class="sil off" style="color:color-mix(in srgb,var(--faint) 86%,var(--canvas))" width="82" height="148" viewBox="0 -12 40 72" aria-hidden="true"><path d="M24.6 -11.5 L16.4 -1 L19.9 -1 L18 5 L25.8 -5 L21.9 -5 Z" fill="currentColor"/><g fill="currentColor"><circle cx="20" cy="20.5" r="11"/><path d="M2 60v-6a18 18 0 0 1 36 0v6z"/></g><path d="M15 25.5 Q20 21 25 25.5" fill="none" stroke="var(--canvas)" stroke-width="2.2" stroke-linecap="round"/></svg>
+            <svg class="sil off" style="color:color-mix(in srgb,var(--faint) 86%,var(--canvas))" width="82" height="148" viewBox="0 -12 40 72" aria-hidden="true"><path d="M24.6 -11.5 L16.4 -1 L19.9 -1 L18 5 L25.8 -5 L21.9 -5 Z" fill="currentColor"/><g fill="currentColor"><circle cx="20" cy="20.5" r="11"/><path d="M2 60v-6a18 18 0 0 1 36 0v6z"/></g><path d="M15 25.5 Q20 21 25 25.5" fill="none" stroke="var(--canvas)" stroke-width="2.2" stroke-linecap="round"/></svg>
+            <svg class="sil off" style="color:color-mix(in srgb,var(--faint) 86%,var(--canvas))" width="82" height="148" viewBox="0 -12 40 72" aria-hidden="true"><path d="M24.6 -11.5 L16.4 -1 L19.9 -1 L18 5 L25.8 -5 L21.9 -5 Z" fill="currentColor"/><g fill="currentColor"><circle cx="20" cy="20.5" r="11"/><path d="M2 60v-6a18 18 0 0 1 36 0v6z"/></g><path d="M15 25.5 Q20 21 25 25.5" fill="none" stroke="var(--canvas)" stroke-width="2.2" stroke-linecap="round"/></svg>
+            <svg class="sil off" style="color:color-mix(in srgb,var(--faint) 86%,var(--canvas))" width="82" height="148" viewBox="0 -12 40 72" aria-hidden="true"><path d="M24.6 -11.5 L16.4 -1 L19.9 -1 L18 5 L25.8 -5 L21.9 -5 Z" fill="currentColor"/><g fill="currentColor"><circle cx="20" cy="20.5" r="11"/><path d="M2 60v-6a18 18 0 0 1 36 0v6z"/></g><path d="M15 25.5 Q20 21 25 25.5" fill="none" stroke="var(--canvas)" stroke-width="2.2" stroke-linecap="round"/></svg>
+            <svg class="sil off" style="color:color-mix(in srgb,var(--faint) 86%,var(--canvas))" width="82" height="148" viewBox="0 -12 40 72" aria-hidden="true"><path d="M24.6 -11.5 L16.4 -1 L19.9 -1 L18 5 L25.8 -5 L21.9 -5 Z" fill="currentColor"/><g fill="currentColor"><circle cx="20" cy="20.5" r="11"/><path d="M2 60v-6a18 18 0 0 1 36 0v6z"/></g><path d="M15 25.5 Q20 21 25 25.5" fill="none" stroke="var(--canvas)" stroke-width="2.2" stroke-linecap="round"/></svg>
+          </div>
+        </div>
+      </div>
+      <div class="foot" style="width:100%"><span></span><span></span></div>
+    </div>
+  </div>
+    <div class="deckfoot">Sales Forum · 2026</div>
+    <div class="ix pagenum"><span class="num">05</span> / 17</div>
+  </section>
+
+  <section data-slide="06">
+    <div class="variant thesis" data-v="A"><div class="bg"></div><div class="pad">
+<div class="runhead" style="width:100%"><div class="eyebrow"><span class="dot"></span>Вступ · Ключова теза</div><div class="ix">Тетяна Пан</div></div>
+<div class="body">
+<div class="txt">
+<h2 class="anim2">Бізнес планує зростання, спираючись на ресурс людей, <em class="g">якого вже може не бути.</em></h2>
+</div>
+<div class="vis anim3">
+<svg width="560" height="430" viewBox="0 0 560 430" role="img" aria-hidden="true">
+<defs>
+<marker id="s05c-arrPlan" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 1.5 L8.5 5 L0 8.5 Z" fill="var(--gold-soft)"/></marker>
+<marker id="s05c-arrRes" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 1.5 L8.5 5 L0 8.5 Z" fill="var(--faint)"/></marker>
+</defs>
+<path d="M150 230 L524 23 L524 407 L150 318 Z" fill="var(--glow)"/>
+<line x1="138" y1="288" x2="524" y2="288" stroke="var(--line)" stroke-width="2"/>
+<rect x="150" y="230" width="56" height="54" rx="7" fill="color-mix(in srgb,var(--gold) 42%,var(--canvas))"/>
+<rect x="226" y="188" width="56" height="96" rx="7" fill="color-mix(in srgb,var(--gold) 56%,var(--canvas))"/>
+<rect x="302" y="146" width="56" height="138" rx="7" fill="color-mix(in srgb,var(--gold) 70%,var(--canvas))"/>
+<rect x="378" y="104" width="56" height="180" rx="7" fill="color-mix(in srgb,var(--gold) 85%,var(--canvas))"/>
+<rect x="454" y="62" width="56" height="222" rx="7" fill="var(--gold)"/>
+<rect x="150" y="292" width="56" height="26" rx="7" fill="color-mix(in srgb,var(--faint) 86%,var(--canvas))"/>
+<rect x="226" y="292" width="56" height="44" rx="7" fill="color-mix(in srgb,var(--faint) 72%,var(--canvas))"/>
+<rect x="302" y="292" width="56" height="62" rx="7" fill="color-mix(in srgb,var(--faint) 58%,var(--canvas))"/>
+<rect x="378" y="292" width="56" height="80" rx="7" fill="color-mix(in srgb,var(--faint) 45%,var(--canvas))"/>
+<rect x="454" y="292" width="56" height="98" rx="7" fill="color-mix(in srgb,var(--faint) 34%,var(--canvas))"/>
+<path d="M38.5 291.6 L150 230" fill="none" stroke="var(--gold-soft)" stroke-width="2" stroke-dasharray="1 8" stroke-linecap="round" opacity=".35"/>
+<path d="M38.5 291.6 L150 318" fill="none" stroke="var(--faint)" stroke-width="2" stroke-dasharray="1 8" stroke-linecap="round" opacity=".35"/>
+<circle cx="38.5" cy="291.6" r="5" fill="var(--gold)"/>
+<path d="M150 230 L524 23" fill="none" stroke="var(--gold-soft)" stroke-width="3" stroke-dasharray="2 11" stroke-linecap="round" marker-end="url(#s05c-arrPlan)"/>
+<path d="M150 318 L524 407" fill="none" stroke="var(--faint)" stroke-width="3" stroke-dasharray="2 11" stroke-linecap="round" marker-end="url(#s05c-arrRes)"/>
+<text x="28" y="180" style="font-family:'JetBrains Mono',monospace;font-size:21.3px;font-weight:600;letter-spacing:.2em;fill:var(--gold)">ПЛАН</text>
+<text x="28" y="348" style="font-family:'JetBrains Mono',monospace;font-size:21.3px;font-weight:600;letter-spacing:.2em;fill:var(--muted)">РЕСУРС</text>
+</svg>
+</div>
+</div>
+<div class="foot" style="width:100%"><span></span><span></span></div>
+</div></div>
+    </div>
+    <div class="deckfoot">Sales Forum · 2026</div>
+    <div class="ix pagenum"><span class="num">06</span> / 17</div>
+  </section>
+
+  <section data-slide="07">
+    <div class="variant thesis" data-v="A"><div class="bg"></div><div class="pad">
+      <div class="runhead" style="width:100%"><div class="eyebrow"><span class="dot"></span>Проблема</div><div class="ix">Тетяна Пан</div></div>
+      <div class="body" style="width:100%">
+        <div class="txt" style="margin-left:32px">
+          <h2 class="anim2" style="font-size:87.4px">Немає енергії — <em class="g">немає нових клієнтів.</em></h2>
+          <ul class="anim3" style="list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:18px;max-width:640px;"><li style="display:flex;align-items:baseline;gap:16px;font-family:'Inter',sans-serif;font-size:32.5px;line-height:1.4;color:var(--muted);"><span style="flex:none;width:9px;height:9px;border-radius:50%;background:var(--gold);transform:translateY(-4px);"></span><span>Менше дзвінків</span></li><li style="display:flex;align-items:baseline;gap:16px;font-family:'Inter',sans-serif;font-size:32.5px;line-height:1.4;color:var(--muted);"><span style="flex:none;width:9px;height:9px;border-radius:50%;background:var(--gold);transform:translateY(-4px);"></span><span>Ніяких нових контактів</span></li><li style="display:flex;align-items:baseline;gap:16px;font-family:'Inter',sans-serif;font-size:32.5px;line-height:1.4;color:var(--muted);"><span style="flex:none;width:9px;height:9px;border-radius:50%;background:var(--gold);transform:translateY(-4px);"></span><span>Уникання складних клієнтів</span></li></ul>
+        </div>
+        <div class="vis anim2" style="margin-left:-96px">
+          <svg width="640" height="600" viewBox="0 0 640 600">
+            <!-- ГОЛОВНА СЦЕНА: ядро-батарея 1/5, три орбіти, один тьмяний клієнт -->
+            <circle cx="280" cy="300" r="72" fill="var(--glow)"/>
+            <circle cx="280" cy="300" r="120" fill="none" stroke="color-mix(in srgb,var(--faint) 86%,var(--canvas))" stroke-width="2.4"/>
+            <circle cx="280" cy="300" r="185" fill="none" stroke="color-mix(in srgb,var(--faint) 86%,var(--canvas))" stroke-width="2.4" stroke-linecap="round" stroke-dasharray="1.5 16" opacity=".7"/>
+            <circle cx="280" cy="300" r="250" fill="none" stroke="color-mix(in srgb,var(--faint) 86%,var(--canvas))" stroke-width="2.4" stroke-linecap="round" stroke-dasharray="1.5 18" opacity=".45"/>
+            <circle cx="369" cy="220" r="13" fill="color-mix(in srgb,var(--gold) 42%,var(--canvas))"/>
+            <rect x="232" y="276" width="96" height="48" rx="12" fill="var(--canvas)" stroke="color-mix(in srgb,var(--gold) 30%,var(--canvas))" stroke-width="3.5"/>
+            <rect x="332" y="290" width="9" height="20" rx="3" fill="color-mix(in srgb,var(--gold) 45%,var(--canvas))"/>
+            <rect x="239" y="283" width="13.2" height="34" rx="4" fill="color-mix(in srgb,var(--gold) 45%,var(--canvas))"/>
+            <rect x="256.2" y="283" width="13.2" height="34" rx="4" fill="var(--sil-off)"/>
+            <rect x="273.4" y="283" width="13.2" height="34" rx="4" fill="var(--sil-off)"/>
+            <rect x="290.6" y="283" width="13.2" height="34" rx="4" fill="var(--sil-off)"/>
+            <rect x="307.8" y="283" width="13.2" height="34" rx="4" fill="var(--sil-off)"/>
+            <!-- МІНІАТЮРА (кут сцени): повна батарея, орбіти із золотими клієнтами -->
+            <circle cx="552" cy="100" r="84" fill="var(--glow)"/>
+            <circle cx="552" cy="100" r="44" fill="none" stroke="color-mix(in srgb,var(--faint) 86%,var(--canvas))" stroke-width="2"/>
+            <circle cx="552" cy="100" r="68" fill="none" stroke="color-mix(in srgb,var(--faint) 86%,var(--canvas))" stroke-width="2"/>
+            <g fill="var(--gold)">
+              <circle cx="574" cy="62" r="4.5"/><circle cx="590" cy="122" r="4.5"/><circle cx="530" cy="138" r="4.5"/><circle cx="514" cy="78" r="4.5"/>
+              <circle cx="564" cy="33" r="4.5"/><circle cx="616" cy="77" r="4.5"/><circle cx="604" cy="144" r="4.5"/><circle cx="540" cy="167" r="4.5"/><circle cx="488" cy="123" r="4.5"/><circle cx="500" cy="56" r="4.5"/>
+            </g>
+            <rect x="524" y="85" width="56" height="30" rx="8" fill="var(--canvas)" stroke="var(--gold)" stroke-width="3"/>
+            <rect x="583" y="93" width="6" height="14" rx="2" fill="var(--gold)"/>
+            <g fill="var(--gold)">
+              <rect x="529" y="90" width="7" height="20" rx="2"/>
+              <rect x="538.75" y="90" width="7" height="20" rx="2"/>
+              <rect x="548.5" y="90" width="7" height="20" rx="2"/>
+              <rect x="558.25" y="90" width="7" height="20" rx="2"/>
+              <rect x="568" y="90" width="7" height="20" rx="2"/>
+            </g>
+          </svg>
+        </div>
+      </div>
+      <div class="foot" style="width:100%"><span></span><span></span></div>
+    </div></div>
+    </div>
+    <div class="deckfoot">Sales Forum · 2026</div>
+    <div class="ix pagenum"><span class="num">07</span> / 17</div>
+  </section>
+
+  <section data-slide="08">
+    <div class="variant thesis" data-v="A">
+    <div class="bg"></div>
+    <div class="pad">
+      <div class="runhead" style="width:100%"><div class="eyebrow"><span class="dot"></span>Проблема</div><div class="ix">Тетяна Пан</div></div>
+      <div class="body" style="width:100%;display:flex;justify-content:center;align-items:center;gap:96px">
+        <div class="txt" style="gap:40px;max-width:640px;flex:none;">
+          <h2 class="anim2" style="font-size:91.8px;line-height:1.06;">Виснаження <em class="g">маскується</em></h2>
+          <ul class="anim3" style="list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:22px;max-width:640px;">
+            <li style="display:flex;align-items:baseline;gap:16px;font-family:'Inter',sans-serif;font-size:34.7px;line-height:1.35;color:var(--muted);"><span style="flex:none;width:9px;height:9px;border-radius:50%;background:var(--gold);transform:translateY(-5px);"></span><span>прокрастинація</span></li>
+            <li style="display:flex;align-items:baseline;gap:16px;font-family:'Inter',sans-serif;font-size:34.7px;line-height:1.35;color:var(--muted);"><span style="flex:none;width:9px;height:9px;border-radius:50%;background:var(--gold);transform:translateY(-5px);"></span><span>брак ініціативи</span></li>
+            <li style="display:flex;align-items:baseline;gap:16px;font-family:'Inter',sans-serif;font-size:34.7px;line-height:1.35;color:var(--muted);"><span style="flex:none;width:9px;height:9px;border-radius:50%;background:var(--gold);transform:translateY(-5px);"></span><span>«ринок зараз не той»</span></li>
+          </ul>
+        </div>
+        <div class="vis anim2" style="flex:none;">
+          <svg width="600" height="485" viewBox="0 0 470 380" role="img" aria-label="Театральна напівмаска прикриває розряджену батарею">
+            <g opacity=".55">
+              <rect x="170" y="196" width="250" height="92" rx="14" class="strokeM"/>
+              <rect x="424" y="222" width="15" height="44" rx="5" fill="var(--faint)"/>
+              <rect x="182" y="208" width="38" height="68" rx="8" fill="var(--gold)"/>
+              <rect x="229" y="208" width="38" height="68" rx="8" fill="var(--sil-off)"/>
+              <rect x="276" y="208" width="38" height="68" rx="8" fill="var(--sil-off)"/>
+              <rect x="323" y="208" width="38" height="68" rx="8" fill="var(--sil-off)"/>
+              <rect x="370" y="208" width="38" height="68" rx="8" fill="var(--sil-off)"/>
+            </g>
+            <line x1="126" y1="212" x2="62" y2="342" stroke="var(--gold)" stroke-width="6" stroke-linecap="round"/>
+            <g transform="rotate(6 210 160)">
+              <path d="M58 150 C62 108 118 88 172 94 C190 96 202 102 210 104 C218 102 230 96 248 94 C302 88 358 108 362 150 C358 196 300 230 210 230 C120 230 62 196 58 150 Z M105 150 Q145 122 185 150 Q145 168 105 150 Z M235 150 Q275 122 315 150 Q275 168 235 150 Z" fill="var(--canvas)" fill-rule="evenodd"/>
+              <path d="M58 150 C62 108 118 88 172 94 C190 96 202 102 210 104 C218 102 230 96 248 94 C302 88 358 108 362 150 C358 196 300 230 210 230 C120 230 62 196 58 150 Z M105 150 Q145 122 185 150 Q145 168 105 150 Z M235 150 Q275 122 315 150 Q275 168 235 150 Z" fill="var(--glow)" fill-rule="evenodd"/>
+              <path d="M58 150 C62 108 118 88 172 94 C190 96 202 102 210 104 C218 102 230 96 248 94 C302 88 358 108 362 150 C358 196 300 230 210 230 C120 230 62 196 58 150 Z M105 150 Q145 122 185 150 Q145 168 105 150 Z M235 150 Q275 122 315 150 Q275 168 235 150 Z" class="stroke" style="stroke-width:4"/>
+            </g>
+          </svg>
+        </div>
+      </div>
+      <div class="foot" style="width:100%"><span></span><span></span></div>
+    </div>
+  </div>
+    
+    <div class="variant thesis" data-v="B" hidden>
+    <div class="bg"></div>
+    <div class="pad">
+      <div class="runhead"><div class="eyebrow"><span class="dot"></span>Проблема</div><div class="ix">Тетяна Пан</div></div>
+      <div class="body">
+        <div class="txt">
+          <h2 class="anim2" style="font-size:67.2px">Виснаження <em class="g">маскується</em> під прокрастинацію, брак ініціативи та «ринок зараз не той».</h2>
+        </div>
+        <div class="vis anim2">
+          <div style="position:relative;width:540px;height:430px">
+            <div style="position:absolute;left:90px;bottom:0;display:flex;align-items:center;gap:10px">
+              <div style="display:flex;gap:9px;border:4px solid var(--gold);border-radius:14px;padding:9px;width:320px;height:78px">
+                <span style="flex:1;border-radius:7px;background:color-mix(in srgb,var(--gold) 72%,var(--canvas));"></span>
+                <span style="flex:1;border-radius:7px;background:var(--sil-off)"></span>
+                <span style="flex:1;border-radius:7px;background:var(--sil-off)"></span>
+                <span style="flex:1;border-radius:7px;background:var(--sil-off)"></span>
+                <span style="flex:1;border-radius:7px;background:var(--sil-off)"></span>
+              </div>
+              <div style="width:16px;height:36px;border-radius:0 8px 8px 0;background:var(--gold)"></div>
+            </div>
+            <div class="anim2" style="position:absolute;left:24px;top:16px;transform:rotate(-2.4deg);background:var(--panel);border:1.5px solid var(--panel-line);border-radius:14px;padding:22px 34px;font-family:'JetBrains Mono',monospace;font-size:26.9px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink);box-shadow:0 14px 34px rgba(0,0,0,.05)">«Прокрастинація»</div>
+            <div class="anim3" style="position:absolute;left:76px;top:126px;transform:rotate(1.6deg);background:var(--panel);border:1.5px solid var(--panel-line);border-radius:14px;padding:22px 34px;font-family:'JetBrains Mono',monospace;font-size:26.9px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink);box-shadow:0 14px 34px rgba(0,0,0,.05)">«Брак ініціативи»</div>
+            <div class="anim3" style="position:absolute;left:40px;top:238px;transform:rotate(-1.2deg);background:var(--panel);border:1.5px solid var(--panel-line);border-radius:14px;padding:22px 34px;font-family:'JetBrains Mono',monospace;font-size:26.9px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink);box-shadow:0 14px 34px rgba(0,0,0,.05)">«Ринок зараз не той»</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+    
+    <div class="variant thesis" data-v="C" hidden>
+    <div class="bg"></div>
+    <div class="pad">
+      <div class="runhead"><div class="eyebrow"><span class="dot"></span>Проблема</div><div class="ix">Тетяна Пан</div></div>
+      <div class="body">
+        <div class="txt">
+          <h2 class="anim2" style="font-size:67.2px">Виснаження <em class="g">маскується</em> під прокрастинацію, брак ініціативи та «ринок зараз не той».</h2>
+        </div>
+        <div class="vis anim2">
+          <svg width="470" height="380" viewBox="0 0 470 380" role="img" aria-label="Театральна напівмаска прикриває розряджену батарею">
+            <g opacity=".55">
+              <rect x="170" y="196" width="250" height="92" rx="14" class="strokeM"/>
+              <rect x="424" y="222" width="15" height="44" rx="5" fill="var(--faint)"/>
+              <rect x="182" y="208" width="38" height="68" rx="8" fill="var(--gold)"/>
+              <rect x="229" y="208" width="38" height="68" rx="8" fill="var(--sil-off)"/>
+              <rect x="276" y="208" width="38" height="68" rx="8" fill="var(--sil-off)"/>
+              <rect x="323" y="208" width="38" height="68" rx="8" fill="var(--sil-off)"/>
+              <rect x="370" y="208" width="38" height="68" rx="8" fill="var(--sil-off)"/>
+            </g>
+            <line x1="126" y1="212" x2="62" y2="342" stroke="var(--gold)" stroke-width="6" stroke-linecap="round"/>
+            <g transform="rotate(6 210 160)">
+              <path d="M58 150 C62 108 118 88 172 94 C190 96 202 102 210 104 C218 102 230 96 248 94 C302 88 358 108 362 150 C358 196 300 230 210 230 C120 230 62 196 58 150 Z M105 150 Q145 122 185 150 Q145 168 105 150 Z M235 150 Q275 122 315 150 Q275 168 235 150 Z" fill="var(--canvas)" fill-rule="evenodd"/>
+              <path d="M58 150 C62 108 118 88 172 94 C190 96 202 102 210 104 C218 102 230 96 248 94 C302 88 358 108 362 150 C358 196 300 230 210 230 C120 230 62 196 58 150 Z M105 150 Q145 122 185 150 Q145 168 105 150 Z M235 150 Q275 122 315 150 Q275 168 235 150 Z" fill="var(--glow)" fill-rule="evenodd"/>
+              <path d="M58 150 C62 108 118 88 172 94 C190 96 202 102 210 104 C218 102 230 96 248 94 C302 88 358 108 362 150 C358 196 300 230 210 230 C120 230 62 196 58 150 Z M105 150 Q145 122 185 150 Q145 168 105 150 Z M235 150 Q275 122 315 150 Q275 168 235 150 Z" class="stroke" style="stroke-width:4"/>
+            </g>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </div>
+    
+    <div class="deckfoot">Sales Forum · 2026</div>
+    <div class="ix pagenum"><span class="num">08</span> / 17</div>
+  </section>
+
+  <section data-slide="09">
+    <div class="variant thesis" data-v="F">
+    <div class="bg"></div>
+    <div class="pad">
+      <div class="runhead" style="width:100%"><div class="eyebrow"><span class="dot"></span>Проблема · 4 інтелекти</div><div class="ix">Тетяна Пан</div></div>
+      <div class="body">
+        <div class="txt">
+          <h2 class="anim2">Коли знижується <em class="g">VQ</em> — просідають EQ, AQ та SQ</h2>
+          <div class="sub anim3">VQ — життєва енергія та здатність заряджати інших.<br>Разом із нею падає все решта.</div>
+        </div>
+        <div class="vis anim2">
+          <svg viewBox="0 0 660 500" style="width:620px;height:auto" role="img" aria-label="Чотири рівні-смуги один під одним: VQ заповнена лише на третину, а EQ, AQ та SQ падають слідом усе коротшими, спадна лінія тренду показує, як усе просідає за VQ">
+            <defs>
+              <linearGradient id="f8f-vq" x1="0" y1="0" x2="1" y2="0">
+                <stop offset="0" style="stop-color:var(--gold-soft)"></stop>
+                <stop offset="1" style="stop-color:var(--gold)"></stop>
+              </linearGradient>
+            </defs>
+
+            <!-- descending trend line: VQ drops and the rest follow -->
+            <polyline points="328.1,72 289.2,200 247.9,328 211.5,456" fill="none" stroke="var(--gold)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" opacity=".5" stroke-dasharray="2 9"></polyline>
+
+            <!-- ROW VQ -->
+            <text x="58" y="87" text-anchor="middle" font-family="'Spectral',serif" font-size="44" font-weight="600" fill="url(#f8f-vq)">VQ</text>
+            <text x="620" y="78" text-anchor="end" font-family="'JetBrains Mono',monospace" font-size="20" letter-spacing="1.8" fill="var(--muted)" style="text-transform:uppercase">Життєва енергія</text>
+            <rect x="150" y="54" width="486" height="36" rx="18" fill="var(--sil-off)"></rect>
+            <rect x="150" y="54" width="170.1" height="36" rx="18" fill="url(#f8f-vq)"></rect>
+            <circle cx="328.1" cy="72" r="6.5" fill="var(--gold)"></circle>
+
+            <!-- ROW EQ -->
+            <text x="58" y="215" text-anchor="middle" font-family="'Spectral',serif" font-size="44" font-weight="600" fill="var(--ink)">EQ</text>
+            <text x="620" y="206" text-anchor="end" font-family="'JetBrains Mono',monospace" font-size="20" letter-spacing="1.8" fill="var(--muted)" style="text-transform:uppercase">Емоції</text>
+            <rect x="150" y="182" width="486" height="36" rx="18" fill="var(--sil-off)"></rect>
+            <rect x="150" y="182" width="131.2" height="36" rx="18" fill="color-mix(in srgb,var(--gold) 70%,var(--canvas))"></rect>
+            <circle cx="289.2" cy="200" r="6.5" fill="color-mix(in srgb,var(--gold) 70%,var(--canvas))"></circle>
+
+            <!-- ROW AQ -->
+            <text x="58" y="343" text-anchor="middle" font-family="'Spectral',serif" font-size="44" font-weight="600" fill="var(--muted)">AQ</text>
+            <text x="620" y="334" text-anchor="end" font-family="'JetBrains Mono',monospace" font-size="20" letter-spacing="1.8" fill="var(--muted)" style="text-transform:uppercase">Адаптація</text>
+            <rect x="150" y="310" width="486" height="36" rx="18" fill="var(--sil-off)"></rect>
+            <rect x="150" y="310" width="89.9" height="36" rx="18" fill="color-mix(in srgb,var(--gold) 48%,var(--canvas))"></rect>
+            <circle cx="247.9" cy="328" r="6.5" fill="color-mix(in srgb,var(--gold) 48%,var(--canvas))"></circle>
+
+            <!-- ROW SQ -->
+            <text x="58" y="471" text-anchor="middle" font-family="'Spectral',serif" font-size="44" font-weight="600" fill="color-mix(in srgb,var(--muted) 82%,var(--canvas))">SQ</text>
+            <text x="620" y="462" text-anchor="end" font-family="'JetBrains Mono',monospace" font-size="20" letter-spacing="1.8" fill="color-mix(in srgb,var(--muted) 86%,var(--canvas))" style="text-transform:uppercase">Взаємодія</text>
+            <rect x="150" y="438" width="486" height="36" rx="18" fill="var(--sil-off)"></rect>
+            <rect x="150" y="438" width="53.5" height="36" rx="18" fill="color-mix(in srgb,var(--gold) 32%,var(--canvas))"></rect>
+            <circle cx="211.5" cy="456" r="6.5" fill="color-mix(in srgb,var(--gold) 32%,var(--canvas))"></circle>
+          </svg>
+        </div>
+      </div>
+      <div class="foot" style="width:100%"><span></span><span></span></div>
+    </div>
+  </div>
+    <div class="deckfoot">Sales Forum · 2026</div>
+    <div class="ix pagenum"><span class="num">09</span> / 17</div>
+  </section>
+
+  <section data-slide="10">
+    <div class="variant center" data-v="A">
+    <div class="bg"></div>
+    <div class="pad">
+      <div class="runhead"><div class="eyebrow"><span class="dot"></span>Проблема · Ключова теза</div><div class="ix">Тетяна Пан</div></div>
+      <div class="inner">
+        <svg class="anim" viewBox="0 0 1584 290" fill="none" style="width:1280px;max-width:100%;height:auto"><circle cx="152" cy="145" r="92" stroke="var(--gold)" stroke-width="3"/><g transform="translate(111,104) scale(3.4)"><path d="M13.832 16.568a1 1 0 0 0 1.213-.303l.355-.465A2 2 0 0 1 17 15h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2A18 18 0 0 1 2 4a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v3a2 2 0 0 1-.8 1.6l-.468.351a1 1 0 0 0-.292 1.233a14 14 0 0 0 6.392 6.384" fill="none" stroke="var(--gold)" stroke-width="0.88" stroke-linecap="round" stroke-linejoin="round"/></g><line x1="270" y1="145" x2="354" y2="145" stroke="var(--sil-off)" stroke-width="3" stroke-linecap="round" stroke-dasharray="0.1 14"/><circle cx="472" cy="145" r="92" stroke="var(--gold)" stroke-opacity=".65" stroke-width="3"/><g transform="translate(431,104) scale(3.4)"><path d="M13.832 16.568a1 1 0 0 0 1.213-.303l.355-.465A2 2 0 0 1 17 15h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2A18 18 0 0 1 2 4a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v3a2 2 0 0 1-.8 1.6l-.468.351a1 1 0 0 0-.292 1.233a14 14 0 0 0 6.392 6.384" fill="none" stroke="var(--gold)" stroke-width="0.88" stroke-linecap="round" stroke-linejoin="round" opacity=".65"/></g><line x1="590" y1="145" x2="674" y2="145" stroke="var(--sil-off)" stroke-width="3" stroke-linecap="round" stroke-dasharray="0.1 14"/><circle cx="792" cy="145" r="92" stroke="var(--faint)" stroke-width="3"/><g transform="translate(751,104) scale(3.4)"><path d="M13.832 16.568a1 1 0 0 0 1.213-.303l.355-.465A2 2 0 0 1 17 15h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2A18 18 0 0 1 2 4a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v3a2 2 0 0 1-.8 1.6l-.468.351a1 1 0 0 0-.292 1.233a14 14 0 0 0 6.392 6.384" fill="none" stroke="var(--faint)" stroke-width="0.88" stroke-linecap="round" stroke-linejoin="round"/></g><line x1="910" y1="145" x2="994" y2="145" stroke="var(--sil-off)" stroke-width="3" stroke-linecap="round" stroke-dasharray="0.1 14"/><circle cx="1112" cy="145" r="92" stroke="var(--sil-off)" stroke-width="3"/><g transform="translate(1071,104) scale(3.4)"><path d="M13.832 16.568a1 1 0 0 0 1.213-.303l.355-.465A2 2 0 0 1 17 15h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2A18 18 0 0 1 2 4a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v3a2 2 0 0 1-.8 1.6l-.468.351a1 1 0 0 0-.292 1.233a14 14 0 0 0 6.392 6.384" fill="none" stroke="var(--sil-off)" stroke-width="0.88" stroke-linecap="round" stroke-linejoin="round"/></g><line x1="1230" y1="145" x2="1314" y2="145" stroke="var(--sil-off)" stroke-width="3" stroke-linecap="round" stroke-dasharray="0.1 14"/><path d="M186.6 38.5 A112 112 0 0 1 258.5 110.4" stroke="var(--gold)" stroke-width="3" stroke-linecap="round" opacity=".85"/><path d="M191.6 23.3 A128 128 0 0 1 273.7 105.4" stroke="var(--gold)" stroke-width="3" stroke-linecap="round" opacity=".55"/><path d="M196.5 8.0 A144 144 0 0 1 289.0 100.5" stroke="var(--gold)" stroke-width="3" stroke-linecap="round" opacity=".3"/><circle cx="1432" cy="145" r="92" stroke="var(--sil-off)" stroke-width="3" stroke-linecap="round" stroke-dasharray="0.1 14.35"/><path d="M1412 125 L1452 165 M1452 125 L1412 165" stroke="var(--faint)" stroke-width="3" stroke-linecap="round"/></svg>
+        <h2 class="anim3" style="font-size:69.4px;line-height:1.16;max-width:1380px;">Менеджер знає, що потрібно робити.<br>Але не має енергії витримати <em class="g">ще одну відмову.</em></h2>
+      </div>
+    </div>
+  </div>
+    <div class="variant thesis" data-v="B" hidden>
+    <div class="bg"></div>
+    <div class="pad center">
+      <div class="runhead" style="width:100%"><div class="eyebrow"><span class="dot"></span>Проблема · Ключова теза</div><div class="ix">Тетяна Пан</div></div>
+      <div class="inner">
+        <svg class="anim" viewBox="0 0 1424 420" fill="none" style="width:1180px;max-width:100%;height:auto">
+          <!-- слухавка: джерело дзвінка -->
+          <g transform="translate(112,72) scale(2.3)">
+            <circle cx="60" cy="60" r="52" stroke="var(--gold)" stroke-width="3" fill="none"/>
+            <g transform="translate(25,25) scale(2.9)"><path d="M13.832 16.568a1 1 0 0 0 1.213-.303l.355-.465A2 2 0 0 1 17 15h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2A18 18 0 0 1 2 4a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v3a2 2 0 0 1-.8 1.6l-.468.351a1 1 0 0 0-.292 1.233a14 14 0 0 0 6.392 6.384" fill="none" stroke="var(--gold)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></g>
+          </g>
+          <!-- чотири гудки, що згасають -->
+          <path d="M370.21 89.79 A170 170 0 0 1 370.21 330.21" stroke="var(--gold)" stroke-opacity=".8" stroke-width="3" stroke-linecap="round"/>
+          <path d="M396.37 63.63 A207 207 0 0 1 396.37 356.37" stroke="var(--gold)" stroke-opacity=".55" stroke-width="3" stroke-linecap="round"/>
+          <path d="M422.53 37.47 A244 244 0 0 1 422.53 382.53" stroke="var(--gold)" stroke-opacity=".35" stroke-width="3" stroke-linecap="round"/>
+          <path d="M448.70 11.30 A281 281 0 0 1 448.70 408.70" stroke="var(--gold)" stroke-opacity=".18" stroke-width="3" stroke-linecap="round"/>
+          <!-- лінія тиші -->
+          <line x1="572" y1="210" x2="1128" y2="210" stroke="var(--sil-off)" stroke-width="5" stroke-linecap="round" stroke-dasharray="0.1 16"/>
+          <!-- без відповіді -->
+          <circle cx="1230" cy="210" r="64" stroke="var(--sil-off)" stroke-width="4" stroke-linecap="round" stroke-dasharray="0.1 13.3"/>
+          <path d="M1212 192 L1248 228 M1248 192 L1212 228" stroke="var(--faint)" stroke-width="3.4" stroke-linecap="round"/>
+        </svg>
+        <h2 class="anim2" style="font-size:69.4px;line-height:1.16;max-width:1380px;">Менеджер знає, що потрібно робити. Але не має енергії витримати <em class="g">ще одну відмову.</em></h2>
+      </div>
+    </div>
+  </div>
+    <div class="deckfoot">Sales Forum · 2026</div>
+    <div class="ix pagenum"><span class="num">10</span> / 17</div>
+  </section>
+
+  <section data-slide="11">
+    <div class="variant thesis" data-v="A"><div class="bg"></div><div class="pad">
+<div class="runhead" style="width:100%"><div class="eyebrow"><span class="dot"></span>Рішення · Профілактика</div><div class="ix">Тетяна Пан</div></div>
+<div class="body" style="width:100%;grid-template-columns:.86fr 1.18fr;gap:72px">
+  <div class="txt">
+    <h2 class="anim2" style="font-size:67.2px"><em class="g">Профілактика</em> — поки команда ще має ресурс.</h2>
+    <div class="anim3" style="max-width:560px">
+      <div style="display:grid;grid-template-columns:78px 1fr;align-items:center;gap:34px;padding:22px 0">
+        <span style="font-family:'JetBrains Mono',monospace;font-size:44.8px;font-weight:600;background:var(--grad-acc);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent">01</span>
+        <span style="font-family:'Spectral',serif;font-size:38.1px;color:var(--ink)">Помічати стан команди</span>
+      </div>
+      <div style="display:grid;grid-template-columns:78px 1fr;align-items:center;gap:34px;padding:22px 0;border-top:1px solid var(--line)">
+        <span style="font-family:'JetBrains Mono',monospace;font-size:44.8px;font-weight:600;background:var(--grad-acc);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent">02</span>
+        <span style="font-family:'Spectral',serif;font-size:38.1px;color:var(--ink)">Підтримувати прогрес</span>
+      </div>
+      <div style="display:grid;grid-template-columns:78px 1fr;align-items:center;gap:34px;padding:22px 0;border-top:1px solid var(--line)">
+        <span style="font-family:'JetBrains Mono',monospace;font-size:44.8px;font-weight:600;background:var(--grad-acc);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent">03</span>
+        <span style="font-family:'Spectral',serif;font-size:38.1px;color:var(--ink)">Створювати умови</span>
+      </div>
+    </div>
+  </div>
+  <div class="vis anim2" style="justify-self:start;margin-left:-24px;">
+    <svg width="790" height="562" viewBox="0 0 660 470" role="img" aria-label="Крива ресурсу команди йде рівно й трохи вниз; поки ресурс ще високо, стоїть золота точка-маркер профілактики, далі пунктиром — спад без втручання">
+      <defs>
+        <linearGradient id="s10g-line" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0" style="stop-color:var(--gold-soft)"/>
+          <stop offset="1" style="stop-color:var(--gold)"/>
+        </linearGradient>
+      </defs>
+      <!-- healthy / resourced zone -->
+      <rect x="92" y="96" width="508" height="116" rx="6" fill="color-mix(in srgb,var(--gold) 7%,transparent)"/>
+      <path d="M92 212 H644" fill="none" stroke="color-mix(in srgb,var(--faint) 55%,transparent)" stroke-width="1.5" stroke-dasharray="2 10" stroke-linecap="round"/>
+      <!-- axes -->
+      <path d="M92 68 V402 H644" fill="none" stroke="var(--line)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      <!-- axis arrowheads -->
+      <path d="M87 78 L92 66 L97 78" fill="none" stroke="var(--line)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M638 397 L648 402 L638 407" fill="none" stroke="var(--line)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      <!-- vertical guide separating "now" from "without intervention" -->
+      <path d="M402 196 V402" fill="none" stroke="color-mix(in srgb,var(--faint) 60%,transparent)" stroke-width="1.6" stroke-dasharray="2 9" stroke-linecap="round"/>
+      <!-- resource curve: level, gently declining while still high -->
+      <path d="M116 150 C 210 156, 320 172, 402 188" fill="none" stroke="url(#s10g-line)" stroke-width="3.6" stroke-linecap="round"/>
+      <!-- dashed decline: what happens without intervention -->
+      <path d="M402 188 C 486 204, 566 282, 644 362" fill="none" stroke="color-mix(in srgb,var(--faint) 92%,transparent)" stroke-width="2.6" stroke-linecap="round" stroke-dasharray="3 11"/>
+      <!-- intervention marker -->
+      <circle cx="402" cy="188" r="27" fill="var(--glow)"/>
+      <path d="M402 175 V140" fill="none" stroke="var(--gold)" stroke-width="2.4" stroke-linecap="round"/>
+      <circle cx="402" cy="188" r="13" fill="none" stroke="var(--gold)" stroke-width="2.6"/>
+      <circle cx="402" cy="188" r="6.6" fill="var(--gold)"/>
+      <!-- intervention label -->
+      <text x="402" y="126" text-anchor="middle" style="font-family:'Spectral',serif;font-style:italic;font-size:32.5px" fill="var(--gold)">тут — профілактика</text>
+      <!-- caption on the decline -->
+      <text x="644" y="386" text-anchor="end" style="font-family:'JetBrains Mono',monospace;font-size:16.8px;letter-spacing:.18em;text-transform:uppercase" fill="var(--muted)">без втручання</text>
+      <!-- axis captions -->
+      <text x="112" y="80" text-anchor="start" style="font-family:'JetBrains Mono',monospace;font-size:16.8px;letter-spacing:.2em;text-transform:uppercase" fill="var(--faint)">Енергія</text>
+      <text x="644" y="432" text-anchor="end" style="font-family:'JetBrains Mono',monospace;font-size:16.8px;letter-spacing:.2em;text-transform:uppercase" fill="var(--faint)">Час</text>
+    </svg>
+  </div>
+</div>
+<div class="foot" style="width:100%"><span></span><span></span></div>
+</div></div>
+    </div>
+    <div class="deckfoot">Sales Forum · 2026</div>
+    <div class="ix pagenum"><span class="num">11</span> / 17</div>
+  </section>
+
+  <section data-slide="12">
+    <div class="variant thesis" data-v="A"><div class="bg"></div><div class="pad center">
+<div class="runhead" style="width:100%"><div class="eyebrow"><span class="dot"></span>Рішення · Відновлення</div><div class="ix">Тетяна Пан</div></div>
+<div class="inner" style="width:100%">
+  <div style="display:flex;align-items:center;justify-content:flex-start;gap:72px;width:100%;padding-left:120px">
+    <div class="anim2" style="max-width:640px;flex:none;text-align:left">
+      <h2 style="font-size:71.7px;margin:0;line-height:1.14;text-align:left;text-wrap:wrap;">Коли енергії вже немає —<br><em class="g">дробити цілі.</em></h2>
+      <div class="sub" style="text-align:left;max-width:540px;margin-top:22px;">Велику ціль дробимо на маленькі кроки, які ще по силах, — і крок за кроком повертаємо рух.</div>
+          <div style="width:84px;height:3px;margin-top:26px;border-radius:2px;background:linear-gradient(90deg,var(--gold),var(--gold-soft))"></div>
+    </div>
+    <div class="anim3" style="position:relative;width:742px;height:410px;flex:none">
+      <div class="chip" style="position:absolute;left:0;bottom:0;width:470px;height:78px;display:flex;align-items:center;gap:26px;padding:0 34px;border-radius:16px;background:color-mix(in srgb,var(--gold) 4%,var(--canvas));border:2.5px solid color-mix(in srgb,var(--gold) 14%,var(--line));box-shadow:0 10px 26px rgba(120,78,20,.10);white-space:nowrap"><span class="n" style="font-size:21.3px">01</span><span class="t" style="font-size:26.9px">Визнати</span></div>
+      <div class="chip" style="position:absolute;left:88px;bottom:90px;width:470px;height:78px;display:flex;align-items:center;gap:26px;padding:0 34px;border-radius:16px;background:color-mix(in srgb,var(--gold) 7%,var(--canvas));border:2.5px solid color-mix(in srgb,var(--gold) 30%,var(--line));box-shadow:0 10px 26px rgba(120,78,20,.10);white-space:nowrap"><span class="n" style="font-size:21.3px">02</span><span class="t" style="font-size:26.9px">Прибрати зайве</span></div>
+      <div class="chip" style="position:absolute;left:176px;bottom:180px;width:470px;height:78px;display:flex;align-items:center;gap:26px;padding:0 34px;border-radius:16px;background:color-mix(in srgb,var(--gold) 10%,var(--canvas));border:2.5px solid color-mix(in srgb,var(--gold) 48%,var(--line));box-shadow:0 10px 26px rgba(120,78,20,.10);white-space:nowrap"><span class="n" style="font-size:21.3px">03</span><span class="t" style="font-size:26.9px">Повернути вплив</span></div>
+      <div class="chip" style="position:absolute;left:264px;bottom:270px;width:470px;height:78px;display:flex;align-items:center;gap:26px;padding:0 34px;border-radius:16px;background:color-mix(in srgb,var(--gold) 14%,var(--canvas));border:2.5px solid color-mix(in srgb,var(--gold) 68%,var(--line));box-shadow:0 10px 26px rgba(120,78,20,.10);white-space:nowrap"><span class="n" style="font-size:21.3px">04</span><span class="t" style="font-size:26.9px">Дробити цілі</span></div>
+      <svg width="58" height="66" viewBox="0 0 58 66" style="position:absolute;left:700px;top:0px" aria-hidden="true">
+        <defs><linearGradient id="s11d-flag" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="var(--gold-soft)"/><stop offset="1" stop-color="var(--gold)"/></linearGradient></defs>
+        <path d="M7 63 V7" stroke="var(--gold)" stroke-width="3" stroke-linecap="round" fill="none"/>
+        <path d="M9 9 L52 18.5 L9 28 Z" fill="url(#s11d-flag)"/>
+        <circle cx="7" cy="63" r="3.2" fill="var(--gold)"/>
+      </svg>
+    </div>
+  </div>
+</div>
+<div class="foot" style="width:100%"><span></span><span></span></div>
+</div></div>
+    </div>
+    <div class="deckfoot">Sales Forum · 2026</div>
+    <div class="ix pagenum"><span class="num">12</span> / 17</div>
+  </section>
+
+  <section data-slide="13">
+    <div class="variant thesis" data-v="A">
+    <div class="bg"></div>
+    <div class="pad">
+      <div class="runhead"><div class="eyebrow"><span class="dot"></span>Наслідки</div><div class="ix">Тетяна Пан</div></div>
+      <div class="body">
+        <div class="txt">
+          <h2 class="anim2" style="font-size:65px">Клієнт не знає, що менеджер виснажений. Але <em class="g">відчуває</em> неуважність і байдужий tone of voice.</h2>
+        </div>
+        <div class="vis anim3">
+          <svg width="600" height="431" viewBox="0 0 640 460" role="img" aria-label="Діалог: повідомлення клієнта і згасаюча відповідь менеджера">
+            <text x="22" y="26" font-family="'JetBrains Mono',monospace" font-size="17" font-weight="500" letter-spacing="3" fill="var(--muted)">КЛІЄНТ</text>
+            <path d="M46 44H304Q330 44 330 70V168Q330 194 304 194H108L64 226L76 194H46Q20 194 20 168V70Q20 44 46 44Z" fill="var(--glow)" stroke="var(--gold)" stroke-width="3.2" stroke-linejoin="round"/>
+            <g fill="var(--gold)" opacity=".85">
+              <rect x="56" y="78" width="238" height="12" rx="6"/>
+              <rect x="56" y="110" width="238" height="12" rx="6"/>
+              <rect x="56" y="142" width="238" height="12" rx="6"/>
+            </g>
+            <path class="strokeM" d="M230 214L414 246" style="stroke-dasharray:3 16;stroke-width:4"/>
+            <text x="618" y="250" text-anchor="end" font-family="'JetBrains Mono',monospace" font-size="17" font-weight="500" letter-spacing="3" fill="var(--muted)">МЕНЕДЖЕР</text>
+            <path d="M336 268H594Q620 268 620 294V392Q620 418 594 418H564L576 450L532 418H336Q310 418 310 392V294Q310 268 336 268Z" fill="var(--sil-off)" fill-opacity=".4" stroke="var(--faint)" stroke-opacity=".6" stroke-width="3" stroke-linejoin="round"/>
+            <g fill="var(--faint)">
+              <rect x="346" y="300" width="200" height="12" rx="6" opacity=".7"/>
+              <rect x="346" y="332" width="132" height="12" rx="6" opacity=".45"/>
+              <rect x="346" y="364" width="68" height="12" rx="6" opacity=".28"/>
+            </g>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </div>
+    </div>
+    <div class="deckfoot">Sales Forum · 2026</div>
+    <div class="ix pagenum"><span class="num">13</span> / 17</div>
+  </section>
+
+  <section data-slide="14">
+    <div class="variant thesis" data-v="A">
+  <div class="bg"></div>
+  <div class="pad">
+    <div class="runhead" style="width:100%">
+      <div class="eyebrow"><span class="dot"></span>Наслідки · Ключова теза</div>
+      <div class="ix">Тетяна Пан</div>
+    </div>
+    <div class="body" style="width:100%">
+      <div class="txt anim2">
+        <h2>Втрата енергії стає видимою <em class="g">спочатку клієнту</em> —<br>і лише потім у звітах.</h2>
+      </div>
+      <div class="vis anim3">
+        <svg width="100%" viewBox="0 0 720 480" role="img" aria-label="Дві однакові спадні криві зі зсувом: клієнт бачить втрату енергії раніше, звіти — пізніше, між ними лаг">
+          <defs>
+            <radialGradient id="s13cGlow" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stop-color="var(--gold)" stop-opacity="0.24"/>
+              <stop offset="65%" stop-color="var(--gold)" stop-opacity="0.06"/>
+              <stop offset="100%" stop-color="var(--gold)" stop-opacity="0"/>
+            </radialGradient>
+          </defs>
+
+          <!-- осі -->
+          <path d="M74 430 H664 M74 430 V66" fill="none" stroke="var(--line)" stroke-width="2" stroke-linecap="round"/>
+          <text transform="rotate(-90 52 250)" x="52" y="250" text-anchor="middle" fill="var(--faint)" font-family="'JetBrains Mono',monospace" font-size="13" letter-spacing="2">ЕНЕРГІЯ</text>
+          <text x="648" y="454" text-anchor="end" fill="var(--faint)" font-family="'JetBrains Mono',monospace" font-size="13" letter-spacing="2">ЧАС</text>
+
+          <!-- звіти: бліда пунктирна крива, спадає пізніше -->
+          <path d="M100 128 H340 C410 128 410 360 480 360 H640" fill="none" stroke="var(--faint)" stroke-width="4" stroke-dasharray="2 13" stroke-linecap="round" stroke-linejoin="round"/>
+          <!-- клієнт: суцільна золота крива, спадає раніше -->
+          <path d="M100 128 H200 C270 128 270 360 340 360 H640" fill="none" stroke="var(--gold)" stroke-width="4.6" stroke-linecap="round" stroke-linejoin="round"/>
+          
+          
+          
+
+          <!-- маркер початку спаду: клієнт -->
+          <circle cx="200" cy="128" r="30" fill="url(#s13cGlow)"/>
+          <circle cx="200" cy="128" r="13" fill="none" stroke="var(--gold)" stroke-width="2.5" opacity="0.4"/>
+          <circle cx="200" cy="128" r="7" fill="var(--gold)"/>
+          <text x="200" y="94" text-anchor="middle" fill="var(--gold-soft)" font-family="'JetBrains Mono',monospace" font-size="18" letter-spacing="1.5">КЛІЄНТ БАЧИТЬ</text>
+
+          <!-- маркер початку спаду: звіти -->
+          
+          
+          <text x="498" y="256" fill="var(--faint)" font-family="'JetBrains Mono',monospace" font-size="18" letter-spacing="1.5">У ЗВІТАХ</text>
+        </svg>
+      </div>
+    </div>
+    <div class="foot" style="width:100%">
+      <span class="evt">Sales Forum<span class="sep">·</span>2026</span><span></span>
+    </div>
+  </div>
+</div>
+    </div>
+    <div class="deckfoot">Sales Forum · 2026</div>
+    <div class="ix pagenum"><span class="num">14</span> / 17</div>
+  </section>
+
+  <section data-slide="15">
+    <div class="variant center" data-v="A">
+    <div class="bg"></div>
+    <div class="pad center">
+      <div class="runhead" style="width:100%"><div class="eyebrow"><span class="dot"></span>Завершення · Вправа</div><div class="ix">Тетяна Пан</div></div>
+      <div class="inner" style="gap:48px;">
+        <svg class="anim" width="320" height="130" viewBox="0 0 320 130" aria-hidden="true">
+          <path fill="var(--gold)" d="M160 34 Q165 65 196 70 Q165 75 160 106 Q155 75 124 70 Q155 65 160 34 Z"/>
+          <path fill="var(--gold-soft)" d="M92 31 Q94.5 45.5 109 48 Q94.5 50.5 92 65 Q89.5 50.5 75 48 Q89.5 45.5 92 31 Z"/>
+          <path fill="var(--gold-soft)" d="M228 34 Q231 51 248 54 Q231 57 228 74 Q225 57 208 54 Q225 51 228 34 Z"/>
+        </svg>
+        <h2 class="anim2" style="font-size:94.1px;max-width:1360px;">Назвіть одну <em class="g">маленьку перемогу</em><br>своєї команди за останній місяць.</h2>
+        <div class="anim3" style="display:flex;flex-direction:column;align-items:center;gap:38px;">
+          <div class="sub" style="text-align:center;max-width:none;white-space:nowrap;">Поверніться до людини поруч. Назвіть перемогу. Подякуйте одне одному.</div>
+        </div>
+      </div>
+      <div class="foot" style="width:100%"><span></span><span></span></div>
+    </div>
+  </div>
+    </div>
+    <div class="deckfoot">Sales Forum · 2026</div>
+    <div class="ix pagenum"><span class="num">15</span> / 17</div>
+  </section>
+
+  <section data-slide="16">
+    <div class="variant thesis" data-v="A">
+    <div class="bg"></div>
+    <div class="pad center">
+      <div class="runhead" style="width:100%"><div class="eyebrow"><span class="dot"></span>Завершення · Фінальні тези</div><div class="ix">Тетяна Пан</div></div>
+      <div class="inner">
+        <svg class="anim" width="410" viewBox="0 0 460 340" role="img" aria-label="Золота пружина під вагою плити — стиснута, але тримає" style="max-width:100%;height:auto">
+          <!-- теплий ореол за пружиною -->
+          <circle cx="230" cy="212" r="96" fill="var(--glow)"/>
+          <!-- навантаження: дві стрілки тиснуть на плиту -->
+          <g stroke="var(--gold-soft)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none" opacity=".85">
+            <path d="M186 34 V72"/><path d="M178 64 L186 78 L194 64"/>
+            <path d="M274 34 V72"/><path d="M266 64 L274 78 L282 64"/>
+          </g>
+          <!-- плита-вага, що спирається на пружину -->
+          <rect x="120" y="82" width="220" height="36" rx="9" fill="color-mix(in srgb,var(--gold) 42%,var(--canvas))" stroke="var(--gold)" stroke-width="3"/>
+          <line x1="132" y1="91" x2="328" y2="91" stroke="var(--canvas)" stroke-width="2" stroke-linecap="round" opacity=".35"/>
+          <!-- м'яке світло у точці контакту -->
+          <ellipse cx="230" cy="120" rx="70" ry="9" fill="var(--glow)"/>
+          <!-- пружина: гладка золота спіраль 3px, стиснута але цілісна -->
+          <path fill="none" stroke="var(--gold)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" d="M 322 118 L 321.2 122.3 L 318.9 126.5 L 315 130.6 L 309.7 134.6 L 303 138.3 L 295.1 141.7 L 286 144.8 L 276 147.5 L 265.2 149.9 L 253.8 151.8 L 242 153.2 L 230 154.2 L 218 154.8 L 206.2 154.9 L 194.8 154.5 L 184 153.7 L 174 152.5 L 164.9 151 L 157 149.1 L 150.3 146.9 L 145 144.5 L 141.1 141.9 L 138.8 139.3 L 138 136.5 L 138.8 133.7 L 141.1 131.1 L 145 128.5 L 150.3 126.1 L 157 123.9 L 164.9 122 L 174 120.5 L 184 119.3 L 194.8 118.5 L 206.2 118.1 L 218 118.2 L 230 118.8 L 242 119.8 L 253.8 121.2 L 265.2 123.1 L 276 125.5 L 286 128.2 L 295.1 131.3 L 303 134.7 L 309.7 138.4 L 315 142.4 L 318.9 146.5 L 321.2 150.7 L 322 155 L 321.2 159.3 L 318.9 163.5 L 315 167.6 L 309.7 171.6 L 303 175.3 L 295.1 178.7 L 286 181.8 L 276 184.5 L 265.2 186.9 L 253.8 188.8 L 242 190.2 L 230 191.2 L 218 191.8 L 206.2 191.9 L 194.8 191.5 L 184 190.7 L 174 189.5 L 164.9 188 L 157 186.1 L 150.3 183.9 L 145 181.5 L 141.1 178.9 L 138.8 176.3 L 138 173.5 L 138.8 170.7 L 141.1 168.1 L 145 165.5 L 150.3 163.1 L 157 160.9 L 164.9 159 L 174 157.5 L 184 156.3 L 194.8 155.5 L 206.2 155.1 L 218 155.2 L 230 155.8 L 242 156.8 L 253.8 158.2 L 265.2 160.1 L 276 162.5 L 286 165.2 L 295.1 168.3 L 303 171.7 L 309.7 175.4 L 315 179.4 L 318.9 183.5 L 321.2 187.7 L 322 192 L 321.2 196.3 L 318.9 200.5 L 315 204.6 L 309.7 208.6 L 303 212.3 L 295.1 215.7 L 286 218.8 L 276 221.5 L 265.2 223.9 L 253.8 225.8 L 242 227.2 L 230 228.2 L 218 228.8 L 206.2 228.9 L 194.8 228.5 L 184 227.7 L 174 226.5 L 164.9 225 L 157 223.1 L 150.3 220.9 L 145 218.5 L 141.1 215.9 L 138.8 213.3 L 138 210.5 L 138.8 207.7 L 141.1 205.1 L 145 202.5 L 150.3 200.1 L 157 197.9 L 164.9 196 L 174 194.5 L 184 193.3 L 194.8 192.5 L 206.2 192.1 L 218 192.2 L 230 192.8 L 242 193.8 L 253.8 195.2 L 265.2 197.1 L 276 199.5 L 286 202.2 L 295.1 205.3 L 303 208.7 L 309.7 212.4 L 315 216.4 L 318.9 220.5 L 321.2 224.7 L 322 229 L 321.2 233.3 L 318.9 237.5 L 315 241.6 L 309.7 245.6 L 303 249.3 L 295.1 252.7 L 286 255.8 L 276 258.5 L 265.2 260.9 L 253.8 262.8 L 242 264.2 L 230 265.2 L 218 265.8 L 206.2 265.9 L 194.8 265.5 L 184 264.7 L 174 263.5 L 164.9 262 L 157 260.1 L 150.3 257.9 L 145 255.5 L 141.1 252.9 L 138.8 250.3 L 138 247.5 L 138.8 244.7 L 141.1 242.1 L 145 239.5 L 150.3 237.1 L 157 234.9 L 164.9 233 L 174 231.5 L 184 230.3 L 194.8 229.5 L 206.2 229.1 L 218 229.2 L 230 229.8 L 242 230.8 L 253.8 232.2 L 265.2 234.1 L 276 236.5 L 286 239.2 L 295.1 242.3 L 303 245.7 L 309.7 249.4 L 315 253.4 L 318.9 257.5 L 321.2 261.7 L 322 266 L 321.2 270.3 L 318.9 274.5 L 315 278.6 L 309.7 282.6 L 303 286.3 L 295.1 289.7 L 286 292.8 L 276 295.5 L 265.2 297.9 L 253.8 299.8 L 242 301.2 L 230 302.2 L 218 302.8 L 206.2 302.9 L 194.8 302.5 L 184 301.7 L 174 300.5 L 164.9 299 L 157 297.1 L 150.3 294.9 L 145 292.5 L 141.1 289.9 L 138.8 287.3 L 138 284.5 L 138.8 281.7 L 141.1 279.1 L 145 276.5 L 150.3 274.1 L 157 271.9 L 164.9 270 L 174 268.5 L 184 267.3 L 194.8 266.5 L 206.2 266.1 L 218 266.2 L 230 266.8 L 242 267.8 L 253.8 269.2 L 265.2 271.1 L 276 273.5 L 286 276.2 L 295.1 279.3 L 303 282.7 L 309.7 286.4 L 315 290.4 L 318.9 294.5 L 321.2 298.7 L 322 303"/>
+          <!-- заземлення: опорна лінія з фіксацією -->
+          <line x1="126" y1="307" x2="334" y2="307" stroke="var(--faint)" stroke-width="3" stroke-linecap="round" opacity=".6"/>
+          <g stroke="var(--faint)" stroke-width="2.4" stroke-linecap="round" opacity=".5">
+            <path d="M150 307 L138 322"/><path d="M178 307 L166 322"/><path d="M206 307 L194 322"/><path d="M234 307 L222 322"/><path d="M262 307 L250 322"/><path d="M290 307 L278 322"/><path d="M318 307 L306 322"/>
+          </g>
+        </svg>
+        <div class="txt" style="align-items:center">
+          <h2 class="anim2" style="font-size:65px;line-height:1.14;max-width:1240px">Наші люди не стали слабшими —<br>вони <em class="g">занадто довго</em> змушені бути сильними.</h2>
+          <div class="sub anim3" style="max-width:960px">Завдання керівника — не вимагати ще більше, а підтримувати здатність команди діяти.</div>
+        </div>
+      </div>
+      <div class="foot" style="width:100%"><span></span><span></span></div>
+    </div>
+  </div>
+    </div>
+    <div class="deckfoot">Sales Forum · 2026</div>
+    <div class="ix pagenum"><span class="num">16</span> / 17</div>
+  </section>
+
+  <section data-slide="17">
+    <div class="variant thesis" data-v="A">
+    <div class="bg"></div>
+    <div class="pad center">
+      <div class="runhead" style="width:100%"><div class="eyebrow"><span class="dot"></span>Головна думка</div><div class="ix">Тетяна Пан</div></div>
+      <div class="inner" style="gap:58px">
+        <svg class="anim2" width="1360" height="280" viewBox="0 0 1360 280" role="img" aria-label="Рівний слабкий пульс переходить у впевнений висхідний тренд">
+          <style>
+            @media (prefers-reduced-motion:no-preference){
+              [data-deck-active] .d16D-draw{stroke-dasharray:1000;stroke-dashoffset:1000;animation:d16Ddash 1.6s .35s cubic-bezier(.3,.1,.25,1) forwards;}
+              [data-deck-active] .d16D-pop{opacity:0;animation:d16Dpop .55s 1.8s ease-out forwards;}
+              @keyframes d16Ddash{to{stroke-dashoffset:0}}
+              @keyframes d16Dpop{to{opacity:1}}
+            }
+          </style>
+          <defs>
+            <linearGradient id="d16D-line" gradientUnits="userSpaceOnUse" x1="20" y1="0" x2="1242" y2="0">
+              <stop offset="0" stop-color="var(--faint)"/>
+              <stop offset=".42" stop-color="var(--faint)"/>
+              <stop offset=".58" stop-color="var(--gold)"/>
+              <stop offset=".86" stop-color="var(--gold)"/>
+              <stop offset="1" stop-color="var(--gold-soft)"/>
+            </linearGradient>
+            <linearGradient id="d16D-area" gradientUnits="userSpaceOnUse" x1="0" y1="45" x2="0" y2="210">
+              <stop offset="0" stop-color="color-mix(in srgb,var(--gold) 26%,transparent)"/>
+              <stop offset="1" stop-color="var(--gold)" stop-opacity="0"/>
+            </linearGradient>
+            <radialGradient id="d16D-glow" cx=".5" cy=".5" r=".5">
+              <stop offset="0" stop-color="var(--glow)"/>
+              <stop offset="1" stop-color="var(--glow)" stop-opacity="0"/>
+            </radialGradient>
+          </defs>
+          <g class="d16D-pop">
+            <ellipse cx="1120" cy="110" rx="280" ry="130" fill="url(#d16D-glow)"/>
+            <path d="M620 210 C750 206 890 188 1000 146 C1082 115 1165 82 1242 45 L1242 210 Z" fill="url(#d16D-area)"/>
+          </g>
+          <path d="M620 210 H1310" fill="none" stroke="var(--faint)" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="2 14" opacity=".4"/>
+          <path class="d16D-pop" d="M1242 62 V202" fill="none" stroke="var(--faint)" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="2 12" opacity=".4"/>
+          <path class="d16D-draw" d="M20 210 H110 l7 7 l9 -44 l9 51 l7 -14 H285 l7 7 l9 -44 l9 51 l7 -14 H460 l7 7 l9 -44 l9 51 l7 -14 H620 C750 206 890 188 1000 146 C1082 115 1165 82 1242 45" pathLength="1000" fill="none" stroke="url(#d16D-line)" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="20" cy="210" r="6" fill="var(--faint)"/>
+          <g class="d16D-pop">
+            <circle cx="620" cy="210" r="18" fill="var(--glow)"/>
+            <circle cx="620" cy="210" r="7" fill="var(--gold)"/>
+            <path d="M1274 30 L1248 58 L1236 33 Z" fill="var(--gold-soft)"/>
+          </g>
+        </svg>
+        <h2 class="anim" style="font-size:80.6px;margin-top:14px;max-width:1660px;">Енергія команди — не про настрій.<br>Це <em class="g">випереджальний показник</em> майбутнього доходу.</h2>
+      </div>
+      <div class="foot" style="width:100%"><span></span><span></span></div>
+    </div>
+  </div>
+    </div>
+    <div class="deckfoot">Sales Forum · 2026</div>
+    <div class="ix pagenum"><span class="num">17</span> / 17</div>
+  </section>
+
+</deck-stage>
+<script src="deck-stage.js"></script>
+<div id="deck-controls">
+  <div class="export">
+    <button id="exp-pdf-dark" type="button" title="Завантажити PDF — темна тема">PDF&nbsp;●</button><button id="exp-pdf-light" type="button" title="Завантажити PDF — світла тема">PDF&nbsp;○</button>
+    <a id="exp-pptx" href="sf2026.pptx" download="Sales Forum 2026 — Тетяна Пан.pptx" title="Завантажити презентацію (PPTX)">PPTX</a>
+    <button id="deck-edit" type="button" title="Редагувати тексти презентації">Редагувати</button>
+  </div>
+  <div class="vswitch" id="vswitch-global" aria-label="Версії слайда"></div>
+  <button id="theme" aria-label="Перемкнути тему"><span class="sw"></span><span id="theme-label">Світла</span></button>
+</div>
+<div id="edit-bar" hidden>
+  <span class="ed-status">✎ Режим редагування — клікайте будь-який текст і змінюйте його</span>
+  <select id="ed-variants" title="Завантажити збережений варіант"><option value="">— завантажити варіант —</option></select>
+  <button id="ed-del" type="button" title="Видалити вибраний варіант">Видалити</button>
+  <button id="ed-save" type="button">Зберегти варіант…</button>
+  <button id="ed-reset" type="button" title="Повернути базовий текст (скинути правки)">Скинути</button>
+  <button id="ed-exit" type="button">Готово</button>
+  <span class="ed-msg" id="ed-msg"></span>
+</div>
+<script>
+  // Глобальний перемикач версій активного слайда (поза межами слайда).
+  (function(){
+    var box = document.getElementById('vswitch-global');
+    function active(){ return document.querySelector('section[data-deck-active]'); }
+    function render(){
+      var sec = active();
+      var vars = sec ? sec.querySelectorAll(':scope > .variant') : [];
+      if(!sec || vars.length < 2){ box.style.display = 'none'; return; }
+      box.style.display = 'flex';
+      box.innerHTML = '';
+      vars.forEach(function(v){
+        var b = document.createElement('button');
+        b.type = 'button'; b.textContent = v.dataset.v;
+        if(!v.hidden) b.className = 'on';
+        b.addEventListener('click', function(e){
+          e.stopPropagation();
+          vars.forEach(function(x){ x.hidden = x !== v; });
+          render();
+        });
+        box.appendChild(b);
+      });
+    }
+    var ds = document.querySelector('deck-stage');
+    ds.addEventListener('slidechange', render);
+    customElements.whenDefined('deck-stage').then(function(){ setTimeout(render, 50); });
+    window.addEventListener('load', function(){ setTimeout(render, 200); });
+  })();
+  // Експорт у PDF — друк поточного вигляду (deck-stage вже налаштував @media print).
+  (function(){
+    function toPDF(theme){
+      var root=document.documentElement, wasLight=root.classList.contains('light');
+      root.classList.toggle('light', theme==='light');
+      function restore(){ root.classList.toggle('light', wasLight); window.removeEventListener('afterprint',restore); }
+      window.addEventListener('afterprint', restore);
+      window.print();
+    }
+    var d=document.getElementById('exp-pdf-dark');  if(d) d.addEventListener('click', function(){ toPDF('dark'); });
+    var l=document.getElementById('exp-pdf-light'); if(l) l.addEventListener('click', function(){ toPDF('light'); });
+  })();
+</script>
+<script>
+  (function(){
+    var KEY='tp-sf2026-theme';
+    var lbl=document.getElementById('theme-label');
+    function apply(t){document.documentElement.classList.toggle('light',t==='light');lbl.textContent=t==='light'?'Темна':'Світла';}
+    var q=(location.search.match(/[?&]theme=(light|dark)/)||[])[1];
+    if(q){try{localStorage.setItem(KEY,q);}catch(e){}}
+    var saved=q||localStorage.getItem(KEY)||'dark';apply(saved);
+    document.getElementById('theme').addEventListener('click',function(){
+      var t=document.documentElement.classList.contains('light')?'dark':'light';
+      localStorage.setItem(KEY,t);apply(t);
+    });
+  })();
+</script>
+<style id="ed-style">
+  html.deck-editing [data-eid]{ outline:1px dashed color-mix(in srgb,var(--gold) 45%,transparent); outline-offset:3px; border-radius:3px; cursor:text; }
+  html.deck-editing [data-eid]:hover{ outline-color:var(--gold); background:color-mix(in srgb,var(--gold) 8%,transparent); }
+  html.deck-editing [data-eid]:focus{ outline:2px solid var(--gold); background:color-mix(in srgb,var(--gold) 10%,transparent); }
+  #deck-controls .export #deck-edit.on{ color:var(--gold); border-color:var(--gold); }
+  #edit-bar{ position:fixed; left:0; right:0; bottom:62px; z-index:10000; display:flex; align-items:center; flex-wrap:wrap; gap:12px;
+    padding:11px 34px; background:color-mix(in srgb,var(--canvas) 90%,#000); border-top:1px solid var(--line);
+    font-family:'Inter',sans-serif; font-size:15.7px; color:var(--muted); }
+  #edit-bar[hidden]{ display:none !important; }
+  #edit-bar .ed-status{ margin-right:auto; letter-spacing:.01em; }
+  #edit-bar select, #edit-bar button{ font-family:'JetBrains Mono',monospace; font-size:14.6px; letter-spacing:.05em;
+    color:var(--muted); background:transparent; border:1px solid var(--line); border-radius:8px; padding:6px 12px; cursor:pointer; }
+  #edit-bar select{ max-width:230px; }
+  #edit-bar button:hover, #edit-bar select:hover{ color:var(--gold); border-color:var(--gold); }
+  #edit-bar #ed-save{ color:var(--gold); border-color:var(--gold); }
+  #edit-bar .ed-msg{ min-width:120px; font-family:'Inter',sans-serif; }
+  @media print{ #edit-bar{ display:none !important } }
+  /* ── mobile: let the control bar wrap instead of clipping ── */
+  @media (max-width:640px){
+    #deck-controls{ height:auto; min-height:52px; padding:6px 10px; gap:10px; flex-wrap:wrap; justify-content:center; }
+    #deck-controls .export{ margin-right:0; gap:7px; flex-wrap:wrap; justify-content:center; }
+    #deck-controls .export button,#deck-controls .export a{ font-size:13.4px; padding:4px 8px; letter-spacing:.05em; }
+    #edit-bar{ bottom:auto; top:0; padding:8px 10px; gap:8px; justify-content:center; font-size:13.4px; }
+    #edit-bar .ed-status{ margin-right:0; flex-basis:100%; text-align:center; }
+  }
+  /* ── swipe/tap hint — only on touch devices, fades after a few seconds ── */
+  #swipe-hint{ display:none; }
+  @media (hover:none) and (pointer:coarse){
+    #swipe-hint{ display:block; position:fixed; left:50%; bottom:72px; transform:translateX(-50%); z-index:9998;
+      font-family:'JetBrains Mono',monospace; font-size:13.4px; letter-spacing:.14em; white-space:nowrap;
+      color:var(--muted); background:color-mix(in srgb,var(--canvas) 82%,#000);
+      border:1px solid var(--line); border-radius:999px; padding:7px 16px; pointer-events:none;
+      animation:swipeHint 5s ease forwards; }
+  }
+  @keyframes swipeHint{ 0%{opacity:0} 14%{opacity:1} 72%{opacity:1} 100%{opacity:0; visibility:hidden} }
+  @media print{ #swipe-hint{ display:none !important } }
+</style>
+<script>
+/* In-deck text editor + server-saved presentation variants (/api/talk/variants). */
+(function(){
+  var DECK=(location.pathname.match(/\/talk\/([a-z0-9-]+)/)||[])[1]||'sf2026';
+  var API='/api/talk/variants';
+  var EINLINE=/^(EM|B|I|U|SPAN|BR|A|SMALL|STRONG|SUP|SUB|MARK)$/;
+  var ALLOW=/^(EM|B|I|U|SPAN|BR|A|STRONG|SMALL|SUP|SUB|MARK)$/;
+  var base={}, baseText={}, editMode=false, applied=[], curId=null, curName='', ds=null;
+
+  function isLeaf(el){
+    if(el.closest('svg')) return false;
+    if(!el.textContent || !el.textContent.trim()) return false;
+    for(var i=0;i<el.children.length;i++){ if(!EINLINE.test(el.children[i].tagName)) return false; }
+    return true;
+  }
+  function assign(){
+    document.querySelectorAll('section[data-slide]').forEach(function(sec){
+      var slide=sec.getAttribute('data-slide'), cands=[];
+      sec.querySelectorAll('*').forEach(function(el){ if(isLeaf(el)) cands.push(el); });
+      var set=new Set(cands);
+      var outers=cands.filter(function(el){ var p=el.parentElement; while(p&&p!==sec){ if(set.has(p)) return false; p=p.parentElement; } return true; });
+      outers.forEach(function(el,i){ var eid=slide+'/'+i; el.setAttribute('data-eid',eid); base[eid]=el.innerHTML; baseText[eid]=(el.textContent||'').trim(); });
+    });
+  }
+  function sanitizeInto(target, html){
+    var tpl=document.createElement('template'); tpl.innerHTML=html;
+    function clean(node){
+      var frag=document.createDocumentFragment();
+      node.childNodes.forEach(function(c){
+        if(c.nodeType===3){ frag.appendChild(document.createTextNode(c.nodeValue)); }
+        else if(c.nodeType===1){
+          if(ALLOW.test(c.tagName)){
+            var el=document.createElement(c.tagName.toLowerCase());
+            var cls=c.getAttribute('class'); if(cls) el.setAttribute('class',cls);
+            if(c.tagName==='A'){ var h=c.getAttribute('href')||''; if(/^https?:\/\//i.test(h)){ el.setAttribute('href',h); el.setAttribute('target','_blank'); el.setAttribute('rel','noopener'); } }
+            el.appendChild(clean(c)); frag.appendChild(el);
+          } else { frag.appendChild(clean(c)); }
+        }
+      });
+      return frag;
+    }
+    target.textContent=''; target.appendChild(clean(tpl.content));
+  }
+  function elBy(eid){ return document.querySelector('[data-eid="'+eid+'"]'); }
+  function restoreBase(eid){ var el=elBy(eid); if(el&&base[eid]!==undefined) el.innerHTML=base[eid]; }
+  function clearApplied(){ applied.forEach(restoreBase); applied=[]; }
+  function applyVariant(v){ clearApplied(); (v.edits||[]).forEach(function(e){ var el=elBy(e.eid); if(el){ sanitizeInto(el,e.html); applied.push(e.eid); } }); curId=v.id||null; curName=v.name||''; }
+  function collectEdits(){
+    var out=[];
+    document.querySelectorAll('[data-eid]').forEach(function(el){
+      var eid=el.getAttribute('data-eid'), cur=el.innerHTML;
+      if(base[eid]!==undefined && cur!==base[eid]) out.push({eid:eid, html:cur, orig:(baseText[eid]||'').slice(0,400)});
+    });
+    return out;
+  }
+
+  var bar, sel, msg;
+  function flash(t, err){ if(!msg) return; msg.textContent=t||''; msg.style.color=err?'#e0603a':'var(--gold)'; if(t){ var cur=t; setTimeout(function(){ if(msg.textContent===cur) msg.textContent=''; }, 3500); } }
+  function loadList(cb){
+    fetch(API+'?deck='+encodeURIComponent(DECK)).then(function(r){return r.json();}).then(function(d){
+      sel.innerHTML='<option value="">— завантажити варіант —</option>';
+      (d.variants||[]).forEach(function(v){ var o=document.createElement('option'); o.value=v.id; o.textContent=v.name; o._v=v; sel.appendChild(o); });
+      if(curId) sel.value=curId;
+      if(cb) cb(d.variants||[]);
+    }).catch(function(){ flash('Не вдалося завантажити список', true); });
+  }
+  function setEdit(on){
+    editMode=on; window.__deckEdit=on;
+    document.documentElement.classList.toggle('deck-editing', on);
+    document.querySelectorAll('[data-eid]').forEach(function(el){ if(on){ el.setAttribute('contenteditable','true'); } else { el.removeAttribute('contenteditable'); } });
+    bar.hidden=!on;
+    document.getElementById('deck-edit').classList.toggle('on', on);
+    if(on) loadList();
+  }
+
+  function wire(){
+    bar=document.getElementById('edit-bar'); sel=document.getElementById('ed-variants'); msg=document.getElementById('ed-msg');
+    document.getElementById('deck-edit').addEventListener('click', function(){ setEdit(!editMode); });
+    document.getElementById('ed-exit').addEventListener('click', function(){ setEdit(false); });
+    sel.addEventListener('change', function(){
+      var o=sel.selectedOptions[0];
+      if(o && o._v){ applyVariant(o._v); flash('Завантажено: '+o._v.name); }
+      else { clearApplied(); curId=null; curName=''; flash('Показано базовий текст'); }
+    });
+    document.getElementById('ed-save').addEventListener('click', function(){
+      var edits=collectEdits();
+      if(!edits.length){ flash('Немає змін для збереження', true); return; }
+      var name=prompt('Назва варіанту:', curName||'Мій варіант');
+      if(name===null) return; name=(name||'').trim(); if(!name){ flash('Потрібна назва', true); return; }
+      var body={ deck:DECK, name:name, edits:edits };
+      if(curId && curName===name) body.id=curId;
+      fetch(API,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)})
+        .then(function(r){return r.json();}).then(function(d){ if(d.ok){ curId=d.id; curName=name; flash('Збережено: '+name); loadList(); } else flash('Помилка: '+(d.error||'?'), true); })
+        .catch(function(){ flash('Помилка мережі', true); });
+    });
+    document.getElementById('ed-del').addEventListener('click', function(){
+      var id=sel.value; if(!id){ flash('Виберіть варіант зі списку', true); return; }
+      var nm=sel.selectedOptions[0].textContent;
+      if(!confirm('Видалити варіант «'+nm+'»?')) return;
+      fetch(API+'?deck='+encodeURIComponent(DECK)+'&id='+encodeURIComponent(id),{method:'DELETE'})
+        .then(function(r){return r.json();}).then(function(){ if(curId===id){ clearApplied(); curId=null; curName=''; } flash('Видалено'); loadList(); })
+        .catch(function(){ flash('Помилка', true); });
+    });
+    document.getElementById('ed-reset').addEventListener('click', function(){
+      Object.keys(base).forEach(restoreBase); applied=[]; curId=null; curName=''; sel.value=''; flash('Скинуто до базового тексту');
+    });
+    window.addEventListener('keydown', function(e){ if(editMode && e.target && e.target.isContentEditable) e.stopPropagation(); }, true);
+  }
+
+  function deepLink(){
+    var m=location.search.match(/[?&]variant=([a-zA-Z0-9-]+)/); if(!m) return;
+    loadList(function(list){ var v=list.filter(function(x){return x.id===m[1];})[0]; if(v) applyVariant(v); });
+  }
+
+  function init(){
+    ds=document.querySelector('deck-stage');
+    try{ var orig=ds._advance.bind(ds); ds._advance=function(dir,reason){ if(window.__deckEdit) return; return orig(dir,reason); }; }catch(e){}
+    assign(); wire(); deepLink();
+  }
+  if(window.customElements && customElements.whenDefined){ customElements.whenDefined('deck-stage').then(function(){ setTimeout(init,80); }); }
+  else { window.addEventListener('load', function(){ setTimeout(init,120); }); }
+})();
+</script>
+<div id="swipe-hint" aria-hidden="true">←  гортайте  →</div>
+<script>
+/* Swipe navigation for touch devices (tap-half is built in; this adds the natural gesture). */
+(function(){
+  var x0=null,y0=null,t0=0;
+  function tstart(e){
+    if(window.__deckEdit) return;
+    if(!e.touches || e.touches.length!==1) { x0=null; return; }
+    var el=e.target;
+    if(el && el.closest && el.closest('#deck-controls,#edit-bar')) { x0=null; return; }
+    x0=e.touches[0].clientX; y0=e.touches[0].clientY; t0=e.timeStamp||0;
+  }
+  function tend(e){
+    if(window.__deckEdit || x0===null) return;
+    var t=(e.changedTouches&&e.changedTouches[0]); if(!t){ x0=null; return; }
+    var dx=t.clientX-x0, dy=t.clientY-y0, dt=(e.timeStamp||0)-t0; x0=null;
+    if(Math.abs(dx)>48 && Math.abs(dx)>Math.abs(dy)*1.4 && dt<900){
+      var ds=document.querySelector('deck-stage'); if(!ds) return;
+      if(dx<0){ ds.next&&ds.next(); } else { ds.prev&&ds.prev(); }
+    }
+  }
+  window.addEventListener('touchstart', tstart, {passive:true});
+  window.addEventListener('touchend', tend, {passive:true});
+})();
+</script>
+</body>
+</html>
