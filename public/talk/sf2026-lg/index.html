@@ -101,14 +101,8 @@
   .node.down{transform:translateY(30px);opacity:.72;}
   .node .cap{font-family:'JetBrains Mono',monospace;font-size:20.2px;letter-spacing:.08em;color:var(--faint);text-transform:uppercase;text-align:center;}
   .connect{flex:1;height:3px;background:var(--line);margin-bottom:52px;min-width:26px;}
-  #theme{font-family:'JetBrains Mono',monospace;font-size:14.6px;
-    letter-spacing:.14em;text-transform:uppercase;color:var(--muted);background:var(--panel);border:1px solid var(--panel-line);
-    border-radius:999px;padding:6px 14px;cursor:pointer;display:flex;align-items:center;gap:9px;backdrop-filter:blur(8px);}
-  #theme:hover{color:var(--ink);}
-  #theme .sw{width:30px;height:16px;border-radius:999px;background:var(--grad-acc);position:relative;}
-  #theme .sw::after{content:"";position:absolute;top:2px;left:2px;width:12px;height:12px;border-radius:50%;background:#fff;transition:left .25s;}
-  html.light #theme .sw::after{left:16px;}
-  @media print{#theme{display:none}}
+  /* html.light is still reachable via ?theme=light and the light-PDF export;
+     the on-screen toggle is gone on purpose (nothing to fiddle with on stage). */
 
   /* Версії слайда: шари + перемикач справа-знизу (у друк не потрапляє) */
   section>.variant{position:absolute;inset:0;}
@@ -130,11 +124,12 @@
     border:1px solid var(--panel-line);background:none;border-radius:8px;padding:7px 14px;
     transition:color .2s,border-color .2s;}
   #deck-controls .export button:hover,#deck-controls .export a:hover{color:var(--gold);border-color:var(--gold);}
-  .vswitch{display:flex;gap:13px;align-items:center;}
-  .vswitch button{font-family:'JetBrains Mono',monospace;font-size:21.3px;letter-spacing:.1em;
-    padding:6px 3px;border:0;background:none;color:var(--muted);cursor:pointer;transition:color .2s;}
-  .vswitch button:hover{color:var(--ink);}
-  .vswitch button.on{color:var(--gold);}
+  #go-present{font-family:'JetBrains Mono',monospace;font-size:15.7px;letter-spacing:.12em;
+    text-transform:uppercase;color:var(--gold);background:none;cursor:pointer;
+    border:1px solid color-mix(in srgb,var(--gold) 55%,var(--panel-line));border-radius:8px;padding:7px 16px;
+    display:flex;align-items:center;gap:10px;transition:color .2s,border-color .2s,background .2s;}
+  #go-present:hover{border-color:var(--gold);background:color-mix(in srgb,var(--gold) 10%,transparent);}
+  #go-present .ar{font-size:18px;line-height:1;}
   @media print{#deck-controls{display:none}}
 
   /* Друк/PDF: background-clip:text у Chromium лишає крайові шви градієнта —
@@ -429,7 +424,7 @@
     <div class="ix pagenum"><span class="num">03</span> / 17</div>
   </section>
 
-  <section data-slide="04">
+  <section data-slide="04" data-building>
     <div class="variant thesis" data-v="A">
     <div class="bg"></div>
     <div class="pad center">
@@ -437,7 +432,7 @@
       <div class="inner" style="padding-bottom:20px">
         <h2 class="anim" style="font-size:67.2px;max-width:1460px;line-height:1.12;"><em class="g">«Повертаємо енергію»</em></h2><div class="anim" style="font-family:'Inter',sans-serif;font-size:29.1px;letter-spacing:.03em;color:var(--muted);margin-top:-32px;">вправа · одна хвилина</div>
         <div class="anim2" style="display:grid;grid-template-columns:repeat(4,1fr);gap:30px;max-width:1680px;width:100%;margin-top:34px;"><div data-step="1" style="background:var(--panel);background:color-mix(in srgb,var(--gold) 11%,transparent);border:1.85px solid var(--panel-line);border-color:color-mix(in srgb,var(--gold) 26%,transparent);border-radius:22px;padding:40px 28px 36px;text-align:left;display:flex;flex-direction:column;gap:20px;min-height:340px;"><div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;"><div style="font-family:'JetBrains Mono',monospace;font-size:34.7px;font-weight:600;letter-spacing:.07em;color:color-mix(in srgb,var(--gold-soft) 72%,var(--canvas));">01</div><div style="margin-top:6px;"><div style="display:flex;align-items:center;gap:2px;"><div style="width:84px;height:30px;flex:none;display:flex;gap:5px;align-items:stretch;border:2px solid color-mix(in srgb,var(--gold-soft) 72%,var(--canvas));border-radius:9px;padding:5px;"><span style="width:10px;border-radius:2.5px;background:color-mix(in srgb,var(--gold-soft) 72%,var(--canvas))"></span><span style="width:10px;border-radius:2.5px;background:color-mix(in srgb,var(--gold-soft) 72%,var(--canvas))"></span></div><div style="flex:none;width:5px;height:14px;border-radius:0 3px 3px 0;background:color-mix(in srgb,var(--gold-soft) 72%,var(--canvas));"></div></div></div></div><p style="font-size:30px;line-height:1.4;color:color-mix(in srgb,var(--ink) 52%,transparent);margin:auto 0 0;">Стати на носочки й потягнутися вгору маківкою якнайвище.</p></div><div data-step="2" style="background:var(--panel);background:color-mix(in srgb,var(--gold) 11%,transparent);border:1.85px solid var(--panel-line);border-color:color-mix(in srgb,var(--gold) 40%,transparent);border-radius:22px;padding:40px 28px 36px;text-align:left;display:flex;flex-direction:column;gap:20px;min-height:340px;"><div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;"><div style="font-family:'JetBrains Mono',monospace;font-size:34.7px;font-weight:600;letter-spacing:.07em;color:color-mix(in srgb,var(--gold-soft) 80%,var(--canvas));">02</div><div style="margin-top:6px;"><div style="display:flex;align-items:center;gap:2px;"><div style="width:84px;height:30px;flex:none;display:flex;gap:5px;align-items:stretch;border:2px solid color-mix(in srgb,var(--gold-soft) 80%,var(--canvas));border-radius:9px;padding:5px;"><span style="width:10px;border-radius:2.5px;background:color-mix(in srgb,var(--gold-soft) 80%,var(--canvas))"></span><span style="width:10px;border-radius:2.5px;background:color-mix(in srgb,var(--gold-soft) 80%,var(--canvas))"></span><span style="width:10px;border-radius:2.5px;background:color-mix(in srgb,var(--gold-soft) 80%,var(--canvas))"></span></div><div style="flex:none;width:5px;height:14px;border-radius:0 3px 3px 0;background:color-mix(in srgb,var(--gold-soft) 80%,var(--canvas));"></div></div></div></div><p style="font-size:30px;line-height:1.4;color:color-mix(in srgb,var(--ink) 68%,transparent);margin:auto 0 0;">Плечима: два круги вперед і два круги назад, повільно.</p></div><div data-step="3" style="background:var(--panel);background:color-mix(in srgb,var(--gold) 11%,transparent);border:1.85px solid var(--panel-line);border-color:color-mix(in srgb,var(--gold) 56%,transparent);border-radius:22px;padding:40px 28px 36px;text-align:left;display:flex;flex-direction:column;gap:20px;min-height:340px;"><div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;"><div style="font-family:'JetBrains Mono',monospace;font-size:34.7px;font-weight:600;letter-spacing:.07em;color:color-mix(in srgb,var(--gold-soft) 88%,var(--canvas));">03</div><div style="margin-top:6px;"><div style="display:flex;align-items:center;gap:2px;"><div style="width:84px;height:30px;flex:none;display:flex;gap:5px;align-items:stretch;border:2px solid color-mix(in srgb,var(--gold-soft) 88%,var(--canvas));border-radius:9px;padding:5px;"><span style="width:10px;border-radius:2.5px;background:color-mix(in srgb,var(--gold-soft) 88%,var(--canvas))"></span><span style="width:10px;border-radius:2.5px;background:color-mix(in srgb,var(--gold-soft) 88%,var(--canvas))"></span><span style="width:10px;border-radius:2.5px;background:color-mix(in srgb,var(--gold-soft) 88%,var(--canvas))"></span><span style="width:10px;border-radius:2.5px;background:color-mix(in srgb,var(--gold-soft) 88%,var(--canvas))"></span></div><div style="flex:none;width:5px;height:14px;border-radius:0 3px 3px 0;background:color-mix(in srgb,var(--gold-soft) 88%,var(--canvas));"></div></div></div></div><p style="font-size:30px;line-height:1.4;color:color-mix(in srgb,var(--ink) 84%,transparent);margin:auto 0 0;">Глибокий вдих носом, затримка, повільний видих ротом. Тричі.</p></div><div data-step="4" style="background:var(--panel);background:color-mix(in srgb,var(--gold) 11%,transparent);border:1.85px solid var(--panel-line);border-color:color-mix(in srgb,var(--gold) 74%,transparent);border-radius:22px;padding:40px 28px 36px;text-align:left;display:flex;flex-direction:column;gap:20px;min-height:340px;"><div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;"><div style="font-family:'JetBrains Mono',monospace;font-size:34.7px;font-weight:600;letter-spacing:.07em;color:color-mix(in srgb,var(--gold-soft) 95%,var(--canvas));">04</div><div style="margin-top:6px;"><div style="display:flex;align-items:center;gap:2px;"><div style="width:84px;height:30px;flex:none;display:flex;gap:5px;align-items:stretch;border:2px solid color-mix(in srgb,var(--gold-soft) 95%,var(--canvas));border-radius:9px;padding:5px;"><span style="width:10px;border-radius:2.5px;background:color-mix(in srgb,var(--gold-soft) 95%,var(--canvas))"></span><span style="width:10px;border-radius:2.5px;background:color-mix(in srgb,var(--gold-soft) 95%,var(--canvas))"></span><span style="width:10px;border-radius:2.5px;background:color-mix(in srgb,var(--gold-soft) 95%,var(--canvas))"></span><span style="width:10px;border-radius:2.5px;background:color-mix(in srgb,var(--gold-soft) 95%,var(--canvas))"></span><span style="width:10px;border-radius:2.5px;background:color-mix(in srgb,var(--gold-soft) 95%,var(--canvas))"></span></div><div style="flex:none;width:5px;height:14px;border-radius:0 3px 3px 0;background:color-mix(in srgb,var(--gold-soft) 95%,var(--canvas));"></div></div></div></div><p style="font-size:30px;line-height:1.4;color:color-mix(in srgb,var(--gold) 32%,var(--ink));margin:auto 0 0;">Посміхнутися сусідам праворуч і ліворуч від себе.</p></div></div>
-        <div class="sub anim3" style="text-align:center;font-size:29.1px;margin-top:26px;max-width:1560px;">А тепер ще раз покажіть: скільки у вас енергії <em class="g" style="font-style:normal">від 1 до 5?</em></div>
+        <div data-step="5" class="sub anim3" style="text-align:center;font-size:29.1px;margin-top:26px;max-width:1560px;">А тепер ще раз покажіть: скільки у вас енергії <em class="g" style="font-style:normal">від 1 до 5?</em></div>
       </div>
       <div class="foot" style="width:100%"><span></span><span></span></div>
     </div>
@@ -806,7 +801,7 @@
     <div class="ix pagenum"><span class="num">10</span> / 17</div>
   </section>
 
-  <section data-slide="11">
+  <section data-slide="11" data-building>
     <div class="variant thesis" data-v="A"><div class="bg"></div><div class="pad">
 <div class="runhead" style="width:100%"><div class="eyebrow"><span class="dot"></span>Рішення · Профілактика</div><div class="ix">Тетяна Пан</div></div>
 <div class="body" style="width:100%;grid-template-columns:.86fr 1.18fr;gap:72px">
@@ -836,7 +831,7 @@
         </linearGradient>
       </defs>
       <!-- healthy / resourced zone -->
-      <rect x="92" y="96" width="508" height="116" rx="6" fill="color-mix(in srgb,var(--gold) 7%,transparent)"/>
+      <rect x="92" y="96" width="552" height="116" rx="6" fill="color-mix(in srgb,var(--gold) 7%,transparent)"/>
       <path d="M92 212 H644" fill="none" stroke="color-mix(in srgb,var(--faint) 55%,transparent)" stroke-width="1.5" stroke-dasharray="2 10" stroke-linecap="round"/>
       <!-- axes -->
       <path d="M92 68 V402 H644" fill="none" stroke="var(--line)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -861,86 +856,70 @@
       <!-- axis captions -->
       <text x="112" y="80" text-anchor="start" style="font-family:'JetBrains Mono',monospace;font-size:16.8px;letter-spacing:.2em;text-transform:uppercase" fill="var(--faint)">Енергія</text>
       <text x="644" y="432" text-anchor="end" style="font-family:'JetBrains Mono',monospace;font-size:16.8px;letter-spacing:.2em;text-transform:uppercase" fill="var(--faint)">Час</text>
-    </svg></div><div data-step-panel="2"><svg width="790" height="562" viewBox="0 0 660 470" role="img" aria-label="Крок 2 — підтримувати прогрес: крива ресурсу більше не падає; регулярні невеликі імпульси підтримки сходинками тримають і повільно піднімають лінію вгору відносно рівня на старті">
+    </svg></div><div data-step-panel="2"><svg width="790" height="562" viewBox="0 0 660 470" role="img" aria-label="Крок 2 — підтримувати прогрес: та сама крива ресурсу, що й на кроці 1, від точки втручання розходиться надвоє. Пунктиром униз — спад без підтримки, який виходить за межу норми; суцільною золотою — рівень, який тримається в нормі завдяки регулярним невеликим імпульсам підтримки">
   <defs>
-    <linearGradient id="s11p-line" x1="0" y1="1" x2="1" y2="0">
+    <linearGradient id="s11b-line" x1="0" y1="0" x2="1" y2="0">
       <stop offset="0" style="stop-color:var(--gold-soft)"/>
       <stop offset="1" style="stop-color:var(--gold)"/>
     </linearGradient>
   </defs>
-
-  <rect x="92" y="216" width="552" height="128" rx="6" fill="color-mix(in srgb,var(--gold) 6%,transparent)"/>
-
-  <path d="M92 330 H644" fill="none" stroke="color-mix(in srgb,var(--faint) 55%,transparent)" stroke-width="1.5" stroke-dasharray="2 10" stroke-linecap="round"/>
-
+  <!-- зона норми -->
+  <rect x="92" y="96" width="552" height="116" rx="6" fill="color-mix(in srgb,var(--gold) 7%,transparent)"/>
+  <path d="M92 212 H644" fill="none" stroke="color-mix(in srgb,var(--faint) 55%,transparent)" stroke-width="1.5" stroke-dasharray="2 10" stroke-linecap="round"/>
+  <!-- осі -->
   <path d="M92 68 V402 H644" fill="none" stroke="var(--line)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
   <path d="M87 78 L92 66 L97 78" fill="none" stroke="var(--line)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-
-  <path d="M116 328 C 126 325, 133 322, 140 320 C 168 327, 194 325, 220 300 C 248 307, 274 305, 300 282 C 328 289, 354 287, 380 266 C 408 273, 434 271, 460 252 C 488 259, 514 257, 540 240 C 568 247, 594 245, 620 230" fill="none" stroke="url(#s11p-line)" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/>
-
-  <g stroke="var(--gold-soft)" stroke-width="2.6" stroke-linecap="round">
-    <path d="M140 338 V356"/>
-    <path d="M220 318 V336"/>
-    <path d="M300 300 V318"/>
-    <path d="M380 284 V302"/>
-    <path d="M460 270 V288"/>
-    <path d="M540 258 V276"/>
-    <path d="M620 248 V266"/>
+  <path d="M638 397 L648 402 L638 407" fill="none" stroke="var(--line)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- точка, з якої все розходиться -->
+  <path d="M280 178 V402" fill="none" stroke="color-mix(in srgb,var(--faint) 60%,transparent)" stroke-width="1.6" stroke-dasharray="2 9" stroke-linecap="round"/>
+  <!-- що вже було -->
+  <path d="M116 150 C 176 154, 236 162, 280 170" fill="none" stroke="url(#s11b-line)" stroke-width="3.6" stroke-linecap="round"/>
+  <!-- гілка 1: без підтримки — випадає з норми -->
+  <path d="M280 170 C 330 232, 366 330, 426 366 C 496 400, 570 396, 640 392" fill="none" stroke="color-mix(in srgb,var(--faint) 85%,transparent)" stroke-width="2.4" stroke-linecap="round" stroke-dasharray="3 11"/>
+  <text x="640" y="352" text-anchor="end" style="font-family:'JetBrains Mono',monospace;font-size:16.8px;letter-spacing:.18em;text-transform:uppercase" fill="var(--muted)">без підтримки</text>
+  <!-- гілка 2: рівень тримається в нормі -->
+  <path d="M280 170 C 322 172, 340 160, 382 158 C 430 156, 448 146, 494 145 C 546 144, 566 136, 616 136" fill="none" stroke="url(#s11b-line)" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- регулярні невеликі імпульси підтримки -->
+  <g stroke="var(--gold-soft)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" fill="none">
+    <path d="M382 238 V172"/><path d="M375 184 L382 170 L389 184"/>
+    <path d="M494 238 V159"/><path d="M487 171 L494 157 L501 171"/>
+    <path d="M616 238 V150"/><path d="M609 162 L616 148 L623 162"/>
   </g>
-
-  <g fill="var(--gold)">
-    <circle cx="140" cy="320" r="4.6"/>
-    <circle cx="220" cy="300" r="4.6"/>
-    <circle cx="300" cy="282" r="4.6"/>
-    <circle cx="380" cy="266" r="4.6"/>
-    <circle cx="460" cy="252" r="4.6"/>
-    <circle cx="540" cy="240" r="4.6"/>
-  </g>
-
-  <circle cx="620" cy="230" r="27" fill="var(--glow)"/>
-  <circle cx="620" cy="230" r="13" fill="none" stroke="var(--gold)" stroke-width="2.6"/>
-  <circle cx="620" cy="230" r="6.6" fill="var(--gold)"/>
-
-  <text x="368" y="180" text-anchor="middle" style="font-family:'Spectral',serif;font-style:italic;font-size:29px" fill="var(--gold)">рівень тримається</text>
-
-  <text x="380" y="394" text-anchor="middle" style="font-family:'JetBrains Mono',monospace;font-size:15px;letter-spacing:.18em;text-transform:uppercase" fill="var(--muted)">регулярна підтримка</text>
-  <text x="644" y="352" text-anchor="end" style="font-family:'JetBrains Mono',monospace;font-size:15px;letter-spacing:.18em;text-transform:uppercase" fill="var(--faint)">рівень на старті</text>
-
-  <text x="112" y="80" text-anchor="start" style="font-family:'JetBrains Mono',monospace;font-size:15px;letter-spacing:.2em;text-transform:uppercase" fill="var(--faint)">Енергія</text>
-  <text x="644" y="432" text-anchor="end" style="font-family:'JetBrains Mono',monospace;font-size:15px;letter-spacing:.2em;text-transform:uppercase" fill="var(--faint)">Час</text>
-</svg></div><div data-step-panel="3"><svg width="790" height="562" viewBox="0 0 660 470" role="img" aria-label="Схема третього кроку «Створювати умови»: рамка-опора тримає п'ять рівних опор на сталому рівні, центральна підсвічена золотим — середовище, що само утримує енергію команди">
+  <text x="640" y="266" text-anchor="end" style="font-family:'JetBrains Mono',monospace;font-size:16.8px;letter-spacing:.18em;text-transform:uppercase" fill="var(--muted)">регулярна підтримка</text>
+  <circle cx="616" cy="136" r="13" fill="none" stroke="var(--gold)" stroke-width="2.6"/>
+  <circle cx="616" cy="136" r="6.6" fill="var(--gold)"/>
+  <text x="430" y="112" text-anchor="middle" style="font-family:'Spectral',serif;font-style:italic;font-size:32.5px" fill="var(--gold)">рівень тримається</text>
+  <text x="112" y="80" text-anchor="start" style="font-family:'JetBrains Mono',monospace;font-size:16.8px;letter-spacing:.2em;text-transform:uppercase" fill="var(--faint)">Енергія</text>
+  <text x="644" y="432" text-anchor="end" style="font-family:'JetBrains Mono',monospace;font-size:16.8px;letter-spacing:.2em;text-transform:uppercase" fill="var(--faint)">Час</text>
+</svg></div><div data-step-panel="3"><svg width="790" height="562" viewBox="0 0 660 470" role="img" aria-label="Крок 3 — створювати умови: зона норми з попередніх кроків стає збудованим коридором із верхньою і нижньою межами на опорах. Лінія енергії команди й далі коливається, але тримається всередині сама, без ручних імпульсів підтримки">
   <defs>
-    <linearGradient id="s12c-col" x1="0" y1="1" x2="0" y2="0">
-      <stop offset="0" style="stop-color:var(--gold-soft)"/><stop offset="1" style="stop-color:var(--gold)"/>
+    <linearGradient id="s11c-line" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" style="stop-color:var(--gold-soft)"/>
+      <stop offset="1" style="stop-color:var(--gold)"/>
     </linearGradient>
   </defs>
-
-  <rect x="92" y="250" width="552" height="152" rx="6" fill="color-mix(in srgb,var(--gold) 6%,transparent)"/>
-
-  <path d="M92 250 H644" fill="none" stroke="color-mix(in srgb,var(--faint) 55%,transparent)" stroke-width="1.5" stroke-dasharray="2 10" stroke-linecap="round"/>
-
-  <path d="M92 214 V402 H644 V214" fill="none" stroke="var(--line)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-
-  <path d="M92 418 H644" fill="none" stroke="color-mix(in srgb,var(--faint) 45%,transparent)" stroke-width="1.5" stroke-dasharray="2 12" stroke-linecap="round"/>
-
-  <path d="M168 402 V250 M268 402 V250 M468 402 V250 M568 402 V250" fill="none" stroke="color-mix(in srgb,var(--faint) 90%,transparent)" stroke-width="2.2" stroke-linecap="round"/>
-  <circle cx="168" cy="250" r="6" fill="none" stroke="color-mix(in srgb,var(--faint) 90%,transparent)" stroke-width="2"/>
-  <circle cx="268" cy="250" r="6" fill="none" stroke="color-mix(in srgb,var(--faint) 90%,transparent)" stroke-width="2"/>
-  <circle cx="468" cy="250" r="6" fill="none" stroke="color-mix(in srgb,var(--faint) 90%,transparent)" stroke-width="2"/>
-  <circle cx="568" cy="250" r="6" fill="none" stroke="color-mix(in srgb,var(--faint) 90%,transparent)" stroke-width="2"/>
-
-  <path d="M368 402 V250" fill="none" stroke="url(#s12c-col)" stroke-width="3.6" stroke-linecap="round"/>
-  <circle cx="368" cy="250" r="27" fill="var(--glow)"/>
-  <circle cx="368" cy="250" r="13" fill="none" stroke="var(--gold)" stroke-width="2.6"/>
-  <circle cx="368" cy="250" r="6.6" fill="var(--gold)"/>
-
-  <path d="M168 402 V414 M268 402 V414 M368 402 V414 M468 402 V414 M568 402 V414" fill="none" stroke="color-mix(in srgb,var(--faint) 60%,transparent)" stroke-width="1.6" stroke-linecap="round"/>
-
-  <text x="368" y="176" text-anchor="middle" style="font-family:'Spectral',serif;font-style:italic;font-size:29px" fill="var(--gold)">середовище тримає рівень</text>
-
-  <text x="92" y="236" text-anchor="start" style="font-family:'JetBrains Mono',monospace;font-size:15px;letter-spacing:.2em;text-transform:uppercase" fill="var(--faint)">Середовище</text>
-  <text x="644" y="236" text-anchor="end" style="font-family:'JetBrains Mono',monospace;font-size:15px;letter-spacing:.18em;text-transform:uppercase" fill="var(--muted)">сталий рівень</text>
-  <text x="92" y="444" text-anchor="start" style="font-family:'JetBrains Mono',monospace;font-size:15px;letter-spacing:.2em;text-transform:uppercase" fill="var(--faint)">Опора</text>
+  <!-- та сама зона норми — тепер це коридор -->
+  <rect x="92" y="140" width="552" height="116" rx="6" fill="color-mix(in srgb,var(--gold) 7%,transparent)"/>
+  <!-- осі -->
+  <path d="M92 68 V402 H644" fill="none" stroke="var(--line)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M87 78 L92 66 L97 78" fill="none" stroke="var(--line)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M638 397 L648 402 L638 407" fill="none" stroke="var(--line)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- межі коридору: збудовані, а не намальовані пунктиром -->
+  <path d="M100 140 H636" fill="none" stroke="color-mix(in srgb,var(--gold) 42%,transparent)" stroke-width="2.6" stroke-linecap="round"/>
+  <path d="M100 256 H636" fill="none" stroke="var(--gold)" stroke-width="3.2" stroke-linecap="round"/>
+  <path d="M396 256 H496" fill="none" stroke="var(--gold-soft)" stroke-width="5.4" stroke-linecap="round"/>
+  <!-- лінія енергії: коливається, але не випадає з коридору -->
+  <path d="M116 206 C 146 186, 172 178, 200 186 C 228 194, 244 220, 272 222 C 300 224, 316 192, 344 188 C 372 184, 392 208, 418 228 C 436 241, 456 240, 476 228 C 500 214, 512 192, 538 189 C 566 186, 590 200, 626 192" fill="none" stroke="url(#s11c-line)" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- опори, на яких коридор тримається -->
+  <path d="M168 256 V402 M268 256 V402 M368 256 V402 M468 256 V402 M568 256 V402" fill="none" stroke="color-mix(in srgb,var(--faint) 62%,transparent)" stroke-width="2" stroke-linecap="round"/>
+  <g fill="var(--gold)">
+    <circle cx="168" cy="256" r="4.6"/><circle cx="268" cy="256" r="4.6"/><circle cx="368" cy="256" r="4.6"/>
+    <circle cx="468" cy="256" r="4.6"/><circle cx="568" cy="256" r="4.6"/>
+  </g>
+  <text x="368" y="120" text-anchor="middle" style="font-family:'Spectral',serif;font-style:italic;font-size:32.5px" fill="var(--gold)">середовище тримає рівень</text>
+  <text x="112" y="440" text-anchor="start" style="font-family:'JetBrains Mono',monospace;font-size:16.8px;letter-spacing:.18em;text-transform:uppercase" fill="var(--faint)">опори · умови</text>
+  <text x="112" y="80" text-anchor="start" style="font-family:'JetBrains Mono',monospace;font-size:16.8px;letter-spacing:.2em;text-transform:uppercase" fill="var(--faint)">Енергія</text>
+  <text x="644" y="432" text-anchor="end" style="font-family:'JetBrains Mono',monospace;font-size:16.8px;letter-spacing:.2em;text-transform:uppercase" fill="var(--faint)">Час</text>
 </svg></div>
   </div>
 </div>
@@ -951,7 +930,7 @@
     <div class="ix pagenum"><span class="num">11</span> / 17</div>
   </section>
 
-  <section data-slide="12">
+  <section data-slide="12" data-building>
     <div class="variant thesis" data-v="A"><div class="bg"></div><div class="pad center">
 <div class="runhead" style="width:100%"><div class="eyebrow"><span class="dot"></span>Рішення · Відновлення</div><div class="ix">Тетяна Пан</div></div>
 <div class="inner" style="width:100%">
@@ -966,7 +945,7 @@
       <div data-step="2" class="chip" style="position:absolute;left:88px;bottom:90px;width:470px;height:78px;display:flex;align-items:center;gap:26px;padding:0 34px;border-radius:16px;background:color-mix(in srgb,var(--gold) 7%,var(--canvas));border:2.5px solid color-mix(in srgb,var(--gold) 30%,var(--line));white-space:nowrap"><span class="n" style="font-size:21.3px">02</span><span class="t" style="font-size:26.9px">Прибрати зайве</span></div>
       <div data-step="3" class="chip" style="position:absolute;left:176px;bottom:180px;width:470px;height:78px;display:flex;align-items:center;gap:26px;padding:0 34px;border-radius:16px;background:color-mix(in srgb,var(--gold) 10%,var(--canvas));border:2.5px solid color-mix(in srgb,var(--gold) 48%,var(--line));white-space:nowrap"><span class="n" style="font-size:21.3px">03</span><span class="t" style="font-size:26.9px">Повернути вплив</span></div>
       <div data-step="4" class="chip" style="position:absolute;left:264px;bottom:270px;width:470px;height:78px;display:flex;align-items:center;gap:26px;padding:0 34px;border-radius:16px;background:color-mix(in srgb,var(--gold) 14%,var(--canvas));border:2.5px solid color-mix(in srgb,var(--gold) 68%,var(--line));white-space:nowrap"><span class="n" style="font-size:21.3px">04</span><span class="t" style="font-size:26.9px">Дробити цілі</span></div>
-      <svg width="58" height="66" viewBox="0 0 58 66" style="position:absolute;left:700px;top:0px" aria-hidden="true">
+      <svg data-step="5" width="58" height="66" viewBox="0 0 58 66" style="position:absolute;left:700px;top:0px" aria-hidden="true">
         <defs><linearGradient id="s11d-flag" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="var(--gold-soft)"/><stop offset="1" stop-color="var(--gold)"/></linearGradient></defs>
         <path d="M7 63 V7" stroke="var(--gold)" stroke-width="3" stroke-linecap="round" fill="none"/>
         <path d="M9 9 L52 18.5 L9 28 Z" fill="url(#s11d-flag)"/>
@@ -1205,8 +1184,7 @@
     <a id="exp-pptx" href="sf2026.pptx" download="Sales Forum 2026 — Тетяна Пан.pptx" title="Завантажити презентацію (PPTX)">PPTX</a>
     <button id="deck-edit" type="button" title="Редагувати тексти презентації">Редагувати</button>
   </div>
-  <div class="vswitch" id="vswitch-global" aria-label="Версії слайда"></div>
-  <button id="theme" aria-label="Перемкнути тему"><span class="sw"></span><span id="theme-label">Світла</span></button>
+  <button id="go-present" type="button" title="Повноекранний показ — гортати стрілками, пробілом або кліком; Esc — вийти"><span class="ar" aria-hidden="true">⤢</span>Показ</button>
 </div>
 <div id="edit-bar" hidden>
   <span class="ed-status">✎ Режим редагування — клікайте будь-який текст і змінюйте його</span>
@@ -1218,33 +1196,6 @@
   <span class="ed-msg" id="ed-msg"></span>
 </div>
 <script>
-  // Глобальний перемикач версій активного слайда (поза межами слайда).
-  (function(){
-    var box = document.getElementById('vswitch-global');
-    function active(){ return document.querySelector('section[data-deck-active]'); }
-    function render(){
-      var sec = active();
-      var vars = sec ? sec.querySelectorAll(':scope > .variant') : [];
-      if(!sec || vars.length < 2){ box.style.display = 'none'; return; }
-      box.style.display = 'flex';
-      box.innerHTML = '';
-      vars.forEach(function(v){
-        var b = document.createElement('button');
-        b.type = 'button'; b.textContent = v.dataset.v;
-        if(!v.hidden) b.className = 'on';
-        b.addEventListener('click', function(e){
-          e.stopPropagation();
-          vars.forEach(function(x){ x.hidden = x !== v; });
-          render();
-        });
-        box.appendChild(b);
-      });
-    }
-    var ds = document.querySelector('deck-stage');
-    ds.addEventListener('slidechange', render);
-    customElements.whenDefined('deck-stage').then(function(){ setTimeout(render, 50); });
-    window.addEventListener('load', function(){ setTimeout(render, 200); });
-  })();
   // Експорт у PDF — друк поточного вигляду (deck-stage вже налаштував @media print).
   (function(){
     function toPDF(theme){
@@ -1259,19 +1210,49 @@
   })();
 </script>
 <script>
+  /* Тема: перемикача більше немає — темна за замовчуванням, світла лише за
+     ?theme=light (і тимчасово, поки друкується світлий PDF). */
   (function(){
-    var KEY='tp-sf2026-theme';
-    var lbl=document.getElementById('theme-label');
-    function apply(t){document.documentElement.classList.toggle('light',t==='light');lbl.textContent=t==='light'?'Темна':'Світла';}
     var q=(location.search.match(/[?&]theme=(light|dark)/)||[])[1];
-    if(q){try{localStorage.setItem(KEY,q);}catch(e){}}
-    var saved=q||localStorage.getItem(KEY)||'dark';apply(saved);
-    document.getElementById('theme').addEventListener('click',function(){
-      var t=document.documentElement.classList.contains('light')?'dark':'light';
-      localStorage.setItem(KEY,t);apply(t);
+    if(q==='light') document.documentElement.classList.add('light');
+  })();
+</script>
+<script>
+  /* Кнопка «Показ»: вмикає повноекранний режим показу без перезавантаження —
+     слайд лишається той самий, відео на обкладинці не перезапускається. Esc
+     (вихід із fullscreen) повертає робочий вигляд; якщо дек і так відкрито
+     через ?present=1 — лишаємо режим показу. */
+  (function(){
+    var btn=document.getElementById('go-present'); if(!btn) return;
+    var root=document.documentElement;
+    function fsOn(){ return !!(document.fullscreenElement||document.webkitFullscreenElement); }
+    function refit(){ try{ window.dispatchEvent(new Event('resize')); }catch(e){} }
+    function present(on){
+      root.classList.toggle('deck-present', on);
+      var ds=document.querySelector('deck-stage');
+      if(ds){ if(on) ds.setAttribute('no-rail',''); else ds.removeAttribute('no-rail'); }
+      refit(); setTimeout(refit, 220);
+    }
+    btn.addEventListener('click', function(){
+      present(true);
+      var req=root.requestFullscreen||root.webkitRequestFullscreen;
+      if(req){ var p=req.call(root); if(p&&p.catch) p.catch(function(){}); }
+    });
+    function onFsChange(){ if(!fsOn() && !window.__deckPresent) present(false); }
+    document.addEventListener('fullscreenchange', onFsChange);
+    document.addEventListener('webkitfullscreenchange', onFsChange);
+    // Якщо повноекранний режим заборонено (вбудований перегляд, політика
+    // браузера), fullscreenchange не спрацює — Esc має вивести з показу сам,
+    // інакше панель керування зникла б без шляху назад.
+    document.addEventListener('keydown', function(e){
+      if(e.key!=='Escape' || window.__deckPresent) return;
+      if(!root.classList.contains('deck-present')) return;
+      if(fsOn()){ var ex=document.exitFullscreen||document.webkitExitFullscreen; if(ex) ex.call(document); }
+      else present(false);
     });
   })();
 </script>
+<noscript><style>deck-stage section[data-building] [data-step]{opacity:1 !important;transform:none !important}</style></noscript>
 <style id="ed-style">
   html.deck-editing [data-eid]{ outline:1px dashed color-mix(in srgb,var(--gold) 45%,transparent); outline-offset:3px; border-radius:3px; cursor:text; }
   html.deck-editing [data-eid]:hover{ outline-color:var(--gold); background:color-mix(in srgb,var(--gold) 8%,transparent); }
@@ -1310,16 +1291,22 @@
   @media print{ #swipe-hint{ display:none !important } }
   @media print{ #cover-bg-video{ display:none !important } }
   @media (prefers-reduced-motion:reduce){ #cover-bg-video{ display:none } }
-  /* ── build steps: elements appear one by one, then the deck moves on ── */
+  /* ── build steps: elements appear one by one, then the deck moves on ──
+     data-building sits in the markup (not added by JS) so the steps are hidden
+     on the very first paint — otherwise the whole slide flashes fully built for
+     the moment before the engine boots. Scoped to `deck-stage` so it never
+     applies inside a thumbnail: the rail deep-clones each section into its own
+     shadow root together with a copy of these styles, and a thumbnail must show
+     the finished slide, not an empty one. */
   [data-step]{ transition:opacity .5s ease, transform .5s ease; }
-  section[data-building] [data-step]{ opacity:0; transform:translateY(16px); }
-  section[data-building] [data-step].step-on{ opacity:1; transform:none; }
+  deck-stage section[data-building] [data-step]{ opacity:0; transform:translateY(16px); }
+  deck-stage section[data-building] [data-step].step-on{ opacity:1; transform:none; }
   /* right-side panels that swap per step; panel 1 is the no-JS / thumbnail default */
   [data-step-panel]{ display:none; }
   [data-step-panel="1"]{ display:block; }
   @media (prefers-reduced-motion:reduce){ [data-step]{ transition:none; } }
   @media print{
-    section[data-building] [data-step]{ opacity:1 !important; transform:none !important; }
+    deck-stage section[data-building] [data-step]{ opacity:1 !important; transform:none !important; }
   }
   /* ── present mode (?present=1): clean full-screen deck, arrows navigate ── */
   html.deck-present #deck-controls,
