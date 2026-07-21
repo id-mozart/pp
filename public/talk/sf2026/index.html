@@ -122,6 +122,12 @@
   #deck-controls{position:fixed;left:0;right:0;bottom:0;height:62px;z-index:9999;
     display:flex;align-items:center;justify-content:flex-end;gap:28px;
     padding:0 34px;background:var(--canvas);border-top:1px solid var(--line);}
+  #deck-controls .export{display:flex;gap:10px;align-items:center;margin-right:auto;}
+  #deck-controls .export button,#deck-controls .export a{font-family:'JetBrains Mono',monospace;
+    font-size:14px;letter-spacing:.12em;color:var(--muted);text-decoration:none;cursor:pointer;
+    border:1px solid var(--panel-line);background:none;border-radius:8px;padding:7px 14px;
+    transition:color .2s,border-color .2s;}
+  #deck-controls .export button:hover,#deck-controls .export a:hover{color:var(--gold);border-color:var(--gold);}
   .vswitch{display:flex;gap:13px;align-items:center;}
   .vswitch button{font-family:'JetBrains Mono',monospace;font-size:19px;letter-spacing:.1em;
     padding:6px 3px;border:0;background:none;color:var(--muted);cursor:pointer;transition:color .2s;}
@@ -2117,6 +2123,10 @@
 </deck-stage>
 <script src="deck-stage.js"></script>
 <div id="deck-controls">
+  <div class="export">
+    <button id="exp-pdf" type="button" title="Експортувати поточний вигляд у PDF">PDF</button>
+    <a id="exp-pptx" href="sf2026.pptx" download="Sales Forum 2026 — Тетяна Пан.pptx" title="Завантажити презентацію (PPTX)">PPTX</a>
+  </div>
   <div class="vswitch" id="vswitch-global" aria-label="Версії слайда"></div>
   <button id="theme" aria-label="Перемкнути тему"><span class="sw"></span><span id="theme-label">Світла</span></button>
 </div>
@@ -2147,6 +2157,11 @@
     ds.addEventListener('slidechange', render);
     customElements.whenDefined('deck-stage').then(function(){ setTimeout(render, 50); });
     window.addEventListener('load', function(){ setTimeout(render, 200); });
+  })();
+  // Експорт у PDF — друк поточного вигляду (deck-stage вже налаштував @media print).
+  (function(){
+    var b = document.getElementById('exp-pdf');
+    if(b) b.addEventListener('click', function(){ window.print(); });
   })();
 </script>
 <script>
