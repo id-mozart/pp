@@ -29,7 +29,9 @@
   }
   *{box-sizing:border-box}
   body{margin:0;background:var(--canvas);}
-  deck-stage{--dur:.55s}
+  /* Лишаємо 62px знизу під панель контролів — слайд туди не залазить. */
+  deck-stage{--dur:.55s; bottom:62px !important;}
+  @media print{deck-stage{bottom:0 !important;}}
   section{background:var(--canvas);color:var(--ink);font-family:'Inter',sans-serif;overflow:hidden;
     transition:background .5s ease,color .5s ease;}
   .bg{position:absolute;inset:0;z-index:0;pointer-events:none;}
@@ -117,9 +119,9 @@
   .pagenum{display:none;}
   @media print{.pagenum{display:block;position:absolute;right:60px;bottom:52px;}}
 
-  #deck-controls{position:fixed;right:26px;bottom:8px;z-index:9999;display:flex;
-    align-items:center;gap:26px;opacity:.6;transition:opacity .25s;}
-  #deck-controls:hover{opacity:1;}
+  #deck-controls{position:fixed;left:0;right:0;bottom:0;height:62px;z-index:9999;
+    display:flex;align-items:center;justify-content:flex-end;gap:28px;
+    padding:0 34px;background:var(--canvas);border-top:1px solid var(--line);}
   #deck-pn{font-family:'JetBrains Mono',monospace;font-size:19px;letter-spacing:.16em;color:var(--muted);}
   #deck-pn .num{background:var(--grad-acc);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent;font-weight:600;}
   .vswitch{display:flex;gap:13px;align-items:center;}
