@@ -823,101 +823,98 @@
     </div>
   </div>
   <div class="vis anim2" style="justify-self:start;margin-left:-24px;">
-    <div data-step-panel="1"><svg width="790" height="562" viewBox="0 0 660 470" role="img" aria-label="Крива ресурсу команди йде рівно й трохи вниз; поки ресурс ще високо, стоїть золота точка-маркер профілактики, далі пунктиром — спад без втручання">
-      <defs>
-        <linearGradient id="s10g-line" x1="0" y1="0" x2="1" y2="0">
-          <stop offset="0" style="stop-color:var(--gold-soft)"/>
-          <stop offset="1" style="stop-color:var(--gold)"/>
-        </linearGradient>
-      </defs>
-      <!-- healthy / resourced zone -->
-      <rect x="92" y="96" width="552" height="116" rx="6" fill="color-mix(in srgb,var(--gold) 7%,transparent)"/>
-      <path d="M92 212 H644" fill="none" stroke="color-mix(in srgb,var(--faint) 55%,transparent)" stroke-width="1.5" stroke-dasharray="2 10" stroke-linecap="round"/>
-      <!-- axes -->
-      <path d="M92 68 V402 H644" fill="none" stroke="var(--line)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-      <!-- axis arrowheads -->
-      <path d="M87 78 L92 66 L97 78" fill="none" stroke="var(--line)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-      <path d="M638 397 L648 402 L638 407" fill="none" stroke="var(--line)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-      <!-- vertical guide separating "now" from "without intervention" -->
-      <path d="M402 196 V402" fill="none" stroke="color-mix(in srgb,var(--faint) 60%,transparent)" stroke-width="1.6" stroke-dasharray="2 9" stroke-linecap="round"/>
-      <!-- resource curve: level, gently declining while still high -->
-      <path d="M116 150 C 210 156, 320 172, 402 188" fill="none" stroke="url(#s10g-line)" stroke-width="3.6" stroke-linecap="round"/>
-      <!-- dashed decline: what happens without intervention -->
-      <path d="M402 188 C 486 204, 566 282, 644 362" fill="none" stroke="color-mix(in srgb,var(--faint) 92%,transparent)" stroke-width="2.6" stroke-linecap="round" stroke-dasharray="3 11"/>
-      <!-- intervention marker -->
-      <circle cx="402" cy="188" r="27" fill="var(--glow)"/>
-      <path d="M402 175 V140" fill="none" stroke="var(--gold)" stroke-width="2.4" stroke-linecap="round"/>
-      <circle cx="402" cy="188" r="13" fill="none" stroke="var(--gold)" stroke-width="2.6"/>
-      <circle cx="402" cy="188" r="6.6" fill="var(--gold)"/>
-      <!-- intervention label -->
-      <text x="402" y="126" text-anchor="middle" style="font-family:'Spectral',serif;font-style:italic;font-size:32.5px" fill="var(--gold)">тут — профілактика</text>
-      <!-- caption on the decline -->
-      <text x="644" y="386" text-anchor="end" style="font-family:'JetBrains Mono',monospace;font-size:16.8px;letter-spacing:.18em;text-transform:uppercase" fill="var(--muted)">без втручання</text>
-      <!-- axis captions -->
-      <text x="112" y="80" text-anchor="start" style="font-family:'JetBrains Mono',monospace;font-size:16.8px;letter-spacing:.2em;text-transform:uppercase" fill="var(--faint)">Енергія</text>
-      <text x="644" y="432" text-anchor="end" style="font-family:'JetBrains Mono',monospace;font-size:16.8px;letter-spacing:.2em;text-transform:uppercase" fill="var(--faint)">Час</text>
-    </svg></div><div data-step-panel="2"><svg width="790" height="562" viewBox="0 0 660 470" role="img" aria-label="Крок 2 — підтримувати прогрес: та сама крива ресурсу, що й на кроці 1, від точки втручання розходиться надвоє. Пунктиром униз — спад без підтримки, який виходить за межу норми; суцільною золотою — рівень, який тримається в нормі завдяки регулярним невеликим імпульсам підтримки">
+    <div data-step-panel="1"><svg width="790" height="562" viewBox="0 0 660 470" role="img" aria-label="Крок 1 — помічати стан команди: крива ресурсу йде рівно й лише трохи вниз, поки команда ще в зоні норми. У точці, де ресурс ще високий, стоїть золотий маркер профілактики; далі пунктиром — спад, який настане без втручання">
   <defs>
-    <linearGradient id="s11b-line" x1="0" y1="0" x2="1" y2="0">
+    <linearGradient id="s11a-line" x1="0" y1="0" x2="1" y2="0">
       <stop offset="0" style="stop-color:var(--gold-soft)"/>
       <stop offset="1" style="stop-color:var(--gold)"/>
     </linearGradient>
   </defs>
-  <!-- зона норми -->
+  <!-- зона норми — однакова в усіх трьох кроках -->
   <rect x="92" y="96" width="552" height="116" rx="6" fill="color-mix(in srgb,var(--gold) 7%,transparent)"/>
   <path d="M92 212 H644" fill="none" stroke="color-mix(in srgb,var(--faint) 55%,transparent)" stroke-width="1.5" stroke-dasharray="2 10" stroke-linecap="round"/>
   <!-- осі -->
   <path d="M92 68 V402 H644" fill="none" stroke="var(--line)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
   <path d="M87 78 L92 66 L97 78" fill="none" stroke="var(--line)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
   <path d="M638 397 L648 402 L638 407" fill="none" stroke="var(--line)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-  <!-- точка, з якої все розходиться -->
-  <path d="M280 178 V402" fill="none" stroke="color-mix(in srgb,var(--faint) 60%,transparent)" stroke-width="1.6" stroke-dasharray="2 9" stroke-linecap="round"/>
-  <!-- що вже було -->
-  <path d="M116 150 C 176 154, 236 162, 280 170" fill="none" stroke="url(#s11b-line)" stroke-width="3.6" stroke-linecap="round"/>
-  <!-- гілка 1: без підтримки — випадає з норми -->
-  <path d="M280 170 C 330 232, 366 330, 426 366 C 496 400, 570 396, 640 392" fill="none" stroke="color-mix(in srgb,var(--faint) 85%,transparent)" stroke-width="2.4" stroke-linecap="round" stroke-dasharray="3 11"/>
-  <text x="640" y="352" text-anchor="end" style="font-family:'JetBrains Mono',monospace;font-size:16.8px;letter-spacing:.18em;text-transform:uppercase" fill="var(--muted)">без підтримки</text>
-  <!-- гілка 2: рівень тримається в нормі -->
-  <path d="M280 170 C 322 172, 340 160, 382 158 C 430 156, 448 146, 494 145 C 546 144, 566 136, 616 136" fill="none" stroke="url(#s11b-line)" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/>
-  <!-- регулярні невеликі імпульси підтримки -->
-  <g stroke="var(--gold-soft)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" fill="none">
-    <path d="M382 238 V172"/><path d="M375 184 L382 170 L389 184"/>
-    <path d="M494 238 V159"/><path d="M487 171 L494 157 L501 171"/>
-    <path d="M616 238 V150"/><path d="M609 162 L616 148 L623 162"/>
-  </g>
-  <text x="640" y="266" text-anchor="end" style="font-family:'JetBrains Mono',monospace;font-size:16.8px;letter-spacing:.18em;text-transform:uppercase" fill="var(--muted)">регулярна підтримка</text>
-  <circle cx="616" cy="136" r="13" fill="none" stroke="var(--gold)" stroke-width="2.6"/>
-  <circle cx="616" cy="136" r="6.6" fill="var(--gold)"/>
-  <text x="430" y="112" text-anchor="middle" style="font-family:'Spectral',serif;font-style:italic;font-size:32.5px" fill="var(--gold)">рівень тримається</text>
+  <path d="M402 196 V402" fill="none" stroke="color-mix(in srgb,var(--faint) 60%,transparent)" stroke-width="1.6" stroke-dasharray="2 9" stroke-linecap="round"/>
+  <!-- що вже видно -->
+  <path d="M116 150 C 210 156, 320 172, 402 188" fill="none" stroke="url(#s11a-line)" stroke-width="3.6" stroke-linecap="round"/>
+  <!-- куди піде без втручання -->
+  <path d="M402 188 C 486 204, 566 282, 644 362" fill="none" stroke="color-mix(in srgb,var(--faint) 92%,transparent)" stroke-width="2.6" stroke-linecap="round" stroke-dasharray="3 11"/>
+  <!-- момент, коли ще можна втрутитися -->
+  <circle cx="402" cy="188" r="27" fill="var(--glow)"/>
+  <path d="M402 175 V141" fill="none" stroke="var(--gold)" stroke-width="2.4" stroke-linecap="round"/>
+  <circle cx="402" cy="188" r="13" fill="none" stroke="var(--gold)" stroke-width="2.6"/>
+  <circle cx="402" cy="188" r="6.6" fill="var(--gold)"/>
+  <text x="402" y="122" text-anchor="middle" style="font-family:'Spectral',serif;font-style:italic;font-size:32.5px" fill="var(--gold)">тут — профілактика</text>
+  <text x="644" y="386" text-anchor="end" style="font-family:'JetBrains Mono',monospace;font-size:16.8px;letter-spacing:.18em;text-transform:uppercase" fill="var(--muted)">без втручання</text>
   <text x="112" y="80" text-anchor="start" style="font-family:'JetBrains Mono',monospace;font-size:16.8px;letter-spacing:.2em;text-transform:uppercase" fill="var(--faint)">Енергія</text>
   <text x="644" y="432" text-anchor="end" style="font-family:'JetBrains Mono',monospace;font-size:16.8px;letter-spacing:.2em;text-transform:uppercase" fill="var(--faint)">Час</text>
-</svg></div><div data-step-panel="3"><svg width="790" height="562" viewBox="0 0 660 470" role="img" aria-label="Крок 3 — створювати умови: зона норми з попередніх кроків стає збудованим коридором із верхньою і нижньою межами на опорах. Лінія енергії команди й далі коливається, але тримається всередині сама, без ручних імпульсів підтримки">
+</svg></div><div data-step-panel="2"><svg width="790" height="562" viewBox="0 0 660 470" role="img" aria-label="Крок 2 — підтримувати прогрес: та сама крива й та сама точка втручання, що й на кроці 1. Пунктиром — той самий спад, тепер підписаний «без підтримки»; суцільною золотою вгору — рівень, який тримається завдяки трьом регулярним невеликим імпульсам підтримки й повертається до рівня, з якого починали">
+  <defs>
+    <linearGradient id="s11b-line" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" style="stop-color:var(--gold-soft)"/>
+      <stop offset="1" style="stop-color:var(--gold)"/>
+    </linearGradient>
+    <linearGradient id="s11b-hold" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" style="stop-color:var(--gold)"/>
+      <stop offset="1" style="stop-color:var(--gold-soft)"/>
+    </linearGradient>
+  </defs>
+  <!-- зона норми — однакова в усіх трьох кроках -->
+  <rect x="92" y="96" width="552" height="116" rx="6" fill="color-mix(in srgb,var(--gold) 7%,transparent)"/>
+  <path d="M92 212 H644" fill="none" stroke="color-mix(in srgb,var(--faint) 55%,transparent)" stroke-width="1.5" stroke-dasharray="2 10" stroke-linecap="round"/>
+  <!-- осі -->
+  <path d="M92 68 V402 H644" fill="none" stroke="var(--line)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M87 78 L92 66 L97 78" fill="none" stroke="var(--line)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M638 397 L648 402 L638 407" fill="none" stroke="var(--line)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M402 196 V402" fill="none" stroke="color-mix(in srgb,var(--faint) 60%,transparent)" stroke-width="1.6" stroke-dasharray="2 9" stroke-linecap="round"/>
+  <!-- крок 1 лишається на місці, кадр у кадр -->
+  <path d="M116 150 C 210 156, 320 172, 402 188" fill="none" stroke="url(#s11b-line)" stroke-width="3.6" stroke-linecap="round"/>
+  <path d="M402 188 C 486 204, 566 282, 644 362" fill="none" stroke="color-mix(in srgb,var(--faint) 92%,transparent)" stroke-width="2.6" stroke-linecap="round" stroke-dasharray="3 11"/>
+  <text x="644" y="386" text-anchor="end" style="font-family:'JetBrains Mono',monospace;font-size:16.8px;letter-spacing:.18em;text-transform:uppercase" fill="var(--muted)">без підтримки</text>
+  <circle cx="402" cy="188" r="27" fill="var(--glow)"/>
+  <circle cx="402" cy="188" r="13" fill="none" stroke="var(--gold)" stroke-width="2.6"/>
+  <circle cx="402" cy="188" r="6.6" fill="var(--gold)"/>
+  <!-- друга гілка: рівень повертається туди, звідки починали -->
+  <path d="M402 188 C 444 190, 462 174, 500 172 C 546 170, 562 158, 600 155 C 614 154, 618 151, 628 150" fill="none" stroke="url(#s11b-hold)" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- невеликі регулярні імпульси, що тримають лінію -->
+  <g stroke="var(--gold-soft)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" fill="none">
+    <path d="M462 195 V181"/><path d="M457 189 L462 180 L467 189"/>
+    <path d="M546 185 V171"/><path d="M541 179 L546 170 L551 179"/>
+    <path d="M614 173 V159"/><path d="M609 167 L614 158 L619 167"/>
+  </g>
+  <circle cx="628" cy="150" r="5.5" fill="var(--gold)"/>
+  <text x="636" y="122" text-anchor="end" style="font-family:'Spectral',serif;font-style:italic;font-size:32.5px" fill="var(--gold)">рівень тримається</text>
+  <text x="112" y="80" text-anchor="start" style="font-family:'JetBrains Mono',monospace;font-size:16.8px;letter-spacing:.2em;text-transform:uppercase" fill="var(--faint)">Енергія</text>
+  <text x="644" y="432" text-anchor="end" style="font-family:'JetBrains Mono',monospace;font-size:16.8px;letter-spacing:.2em;text-transform:uppercase" fill="var(--faint)">Час</text>
+</svg></div><div data-step-panel="3"><svg width="790" height="562" viewBox="0 0 660 470" role="img" aria-label="Крок 3 — створювати умови: та сама межа норми, що на кроках 1 і 2 була ледь помітним пунктиром, тут стає суцільною золотою балкою на опорах. Лінія енергії команди й далі коливається, але тримається над нею сама, без ручних імпульсів; під найглибшим провалом балка підсилена">
   <defs>
     <linearGradient id="s11c-line" x1="0" y1="0" x2="1" y2="0">
       <stop offset="0" style="stop-color:var(--gold-soft)"/>
       <stop offset="1" style="stop-color:var(--gold)"/>
     </linearGradient>
   </defs>
-  <!-- та сама зона норми — тепер це коридор -->
-  <rect x="92" y="140" width="552" height="116" rx="6" fill="color-mix(in srgb,var(--gold) 7%,transparent)"/>
+  <!-- зона норми — однакова в усіх трьох кроках -->
+  <rect x="92" y="96" width="552" height="116" rx="6" fill="color-mix(in srgb,var(--gold) 7%,transparent)"/>
   <!-- осі -->
   <path d="M92 68 V402 H644" fill="none" stroke="var(--line)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
   <path d="M87 78 L92 66 L97 78" fill="none" stroke="var(--line)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
   <path d="M638 397 L648 402 L638 407" fill="none" stroke="var(--line)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-  <!-- межі коридору: збудовані, а не намальовані пунктиром -->
-  <path d="M100 140 H636" fill="none" stroke="color-mix(in srgb,var(--gold) 42%,transparent)" stroke-width="2.6" stroke-linecap="round"/>
-  <path d="M100 256 H636" fill="none" stroke="var(--gold)" stroke-width="3.2" stroke-linecap="round"/>
-  <path d="M396 256 H496" fill="none" stroke="var(--gold-soft)" stroke-width="5.4" stroke-linecap="round"/>
-  <!-- лінія енергії: коливається, але не випадає з коридору -->
-  <path d="M116 206 C 146 186, 172 178, 200 186 C 228 194, 244 220, 272 222 C 300 224, 316 192, 344 188 C 372 184, 392 208, 418 228 C 436 241, 456 240, 476 228 C 500 214, 512 192, 538 189 C 566 186, 590 200, 626 192" fill="none" stroke="url(#s11c-line)" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/>
-  <!-- опори, на яких коридор тримається -->
-  <path d="M168 256 V402 M268 256 V402 M368 256 V402 M468 256 V402 M568 256 V402" fill="none" stroke="color-mix(in srgb,var(--faint) 62%,transparent)" stroke-width="2" stroke-linecap="round"/>
+  <!-- та сама лінія y=212, що й на кроках 1–2, тільки тепер збудована -->
+  <path d="M100 212 H636" fill="none" stroke="var(--gold)" stroke-width="3.2" stroke-linecap="round"/>
+  <path d="M396 212 H496" fill="none" stroke="var(--gold-soft)" stroke-width="5.4" stroke-linecap="round"/>
+  <!-- опори -->
+  <path d="M168 212 V402 M268 212 V402 M368 212 V402 M468 212 V402 M568 212 V402" fill="none" stroke="color-mix(in srgb,var(--faint) 62%,transparent)" stroke-width="2" stroke-linecap="round"/>
   <g fill="var(--gold)">
-    <circle cx="168" cy="256" r="4.6"/><circle cx="268" cy="256" r="4.6"/><circle cx="368" cy="256" r="4.6"/>
-    <circle cx="468" cy="256" r="4.6"/><circle cx="568" cy="256" r="4.6"/>
+    <circle cx="168" cy="212" r="4.6"/><circle cx="268" cy="212" r="4.6"/><circle cx="368" cy="212" r="4.6"/>
+    <circle cx="468" cy="212" r="4.6"/><circle cx="568" cy="212" r="4.6"/>
   </g>
-  <text x="368" y="120" text-anchor="middle" style="font-family:'Spectral',serif;font-style:italic;font-size:32.5px" fill="var(--gold)">середовище тримає рівень</text>
-  <text x="112" y="440" text-anchor="start" style="font-family:'JetBrains Mono',monospace;font-size:16.8px;letter-spacing:.18em;text-transform:uppercase" fill="var(--faint)">опори · умови</text>
+  <!-- лінія коливається, але вниз її вже не пускають -->
+  <path d="M116 172 C 146 158, 172 152, 200 158 C 228 164, 244 184, 272 186 C 300 188, 316 162, 344 158 C 372 154, 392 176, 418 192 C 436 202, 456 201, 476 191 C 500 179, 512 160, 538 157 C 566 154, 590 166, 626 160" fill="none" stroke="url(#s11c-line)" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="636" y="122" text-anchor="end" style="font-family:'Spectral',serif;font-style:italic;font-size:32.5px" fill="var(--gold)">середовище тримає рівень</text>
+  <text x="112" y="432" text-anchor="start" style="font-family:'JetBrains Mono',monospace;font-size:16.8px;letter-spacing:.18em;text-transform:uppercase" fill="var(--faint)">опори · умови</text>
   <text x="112" y="80" text-anchor="start" style="font-family:'JetBrains Mono',monospace;font-size:16.8px;letter-spacing:.2em;text-transform:uppercase" fill="var(--faint)">Енергія</text>
   <text x="644" y="432" text-anchor="end" style="font-family:'JetBrains Mono',monospace;font-size:16.8px;letter-spacing:.2em;text-transform:uppercase" fill="var(--faint)">Час</text>
 </svg></div>
@@ -1299,8 +1296,13 @@
      shadow root together with a copy of these styles, and a thumbnail must show
      the finished slide, not an empty one. */
   [data-step]{ transition:opacity .5s ease, transform .5s ease; }
-  deck-stage section[data-building] [data-step]{ opacity:0; transform:translateY(16px); }
-  deck-stage section[data-building] [data-step].step-on{ opacity:1; transform:none; }
+  /* !important is load-bearing: the entrance classes (.anim/.anim2/.anim3) are
+     `animation: rise .6s both`, and a filled CSS animation outranks a normal
+     declaration in the cascade — without it, any step element that also carries
+     an entrance class un-hides itself ~0.8s after the slide opens, whatever the
+     step state says. The step reveal replaces the entrance animation here. */
+  deck-stage section[data-building] [data-step]{ opacity:0 !important; transform:translateY(16px) !important; }
+  deck-stage section[data-building] [data-step].step-on{ opacity:1 !important; transform:none !important; }
   /* right-side panels that swap per step; panel 1 is the no-JS / thumbnail default */
   [data-step-panel]{ display:none; }
   [data-step-panel="1"]{ display:block; }
