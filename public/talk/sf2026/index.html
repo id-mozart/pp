@@ -1073,6 +1073,25 @@
   #edit-bar #ed-save{ color:var(--gold); border-color:var(--gold); }
   #edit-bar .ed-msg{ min-width:120px; font-family:'Inter',sans-serif; }
   @media print{ #edit-bar{ display:none !important } }
+  /* ── mobile: let the control bar wrap instead of clipping ── */
+  @media (max-width:640px){
+    #deck-controls{ height:auto; min-height:52px; padding:6px 10px; gap:10px; flex-wrap:wrap; justify-content:center; }
+    #deck-controls .export{ margin-right:0; gap:7px; flex-wrap:wrap; justify-content:center; }
+    #deck-controls .export button,#deck-controls .export a{ font-size:12px; padding:4px 8px; letter-spacing:.05em; }
+    #edit-bar{ bottom:auto; top:0; padding:8px 10px; gap:8px; justify-content:center; font-size:12px; }
+    #edit-bar .ed-status{ margin-right:0; flex-basis:100%; text-align:center; }
+  }
+  /* ── swipe/tap hint — only on touch devices, fades after a few seconds ── */
+  #swipe-hint{ display:none; }
+  @media (hover:none) and (pointer:coarse){
+    #swipe-hint{ display:block; position:fixed; left:50%; bottom:72px; transform:translateX(-50%); z-index:9998;
+      font-family:'JetBrains Mono',monospace; font-size:12px; letter-spacing:.14em; white-space:nowrap;
+      color:var(--muted); background:color-mix(in srgb,var(--canvas) 82%,#000);
+      border:1px solid var(--line); border-radius:999px; padding:7px 16px; pointer-events:none;
+      animation:swipeHint 5s ease forwards; }
+  }
+  @keyframes swipeHint{ 0%{opacity:0} 14%{opacity:1} 72%{opacity:1} 100%{opacity:0; visibility:hidden} }
+  @media print{ #swipe-hint{ display:none !important } }
 </style>
 <script>
 /* In-deck text editor + server-saved presentation variants (/api/talk/variants). */
@@ -1195,6 +1214,31 @@
   }
   if(window.customElements && customElements.whenDefined){ customElements.whenDefined('deck-stage').then(function(){ setTimeout(init,80); }); }
   else { window.addEventListener('load', function(){ setTimeout(init,120); }); }
+})();
+</script>
+<div id="swipe-hint" aria-hidden="true">←  гортайте  →</div>
+<script>
+/* Swipe navigation for touch devices (tap-half is built in; this adds the natural gesture). */
+(function(){
+  var x0=null,y0=null,t0=0;
+  function tstart(e){
+    if(window.__deckEdit) return;
+    if(!e.touches || e.touches.length!==1) { x0=null; return; }
+    var el=e.target;
+    if(el && el.closest && el.closest('#deck-controls,#edit-bar')) { x0=null; return; }
+    x0=e.touches[0].clientX; y0=e.touches[0].clientY; t0=e.timeStamp||0;
+  }
+  function tend(e){
+    if(window.__deckEdit || x0===null) return;
+    var t=(e.changedTouches&&e.changedTouches[0]); if(!t){ x0=null; return; }
+    var dx=t.clientX-x0, dy=t.clientY-y0, dt=(e.timeStamp||0)-t0; x0=null;
+    if(Math.abs(dx)>48 && Math.abs(dx)>Math.abs(dy)*1.4 && dt<900){
+      var ds=document.querySelector('deck-stage'); if(!ds) return;
+      if(dx<0){ ds.next&&ds.next(); } else { ds.prev&&ds.prev(); }
+    }
+  }
+  window.addEventListener('touchstart', tstart, {passive:true});
+  window.addEventListener('touchend', tend, {passive:true});
 })();
 </script>
 </body>
