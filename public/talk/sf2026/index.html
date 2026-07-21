@@ -99,9 +99,9 @@
   .node.down{transform:translateY(30px);opacity:.72;}
   .node .cap{font-family:'JetBrains Mono',monospace;font-size:18px;letter-spacing:.08em;color:var(--faint);text-transform:uppercase;text-align:center;}
   .connect{flex:1;height:3px;background:var(--line);margin-bottom:52px;min-width:26px;}
-  #theme{position:fixed;z-index:9999;right:24px;bottom:18px;font-family:'JetBrains Mono',monospace;font-size:13px;
+  #theme{font-family:'JetBrains Mono',monospace;font-size:13px;
     letter-spacing:.14em;text-transform:uppercase;color:var(--muted);background:var(--panel);border:1px solid var(--panel-line);
-    border-radius:999px;padding:9px 16px;cursor:pointer;display:flex;align-items:center;gap:9px;backdrop-filter:blur(8px);}
+    border-radius:999px;padding:6px 14px;cursor:pointer;display:flex;align-items:center;gap:9px;backdrop-filter:blur(8px);}
   #theme:hover{color:var(--ink);}
   #theme .sw{width:30px;height:16px;border-radius:999px;background:var(--grad-acc);position:relative;}
   #theme .sw::after{content:"";position:absolute;top:2px;left:2px;width:12px;height:12px;border-radius:50%;background:#fff;transition:left .25s;}
@@ -111,19 +111,23 @@
   /* Версії слайда: шари + перемикач справа-знизу (у друк не потрапляє) */
   section>.variant{position:absolute;inset:0;}
   .variant[hidden]{display:none!important;}
-  /* Службові контроли — акуратним стовпчиком у правому нижньому куті,
-     усі в одній системі координат (fixed), вирівняні по правому краю. */
-  .pagenum{position:fixed;right:28px;bottom:104px;z-index:9999;}
-  @media print{.pagenum{position:absolute;right:60px;bottom:52px;}}
+  /* Службові контроли — єдина компактна панель у правому нижньому куті,
+     одним низьким рядком (не лізе вгору на слайд). Номер per-slide лишається
+     тільки для друку. */
+  .pagenum{display:none;}
+  @media print{.pagenum{display:block;position:absolute;right:60px;bottom:52px;}}
 
-  .vswitch{position:fixed;right:26px;bottom:62px;z-index:9999;display:flex;gap:14px;
-    align-items:center;opacity:.55;transition:opacity .25s;}
-  .vswitch:hover{opacity:1;}
-  .vswitch button{font-family:'JetBrains Mono',monospace;font-size:21px;letter-spacing:.1em;
-    padding:8px 5px;border:0;background:none;color:var(--muted);cursor:pointer;transition:color .2s;}
+  #deck-controls{position:fixed;right:26px;bottom:8px;z-index:9999;display:flex;
+    align-items:center;gap:26px;opacity:.6;transition:opacity .25s;}
+  #deck-controls:hover{opacity:1;}
+  #deck-pn{font-family:'JetBrains Mono',monospace;font-size:19px;letter-spacing:.16em;color:var(--muted);}
+  #deck-pn .num{background:var(--grad-acc);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent;font-weight:600;}
+  .vswitch{display:flex;gap:13px;align-items:center;}
+  .vswitch button{font-family:'JetBrains Mono',monospace;font-size:19px;letter-spacing:.1em;
+    padding:6px 3px;border:0;background:none;color:var(--muted);cursor:pointer;transition:color .2s;}
   .vswitch button:hover{color:var(--ink);}
   .vswitch button.on{color:var(--gold);}
-  @media print{.vswitch{display:none}}
+  @media print{#deck-controls{display:none}}
 
   /* Друк/PDF: background-clip:text у Chromium лишає крайові шви градієнта —
      на папері акцент робимо суцільним золотом замість градієнта. */
@@ -144,7 +148,6 @@
 </style>
 </head>
 <body>
-<button id="theme" aria-label="Перемкнути тему"><span class="sw"></span><span id="theme-label">Світла</span></button>
 <deck-stage width="1920" height="1080">
 
   <section data-slide="01">
@@ -1898,14 +1901,22 @@
 
 </deck-stage>
 <script src="deck-stage.js"></script>
-<div class="vswitch" id="vswitch-global" aria-label="Версії слайда"></div>
+<div id="deck-controls">
+  <span id="deck-pn"></span>
+  <div class="vswitch" id="vswitch-global" aria-label="Версії слайда"></div>
+  <button id="theme" aria-label="Перемкнути тему"><span class="sw"></span><span id="theme-label">Світла</span></button>
+</div>
 <script>
   // Глобальний перемикач версій активного слайда (поза межами слайда).
   (function(){
     var box = document.getElementById('vswitch-global');
+    var pn = document.getElementById('deck-pn');
     function active(){ return document.querySelector('section[data-deck-active]'); }
     function render(){
       var sec = active();
+      // номер активного слайда — завжди
+      var src = sec ? sec.querySelector(':scope > .pagenum') : null;
+      if(pn) pn.innerHTML = src ? src.innerHTML : '';
       var vars = sec ? sec.querySelectorAll(':scope > .variant') : [];
       if(!sec || vars.length < 2){ box.style.display = 'none'; return; }
       box.style.display = 'flex';
