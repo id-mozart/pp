@@ -175,7 +175,7 @@
           <div style="width:3px;border-radius:2px;background:linear-gradient(180deg,var(--gold-soft),var(--gold))"></div>
           <div style="display:flex;flex-direction:column;gap:10px">
             <span style="font-family:'Spectral',serif;font-size:46px;line-height:1.08;color:var(--ink)">Тетяна Пан</span>
-            <span style="font-family:'Inter',sans-serif;font-size:20px;line-height:1.5;color:var(--muted)">Бізнес-тренерка, фасилітаторка, коуч, менторка,<br>засновниця компанії «Pan&Partners»</span>
+            <span style="font-family:'Inter',sans-serif;font-size:20px;line-height:1.5;color:var(--muted)">Бізнес-тренерка, фасилітаторка, коуч, менторка, засновниця компанії «Pan&Partners»</span>
           </div>
         </div>
       </div>
@@ -436,8 +436,8 @@
             <circle cx="280" cy="300" r="250" fill="none" stroke="color-mix(in srgb,var(--faint) 86%,var(--canvas))" stroke-width="2.4" stroke-linecap="round" stroke-dasharray="1.5 18" opacity=".45"/>
             <circle cx="369" cy="220" r="13" fill="color-mix(in srgb,var(--gold) 42%,var(--canvas))"/>
             <rect x="232" y="276" width="96" height="48" rx="12" fill="var(--canvas)" stroke="color-mix(in srgb,var(--gold) 30%,var(--canvas))" stroke-width="3.5"/>
-            <rect x="332" y="290" width="9" height="20" rx="3" fill="var(--gold)"/>
-            <rect x="239" y="283" width="13.2" height="34" rx="4" fill="var(--gold)"/>
+            <rect x="332" y="290" width="9" height="20" rx="3" fill="color-mix(in srgb,var(--gold) 45%,var(--canvas))"/>
+            <rect x="239" y="283" width="13.2" height="34" rx="4" fill="color-mix(in srgb,var(--gold) 45%,var(--canvas))"/>
             <rect x="256.2" y="283" width="13.2" height="34" rx="4" fill="var(--sil-off)"/>
             <rect x="273.4" y="283" width="13.2" height="34" rx="4" fill="var(--sil-off)"/>
             <rect x="290.6" y="283" width="13.2" height="34" rx="4" fill="var(--sil-off)"/>
@@ -985,7 +985,7 @@
 <script src="deck-stage.js"></script>
 <div id="deck-controls">
   <div class="export">
-    <button id="exp-pdf" type="button" title="Експортувати поточний вигляд у PDF">PDF</button>
+    <button id="exp-pdf-dark" type="button" title="Завантажити PDF — темна тема">PDF&nbsp;●</button><button id="exp-pdf-light" type="button" title="Завантажити PDF — світла тема">PDF&nbsp;○</button>
     <a id="exp-pptx" href="sf2026.pptx" download="Sales Forum 2026 — Тетяна Пан.pptx" title="Завантажити презентацію (PPTX)">PPTX</a>
   </div>
   <div class="vswitch" id="vswitch-global" aria-label="Версії слайда"></div>
@@ -1021,13 +1021,20 @@
   })();
   // Експорт у PDF — друк поточного вигляду (deck-stage вже налаштував @media print).
   (function(){
-    var b = document.getElementById('exp-pdf');
-    if(b) b.addEventListener('click', function(){ window.print(); });
+    function toPDF(theme){
+      var root=document.documentElement, wasLight=root.classList.contains('light');
+      root.classList.toggle('light', theme==='light');
+      function restore(){ root.classList.toggle('light', wasLight); window.removeEventListener('afterprint',restore); }
+      window.addEventListener('afterprint', restore);
+      window.print();
+    }
+    var d=document.getElementById('exp-pdf-dark');  if(d) d.addEventListener('click', function(){ toPDF('dark'); });
+    var l=document.getElementById('exp-pdf-light'); if(l) l.addEventListener('click', function(){ toPDF('light'); });
   })();
 </script>
 <script>
   (function(){
-    var KEY='tp-tedx-theme';
+    var KEY='tp-sf2026-theme';
     var lbl=document.getElementById('theme-label');
     function apply(t){document.documentElement.classList.toggle('light',t==='light');lbl.textContent=t==='light'?'Темна':'Світла';}
     var q=(location.search.match(/[?&]theme=(light|dark)/)||[])[1];
