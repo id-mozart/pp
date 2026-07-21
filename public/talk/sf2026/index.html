@@ -450,13 +450,44 @@
   <section data-slide="06">
     <div class="variant thesis" data-v="A"><div class="bg"></div><div class="pad">
       <div class="runhead" style="width:100%"><div class="eyebrow"><span class="dot"></span>Проблема</div><div class="ix">Тетяна Пан</div></div>
-      <div class="body" style="width:100%;display:flex;justify-content:center;align-items:center;gap:96px">
-        <div class="txt" style="max-width:640px;flex:none;">
+      <div class="body" style="width:100%">
+        <div class="txt">
           <h2 class="anim2" style="font-size:78px">Немає енергії — <em class="g">немає нових клієнтів.</em></h2>
           <ul class="anim3" style="list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:18px;max-width:640px;"><li style="display:flex;align-items:baseline;gap:16px;font-family:'Inter',sans-serif;font-size:29px;line-height:1.4;color:var(--muted);"><span style="flex:none;width:9px;height:9px;border-radius:50%;background:var(--gold);transform:translateY(-4px);"></span><span>Менше дзвінків</span></li><li style="display:flex;align-items:baseline;gap:16px;font-family:'Inter',sans-serif;font-size:29px;line-height:1.4;color:var(--muted);"><span style="flex:none;width:9px;height:9px;border-radius:50%;background:var(--gold);transform:translateY(-4px);"></span><span>Ніяких нових контактів</span></li><li style="display:flex;align-items:baseline;gap:16px;font-family:'Inter',sans-serif;font-size:29px;line-height:1.4;color:var(--muted);"><span style="flex:none;width:9px;height:9px;border-radius:50%;background:var(--gold);transform:translateY(-4px);"></span><span>Уникання складних клієнтів</span></li></ul>
         </div>
-        <div class="vis anim2" style="flex:none;">
-          <svg width="540" height="212" viewBox="0 0 470 220" role="img" aria-label="Розряджена батарея — заряджена лише одна секція"><g opacity=".62"><rect x="60" y="42" width="330" height="122" rx="18" class="strokeM"/><rect x="396" y="82" width="20" height="42" rx="6" fill="var(--faint)"/><rect x="76" y="58" width="50" height="90" rx="9" fill="var(--gold)"/><rect x="138" y="58" width="50" height="90" rx="9" fill="var(--sil-off)"/><rect x="200" y="58" width="50" height="90" rx="9" fill="var(--sil-off)"/><rect x="262" y="58" width="50" height="90" rx="9" fill="var(--sil-off)"/><rect x="324" y="58" width="50" height="90" rx="9" fill="var(--sil-off)"/></g></svg>
+        <div class="vis anim2">
+          <svg width="640" height="600" viewBox="0 0 640 600">
+            <!-- ГОЛОВНА СЦЕНА: ядро-батарея 1/5, три орбіти, один тьмяний клієнт -->
+            <circle cx="280" cy="300" r="72" fill="var(--glow)"/>
+            <circle cx="280" cy="300" r="120" fill="none" stroke="color-mix(in srgb,var(--faint) 86%,var(--canvas))" stroke-width="2.4"/>
+            <circle cx="280" cy="300" r="185" fill="none" stroke="color-mix(in srgb,var(--faint) 86%,var(--canvas))" stroke-width="2.4" stroke-linecap="round" stroke-dasharray="1.5 16" opacity=".7"/>
+            <circle cx="280" cy="300" r="250" fill="none" stroke="color-mix(in srgb,var(--faint) 86%,var(--canvas))" stroke-width="2.4" stroke-linecap="round" stroke-dasharray="1.5 18" opacity=".45"/>
+            <circle cx="369" cy="220" r="13" fill="color-mix(in srgb,var(--gold) 42%,var(--canvas))"/>
+            <rect x="232" y="276" width="96" height="48" rx="12" fill="var(--canvas)" stroke="var(--gold)" stroke-width="4"/>
+            <rect x="332" y="290" width="9" height="20" rx="3" fill="var(--gold)"/>
+            <rect x="239" y="283" width="13.2" height="34" rx="4" fill="var(--gold)"/>
+            <rect x="256.2" y="283" width="13.2" height="34" rx="4" fill="var(--sil-off)"/>
+            <rect x="273.4" y="283" width="13.2" height="34" rx="4" fill="var(--sil-off)"/>
+            <rect x="290.6" y="283" width="13.2" height="34" rx="4" fill="var(--sil-off)"/>
+            <rect x="307.8" y="283" width="13.2" height="34" rx="4" fill="var(--sil-off)"/>
+            <!-- МІНІАТЮРА (кут сцени): повна батарея, орбіти із золотими клієнтами -->
+            <circle cx="552" cy="100" r="84" fill="var(--glow)"/>
+            <circle cx="552" cy="100" r="44" fill="none" stroke="color-mix(in srgb,var(--faint) 86%,var(--canvas))" stroke-width="2"/>
+            <circle cx="552" cy="100" r="68" fill="none" stroke="color-mix(in srgb,var(--faint) 86%,var(--canvas))" stroke-width="2"/>
+            <g fill="var(--gold)">
+              <circle cx="574" cy="62" r="4.5"/><circle cx="590" cy="122" r="4.5"/><circle cx="530" cy="138" r="4.5"/><circle cx="514" cy="78" r="4.5"/>
+              <circle cx="564" cy="33" r="4.5"/><circle cx="616" cy="77" r="4.5"/><circle cx="604" cy="144" r="4.5"/><circle cx="540" cy="167" r="4.5"/><circle cx="488" cy="123" r="4.5"/><circle cx="500" cy="56" r="4.5"/>
+            </g>
+            <rect x="524" y="85" width="56" height="30" rx="8" fill="var(--canvas)" stroke="var(--gold)" stroke-width="3"/>
+            <rect x="583" y="93" width="6" height="14" rx="2" fill="var(--gold)"/>
+            <g fill="var(--gold)">
+              <rect x="529" y="90" width="7" height="20" rx="2"/>
+              <rect x="538.75" y="90" width="7" height="20" rx="2"/>
+              <rect x="548.5" y="90" width="7" height="20" rx="2"/>
+              <rect x="558.25" y="90" width="7" height="20" rx="2"/>
+              <rect x="568" y="90" width="7" height="20" rx="2"/>
+            </g>
+          </svg>
         </div>
       </div>
       <div class="foot" style="width:100%"><span></span><span></span></div>
