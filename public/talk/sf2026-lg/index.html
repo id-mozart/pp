@@ -339,9 +339,9 @@
           <div class="batt-body" style="width:262px;height:82px;border-width:3px;border-radius:12px;padding:8px;gap:7px;background:var(--panel);">
             <span class="cell on" style="flex:none;width:43px;border-radius:5px;"></span>
             <span class="cell on" style="flex:none;width:43px;border-radius:5px;"></span>
-            <span class="cell on" style="flex:none;width:43px;border-radius:5px;background:color-mix(in srgb,var(--gold-soft) 38%,var(--canvas));"></span>
+            <span class="cell on fx-wide" style="--d:.78s;flex:none;width:43px;border-radius:5px;background:color-mix(in srgb,var(--gold-soft) 38%,var(--canvas));"></span>
           </div>
-          <div class="batt-cap" style="width:16px;height:46px;border-radius:3px 7px 7px 3px;background:color-mix(in srgb,var(--gold) 72%,var(--canvas));"></div>
+          <div class="batt-cap fx-pop" style="--d:.55s;width:16px;height:46px;border-radius:3px 7px 7px 3px;background:color-mix(in srgb,var(--gold) 72%,var(--canvas));"></div>
         </div>
         <h2 class="anim2" style="font-size:72px;white-space:nowrap;">Скільки у вас зараз енергії — <em class="g">від 1 до 5?</em></h2>
         <div class="sub anim3" style="text-align:center;max-width:1280px;margin-top:8px;">Покажіть пальцями. За хвилину «зарядки» стан змінюється — але команда продажів не відновлює ресурс однією хвилиною.</div>
@@ -520,25 +520,25 @@
 <marker id="s05c-arrPlan" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 1.5 L8.5 5 L0 8.5 Z" fill="var(--gold-soft)"/></marker>
 <marker id="s05c-arrRes" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 1.5 L8.5 5 L0 8.5 Z" fill="var(--faint)"/></marker>
 </defs>
-<path d="M150 230 L524 23 L524 407 L150 318 Z" fill="var(--glow)"/>
-<line x1="138" y1="288" x2="524" y2="288" stroke="var(--line)" stroke-width="2"/>
-<rect x="150" y="230" width="56" height="54" rx="7" fill="color-mix(in srgb,var(--gold) 42%,var(--canvas))"/>
-<rect x="226" y="188" width="56" height="96" rx="7" fill="color-mix(in srgb,var(--gold) 56%,var(--canvas))"/>
-<rect x="302" y="146" width="56" height="138" rx="7" fill="color-mix(in srgb,var(--gold) 70%,var(--canvas))"/>
-<rect x="378" y="104" width="56" height="180" rx="7" fill="color-mix(in srgb,var(--gold) 85%,var(--canvas))"/>
-<rect x="454" y="62" width="56" height="222" rx="7" fill="var(--gold)"/>
-<rect x="150" y="292" width="56" height="26" rx="7" fill="color-mix(in srgb,var(--faint) 86%,var(--canvas))"/>
-<rect x="226" y="292" width="56" height="44" rx="7" fill="color-mix(in srgb,var(--faint) 72%,var(--canvas))"/>
-<rect x="302" y="292" width="56" height="62" rx="7" fill="color-mix(in srgb,var(--faint) 58%,var(--canvas))"/>
-<rect x="378" y="292" width="56" height="80" rx="7" fill="color-mix(in srgb,var(--faint) 45%,var(--canvas))"/>
-<rect x="454" y="292" width="56" height="98" rx="7" fill="color-mix(in srgb,var(--faint) 34%,var(--canvas))"/>
+<path style="--d:.75s" class="fx-fade" d="M150 230 L524 23 L524 407 L150 318 Z" fill="var(--glow)"/>
+<line style="--d:.85s" class="fx-wide" x1="138" y1="288" x2="524" y2="288" stroke="var(--line)" stroke-width="2"/>
+<rect style="--d:.95s" class="fx-tall" x="150" y="230" width="56" height="54" rx="7" fill="color-mix(in srgb,var(--gold) 42%,var(--canvas))"/>
+<rect style="--d:1.01s" class="fx-tall" x="226" y="188" width="56" height="96" rx="7" fill="color-mix(in srgb,var(--gold) 56%,var(--canvas))"/>
+<rect style="--d:1.07s" class="fx-tall" x="302" y="146" width="56" height="138" rx="7" fill="color-mix(in srgb,var(--gold) 70%,var(--canvas))"/>
+<rect style="--d:1.13s" class="fx-tall" x="378" y="104" width="56" height="180" rx="7" fill="color-mix(in srgb,var(--gold) 85%,var(--canvas))"/>
+<rect style="--d:1.19s" class="fx-tall" x="454" y="62" width="56" height="222" rx="7" fill="var(--gold)"/>
+<rect style="--d:1.32s" class="fx-drop" x="150" y="292" width="56" height="26" rx="7" fill="color-mix(in srgb,var(--faint) 86%,var(--canvas))"/>
+<rect style="--d:1.38s" class="fx-drop" x="226" y="292" width="56" height="44" rx="7" fill="color-mix(in srgb,var(--faint) 72%,var(--canvas))"/>
+<rect style="--d:1.44s" class="fx-drop" x="302" y="292" width="56" height="62" rx="7" fill="color-mix(in srgb,var(--faint) 58%,var(--canvas))"/>
+<rect style="--d:1.50s" class="fx-drop" x="378" y="292" width="56" height="80" rx="7" fill="color-mix(in srgb,var(--faint) 45%,var(--canvas))"/>
+<rect style="--d:1.56s" class="fx-drop" x="454" y="292" width="56" height="98" rx="7" fill="color-mix(in srgb,var(--faint) 34%,var(--canvas))"/>
 <path d="M38.5 291.6 L150 230" fill="none" stroke="var(--gold-soft)" stroke-width="2" stroke-dasharray="1 8" stroke-linecap="round" opacity=".35"/>
 <path d="M38.5 291.6 L150 318" fill="none" stroke="var(--faint)" stroke-width="2" stroke-dasharray="1 8" stroke-linecap="round" opacity=".35"/>
 <circle cx="38.5" cy="291.6" r="5" fill="var(--gold)"/>
-<path d="M150 230 L524 23" fill="none" stroke="var(--gold-soft)" stroke-width="3" stroke-dasharray="2 11" stroke-linecap="round" marker-end="url(#s05c-arrPlan)"/>
-<path d="M150 318 L524 407" fill="none" stroke="var(--faint)" stroke-width="3" stroke-dasharray="2 11" stroke-linecap="round" marker-end="url(#s05c-arrRes)"/>
-<text x="28" y="180" style="font-family:'JetBrains Mono',monospace;font-size:21.3px;font-weight:600;letter-spacing:.2em;fill:var(--gold)">ПЛАН</text>
-<text x="28" y="348" style="font-family:'JetBrains Mono',monospace;font-size:21.3px;font-weight:600;letter-spacing:.2em;fill:var(--muted)">РЕСУРС</text>
+<path style="--d:1.75s" class="fx-left" d="M150 230 L524 23" fill="none" stroke="var(--gold-soft)" stroke-width="3" stroke-dasharray="2 11" stroke-linecap="round" marker-end="url(#s05c-arrPlan)"/>
+<path style="--d:2.00s" class="fx-left" d="M150 318 L524 407" fill="none" stroke="var(--faint)" stroke-width="3" stroke-dasharray="2 11" stroke-linecap="round" marker-end="url(#s05c-arrRes)"/>
+<text class="fx-fade" x="28" y="180" style="--d:1.90s;font-family:'JetBrains Mono',monospace;font-size:21.3px;font-weight:600;letter-spacing:.2em;fill:var(--gold)">ПЛАН</text>
+<text class="fx-fade" x="28" y="348" style="--d:2.15s;font-family:'JetBrains Mono',monospace;font-size:21.3px;font-weight:600;letter-spacing:.2em;fill:var(--muted)">РЕСУРС</text>
 </svg>
 </div>
 </div>
@@ -550,7 +550,7 @@
   </section>
 
   <section data-slide="07">
-    <div class="variant thesis" data-v="A"><div class="bg"></div><div aria-hidden="true" style="position:absolute;left:40px;top:50%;transform:translateY(-50%);z-index:1;font-family:'Spectral',serif;font-weight:600;font-size:800px;line-height:.78;color:var(--gold);opacity:.11;pointer-events:none;user-select:none;">1</div><div class="pad">
+    <div class="variant thesis" data-v="A"><div class="bg"></div><div class="fx-fade" aria-hidden="true" style="--d:.15s;position:absolute;left:40px;top:50%;transform:translateY(-50%);z-index:1;font-family:'Spectral',serif;font-weight:600;font-size:800px;line-height:.78;color:var(--gold);opacity:.11;pointer-events:none;user-select:none;">1</div><div class="pad">
       <div class="runhead" style="width:100%"><div class="eyebrow"><span class="dot"></span>ВИКЛИКИ</div><div class="ix">Тетяна Пан</div></div>
       <div class="body" style="width:100%">
         <div class="txt" style="margin-left:92px">
@@ -560,14 +560,14 @@
         <div class="vis anim2" style="margin-left:-96px">
           <svg width="640" height="600" viewBox="0 0 640 600">
             <!-- ГОЛОВНА СЦЕНА: ядро-батарея 1/5, три орбіти, один тьмяний клієнт -->
-            <circle cx="280" cy="300" r="72" fill="var(--glow)" opacity=".4"/>
-            <circle cx="280" cy="300" r="120" fill="none" stroke="color-mix(in srgb,var(--faint) 86%,var(--canvas))" stroke-width="2.4" opacity=".6"/>
-            <circle cx="280" cy="300" r="185" fill="none" stroke="color-mix(in srgb,var(--faint) 86%,var(--canvas))" stroke-width="2.4" stroke-linecap="round" stroke-dasharray="1.5 16" opacity=".7"/>
-            <circle cx="280" cy="300" r="250" fill="none" stroke="color-mix(in srgb,var(--faint) 86%,var(--canvas))" stroke-width="2.4" stroke-linecap="round" stroke-dasharray="1.5 18" opacity=".45"/>
-            <circle cx="369" cy="220" r="13" fill="color-mix(in srgb,var(--gold) 26%,var(--canvas))"/>
+            <circle style="--d:.95s" class="fx-pop" cx="280" cy="300" r="72" fill="var(--glow)" opacity=".4"/>
+            <circle style="--d:1.15s" class="fx-fade" cx="280" cy="300" r="120" fill="none" stroke="color-mix(in srgb,var(--faint) 86%,var(--canvas))" stroke-width="2.4" opacity=".6"/>
+            <circle style="--d:1.35s" class="fx-fade" cx="280" cy="300" r="185" fill="none" stroke="color-mix(in srgb,var(--faint) 86%,var(--canvas))" stroke-width="2.4" stroke-linecap="round" stroke-dasharray="1.5 16" opacity=".7"/>
+            <circle style="--d:1.55s" class="fx-fade" cx="280" cy="300" r="250" fill="none" stroke="color-mix(in srgb,var(--faint) 86%,var(--canvas))" stroke-width="2.4" stroke-linecap="round" stroke-dasharray="1.5 18" opacity=".45"/>
+            <circle style="--d:1.90s" class="fx-pop" cx="369" cy="220" r="13" fill="color-mix(in srgb,var(--gold) 26%,var(--canvas))"/>
             <rect x="232" y="276" width="96" height="48" rx="12" fill="var(--canvas)" stroke="color-mix(in srgb,var(--gold) 30%,var(--canvas))" stroke-width="3.5"/>
             <rect x="332" y="290" width="9" height="20" rx="3" fill="color-mix(in srgb,var(--gold) 30%,var(--canvas))"/>
-            <rect x="239" y="283" width="13.2" height="34" rx="4" fill="color-mix(in srgb,var(--gold) 30%,var(--canvas))"/>
+            <rect style="--d:.75s" class="fx-pop" x="239" y="283" width="13.2" height="34" rx="4" fill="color-mix(in srgb,var(--gold) 30%,var(--canvas))"/>
             <rect x="256.2" y="283" width="13.2" height="34" rx="4" fill="var(--sil-off)"/>
             <rect x="273.4" y="283" width="13.2" height="34" rx="4" fill="var(--sil-off)"/>
             <rect x="290.6" y="283" width="13.2" height="34" rx="4" fill="var(--sil-off)"/>
@@ -601,7 +601,7 @@
 
   <section data-slide="08">
     <div class="variant thesis" data-v="A">
-    <div class="bg"></div><div aria-hidden="true" style="position:absolute;left:56px;top:50%;transform:translateY(-50%);z-index:1;font-family:'Spectral',serif;font-weight:600;font-size:720px;line-height:.78;color:var(--gold);opacity:.07;pointer-events:none;user-select:none;">2</div>
+    <div class="bg"></div><div class="fx-fade" aria-hidden="true" style="--d:.15s;position:absolute;left:56px;top:50%;transform:translateY(-50%);z-index:1;font-family:'Spectral',serif;font-weight:600;font-size:720px;line-height:.78;color:var(--gold);opacity:.07;pointer-events:none;user-select:none;">2</div>
     <div class="pad">
       <div class="runhead" style="width:100%"><div class="eyebrow"><span class="dot"></span>ВИКЛИКИ</div><div class="ix">Тетяна Пан</div></div>
       <div class="body" style="width:100%;display:flex;justify-content:center;align-items:center;gap:96px">
@@ -624,8 +624,8 @@
               <rect x="323" y="208" width="38" height="68" rx="8" fill="var(--sil-off)"/>
               <rect x="370" y="208" width="38" height="68" rx="8" fill="var(--sil-off)"/>
             </g>
-            <line x1="126" y1="212" x2="62" y2="342" stroke="var(--gold)" stroke-width="6" stroke-linecap="round"/>
-            <g transform="rotate(6 210 160)">
+            <line style="--d:1.30s" class="fx-fade" x1="126" y1="212" x2="62" y2="342" stroke="var(--gold)" stroke-width="6" stroke-linecap="round"/>
+            <g style="--d:1.05s" class="fx-fade" transform="rotate(6 210 160)">
               <path d="M58 150 C62 108 118 88 172 94 C190 96 202 102 210 104 C218 102 230 96 248 94 C302 88 358 108 362 150 C358 196 300 230 210 230 C120 230 62 196 58 150 Z M105 150 Q145 122 185 150 Q145 168 105 150 Z M235 150 Q275 122 315 150 Q275 168 235 150 Z" fill="var(--canvas)" fill-rule="evenodd"/>
               <path d="M58 150 C62 108 118 88 172 94 C190 96 202 102 210 104 C218 102 230 96 248 94 C302 88 358 108 362 150 C358 196 300 230 210 230 C120 230 62 196 58 150 Z M105 150 Q145 122 185 150 Q145 168 105 150 Z M235 150 Q275 122 315 150 Q275 168 235 150 Z" fill="var(--glow)" fill-rule="evenodd"/>
               <path d="M58 150 C62 108 118 88 172 94 C190 96 202 102 210 104 C218 102 230 96 248 94 C302 88 358 108 362 150 C358 196 300 230 210 230 C120 230 62 196 58 150 Z M105 150 Q145 122 185 150 Q145 168 105 150 Z M235 150 Q275 122 315 150 Q275 168 235 150 Z" class="stroke" style="stroke-width:4"/>
@@ -721,35 +721,35 @@
             </defs>
 
             <!-- descending trend line: VQ drops and the rest follow -->
-            <polyline points="328.1,72 289.2,200 247.9,328 211.5,456" fill="none" stroke="var(--gold)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" opacity=".5" stroke-dasharray="2 9"></polyline>
+            <polyline style="--d:1.95s" class="fx-fade" points="328.1,72 289.2,200 247.9,328 211.5,456" fill="none" stroke="var(--gold)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" opacity=".5" stroke-dasharray="2 9"></polyline>
 
             <!-- ROW VQ -->
             <text x="58" y="87" text-anchor="middle" font-family="'Spectral',serif" font-size="44" font-weight="600" fill="url(#f8f-vq)">VQ</text>
             <text x="620" y="78" text-anchor="end" font-family="'JetBrains Mono',monospace" font-size="20" letter-spacing="1.8" fill="var(--muted)" style="text-transform:uppercase">Життєва енергія</text>
             <rect x="150" y="54" width="486" height="36" rx="18" fill="var(--sil-off)"></rect>
-            <rect x="150" y="54" width="170.1" height="36" rx="18" fill="url(#f8f-vq)"></rect>
-            <circle cx="328.1" cy="72" r="6.5" fill="var(--gold)"></circle>
+            <rect style="--d:.80s" class="fx-wide" x="150" y="54" width="170.1" height="36" rx="18" fill="url(#f8f-vq)"></rect>
+            <circle style="--d:1.00s" class="fx-pop" cx="328.1" cy="72" r="6.5" fill="var(--gold)"></circle>
 
             <!-- ROW EQ -->
             <text x="58" y="215" text-anchor="middle" font-family="'Spectral',serif" font-size="44" font-weight="600" fill="var(--ink)">EQ</text>
             <text x="620" y="206" text-anchor="end" font-family="'JetBrains Mono',monospace" font-size="20" letter-spacing="1.8" fill="var(--muted)" style="text-transform:uppercase">Емоції</text>
             <rect x="150" y="182" width="486" height="36" rx="18" fill="var(--sil-off)"></rect>
-            <rect x="150" y="182" width="131.2" height="36" rx="18" fill="color-mix(in srgb,var(--gold) 70%,var(--canvas))"></rect>
-            <circle cx="289.2" cy="200" r="6.5" fill="color-mix(in srgb,var(--gold) 70%,var(--canvas))"></circle>
+            <rect style="--d:1.05s" class="fx-wide" x="150" y="182" width="131.2" height="36" rx="18" fill="color-mix(in srgb,var(--gold) 70%,var(--canvas))"></rect>
+            <circle style="--d:1.25s" class="fx-pop" cx="289.2" cy="200" r="6.5" fill="color-mix(in srgb,var(--gold) 70%,var(--canvas))"></circle>
 
             <!-- ROW AQ -->
             <text x="58" y="343" text-anchor="middle" font-family="'Spectral',serif" font-size="44" font-weight="600" fill="var(--muted)">AQ</text>
             <text x="620" y="334" text-anchor="end" font-family="'JetBrains Mono',monospace" font-size="20" letter-spacing="1.8" fill="var(--muted)" style="text-transform:uppercase">Адаптація</text>
             <rect x="150" y="310" width="486" height="36" rx="18" fill="var(--sil-off)"></rect>
-            <rect x="150" y="310" width="89.9" height="36" rx="18" fill="color-mix(in srgb,var(--gold) 48%,var(--canvas))"></rect>
-            <circle cx="247.9" cy="328" r="6.5" fill="color-mix(in srgb,var(--gold) 48%,var(--canvas))"></circle>
+            <rect style="--d:1.30s" class="fx-wide" x="150" y="310" width="89.9" height="36" rx="18" fill="color-mix(in srgb,var(--gold) 48%,var(--canvas))"></rect>
+            <circle style="--d:1.50s" class="fx-pop" cx="247.9" cy="328" r="6.5" fill="color-mix(in srgb,var(--gold) 48%,var(--canvas))"></circle>
 
             <!-- ROW SQ -->
             <text x="58" y="471" text-anchor="middle" font-family="'Spectral',serif" font-size="44" font-weight="600" fill="color-mix(in srgb,var(--muted) 82%,var(--canvas))">SQ</text>
             <text x="620" y="462" text-anchor="end" font-family="'JetBrains Mono',monospace" font-size="20" letter-spacing="1.8" fill="color-mix(in srgb,var(--muted) 86%,var(--canvas))" style="text-transform:uppercase">Взаємодія</text>
             <rect x="150" y="438" width="486" height="36" rx="18" fill="var(--sil-off)"></rect>
-            <rect x="150" y="438" width="53.5" height="36" rx="18" fill="color-mix(in srgb,var(--gold) 32%,var(--canvas))"></rect>
-            <circle cx="211.5" cy="456" r="6.5" fill="color-mix(in srgb,var(--gold) 32%,var(--canvas))"></circle>
+            <rect style="--d:1.55s" class="fx-wide" x="150" y="438" width="53.5" height="36" rx="18" fill="color-mix(in srgb,var(--gold) 32%,var(--canvas))"></rect>
+            <circle style="--d:1.75s" class="fx-pop" cx="211.5" cy="456" r="6.5" fill="color-mix(in srgb,var(--gold) 32%,var(--canvas))"></circle>
           </svg>
         </div>
       </div>
@@ -991,19 +991,19 @@
         <div class="vis anim3">
           <svg width="600" height="431" viewBox="0 0 640 460" role="img" aria-label="Діалог: повідомлення клієнта і згасаюча відповідь менеджера">
             <text x="22" y="26" font-family="'JetBrains Mono',monospace" font-size="17" font-weight="500" letter-spacing="3" fill="var(--muted)">КЛІЄНТ</text>
-            <path d="M46 44H304Q330 44 330 70V168Q330 194 304 194H108L64 226L76 194H46Q20 194 20 168V70Q20 44 46 44Z" fill="var(--glow)" stroke="var(--gold)" stroke-width="3.2" stroke-linejoin="round"/>
-            <g fill="var(--gold)" opacity=".85">
+            <path style="--d:.80s" class="fx-up" d="M46 44H304Q330 44 330 70V168Q330 194 304 194H108L64 226L76 194H46Q20 194 20 168V70Q20 44 46 44Z" fill="var(--glow)" stroke="var(--gold)" stroke-width="3.2" stroke-linejoin="round"/>
+            <g style="--d:1.05s" class="fx-fade" fill="var(--gold)" opacity=".85">
               <rect x="56" y="78" width="238" height="12" rx="6"/>
               <rect x="56" y="110" width="238" height="12" rx="6"/>
               <rect x="56" y="142" width="238" height="12" rx="6"/>
             </g>
-            <path class="strokeM" d="M230 214L414 246" style="stroke-dasharray:3 16;stroke-width:4"/>
+            <path class="strokeM fx-fade" d="M230 214L414 246" style="--d:1.35s;stroke-dasharray:3 16;stroke-width:4"/>
             <text x="618" y="250" text-anchor="end" font-family="'JetBrains Mono',monospace" font-size="17" font-weight="500" letter-spacing="3" fill="var(--muted)">МЕНЕДЖЕР</text>
-            <path d="M336 268H594Q620 268 620 294V392Q620 418 594 418H564L576 450L532 418H336Q310 418 310 392V294Q310 268 336 268Z" fill="var(--sil-off)" fill-opacity=".4" stroke="var(--faint)" stroke-opacity=".6" stroke-width="3" stroke-linejoin="round"/>
+            <path style="--d:1.60s" class="fx-up" d="M336 268H594Q620 268 620 294V392Q620 418 594 418H564L576 450L532 418H336Q310 418 310 392V294Q310 268 336 268Z" fill="var(--sil-off)" fill-opacity=".4" stroke="var(--faint)" stroke-opacity=".6" stroke-width="3" stroke-linejoin="round"/>
             <g fill="var(--faint)">
-              <rect x="346" y="300" width="200" height="12" rx="6" opacity=".7"/>
-              <rect x="346" y="332" width="132" height="12" rx="6" opacity=".45"/>
-              <rect x="346" y="364" width="68" height="12" rx="6" opacity=".28"/>
+              <rect style="--d:1.90s" class="fx-wide" x="346" y="300" width="200" height="12" rx="6" opacity=".7"/>
+              <rect style="--d:2.08s" class="fx-wide" x="346" y="332" width="132" height="12" rx="6" opacity=".45"/>
+              <rect style="--d:2.26s" class="fx-wide" x="346" y="364" width="68" height="12" rx="6" opacity=".28"/>
             </g>
           </svg>
         </div>
@@ -1038,28 +1038,28 @@
           </defs>
 
           <!-- осі -->
-          <path d="M74 430 H664 M74 430 V66" fill="none" stroke="var(--line)" stroke-width="2" stroke-linecap="round"/>
+          <path style="--d:.35s" class="fx-fade" d="M74 430 H664 M74 430 V66" fill="none" stroke="var(--line)" stroke-width="2" stroke-linecap="round"/>
           <text transform="rotate(-90 52 250)" x="52" y="250" text-anchor="middle" fill="var(--faint)" font-family="'JetBrains Mono',monospace" font-size="13" letter-spacing="2">ЕНЕРГІЯ</text>
           <text x="648" y="454" text-anchor="end" fill="var(--faint)" font-family="'JetBrains Mono',monospace" font-size="13" letter-spacing="2">ЧАС</text>
 
           <!-- звіти: бліда пунктирна крива, спадає пізніше -->
-          <path d="M100 128 H340 C410 128 410 360 480 360 H640" fill="none" stroke="var(--faint)" stroke-width="4" stroke-dasharray="2 13" stroke-linecap="round" stroke-linejoin="round"/>
+          <path style="--d:1.95s" class="fx-fade" d="M100 128 H340 C410 128 410 360 480 360 H640" fill="none" stroke="var(--faint)" stroke-width="4" stroke-dasharray="2 13" stroke-linecap="round" stroke-linejoin="round"/>
           <!-- клієнт: суцільна золота крива, спадає раніше -->
-          <path d="M100 128 H200 C270 128 270 360 340 360 H640" fill="none" stroke="var(--gold)" stroke-width="4.6" stroke-linecap="round" stroke-linejoin="round"/>
+          <path style="--d:.55s" class="fx-draw" pathLength="1" d="M100 128 H200 C270 128 270 360 340 360 H640" fill="none" stroke="var(--gold)" stroke-width="4.6" stroke-linecap="round" stroke-linejoin="round"/>
           
           
           
 
           <!-- маркер початку спаду: клієнт -->
-          <circle cx="200" cy="128" r="30" fill="url(#s13cGlow)"/>
+          <circle style="--d:1.25s" class="fx-fade" cx="200" cy="128" r="30" fill="url(#s13cGlow)"/>
           <circle cx="200" cy="128" r="13" fill="none" stroke="var(--gold)" stroke-width="2.5" opacity="0.4"/>
-          <circle cx="200" cy="128" r="7" fill="var(--gold)"/>
-          <text x="200" y="94" text-anchor="middle" fill="var(--gold-soft)" font-family="'JetBrains Mono',monospace" font-size="18" letter-spacing="1.5">КЛІЄНТ БАЧИТЬ</text>
+          <circle style="--d:1.32s" class="fx-pop" cx="200" cy="128" r="7" fill="var(--gold)"/>
+          <text style="--d:1.45s" class="fx-up" x="200" y="94" text-anchor="middle" fill="var(--gold-soft)" font-family="'JetBrains Mono',monospace" font-size="18" letter-spacing="1.5">КЛІЄНТ БАЧИТЬ</text>
 
           <!-- маркер початку спаду: звіти -->
           
           
-          <text x="498" y="256" fill="var(--faint)" font-family="'JetBrains Mono',monospace" font-size="18" letter-spacing="1.5">У ЗВІТАХ</text>
+          <text style="--d:2.30s" class="fx-fade" x="498" y="256" fill="var(--faint)" font-family="'JetBrains Mono',monospace" font-size="18" letter-spacing="1.5">У ЗВІТАХ</text>
         </svg>
       </div>
     </div>
@@ -1080,9 +1080,9 @@
       <div class="runhead" style="width:100%"><div class="eyebrow"><span class="dot"></span>Завершення · Вправа</div><div class="ix">Тетяна Пан</div></div>
       <div class="inner" style="gap:48px;">
         <svg class="anim" width="320" height="130" viewBox="0 0 320 130" aria-hidden="true">
-          <path fill="var(--gold)" d="M160 34 Q165 65 196 70 Q165 75 160 106 Q155 75 124 70 Q155 65 160 34 Z"/>
-          <path fill="var(--gold-soft)" d="M92 31 Q94.5 45.5 109 48 Q94.5 50.5 92 65 Q89.5 50.5 75 48 Q89.5 45.5 92 31 Z"/>
-          <path fill="var(--gold-soft)" d="M228 34 Q231 51 248 54 Q231 57 228 74 Q225 57 208 54 Q225 51 228 34 Z"/>
+          <path style="--d:.65s" class="fx-stamp" fill="var(--gold)" d="M160 34 Q165 65 196 70 Q165 75 160 106 Q155 75 124 70 Q155 65 160 34 Z"/>
+          <path style="--d:1.00s" class="fx-pop" fill="var(--gold-soft)" d="M92 31 Q94.5 45.5 109 48 Q94.5 50.5 92 65 Q89.5 50.5 75 48 Q89.5 45.5 92 31 Z"/>
+          <path style="--d:1.20s" class="fx-pop" fill="var(--gold-soft)" d="M228 34 Q231 51 248 54 Q231 57 228 74 Q225 57 208 54 Q225 51 228 34 Z"/>
         </svg>
         <h2 class="anim2" style="font-size:88px;max-width:1560px;">Назвіть одну <em class="g">маленьку перемогу</em><br>своєї команди за останній місяць.</h2>
         <div class="anim3" style="display:flex;flex-direction:column;align-items:center;gap:38px;">
@@ -1105,22 +1105,22 @@
       <div class="inner">
         <svg class="anim" width="410" viewBox="0 0 460 340" role="img" aria-label="Золота пружина під вагою плити — стиснута, але тримає" style="max-width:100%;height:auto">
           <!-- теплий ореол за пружиною -->
-          <circle cx="230" cy="212" r="96" fill="var(--glow)"/>
+          <circle style="--d:1.00s" class="fx-fade" cx="230" cy="212" r="96" fill="var(--glow)"/>
           <!-- навантаження: дві стрілки тиснуть на плиту -->
-          <g stroke="var(--gold-soft)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none" opacity=".85">
+          <g style="--d:1.85s" class="fx-down" stroke="var(--gold-soft)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none" opacity=".85">
             <path d="M186 34 V72"/><path d="M178 64 L186 78 L194 64"/>
             <path d="M274 34 V72"/><path d="M266 64 L274 78 L282 64"/>
           </g>
           <!-- плита-вага, що спирається на пружину -->
-          <rect x="120" y="82" width="220" height="36" rx="9" fill="color-mix(in srgb,var(--gold) 42%,var(--canvas))" stroke="var(--gold)" stroke-width="3"/>
-          <line x1="132" y1="91" x2="328" y2="91" stroke="var(--canvas)" stroke-width="2" stroke-linecap="round" opacity=".35"/>
+          <rect style="--d:1.50s" class="fx-down" x="120" y="82" width="220" height="36" rx="9" fill="color-mix(in srgb,var(--gold) 42%,var(--canvas))" stroke="var(--gold)" stroke-width="3"/>
+          <line style="--d:1.50s" class="fx-down" x1="132" y1="91" x2="328" y2="91" stroke="var(--canvas)" stroke-width="2" stroke-linecap="round" opacity=".35"/>
           <!-- м'яке світло у точці контакту -->
-          <ellipse cx="230" cy="120" rx="70" ry="9" fill="var(--glow)"/>
+          <ellipse style="--d:1.75s" class="fx-fade" cx="230" cy="120" rx="70" ry="9" fill="var(--glow)"/>
           <!-- пружина: гладка золота спіраль 3px, стиснута але цілісна -->
-          <path fill="none" stroke="var(--gold)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" d="M 322 118 L 321.2 122.3 L 318.9 126.5 L 315 130.6 L 309.7 134.6 L 303 138.3 L 295.1 141.7 L 286 144.8 L 276 147.5 L 265.2 149.9 L 253.8 151.8 L 242 153.2 L 230 154.2 L 218 154.8 L 206.2 154.9 L 194.8 154.5 L 184 153.7 L 174 152.5 L 164.9 151 L 157 149.1 L 150.3 146.9 L 145 144.5 L 141.1 141.9 L 138.8 139.3 L 138 136.5 L 138.8 133.7 L 141.1 131.1 L 145 128.5 L 150.3 126.1 L 157 123.9 L 164.9 122 L 174 120.5 L 184 119.3 L 194.8 118.5 L 206.2 118.1 L 218 118.2 L 230 118.8 L 242 119.8 L 253.8 121.2 L 265.2 123.1 L 276 125.5 L 286 128.2 L 295.1 131.3 L 303 134.7 L 309.7 138.4 L 315 142.4 L 318.9 146.5 L 321.2 150.7 L 322 155 L 321.2 159.3 L 318.9 163.5 L 315 167.6 L 309.7 171.6 L 303 175.3 L 295.1 178.7 L 286 181.8 L 276 184.5 L 265.2 186.9 L 253.8 188.8 L 242 190.2 L 230 191.2 L 218 191.8 L 206.2 191.9 L 194.8 191.5 L 184 190.7 L 174 189.5 L 164.9 188 L 157 186.1 L 150.3 183.9 L 145 181.5 L 141.1 178.9 L 138.8 176.3 L 138 173.5 L 138.8 170.7 L 141.1 168.1 L 145 165.5 L 150.3 163.1 L 157 160.9 L 164.9 159 L 174 157.5 L 184 156.3 L 194.8 155.5 L 206.2 155.1 L 218 155.2 L 230 155.8 L 242 156.8 L 253.8 158.2 L 265.2 160.1 L 276 162.5 L 286 165.2 L 295.1 168.3 L 303 171.7 L 309.7 175.4 L 315 179.4 L 318.9 183.5 L 321.2 187.7 L 322 192 L 321.2 196.3 L 318.9 200.5 L 315 204.6 L 309.7 208.6 L 303 212.3 L 295.1 215.7 L 286 218.8 L 276 221.5 L 265.2 223.9 L 253.8 225.8 L 242 227.2 L 230 228.2 L 218 228.8 L 206.2 228.9 L 194.8 228.5 L 184 227.7 L 174 226.5 L 164.9 225 L 157 223.1 L 150.3 220.9 L 145 218.5 L 141.1 215.9 L 138.8 213.3 L 138 210.5 L 138.8 207.7 L 141.1 205.1 L 145 202.5 L 150.3 200.1 L 157 197.9 L 164.9 196 L 174 194.5 L 184 193.3 L 194.8 192.5 L 206.2 192.1 L 218 192.2 L 230 192.8 L 242 193.8 L 253.8 195.2 L 265.2 197.1 L 276 199.5 L 286 202.2 L 295.1 205.3 L 303 208.7 L 309.7 212.4 L 315 216.4 L 318.9 220.5 L 321.2 224.7 L 322 229 L 321.2 233.3 L 318.9 237.5 L 315 241.6 L 309.7 245.6 L 303 249.3 L 295.1 252.7 L 286 255.8 L 276 258.5 L 265.2 260.9 L 253.8 262.8 L 242 264.2 L 230 265.2 L 218 265.8 L 206.2 265.9 L 194.8 265.5 L 184 264.7 L 174 263.5 L 164.9 262 L 157 260.1 L 150.3 257.9 L 145 255.5 L 141.1 252.9 L 138.8 250.3 L 138 247.5 L 138.8 244.7 L 141.1 242.1 L 145 239.5 L 150.3 237.1 L 157 234.9 L 164.9 233 L 174 231.5 L 184 230.3 L 194.8 229.5 L 206.2 229.1 L 218 229.2 L 230 229.8 L 242 230.8 L 253.8 232.2 L 265.2 234.1 L 276 236.5 L 286 239.2 L 295.1 242.3 L 303 245.7 L 309.7 249.4 L 315 253.4 L 318.9 257.5 L 321.2 261.7 L 322 266 L 321.2 270.3 L 318.9 274.5 L 315 278.6 L 309.7 282.6 L 303 286.3 L 295.1 289.7 L 286 292.8 L 276 295.5 L 265.2 297.9 L 253.8 299.8 L 242 301.2 L 230 302.2 L 218 302.8 L 206.2 302.9 L 194.8 302.5 L 184 301.7 L 174 300.5 L 164.9 299 L 157 297.1 L 150.3 294.9 L 145 292.5 L 141.1 289.9 L 138.8 287.3 L 138 284.5 L 138.8 281.7 L 141.1 279.1 L 145 276.5 L 150.3 274.1 L 157 271.9 L 164.9 270 L 174 268.5 L 184 267.3 L 194.8 266.5 L 206.2 266.1 L 218 266.2 L 230 266.8 L 242 267.8 L 253.8 269.2 L 265.2 271.1 L 276 273.5 L 286 276.2 L 295.1 279.3 L 303 282.7 L 309.7 286.4 L 315 290.4 L 318.9 294.5 L 321.2 298.7 L 322 303"/>
+          <path style="--d:.90s" class="fx-tall" fill="none" stroke="var(--gold)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" d="M 322 118 L 321.2 122.3 L 318.9 126.5 L 315 130.6 L 309.7 134.6 L 303 138.3 L 295.1 141.7 L 286 144.8 L 276 147.5 L 265.2 149.9 L 253.8 151.8 L 242 153.2 L 230 154.2 L 218 154.8 L 206.2 154.9 L 194.8 154.5 L 184 153.7 L 174 152.5 L 164.9 151 L 157 149.1 L 150.3 146.9 L 145 144.5 L 141.1 141.9 L 138.8 139.3 L 138 136.5 L 138.8 133.7 L 141.1 131.1 L 145 128.5 L 150.3 126.1 L 157 123.9 L 164.9 122 L 174 120.5 L 184 119.3 L 194.8 118.5 L 206.2 118.1 L 218 118.2 L 230 118.8 L 242 119.8 L 253.8 121.2 L 265.2 123.1 L 276 125.5 L 286 128.2 L 295.1 131.3 L 303 134.7 L 309.7 138.4 L 315 142.4 L 318.9 146.5 L 321.2 150.7 L 322 155 L 321.2 159.3 L 318.9 163.5 L 315 167.6 L 309.7 171.6 L 303 175.3 L 295.1 178.7 L 286 181.8 L 276 184.5 L 265.2 186.9 L 253.8 188.8 L 242 190.2 L 230 191.2 L 218 191.8 L 206.2 191.9 L 194.8 191.5 L 184 190.7 L 174 189.5 L 164.9 188 L 157 186.1 L 150.3 183.9 L 145 181.5 L 141.1 178.9 L 138.8 176.3 L 138 173.5 L 138.8 170.7 L 141.1 168.1 L 145 165.5 L 150.3 163.1 L 157 160.9 L 164.9 159 L 174 157.5 L 184 156.3 L 194.8 155.5 L 206.2 155.1 L 218 155.2 L 230 155.8 L 242 156.8 L 253.8 158.2 L 265.2 160.1 L 276 162.5 L 286 165.2 L 295.1 168.3 L 303 171.7 L 309.7 175.4 L 315 179.4 L 318.9 183.5 L 321.2 187.7 L 322 192 L 321.2 196.3 L 318.9 200.5 L 315 204.6 L 309.7 208.6 L 303 212.3 L 295.1 215.7 L 286 218.8 L 276 221.5 L 265.2 223.9 L 253.8 225.8 L 242 227.2 L 230 228.2 L 218 228.8 L 206.2 228.9 L 194.8 228.5 L 184 227.7 L 174 226.5 L 164.9 225 L 157 223.1 L 150.3 220.9 L 145 218.5 L 141.1 215.9 L 138.8 213.3 L 138 210.5 L 138.8 207.7 L 141.1 205.1 L 145 202.5 L 150.3 200.1 L 157 197.9 L 164.9 196 L 174 194.5 L 184 193.3 L 194.8 192.5 L 206.2 192.1 L 218 192.2 L 230 192.8 L 242 193.8 L 253.8 195.2 L 265.2 197.1 L 276 199.5 L 286 202.2 L 295.1 205.3 L 303 208.7 L 309.7 212.4 L 315 216.4 L 318.9 220.5 L 321.2 224.7 L 322 229 L 321.2 233.3 L 318.9 237.5 L 315 241.6 L 309.7 245.6 L 303 249.3 L 295.1 252.7 L 286 255.8 L 276 258.5 L 265.2 260.9 L 253.8 262.8 L 242 264.2 L 230 265.2 L 218 265.8 L 206.2 265.9 L 194.8 265.5 L 184 264.7 L 174 263.5 L 164.9 262 L 157 260.1 L 150.3 257.9 L 145 255.5 L 141.1 252.9 L 138.8 250.3 L 138 247.5 L 138.8 244.7 L 141.1 242.1 L 145 239.5 L 150.3 237.1 L 157 234.9 L 164.9 233 L 174 231.5 L 184 230.3 L 194.8 229.5 L 206.2 229.1 L 218 229.2 L 230 229.8 L 242 230.8 L 253.8 232.2 L 265.2 234.1 L 276 236.5 L 286 239.2 L 295.1 242.3 L 303 245.7 L 309.7 249.4 L 315 253.4 L 318.9 257.5 L 321.2 261.7 L 322 266 L 321.2 270.3 L 318.9 274.5 L 315 278.6 L 309.7 282.6 L 303 286.3 L 295.1 289.7 L 286 292.8 L 276 295.5 L 265.2 297.9 L 253.8 299.8 L 242 301.2 L 230 302.2 L 218 302.8 L 206.2 302.9 L 194.8 302.5 L 184 301.7 L 174 300.5 L 164.9 299 L 157 297.1 L 150.3 294.9 L 145 292.5 L 141.1 289.9 L 138.8 287.3 L 138 284.5 L 138.8 281.7 L 141.1 279.1 L 145 276.5 L 150.3 274.1 L 157 271.9 L 164.9 270 L 174 268.5 L 184 267.3 L 194.8 266.5 L 206.2 266.1 L 218 266.2 L 230 266.8 L 242 267.8 L 253.8 269.2 L 265.2 271.1 L 276 273.5 L 286 276.2 L 295.1 279.3 L 303 282.7 L 309.7 286.4 L 315 290.4 L 318.9 294.5 L 321.2 298.7 L 322 303"/>
           <!-- заземлення: опорна лінія з фіксацією -->
-          <line x1="126" y1="307" x2="334" y2="307" stroke="var(--faint)" stroke-width="3" stroke-linecap="round" opacity=".6"/>
-          <g stroke="var(--faint)" stroke-width="2.4" stroke-linecap="round" opacity=".5">
+          <line style="--d:.65s" class="fx-wide" x1="126" y1="307" x2="334" y2="307" stroke="var(--faint)" stroke-width="3" stroke-linecap="round" opacity=".6"/>
+          <g style="--d:.80s" class="fx-fade" stroke="var(--faint)" stroke-width="2.4" stroke-linecap="round" opacity=".5">
             <path d="M150 307 L138 322"/><path d="M178 307 L166 322"/><path d="M206 307 L194 322"/><path d="M234 307 L222 322"/><path d="M262 307 L250 322"/><path d="M290 307 L278 322"/><path d="M318 307 L306 322"/>
           </g>
         </svg>
@@ -1323,6 +1323,7 @@
   @keyframes fxRight{ from{ opacity:0; transform:translateX(28px) } }
   @keyframes fxWide { from{ transform:scaleX(0) } }
   @keyframes fxTall { from{ transform:scaleY(0) } }
+  @keyframes fxDrop { from{ transform:scaleY(0) } }
   @keyframes fxPop  { from{ opacity:0; transform:scale(.55) } 60%{ opacity:1 } to{ transform:none } }
   @keyframes fxStamp{ from{ opacity:0; transform:scale(1.55) } 60%{ opacity:1 } to{ transform:none } }
   [data-deck-active] .fx-draw { animation:fxDraw .7s var(--d,0s) cubic-bezier(.4,0,.2,1) both }
@@ -1333,18 +1334,21 @@
   [data-deck-active] .fx-right{ animation:fxRight .6s var(--d,0s) cubic-bezier(.22,.7,.2,1) both }
   [data-deck-active] .fx-wide { animation:fxWide .5s var(--d,0s) cubic-bezier(.4,0,.2,1) both }
   [data-deck-active] .fx-tall { animation:fxTall .55s var(--d,0s) cubic-bezier(.3,.9,.3,1) both }
+  [data-deck-active] .fx-drop { animation:fxDrop .55s var(--d,0s) cubic-bezier(.3,.9,.3,1) both }
   [data-deck-active] .fx-pop  { animation:fxPop .5s var(--d,0s) cubic-bezier(.2,1.3,.4,1) both }
   [data-deck-active] .fx-stamp{ animation:fxStamp .45s var(--d,0s) cubic-bezier(.2,1.5,.4,1) both }
   /* усередині SVG система координат трансформацій має бути прив'язана до самої
      фігури, інакше scale рахується від кута полотна, а не від елемента */
-  svg .fx-wide{ transform-box:fill-box; transform-origin:left center }
-  svg .fx-tall{ transform-box:fill-box; transform-origin:bottom center }
-  svg .fx-pop, svg .fx-stamp{ transform-box:fill-box; transform-origin:center }
+  .fx-wide{ transform-origin:left center }
+  .fx-tall{ transform-origin:bottom center }
+  .fx-drop{ transform-origin:top center }
+  .fx-pop,.fx-stamp{ transform-origin:center }
+  svg .fx-wide,svg .fx-tall,svg .fx-drop,svg .fx-pop,svg .fx-stamp{ transform-box:fill-box }
   @media print,(prefers-reduced-motion:reduce){
     [data-deck-active] .fx-draw,[data-deck-active] .fx-fade,[data-deck-active] .fx-up,
     [data-deck-active] .fx-down,[data-deck-active] .fx-left,[data-deck-active] .fx-right,
-    [data-deck-active] .fx-wide,[data-deck-active] .fx-tall,[data-deck-active] .fx-pop,
-    [data-deck-active] .fx-stamp{ animation:none !important }
+    [data-deck-active] .fx-wide,[data-deck-active] .fx-tall,[data-deck-active] .fx-drop,
+    [data-deck-active] .fx-pop,[data-deck-active] .fx-stamp{ animation:none !important }
   }
   /* ── слайд 10: ланцюжок дзвінків збирається сам, щойно слайд відкривається ──
      Чистий CSS на [data-deck-active]: нічого не треба клікати, навігація
