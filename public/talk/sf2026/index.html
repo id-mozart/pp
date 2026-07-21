@@ -1016,6 +1016,7 @@
   </section>
 
 </deck-stage>
+<script>window.__deckVariant=(location.search.match(/[?&]variant=([a-zA-Z0-9-]+)/)||[])[1]||null;</script>
 <script src="deck-stage.js"></script>
 <div id="deck-controls">
   <div class="export">
@@ -1106,7 +1107,7 @@
   #edit-bar button:hover, #edit-bar select:hover{ color:var(--gold); border-color:var(--gold); }
   #edit-bar #ed-save{ color:var(--gold); border-color:var(--gold); }
   #edit-bar .ed-msg{ min-width:120px; font-family:'Inter',sans-serif; }
-  @media print{ #edit-bar{ display:none !important } }
+  @media print{ #edit-bar{ display:none !important } html.deck-editing [data-eid]{ outline:none !important; background:none !important; } }
   /* ── mobile: let the control bar wrap instead of clipping ── */
   @media (max-width:640px){
     #deck-controls{ height:auto; min-height:52px; padding:6px 10px; gap:10px; flex-wrap:wrap; justify-content:center; }
@@ -1173,7 +1174,7 @@
   function elBy(eid){ return document.querySelector('[data-eid="'+eid+'"]'); }
   function restoreBase(eid){ var el=elBy(eid); if(el&&base[eid]!==undefined) el.innerHTML=base[eid]; }
   function clearApplied(){ applied.forEach(restoreBase); applied=[]; }
-  function applyVariant(v){ clearApplied(); (v.edits||[]).forEach(function(e){ var el=elBy(e.eid); if(el){ sanitizeInto(el,e.html); applied.push(e.eid); } }); curId=v.id||null; curName=v.name||''; }
+  function applyVariant(v){ clearApplied(); (v.edits||[]).forEach(function(e){ var el=elBy(e.eid); if(!el) return; if(e.orig && baseText[e.eid]!==undefined && (baseText[e.eid]||'').slice(0,400)!==e.orig){ if(window.console&&console.warn) console.warn('[deck] пропущено правку — базовий текст змінився:', e.eid); return; } sanitizeInto(el,e.html); applied.push(e.eid); }); curId=v.id||null; curName=v.name||''; }
   function collectEdits(){
     var out=[];
     document.querySelectorAll('[data-eid]').forEach(function(el){
@@ -1237,8 +1238,8 @@
   }
 
   function deepLink(){
-    var m=location.search.match(/[?&]variant=([a-zA-Z0-9-]+)/); if(!m) return;
-    loadList(function(list){ var v=list.filter(function(x){return x.id===m[1];})[0]; if(v) applyVariant(v); });
+    var vid=window.__deckVariant; if(!vid) return;
+    loadList(function(list){ var v=list.filter(function(x){return x.id===vid;})[0]; if(v){ applyVariant(v); if(sel&&curId) sel.value=curId; } });
   }
 
   function init(){
@@ -1266,7 +1267,7 @@
     if(window.__deckEdit || x0===null) return;
     var t=(e.changedTouches&&e.changedTouches[0]); if(!t){ x0=null; return; }
     var dx=t.clientX-x0, dy=t.clientY-y0, dt=(e.timeStamp||0)-t0; x0=null;
-    if(Math.abs(dx)>48 && Math.abs(dx)>Math.abs(dy)*1.4 && dt<900){
+    if(Math.abs(dx)>25 && Math.abs(dx)>Math.abs(dy) && dt<1200){
       var ds=document.querySelector('deck-stage'); if(!ds) return;
       if(dx<0){ ds.next&&ds.next(); } else { ds.prev&&ds.prev(); }
     }

@@ -68,7 +68,11 @@ async function ensureSchema(p: Pool) {
         CREATE INDEX IF NOT EXISTS talk_variants_deck_idx
           ON talk_variants (deck, updated_at DESC);
       `);
-    })();
+    })().catch((e) => {
+      // Don't cache a transient cold-start failure forever — let it retry.
+      _schema = null;
+      throw e;
+    });
   }
   return _schema;
 }
@@ -211,11 +215,22 @@ export async function saveTalkVariant(v: {
       `INSERT INTO talk_variants (id, deck, name, edits)
          VALUES ($1, $2, $3, $4)
        ON CONFLICT (id) DO UPDATE
-         SET name = EXCLUDED.name, edits = EXCLUDED.edits, updated_at = now()`,
+         SET name = EXCLUDED.name, edits = EXCLUDED.edits, updated_at = now()
+       WHERE talk_variants.deck = EXCLUDED.deck`,
       [id, v.deck, v.name, JSON.stringify(v.edits)],
     );
     return id;
   }, null);
+}
+
+export async function countTalkVariants(deck: string): Promise<number> {
+  return withDb(async (p) => {
+    const { rows } = await p.query(
+      `SELECT count(*)::int AS n FROM talk_variants WHERE deck = $1`,
+      [deck],
+    );
+    return rows[0]?.n ?? 0;
+  }, 0);
 }
 
 export async function deleteTalkVariant(id: string, deck: string): Promise<boolean> {
