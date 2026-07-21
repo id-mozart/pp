@@ -1100,7 +1100,7 @@
     </div>
     <div class="variant thesis" data-v="G" hidden><div class="bg"></div><div class="pad">
 <div class="runhead" style="width:100%"><div class="eyebrow"><span class="dot"></span>Рішення · Профілактика</div><div class="ix">Тетяна Пан</div></div>
-<div class="body" style="width:100%;grid-template-columns:1fr 1.06fr;gap:88px">
+<div class="body" style="width:100%;grid-template-columns:.86fr 1.18fr;gap:72px">
   <div class="txt">
     <h2 class="anim2" style="font-size:60px"><em class="g">Профілактика</em> — поки команда ще має ресурс.</h2>
     <div class="anim3" style="max-width:560px">
@@ -1118,8 +1118,8 @@
       </div>
     </div>
   </div>
-  <div class="vis anim2">
-    <svg width="660" height="470" viewBox="0 0 660 470" role="img" aria-label="Крива ресурсу команди йде рівно й трохи вниз; поки ресурс ще високо, стоїть золота точка-маркер профілактики, далі пунктиром — спад без втручання">
+  <div class="vis anim2" style="justify-self:start;margin-left:-24px;">
+    <svg width="790" height="562" viewBox="0 0 660 470" role="img" aria-label="Крива ресурсу команди йде рівно й трохи вниз; поки ресурс ще високо, стоїть золота точка-маркер профілактики, далі пунктиром — спад без втручання">
       <defs>
         <linearGradient id="s10g-line" x1="0" y1="0" x2="1" y2="0">
           <stop offset="0" style="stop-color:var(--gold-soft)"/>
@@ -1128,18 +1128,18 @@
       </defs>
       <!-- healthy / resourced zone -->
       <rect x="92" y="96" width="508" height="116" rx="6" fill="color-mix(in srgb,var(--gold) 7%,transparent)"/>
-      <path d="M92 212 H600" fill="none" stroke="color-mix(in srgb,var(--faint) 55%,transparent)" stroke-width="1.5" stroke-dasharray="2 10" stroke-linecap="round"/>
+      <path d="M92 212 H644" fill="none" stroke="color-mix(in srgb,var(--faint) 55%,transparent)" stroke-width="1.5" stroke-dasharray="2 10" stroke-linecap="round"/>
       <!-- axes -->
-      <path d="M92 92 V402 H600" fill="none" stroke="var(--line)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M92 68 V402 H644" fill="none" stroke="var(--line)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
       <!-- axis arrowheads -->
-      <path d="M87 100 L92 90 L97 100" fill="none" stroke="var(--line)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-      <path d="M594 397 L604 402 L594 407" fill="none" stroke="var(--line)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M87 78 L92 66 L97 78" fill="none" stroke="var(--line)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M638 397 L648 402 L638 407" fill="none" stroke="var(--line)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
       <!-- vertical guide separating "now" from "without intervention" -->
       <path d="M402 196 V402" fill="none" stroke="color-mix(in srgb,var(--faint) 60%,transparent)" stroke-width="1.6" stroke-dasharray="2 9" stroke-linecap="round"/>
       <!-- resource curve: level, gently declining while still high -->
       <path d="M116 150 C 210 156, 320 172, 402 188" fill="none" stroke="url(#s10g-line)" stroke-width="3.6" stroke-linecap="round"/>
       <!-- dashed decline: what happens without intervention -->
-      <path d="M402 188 C 470 202, 540 270, 600 348" fill="none" stroke="color-mix(in srgb,var(--faint) 92%,transparent)" stroke-width="2.6" stroke-linecap="round" stroke-dasharray="3 11"/>
+      <path d="M402 188 C 486 204, 566 282, 644 362" fill="none" stroke="color-mix(in srgb,var(--faint) 92%,transparent)" stroke-width="2.6" stroke-linecap="round" stroke-dasharray="3 11"/>
       <!-- intervention marker -->
       <circle cx="402" cy="188" r="27" fill="var(--glow)"/>
       <path d="M402 175 V140" fill="none" stroke="var(--gold)" stroke-width="2.4" stroke-linecap="round"/>
@@ -1148,10 +1148,10 @@
       <!-- intervention label -->
       <text x="402" y="126" text-anchor="middle" style="font-family:'Spectral',serif;font-style:italic;font-size:29px" fill="var(--gold)">тут — профілактика</text>
       <!-- caption on the decline -->
-      <text x="600" y="374" text-anchor="end" style="font-family:'JetBrains Mono',monospace;font-size:15px;letter-spacing:.18em;text-transform:uppercase" fill="var(--muted)">без втручання</text>
+      <text x="644" y="386" text-anchor="end" style="font-family:'JetBrains Mono',monospace;font-size:15px;letter-spacing:.18em;text-transform:uppercase" fill="var(--muted)">без втручання</text>
       <!-- axis captions -->
       <text x="88" y="80" text-anchor="start" style="font-family:'JetBrains Mono',monospace;font-size:15px;letter-spacing:.2em;text-transform:uppercase" fill="var(--faint)">Ресурс</text>
-      <text x="600" y="430" text-anchor="end" style="font-family:'JetBrains Mono',monospace;font-size:15px;letter-spacing:.2em;text-transform:uppercase" fill="var(--faint)">Час</text>
+      <text x="644" y="432" text-anchor="end" style="font-family:'JetBrains Mono',monospace;font-size:15px;letter-spacing:.2em;text-transform:uppercase" fill="var(--faint)">Час</text>
     </svg>
   </div>
 </div>
@@ -1279,17 +1279,18 @@
     <div class="variant thesis" data-v="D" hidden><div class="bg"></div><div class="pad center">
 <div class="runhead" style="width:100%"><div class="eyebrow"><span class="dot"></span>Рішення · Відновлення</div><div class="ix">Тетяна Пан</div></div>
 <div class="inner" style="width:100%">
-  <div style="display:flex;align-items:center;justify-content:space-between;gap:64px;width:100%">
+  <div style="display:flex;align-items:center;justify-content:flex-start;gap:72px;width:100%">
     <div class="anim2" style="max-width:640px;flex:none;text-align:left">
       <h2 style="font-size:64px;margin:0;line-height:1.14;text-align:left;text-wrap:wrap;">Коли енергії вже немає —<br><em class="g">дробити цілі.</em></h2>
-      <div style="width:84px;height:3px;margin-top:34px;border-radius:2px;background:linear-gradient(90deg,var(--gold),var(--gold-soft))"></div>
+      <div class="sub" style="text-align:left;max-width:540px;margin-top:22px;">Велику ціль дробимо на маленькі кроки, які ще по силах, — і крок за кроком повертаємо рух.</div>
+          <div style="width:84px;height:3px;margin-top:26px;border-radius:2px;background:linear-gradient(90deg,var(--gold),var(--gold-soft))"></div>
     </div>
-    <div class="anim3" style="position:relative;width:914px;height:440px;flex:none">
-      <div class="chip" style="position:absolute;left:0;bottom:0;width:560px;height:84px;display:flex;align-items:center;gap:26px;padding:0 34px;border-radius:16px;background:color-mix(in srgb,var(--gold) 4%,var(--canvas));border:1.5px solid color-mix(in srgb,var(--gold) 14%,var(--line));box-shadow:0 10px 26px rgba(120,78,20,.10);white-space:nowrap"><span class="n" style="font-size:19px">01</span><span class="t" style="font-size:24px">Визнати</span></div>
-      <div class="chip" style="position:absolute;left:118px;bottom:96px;width:560px;height:84px;display:flex;align-items:center;gap:26px;padding:0 34px;border-radius:16px;background:color-mix(in srgb,var(--gold) 7%,var(--canvas));border:1.5px solid color-mix(in srgb,var(--gold) 30%,var(--line));box-shadow:0 10px 26px rgba(120,78,20,.10);white-space:nowrap"><span class="n" style="font-size:19px">02</span><span class="t" style="font-size:24px">Прибрати зайве</span></div>
-      <div class="chip" style="position:absolute;left:236px;bottom:192px;width:560px;height:84px;display:flex;align-items:center;gap:26px;padding:0 34px;border-radius:16px;background:color-mix(in srgb,var(--gold) 10%,var(--canvas));border:1.5px solid color-mix(in srgb,var(--gold) 48%,var(--line));box-shadow:0 10px 26px rgba(120,78,20,.10);white-space:nowrap"><span class="n" style="font-size:19px">03</span><span class="t" style="font-size:24px">Повернути вплив</span></div>
-      <div class="chip" style="position:absolute;left:354px;bottom:288px;width:560px;height:84px;display:flex;align-items:center;gap:26px;padding:0 34px;border-radius:16px;background:color-mix(in srgb,var(--gold) 14%,var(--canvas));border:1.5px solid color-mix(in srgb,var(--gold) 68%,var(--line));box-shadow:0 10px 26px rgba(120,78,20,.10);white-space:nowrap"><span class="n" style="font-size:19px">04</span><span class="t" style="font-size:24px">Дробити цілі</span></div>
-      <svg width="58" height="66" viewBox="0 0 58 66" style="position:absolute;left:851px;top:5px" aria-hidden="true">
+    <div class="anim3" style="position:relative;width:742px;height:410px;flex:none">
+      <div class="chip" style="position:absolute;left:0;bottom:0;width:470px;height:78px;display:flex;align-items:center;gap:26px;padding:0 34px;border-radius:16px;background:color-mix(in srgb,var(--gold) 4%,var(--canvas));border:1.5px solid color-mix(in srgb,var(--gold) 14%,var(--line));box-shadow:0 10px 26px rgba(120,78,20,.10);white-space:nowrap"><span class="n" style="font-size:19px">01</span><span class="t" style="font-size:24px">Визнати</span></div>
+      <div class="chip" style="position:absolute;left:88px;bottom:90px;width:470px;height:78px;display:flex;align-items:center;gap:26px;padding:0 34px;border-radius:16px;background:color-mix(in srgb,var(--gold) 7%,var(--canvas));border:1.5px solid color-mix(in srgb,var(--gold) 30%,var(--line));box-shadow:0 10px 26px rgba(120,78,20,.10);white-space:nowrap"><span class="n" style="font-size:19px">02</span><span class="t" style="font-size:24px">Прибрати зайве</span></div>
+      <div class="chip" style="position:absolute;left:176px;bottom:180px;width:470px;height:78px;display:flex;align-items:center;gap:26px;padding:0 34px;border-radius:16px;background:color-mix(in srgb,var(--gold) 10%,var(--canvas));border:1.5px solid color-mix(in srgb,var(--gold) 48%,var(--line));box-shadow:0 10px 26px rgba(120,78,20,.10);white-space:nowrap"><span class="n" style="font-size:19px">03</span><span class="t" style="font-size:24px">Повернути вплив</span></div>
+      <div class="chip" style="position:absolute;left:264px;bottom:270px;width:470px;height:78px;display:flex;align-items:center;gap:26px;padding:0 34px;border-radius:16px;background:color-mix(in srgb,var(--gold) 14%,var(--canvas));border:1.5px solid color-mix(in srgb,var(--gold) 68%,var(--line));box-shadow:0 10px 26px rgba(120,78,20,.10);white-space:nowrap"><span class="n" style="font-size:19px">04</span><span class="t" style="font-size:24px">Дробити цілі</span></div>
+      <svg width="58" height="66" viewBox="0 0 58 66" style="position:absolute;left:700px;top:0px" aria-hidden="true">
         <defs><linearGradient id="s11d-flag" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="var(--gold-soft)"/><stop offset="1" stop-color="var(--gold)"/></linearGradient></defs>
         <path d="M7 63 V7" stroke="var(--gold)" stroke-width="3" stroke-linecap="round" fill="none"/>
         <path d="M9 9 L52 18.5 L9 28 Z" fill="url(#s11d-flag)"/>
