@@ -987,9 +987,19 @@
   <div class="export">
     <button id="exp-pdf-dark" type="button" title="Завантажити PDF — темна тема">PDF&nbsp;●</button><button id="exp-pdf-light" type="button" title="Завантажити PDF — світла тема">PDF&nbsp;○</button>
     <a id="exp-pptx" href="sf2026.pptx" download="Sales Forum 2026 — Тетяна Пан.pptx" title="Завантажити презентацію (PPTX)">PPTX</a>
+    <button id="deck-edit" type="button" title="Редагувати тексти презентації">Редагувати</button>
   </div>
   <div class="vswitch" id="vswitch-global" aria-label="Версії слайда"></div>
   <button id="theme" aria-label="Перемкнути тему"><span class="sw"></span><span id="theme-label">Світла</span></button>
+</div>
+<div id="edit-bar" hidden>
+  <span class="ed-status">✎ Режим редагування — клікайте будь-який текст і змінюйте його</span>
+  <select id="ed-variants" title="Завантажити збережений варіант"><option value="">— завантажити варіант —</option></select>
+  <button id="ed-del" type="button" title="Видалити вибраний варіант">Видалити</button>
+  <button id="ed-save" type="button">Зберегти варіант…</button>
+  <button id="ed-reset" type="button" title="Повернути базовий текст (скинути правки)">Скинути</button>
+  <button id="ed-exit" type="button">Готово</button>
+  <span class="ed-msg" id="ed-msg"></span>
 </div>
 <script>
   // Глобальний перемикач версій активного слайда (поза межами слайда).
@@ -1045,6 +1055,147 @@
       localStorage.setItem(KEY,t);apply(t);
     });
   })();
+</script>
+<style id="ed-style">
+  html.deck-editing [data-eid]{ outline:1px dashed color-mix(in srgb,var(--gold) 45%,transparent); outline-offset:3px; border-radius:3px; cursor:text; }
+  html.deck-editing [data-eid]:hover{ outline-color:var(--gold); background:color-mix(in srgb,var(--gold) 8%,transparent); }
+  html.deck-editing [data-eid]:focus{ outline:2px solid var(--gold); background:color-mix(in srgb,var(--gold) 10%,transparent); }
+  #deck-controls .export #deck-edit.on{ color:var(--gold); border-color:var(--gold); }
+  #edit-bar{ position:fixed; left:0; right:0; bottom:62px; z-index:10000; display:flex; align-items:center; flex-wrap:wrap; gap:12px;
+    padding:11px 34px; background:color-mix(in srgb,var(--canvas) 90%,#000); border-top:1px solid var(--line);
+    font-family:'Inter',sans-serif; font-size:14px; color:var(--muted); }
+  #edit-bar[hidden]{ display:none !important; }
+  #edit-bar .ed-status{ margin-right:auto; letter-spacing:.01em; }
+  #edit-bar select, #edit-bar button{ font-family:'JetBrains Mono',monospace; font-size:13px; letter-spacing:.05em;
+    color:var(--muted); background:transparent; border:1px solid var(--line); border-radius:8px; padding:6px 12px; cursor:pointer; }
+  #edit-bar select{ max-width:230px; }
+  #edit-bar button:hover, #edit-bar select:hover{ color:var(--gold); border-color:var(--gold); }
+  #edit-bar #ed-save{ color:var(--gold); border-color:var(--gold); }
+  #edit-bar .ed-msg{ min-width:120px; font-family:'Inter',sans-serif; }
+  @media print{ #edit-bar{ display:none !important } }
+</style>
+<script>
+/* In-deck text editor + server-saved presentation variants (/api/talk/variants). */
+(function(){
+  var DECK=(location.pathname.match(/\/talk\/([a-z0-9-]+)/)||[])[1]||'sf2026';
+  var API='/api/talk/variants';
+  var EINLINE=/^(EM|B|I|U|SPAN|BR|A|SMALL|STRONG|SUP|SUB|MARK)$/;
+  var ALLOW=/^(EM|B|I|U|SPAN|BR|A|STRONG|SMALL|SUP|SUB|MARK)$/;
+  var base={}, baseText={}, editMode=false, applied=[], curId=null, curName='', ds=null;
+
+  function isLeaf(el){
+    if(el.closest('svg')) return false;
+    if(!el.textContent || !el.textContent.trim()) return false;
+    for(var i=0;i<el.children.length;i++){ if(!EINLINE.test(el.children[i].tagName)) return false; }
+    return true;
+  }
+  function assign(){
+    document.querySelectorAll('section[data-slide]').forEach(function(sec){
+      var slide=sec.getAttribute('data-slide'), cands=[];
+      sec.querySelectorAll('*').forEach(function(el){ if(isLeaf(el)) cands.push(el); });
+      var set=new Set(cands);
+      var outers=cands.filter(function(el){ var p=el.parentElement; while(p&&p!==sec){ if(set.has(p)) return false; p=p.parentElement; } return true; });
+      outers.forEach(function(el,i){ var eid=slide+'/'+i; el.setAttribute('data-eid',eid); base[eid]=el.innerHTML; baseText[eid]=(el.textContent||'').trim(); });
+    });
+  }
+  function sanitizeInto(target, html){
+    var tpl=document.createElement('template'); tpl.innerHTML=html;
+    function clean(node){
+      var frag=document.createDocumentFragment();
+      node.childNodes.forEach(function(c){
+        if(c.nodeType===3){ frag.appendChild(document.createTextNode(c.nodeValue)); }
+        else if(c.nodeType===1){
+          if(ALLOW.test(c.tagName)){
+            var el=document.createElement(c.tagName.toLowerCase());
+            var cls=c.getAttribute('class'); if(cls) el.setAttribute('class',cls);
+            if(c.tagName==='A'){ var h=c.getAttribute('href')||''; if(/^https?:\/\//i.test(h)){ el.setAttribute('href',h); el.setAttribute('target','_blank'); el.setAttribute('rel','noopener'); } }
+            el.appendChild(clean(c)); frag.appendChild(el);
+          } else { frag.appendChild(clean(c)); }
+        }
+      });
+      return frag;
+    }
+    target.textContent=''; target.appendChild(clean(tpl.content));
+  }
+  function elBy(eid){ return document.querySelector('[data-eid="'+eid+'"]'); }
+  function restoreBase(eid){ var el=elBy(eid); if(el&&base[eid]!==undefined) el.innerHTML=base[eid]; }
+  function clearApplied(){ applied.forEach(restoreBase); applied=[]; }
+  function applyVariant(v){ clearApplied(); (v.edits||[]).forEach(function(e){ var el=elBy(e.eid); if(el){ sanitizeInto(el,e.html); applied.push(e.eid); } }); curId=v.id||null; curName=v.name||''; }
+  function collectEdits(){
+    var out=[];
+    document.querySelectorAll('[data-eid]').forEach(function(el){
+      var eid=el.getAttribute('data-eid'), cur=el.innerHTML;
+      if(base[eid]!==undefined && cur!==base[eid]) out.push({eid:eid, html:cur, orig:(baseText[eid]||'').slice(0,400)});
+    });
+    return out;
+  }
+
+  var bar, sel, msg;
+  function flash(t, err){ if(!msg) return; msg.textContent=t||''; msg.style.color=err?'#e0603a':'var(--gold)'; if(t){ var cur=t; setTimeout(function(){ if(msg.textContent===cur) msg.textContent=''; }, 3500); } }
+  function loadList(cb){
+    fetch(API+'?deck='+encodeURIComponent(DECK)).then(function(r){return r.json();}).then(function(d){
+      sel.innerHTML='<option value="">— завантажити варіант —</option>';
+      (d.variants||[]).forEach(function(v){ var o=document.createElement('option'); o.value=v.id; o.textContent=v.name; o._v=v; sel.appendChild(o); });
+      if(curId) sel.value=curId;
+      if(cb) cb(d.variants||[]);
+    }).catch(function(){ flash('Не вдалося завантажити список', true); });
+  }
+  function setEdit(on){
+    editMode=on; window.__deckEdit=on;
+    document.documentElement.classList.toggle('deck-editing', on);
+    document.querySelectorAll('[data-eid]').forEach(function(el){ if(on){ el.setAttribute('contenteditable','true'); } else { el.removeAttribute('contenteditable'); } });
+    bar.hidden=!on;
+    document.getElementById('deck-edit').classList.toggle('on', on);
+    if(on) loadList();
+  }
+
+  function wire(){
+    bar=document.getElementById('edit-bar'); sel=document.getElementById('ed-variants'); msg=document.getElementById('ed-msg');
+    document.getElementById('deck-edit').addEventListener('click', function(){ setEdit(!editMode); });
+    document.getElementById('ed-exit').addEventListener('click', function(){ setEdit(false); });
+    sel.addEventListener('change', function(){
+      var o=sel.selectedOptions[0];
+      if(o && o._v){ applyVariant(o._v); flash('Завантажено: '+o._v.name); }
+      else { clearApplied(); curId=null; curName=''; flash('Показано базовий текст'); }
+    });
+    document.getElementById('ed-save').addEventListener('click', function(){
+      var edits=collectEdits();
+      if(!edits.length){ flash('Немає змін для збереження', true); return; }
+      var name=prompt('Назва варіанту:', curName||'Мій варіант');
+      if(name===null) return; name=(name||'').trim(); if(!name){ flash('Потрібна назва', true); return; }
+      var body={ deck:DECK, name:name, edits:edits };
+      if(curId && curName===name) body.id=curId;
+      fetch(API,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)})
+        .then(function(r){return r.json();}).then(function(d){ if(d.ok){ curId=d.id; curName=name; flash('Збережено: '+name); loadList(); } else flash('Помилка: '+(d.error||'?'), true); })
+        .catch(function(){ flash('Помилка мережі', true); });
+    });
+    document.getElementById('ed-del').addEventListener('click', function(){
+      var id=sel.value; if(!id){ flash('Виберіть варіант зі списку', true); return; }
+      var nm=sel.selectedOptions[0].textContent;
+      if(!confirm('Видалити варіант «'+nm+'»?')) return;
+      fetch(API+'?deck='+encodeURIComponent(DECK)+'&id='+encodeURIComponent(id),{method:'DELETE'})
+        .then(function(r){return r.json();}).then(function(){ if(curId===id){ clearApplied(); curId=null; curName=''; } flash('Видалено'); loadList(); })
+        .catch(function(){ flash('Помилка', true); });
+    });
+    document.getElementById('ed-reset').addEventListener('click', function(){
+      Object.keys(base).forEach(restoreBase); applied=[]; curId=null; curName=''; sel.value=''; flash('Скинуто до базового тексту');
+    });
+    window.addEventListener('keydown', function(e){ if(editMode && e.target && e.target.isContentEditable) e.stopPropagation(); }, true);
+  }
+
+  function deepLink(){
+    var m=location.search.match(/[?&]variant=([a-zA-Z0-9-]+)/); if(!m) return;
+    loadList(function(list){ var v=list.filter(function(x){return x.id===m[1];})[0]; if(v) applyVariant(v); });
+  }
+
+  function init(){
+    ds=document.querySelector('deck-stage');
+    try{ var orig=ds._advance.bind(ds); ds._advance=function(dir,reason){ if(window.__deckEdit) return; return orig(dir,reason); }; }catch(e){}
+    assign(); wire(); deepLink();
+  }
+  if(window.customElements && customElements.whenDefined){ customElements.whenDefined('deck-stage').then(function(){ setTimeout(init,80); }); }
+  else { window.addEventListener('load', function(){ setTimeout(init,120); }); }
+})();
 </script>
 </body>
 </html>

@@ -57,6 +57,16 @@ async function ensureSchema(p: Pool) {
           bytes       bytea NOT NULL,
           created_at  timestamptz NOT NULL DEFAULT now()
         );
+        CREATE TABLE IF NOT EXISTS talk_variants (
+          id          uuid PRIMARY KEY,
+          deck        text NOT NULL,
+          name        text NOT NULL,
+          edits       jsonb NOT NULL,
+          created_at  timestamptz NOT NULL DEFAULT now(),
+          updated_at  timestamptz NOT NULL DEFAULT now()
+        );
+        CREATE INDEX IF NOT EXISTS talk_variants_deck_idx
+          ON talk_variants (deck, updated_at DESC);
       `);
     })();
   }
@@ -161,4 +171,56 @@ export async function getMedia(
     if (!rows[0]) return null;
     return { mime: rows[0].mime as string, bytes: rows[0].bytes as Buffer };
   }, null);
+}
+
+/* ───────────────────── Talk variants (in-deck text edits) ─────────────────────
+   Named snapshots of text overrides for a standalone deck (e.g. /talk/sf2026).
+   `edits` is an array of { eid, html } — only the changed text nodes, applied
+   client-side on top of the current deck markup. */
+
+export type TalkEdit = { eid: string; html: string; orig?: string };
+export type TalkVariant = {
+  id: string;
+  deck: string;
+  name: string;
+  edits: TalkEdit[];
+  created_at: string;
+  updated_at: string;
+};
+
+export async function listTalkVariants(deck: string): Promise<TalkVariant[]> {
+  return withDb(async (p) => {
+    const { rows } = await p.query(
+      `SELECT id, deck, name, edits, created_at, updated_at
+         FROM talk_variants WHERE deck = $1 ORDER BY updated_at DESC LIMIT 200`,
+      [deck],
+    );
+    return rows as TalkVariant[];
+  }, []);
+}
+
+export async function saveTalkVariant(v: {
+  id?: string;
+  deck: string;
+  name: string;
+  edits: TalkEdit[];
+}): Promise<string | null> {
+  return withDb(async (p) => {
+    const id = v.id || randomUUID();
+    await p.query(
+      `INSERT INTO talk_variants (id, deck, name, edits)
+         VALUES ($1, $2, $3, $4)
+       ON CONFLICT (id) DO UPDATE
+         SET name = EXCLUDED.name, edits = EXCLUDED.edits, updated_at = now()`,
+      [id, v.deck, v.name, JSON.stringify(v.edits)],
+    );
+    return id;
+  }, null);
+}
+
+export async function deleteTalkVariant(id: string, deck: string): Promise<boolean> {
+  return withDb(async (p) => {
+    await p.query(`DELETE FROM talk_variants WHERE id = $1 AND deck = $2`, [id, deck]);
+    return true;
+  }, false);
 }
