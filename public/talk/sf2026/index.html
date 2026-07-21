@@ -448,13 +448,44 @@
   <section data-slide="06">
     <div class="variant thesis" data-v="A"><div class="bg"></div><div class="pad">
       <div class="runhead" style="width:100%"><div class="eyebrow"><span class="dot"></span>Проблема</div><div class="ix">Тетяна Пан</div></div>
-      <div class="body" style="width:100%;display:flex;align-items:center;gap:90px">
-        <div class="txt" style="flex:1;min-width:0;">
+      <div class="body" style="width:100%">
+        <div class="txt">
           <h2 class="anim2" style="font-size:78px">Немає енергії — <em class="g">немає нових клієнтів.</em></h2>
           <ul class="anim3" style="list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:18px;max-width:640px;"><li style="display:flex;align-items:baseline;gap:16px;font-family:'Inter',sans-serif;font-size:29px;line-height:1.4;color:var(--muted);"><span style="flex:none;width:9px;height:9px;border-radius:50%;background:var(--gold);transform:translateY(-4px);"></span><span>Менше дзвінків</span></li><li style="display:flex;align-items:baseline;gap:16px;font-family:'Inter',sans-serif;font-size:29px;line-height:1.4;color:var(--muted);"><span style="flex:none;width:9px;height:9px;border-radius:50%;background:var(--gold);transform:translateY(-4px);"></span><span>Ніяких нових контактів</span></li><li style="display:flex;align-items:baseline;gap:16px;font-family:'Inter',sans-serif;font-size:29px;line-height:1.4;color:var(--muted);"><span style="flex:none;width:9px;height:9px;border-radius:50%;background:var(--gold);transform:translateY(-4px);"></span><span>Уникання складних клієнтів</span></li></ul>
         </div>
-        <div class="vis anim2" style="flex:none;order:-1;">
-          <svg width="580" height="247" viewBox="0 0 470 200" role="img" aria-label="Розряджена батарея — заряджена лише одна секція"><rect x="14" y="24" width="392" height="152" rx="24" fill="none" stroke="var(--gold)" stroke-width="4"/><rect x="414" y="70" width="24" height="60" rx="8" fill="var(--gold)"/><rect x="34" y="44" width="66" height="112" rx="10" fill="color-mix(in srgb,var(--gold-soft) 72%,var(--canvas))"/><rect x="110" y="44" width="66" height="112" rx="10" fill="var(--sil-off)"/><rect x="186" y="44" width="66" height="112" rx="10" fill="var(--sil-off)"/><rect x="262" y="44" width="66" height="112" rx="10" fill="var(--sil-off)"/><rect x="338" y="44" width="66" height="112" rx="10" fill="var(--sil-off)"/></svg>
+        <div class="vis anim2">
+          <svg width="640" height="600" viewBox="0 0 640 600">
+            <!-- ГОЛОВНА СЦЕНА: ядро-батарея 1/5, три орбіти, один тьмяний клієнт -->
+            <circle cx="280" cy="300" r="72" fill="var(--glow)"/>
+            <circle cx="280" cy="300" r="120" fill="none" stroke="color-mix(in srgb,var(--faint) 86%,var(--canvas))" stroke-width="2.4"/>
+            <circle cx="280" cy="300" r="185" fill="none" stroke="color-mix(in srgb,var(--faint) 86%,var(--canvas))" stroke-width="2.4" stroke-linecap="round" stroke-dasharray="1.5 16" opacity=".7"/>
+            <circle cx="280" cy="300" r="250" fill="none" stroke="color-mix(in srgb,var(--faint) 86%,var(--canvas))" stroke-width="2.4" stroke-linecap="round" stroke-dasharray="1.5 18" opacity=".45"/>
+            <circle cx="369" cy="220" r="13" fill="color-mix(in srgb,var(--gold) 42%,var(--canvas))"/>
+            <rect x="232" y="276" width="96" height="48" rx="12" fill="var(--canvas)" stroke="var(--gold)" stroke-width="4"/>
+            <rect x="332" y="290" width="9" height="20" rx="3" fill="var(--gold)"/>
+            <rect x="239" y="283" width="13.2" height="34" rx="4" fill="var(--gold)"/>
+            <rect x="256.2" y="283" width="13.2" height="34" rx="4" fill="var(--sil-off)"/>
+            <rect x="273.4" y="283" width="13.2" height="34" rx="4" fill="var(--sil-off)"/>
+            <rect x="290.6" y="283" width="13.2" height="34" rx="4" fill="var(--sil-off)"/>
+            <rect x="307.8" y="283" width="13.2" height="34" rx="4" fill="var(--sil-off)"/>
+            <!-- МІНІАТЮРА (кут сцени): повна батарея, орбіти із золотими клієнтами -->
+            <circle cx="552" cy="100" r="84" fill="var(--glow)"/>
+            <circle cx="552" cy="100" r="44" fill="none" stroke="color-mix(in srgb,var(--faint) 86%,var(--canvas))" stroke-width="2"/>
+            <circle cx="552" cy="100" r="68" fill="none" stroke="color-mix(in srgb,var(--faint) 86%,var(--canvas))" stroke-width="2"/>
+            <g fill="var(--gold)">
+              <circle cx="574" cy="62" r="4.5"/><circle cx="590" cy="122" r="4.5"/><circle cx="530" cy="138" r="4.5"/><circle cx="514" cy="78" r="4.5"/>
+              <circle cx="564" cy="33" r="4.5"/><circle cx="616" cy="77" r="4.5"/><circle cx="604" cy="144" r="4.5"/><circle cx="540" cy="167" r="4.5"/><circle cx="488" cy="123" r="4.5"/><circle cx="500" cy="56" r="4.5"/>
+            </g>
+            <rect x="524" y="85" width="56" height="30" rx="8" fill="var(--canvas)" stroke="var(--gold)" stroke-width="3"/>
+            <rect x="583" y="93" width="6" height="14" rx="2" fill="var(--gold)"/>
+            <g fill="var(--gold)">
+              <rect x="529" y="90" width="7" height="20" rx="2"/>
+              <rect x="538.75" y="90" width="7" height="20" rx="2"/>
+              <rect x="548.5" y="90" width="7" height="20" rx="2"/>
+              <rect x="558.25" y="90" width="7" height="20" rx="2"/>
+              <rect x="568" y="90" width="7" height="20" rx="2"/>
+            </g>
+          </svg>
         </div>
       </div>
       <div class="foot" style="width:100%"><span class="evt">Sales Forum<span class="sep">·</span>2026</span><span></span></div>
@@ -467,13 +498,18 @@
     <div class="variant thesis" data-v="A">
     <div class="bg"></div>
     <div class="pad">
-      <div class="runhead"><div class="eyebrow"><span class="dot"></span>Проблема</div><div class="ix">Тетяна Пан</div></div>
-      <div class="body">
-        <div class="txt">
-          <h2 class="anim2" style="font-size:60px">Виснаження <em class="g">маскується</em> під прокрастинацію, брак ініціативи та «ринок зараз не той».</h2>
+      <div class="runhead" style="width:100%"><div class="eyebrow"><span class="dot"></span>Проблема</div><div class="ix">Тетяна Пан</div></div>
+      <div class="body" style="width:100%;grid-template-columns:.82fr 1.18fr;gap:56px;align-items:center">
+        <div class="txt" style="gap:40px">
+          <h2 class="anim2" style="font-size:82px;line-height:1.06;">Виснаження <em class="g">маскується</em></h2>
+          <ul class="anim3" style="list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:22px;max-width:640px;">
+            <li style="display:flex;align-items:baseline;gap:16px;font-family:'Inter',sans-serif;font-size:31px;line-height:1.35;color:var(--muted);"><span style="flex:none;width:9px;height:9px;border-radius:50%;background:var(--gold);transform:translateY(-5px);"></span><span>прокрастинація</span></li>
+            <li style="display:flex;align-items:baseline;gap:16px;font-family:'Inter',sans-serif;font-size:31px;line-height:1.35;color:var(--muted);"><span style="flex:none;width:9px;height:9px;border-radius:50%;background:var(--gold);transform:translateY(-5px);"></span><span>брак ініціативи</span></li>
+            <li style="display:flex;align-items:baseline;gap:16px;font-family:'Inter',sans-serif;font-size:31px;line-height:1.35;color:var(--muted);"><span style="flex:none;width:9px;height:9px;border-radius:50%;background:var(--gold);transform:translateY(-5px);"></span><span>«ринок зараз не той»</span></li>
+          </ul>
         </div>
-        <div class="vis anim2">
-          <svg width="470" height="380" viewBox="0 0 470 380" role="img" aria-label="Театральна напівмаска прикриває розряджену батарею">
+        <div class="vis anim2" style="order:-1;justify-self:center;">
+          <svg width="600" height="485" viewBox="0 0 470 380" role="img" aria-label="Театральна напівмаска прикриває розряджену батарею">
             <g opacity=".55">
               <rect x="170" y="196" width="250" height="92" rx="14" class="strokeM"/>
               <rect x="424" y="222" width="15" height="44" rx="5" fill="var(--faint)"/>
@@ -492,8 +528,10 @@
           </svg>
         </div>
       </div>
+      <div class="foot" style="width:100%"><span class="evt">Sales Forum<span class="sep">·</span>2026</span><span></span></div>
     </div>
   </div>
+    
     <div class="variant thesis" data-v="B" hidden>
     <div class="bg"></div>
     <div class="pad">
@@ -522,18 +560,14 @@
       </div>
     </div>
   </div>
+    
     <div class="variant thesis" data-v="C" hidden>
     <div class="bg"></div>
     <div class="pad">
-      <div class="runhead" style="width:100%"><div class="eyebrow"><span class="dot"></span>Проблема</div><div class="ix">Тетяна Пан</div></div>
-      <div class="body" style="width:100%;grid-template-columns:1.1fr .9fr;gap:80px;align-items:center">
-        <div class="txt" style="gap:40px">
-          <h2 class="anim2" style="font-size:82px;line-height:1.06;">Виснаження <em class="g">маскується</em></h2>
-          <ul class="anim3" style="list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:22px;max-width:640px;">
-            <li style="display:flex;align-items:baseline;gap:16px;font-family:'Inter',sans-serif;font-size:31px;line-height:1.35;color:var(--muted);"><span style="flex:none;width:9px;height:9px;border-radius:50%;background:var(--gold);transform:translateY(-5px);"></span><span>прокрастинація</span></li>
-            <li style="display:flex;align-items:baseline;gap:16px;font-family:'Inter',sans-serif;font-size:31px;line-height:1.35;color:var(--muted);"><span style="flex:none;width:9px;height:9px;border-radius:50%;background:var(--gold);transform:translateY(-5px);"></span><span>брак ініціативи</span></li>
-            <li style="display:flex;align-items:baseline;gap:16px;font-family:'Inter',sans-serif;font-size:31px;line-height:1.35;color:var(--muted);"><span style="flex:none;width:9px;height:9px;border-radius:50%;background:var(--gold);transform:translateY(-5px);"></span><span>«ринок зараз не той»</span></li>
-          </ul>
+      <div class="runhead"><div class="eyebrow"><span class="dot"></span>Проблема</div><div class="ix">Тетяна Пан</div></div>
+      <div class="body">
+        <div class="txt">
+          <h2 class="anim2" style="font-size:60px">Виснаження <em class="g">маскується</em> під прокрастинацію, брак ініціативи та «ринок зараз не той».</h2>
         </div>
         <div class="vis anim2">
           <svg width="470" height="380" viewBox="0 0 470 380" role="img" aria-label="Театральна напівмаска прикриває розряджену батарею">
@@ -555,9 +589,9 @@
           </svg>
         </div>
       </div>
-      <div class="foot" style="width:100%"><span class="evt">Sales Forum<span class="sep">·</span>2026</span><span></span></div>
     </div>
   </div>
+    
     <div class="ix pagenum"><span class="num">07</span> / 16</div>
   </section>
 
@@ -1062,315 +1096,7 @@
   </section>
 
   <section data-slide="10">
-    <div class="variant thesis" data-v="A">
-    <div class="bg"></div>
-    <div class="pad">
-      <div class="runhead"><div class="eyebrow"><span class="dot"></span>Рішення · Профілактика</div><div class="ix">Тетяна Пан</div></div>
-      <div class="body" style="grid-template-columns:1fr 1.1fr;gap:96px">
-        <div class="txt">
-          <h2 class="anim2" style="font-size:60px"><em class="g">Профілактика</em> — поки команда ще має ресурс.</h2>
-        </div>
-        <div class="vis">
-          <div class="steps" style="max-width:780px;gap:28px">
-            <div class="chip anim" style="background:var(--panel);background:color-mix(in srgb,var(--gold) 9%,var(--canvas));border:1.5px solid var(--panel-line);border-color:color-mix(in srgb,var(--gold) 36%,transparent);box-shadow:0 14px 34px var(--glow);border-radius:18px;padding:30px 36px;margin-right:170px"><span class="n" style="font-size:30px;min-width:54px">01</span><span class="t" style="font-size:37px">Помічати стан команди</span></div>
-            <div class="chip anim2" style="background:var(--panel);background:color-mix(in srgb,var(--gold) 9%,var(--canvas));border:1.5px solid var(--panel-line);border-color:color-mix(in srgb,var(--gold) 36%,transparent);box-shadow:0 14px 34px var(--glow);border-radius:18px;padding:30px 36px;margin-left:85px;margin-right:85px"><span class="n" style="font-size:30px;min-width:54px">02</span><span class="t" style="font-size:37px">Підтримувати прогрес</span></div>
-            <div class="chip anim3" style="background:var(--panel);background:color-mix(in srgb,var(--gold) 9%,var(--canvas));border:1.5px solid var(--panel-line);border-color:color-mix(in srgb,var(--gold) 36%,transparent);box-shadow:0 14px 34px var(--glow);border-radius:18px;padding:30px 36px;margin-left:170px"><span class="n" style="font-size:30px;min-width:54px">03</span><span class="t" style="font-size:37px">Створювати умови</span></div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-    <div class="variant thesis" data-v="B" hidden>
-    <div class="bg"></div>
-    <div class="pad">
-      <div class="runhead"><div class="eyebrow"><span class="dot"></span>Рішення · Профілактика</div><div class="ix">Тетяна Пан</div></div>
-      <div class="body" style="display:flex;flex-direction:column;align-items:stretch;justify-content:center;gap:70px">
-        <div class="txt" style="gap:30px">
-          <h2 class="anim2" style="font-size:60px;max-width:1150px"><em class="g">Профілактика</em> — поки команда ще має ресурс.</h2>
-        </div>
-        <div class="anim3" style="display:flex;align-items:center;gap:130px">
-          <div style="flex:1;max-width:1000px;display:flex;flex-direction:column">
-            <div style="display:grid;grid-template-columns:120px 1fr;align-items:center;gap:40px;padding:32px 0">
-              <span style="font-family:'JetBrains Mono',monospace;font-size:58px;font-weight:600;background:var(--grad-acc);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent">01</span>
-              <span style="font-family:'Spectral',serif;font-size:42px;color:var(--ink)">Помічати стан команди</span>
-            </div>
-            <div style="display:grid;grid-template-columns:120px 1fr;align-items:center;gap:40px;padding:32px 0;border-top:1px solid var(--line)">
-              <span style="font-family:'JetBrains Mono',monospace;font-size:58px;font-weight:600;background:var(--grad-acc);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent">02</span>
-              <span style="font-family:'Spectral',serif;font-size:42px;color:var(--ink)">Підтримувати прогрес</span>
-            </div>
-            <div style="display:grid;grid-template-columns:120px 1fr;align-items:center;gap:40px;padding:32px 0;border-top:1px solid var(--line)">
-              <span style="font-family:'JetBrains Mono',monospace;font-size:58px;font-weight:600;background:var(--grad-acc);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent">03</span>
-              <span style="font-family:'Spectral',serif;font-size:42px;color:var(--ink)">Створювати умови</span>
-            </div>
-          </div>
-          <div class="battery" style="flex:0 0 auto">
-            <div class="batt-body" style="height:118px;width:252px;padding:12px;gap:10px;border-width:4px;border-radius:18px">
-              <div class="cell on"></div><div class="cell on"></div><div class="cell on"></div><div class="cell on"></div>
-            </div>
-            <div class="batt-cap" style="width:18px;height:44px"></div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-    <div class="variant thesis" data-v="C" hidden><div class="bg"></div><div class="pad center">
-<div class="runhead" style="width:100%"><div class="eyebrow"><span class="dot"></span>Рішення · Профілактика</div><div class="ix">Тетяна Пан</div></div>
-<div class="inner" style="width:100%">
-  <div class="body" style="grid-template-columns:1.05fr .95fr;gap:110px;align-items:center;width:100%">
-    <div class="txt">
-      <h2 class="anim" style="font-size:60px;margin:0 0 46px"><em class="g">Профілактика</em> — поки команда ще має ресурс.</h2>
-      <div class="anim2" style="max-width:660px;display:flex;flex-direction:column">
-        <div style="display:flex;align-items:baseline;gap:28px;padding:23px 0;border-top:1px solid var(--line)"><span style="font-family:'JetBrains Mono',monospace;font-size:21px;letter-spacing:.2em;color:var(--gold)">01</span><span style="font-family:Inter,sans-serif;font-size:28px;line-height:1.35;color:var(--ink)">Помічати стан команди</span></div>
-        <div style="display:flex;align-items:baseline;gap:28px;padding:23px 0;border-top:1px solid var(--line)"><span style="font-family:'JetBrains Mono',monospace;font-size:21px;letter-spacing:.2em;color:var(--gold)">02</span><span style="font-family:Inter,sans-serif;font-size:28px;line-height:1.35;color:var(--ink)">Підтримувати прогрес</span></div>
-        <div style="display:flex;align-items:baseline;gap:28px;padding:23px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)"><span style="font-family:'JetBrains Mono',monospace;font-size:21px;letter-spacing:.2em;color:var(--gold)">03</span><span style="font-family:Inter,sans-serif;font-size:28px;line-height:1.35;color:var(--ink)">Створювати умови</span></div>
-      </div>
-    </div>
-    <div class="vis anim3" style="display:flex;justify-content:center">
-      <svg viewBox="0 0 620 690" style="width:520px;height:auto;display:block" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Батарея команди 4 з 5, під захистом">
-        <defs>
-          <linearGradient id="s10c-fill" x1="0" y1="231" x2="0" y2="605" gradientUnits="userSpaceOnUse">
-            <stop offset="0" stop-color="color-mix(in srgb,var(--gold-soft) 50%,var(--canvas))"/>
-            <stop offset="1" stop-color="color-mix(in srgb,var(--gold) 46%,var(--canvas))"/>
-          </linearGradient>
-        </defs>
-        <!-- мягкое свечение под батареей -->
-        <ellipse cx="300" cy="656" rx="212" ry="20" fill="var(--glow)"/>
-        <!-- клемма -->
-        <rect x="228" y="64" width="144" height="38" rx="14" fill="color-mix(in srgb,var(--faint) 86%,var(--canvas))" stroke="color-mix(in srgb,var(--muted) 55%,transparent)" stroke-width="3"/>
-        <!-- корпус -->
-        <rect x="140" y="110" width="320" height="520" rx="34" fill="color-mix(in srgb,var(--faint) 16%,var(--canvas))" stroke="color-mix(in srgb,var(--muted) 55%,transparent)" stroke-width="3"/>
-        <!-- пустой верхний сегмент (1/5) -->
-        <rect x="164" y="134" width="272" height="83" rx="14" fill="none" stroke="var(--faint)" stroke-width="2" stroke-dasharray="4 10" stroke-linecap="round"/>
-        <!-- заряженные сегменты (4/5) -->
-        <rect x="164" y="231" width="272" height="83" rx="14" fill="url(#s10c-fill)"/>
-        <rect x="164" y="328" width="272" height="83" rx="14" fill="url(#s10c-fill)"/>
-        <rect x="164" y="425" width="272" height="83" rx="14" fill="url(#s10c-fill)"/>
-        <rect x="164" y="522" width="272" height="83" rx="14" fill="url(#s10c-fill)"/>
-        <!-- щит над правым верхним углом -->
-        <path d="M472 52 L520 71 V108 C520 140 500 158 472 170 C444 158 424 140 424 108 V71 Z" fill="var(--canvas)" stroke="var(--gold)" stroke-width="4.5" stroke-linejoin="round"/>
-        <path d="M452 108 H492 M472 88 V128" fill="none" stroke="var(--gold)" stroke-width="6" stroke-linecap="round"/>
-      </svg>
-    </div>
-  </div>
-</div>
-<div class="foot" style="width:100%"><span class="evt">Sales Forum<span class="sep">·</span>2026</span><span></span></div>
-</div></div>
-    <div class="variant thesis" data-v="D" hidden><div class="bg"></div><div class="pad">
-<div class="runhead" style="width:100%"><div class="eyebrow"><span class="dot"></span>Рішення · Профілактика</div><div class="ix">Тетяна Пан</div></div>
-<div class="body" style="grid-template-columns:1fr 1.08fr;gap:90px">
-  <div class="txt" style="gap:42px">
-    <h2 class="anim" style="font-size:60px"><em class="g">Профілактика</em> — поки команда ще має ресурс.</h2>
-    <div class="anim3" style="display:flex;align-items:center;flex-wrap:wrap;gap:14px 18px;font-family:'Inter',sans-serif;font-size:24px;line-height:1.5;color:var(--muted);max-width:660px">
-      <span style="white-space:nowrap">Помічати стан команди</span>
-      <span style="width:9px;height:9px;border-radius:50%;background:var(--grad-acc);flex:none"></span>
-      <span style="white-space:nowrap">Підтримувати прогрес</span>
-      <span style="width:9px;height:9px;border-radius:50%;background:var(--grad-acc);flex:none"></span>
-      <span style="white-space:nowrap">Створювати умови</span>
-    </div>
-  </div>
-  <div class="vis anim2">
-    <svg width="770" height="350" viewBox="0 0 660 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Тиждень із семи батарей ресурсу">
-      <defs><linearGradient id="s10d-arc" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="var(--gold-soft)"/><stop offset="1" stop-color="var(--gold)"/></linearGradient></defs>
-      <!-- Пн -->
-      <g>
-        <rect x="48" y="32" width="24" height="12" rx="5" fill="color-mix(in srgb,var(--gold) 52%,var(--canvas))"/>
-        <rect x="32" y="44" width="56" height="150" rx="13" fill="none" stroke="color-mix(in srgb,var(--gold) 52%,var(--canvas))" stroke-width="4"/>
-        <rect x="40" y="79" width="40" height="107" rx="7" fill="color-mix(in srgb,var(--gold) 40%,var(--canvas))"/>
-      </g>
-      <!-- Вт -->
-      <g>
-        <rect x="138" y="32" width="24" height="12" rx="5" fill="color-mix(in srgb,var(--gold) 52%,var(--canvas))"/>
-        <rect x="122" y="44" width="56" height="150" rx="13" fill="none" stroke="color-mix(in srgb,var(--gold) 52%,var(--canvas))" stroke-width="4"/>
-        <rect x="130" y="79" width="40" height="107" rx="7" fill="color-mix(in srgb,var(--gold) 35%,var(--canvas))"/>
-      </g>
-      <!-- Ср -->
-      <g>
-        <rect x="228" y="32" width="24" height="12" rx="5" fill="color-mix(in srgb,var(--gold) 52%,var(--canvas))"/>
-        <rect x="212" y="44" width="56" height="150" rx="13" fill="none" stroke="color-mix(in srgb,var(--gold) 52%,var(--canvas))" stroke-width="4"/>
-        <rect x="220" y="79" width="40" height="107" rx="7" fill="color-mix(in srgb,var(--gold) 44%,var(--canvas))"/>
-      </g>
-      <!-- Чт -->
-      <g>
-        <rect x="318" y="32" width="24" height="12" rx="5" fill="color-mix(in srgb,var(--gold) 52%,var(--canvas))"/>
-        <rect x="302" y="44" width="56" height="150" rx="13" fill="none" stroke="color-mix(in srgb,var(--gold) 52%,var(--canvas))" stroke-width="4"/>
-        <rect x="310" y="79" width="40" height="107" rx="7" fill="color-mix(in srgb,var(--gold) 38%,var(--canvas))"/>
-      </g>
-      <!-- Пт — трохи нижче, її підтримує дуга -->
-      <ellipse cx="420" cy="238" rx="66" ry="22" fill="color-mix(in srgb,var(--gold) 15%,transparent)"/>
-      <g transform="translate(0,18)">
-        <rect x="408" y="32" width="24" height="12" rx="5" fill="var(--gold)"/>
-        <rect x="392" y="44" width="56" height="150" rx="13" fill="none" stroke="var(--gold)" stroke-width="4"/>
-        <rect x="400" y="79" width="40" height="107" rx="7" fill="color-mix(in srgb,var(--gold) 42%,var(--canvas))"/>
-      </g>
-      <path d="M364 220 Q420 266 476 220" fill="none" stroke="url(#s10d-arc)" stroke-width="5" stroke-linecap="round"/>
-      <!-- Сб -->
-      <g>
-        <rect x="498" y="32" width="24" height="12" rx="5" fill="color-mix(in srgb,var(--gold) 52%,var(--canvas))"/>
-        <rect x="482" y="44" width="56" height="150" rx="13" fill="none" stroke="color-mix(in srgb,var(--gold) 52%,var(--canvas))" stroke-width="4"/>
-        <rect x="490" y="79" width="40" height="107" rx="7" fill="color-mix(in srgb,var(--gold) 34%,var(--canvas))"/>
-      </g>
-      <!-- Нд -->
-      <g>
-        <rect x="588" y="32" width="24" height="12" rx="5" fill="color-mix(in srgb,var(--gold) 52%,var(--canvas))"/>
-        <rect x="572" y="44" width="56" height="150" rx="13" fill="none" stroke="color-mix(in srgb,var(--gold) 52%,var(--canvas))" stroke-width="4"/>
-        <rect x="580" y="79" width="40" height="107" rx="7" fill="color-mix(in srgb,var(--gold) 39%,var(--canvas))"/>
-      </g>
-      <g font-family="'JetBrains Mono',monospace" font-size="20" letter-spacing=".08em" text-anchor="middle" fill="var(--faint)">
-        <text x="60" y="280">Пн</text>
-        <text x="150" y="280">Вт</text>
-        <text x="240" y="280">Ср</text>
-        <text x="330" y="280">Чт</text>
-        <text x="420" y="280" fill="var(--gold)" font-weight="600">Пт</text>
-        <text x="510" y="280">Сб</text>
-        <text x="600" y="280">Нд</text>
-      </g>
-    </svg>
-  </div>
-</div>
-<div class="foot" style="width:100%"><span class="evt">Sales Forum<span class="sep">·</span>2026</span><span></span></div>
-</div></div>
-    <div class="variant thesis" data-v="E" hidden>
-    <div class="bg"></div>
-    <div class="pad">
-      <div class="runhead" style="width:100%"><div class="eyebrow"><span class="dot"></span>Рішення · Профілактика</div><div class="ix">Тетяна Пан</div></div>
-      <div class="body" style="grid-template-columns:1.04fr .96fr;gap:56px">
-        <div class="txt" style="gap:40px">
-          <h2 class="anim2" style="font-size:54px;max-width:820px"><em class="g">Профілактика</em> — поки команда ще має ресурс.</h2>
-          <div class="anim3" style="display:flex;flex-direction:column;max-width:720px">
-            <div style="display:grid;grid-template-columns:92px 1fr;align-items:center;gap:26px;padding:24px 0">
-              <span style="font-family:'JetBrains Mono',monospace;font-size:40px;font-weight:600;color:color-mix(in srgb,var(--gold) 46%,var(--muted))">01</span>
-              <span style="font-family:'Inter',sans-serif;font-size:28px;line-height:1.25;color:var(--ink)">Помічати стан команди</span>
-            </div>
-            <div style="display:grid;grid-template-columns:92px 1fr;align-items:center;gap:26px;padding:24px 0;border-top:1px solid var(--line)">
-              <span style="font-family:'JetBrains Mono',monospace;font-size:40px;font-weight:600;color:var(--gold)">02</span>
-              <span style="font-family:'Inter',sans-serif;font-size:28px;line-height:1.25;color:var(--ink)">Підтримувати прогрес</span>
-            </div>
-            <div style="display:grid;grid-template-columns:92px 1fr;align-items:center;gap:26px;padding:24px 0;border-top:1px solid var(--line)">
-              <span style="font-family:'JetBrains Mono',monospace;font-size:40px;font-weight:600;color:var(--gold-soft)">03</span>
-              <span style="font-family:'Inter',sans-serif;font-size:28px;line-height:1.25;color:var(--ink)">Створювати умови</span>
-            </div>
-          </div>
-        </div>
-        <div class="vis">
-          <svg class="anim2" viewBox="0 0 480 680" style="width:100%;max-width:470px;height:auto" role="img" aria-label="Термометр здоровʼя команди: рівень ресурсу у верхній, здоровій зоні">
-            <style>
-              @media (prefers-reduced-motion:no-preference){
-                [data-deck-active] [data-v="E"] .e10E-merc{transform:scaleY(0);animation:e10Erise 1.35s .4s cubic-bezier(.4,.1,.2,1) forwards;}
-                [data-deck-active] [data-v="E"] .e10E-fade{opacity:0;animation:e10Efade .7s 1.55s ease-out forwards;}
-                @keyframes e10Erise{to{transform:scaleY(1)}}
-                @keyframes e10Efade{to{opacity:1}}
-              }
-            </style>
-            <defs>
-              <linearGradient id="e10E-merc-grad" gradientUnits="userSpaceOnUse" x1="0" y1="140" x2="0" y2="624">
-                <stop offset="0" stop-color="var(--gold-soft)"/>
-                <stop offset=".5" stop-color="var(--gold)"/>
-                <stop offset="1" stop-color="color-mix(in srgb,var(--gold) 88%,var(--ink))"/>
-              </linearGradient>
-              <radialGradient id="e10E-glow" cx=".5" cy=".5" r=".5">
-                <stop offset="0" stop-color="var(--glow)"/>
-                <stop offset="1" stop-color="var(--glow)" stop-opacity="0"/>
-              </radialGradient>
-              <clipPath id="e10E-clip">
-                <path d="M190 100 A 20 20 0 0 1 230 100 L 230 532.4 A 48 48 0 1 1 190 532.4 L 190 100 Z"/>
-              </clipPath>
-            </defs>
-
-            <!-- soft glow behind bulb -->
-            <ellipse cx="210" cy="576" rx="128" ry="120" fill="url(#e10E-glow)"/>
-
-            <!-- healthy zone tint (upper third) -->
-            <rect x="166" y="80" width="88" height="163" rx="44" fill="color-mix(in srgb,var(--gold) 9%,var(--canvas))"/>
-
-            <!-- glass outline -->
-            <path d="M184 100 A 26 26 0 0 1 236 100 L 236 528.7 A 54 54 0 1 1 184 528.7 L 184 100 Z"
-                  fill="none" stroke="var(--gold)" stroke-width="3"/>
-
-            <!-- mercury -->
-            <g clip-path="url(#e10E-clip)">
-              <rect class="e10E-merc" x="182" y="140" width="56" height="486" fill="url(#e10E-merc-grad)" style="transform-box:fill-box;transform-origin:50% 100%"/>
-            </g>
-
-            <!-- meniscus surface -->
-            <line x1="190" y1="140" x2="230" y2="140" stroke="var(--gold-soft)" stroke-width="2.5" stroke-linecap="round"/>
-
-            <!-- minor scale ticks (lower scale) -->
-            <g stroke="var(--faint)" stroke-width="2.5" stroke-linecap="round" opacity=".55">
-              <line x1="236" y1="300" x2="248" y2="300"/>
-              <line x1="236" y1="360" x2="248" y2="360"/>
-              <line x1="236" y1="420" x2="248" y2="420"/>
-              <line x1="236" y1="480" x2="248" y2="480"/>
-            </g>
-
-            <g class="e10E-fade">
-              <!-- threshold: lower boundary of the healthy zone -->
-              <line x1="150" y1="243" x2="292" y2="243" stroke="var(--gold)" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="2 12" opacity=".55"/>
-
-              <!-- zone bracket + label (right) -->
-              <path d="M240 81 H252 V242 H240" fill="none" stroke="var(--gold)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-              <text x="270" y="150" font-family="JetBrains Mono" font-size="17" letter-spacing="2.4" fill="var(--gold-soft)">ЗДОРОВА ЗОНА</text>
-              <text x="269" y="188" font-family="Spectral" font-style="italic" font-size="30" fill="var(--gold)">ще є ресурс</text>
-
-              <!-- current level marker (left) -->
-              <circle cx="184" cy="140" r="6" fill="var(--gold)"/>
-              <line x1="178" y1="140" x2="152" y2="140" stroke="var(--muted)" stroke-width="2.2" stroke-linecap="round" stroke-dasharray="2 9"/>
-              <text x="142" y="134" text-anchor="end" font-family="JetBrains Mono" font-size="16" letter-spacing="1.9" fill="var(--ink)">ПОТОЧНИЙ</text>
-              <text x="142" y="158" text-anchor="end" font-family="JetBrains Mono" font-size="16" letter-spacing="1.9" fill="var(--muted)">РІВЕНЬ</text>
-
-              <!-- caption -->
-              <text x="210" y="668" text-anchor="middle" font-family="JetBrains Mono" font-size="18" letter-spacing="2.6" fill="var(--muted)">ТЕРМОМЕТР ЗДОРОВʼЯ КОМАНДИ</text>
-            </g>
-          </svg>
-        </div>
-      </div>
-      <div class="foot" style="width:100%"><span class="evt">Sales Forum<span class="sep">·</span>2026</span><span></span></div>
-    </div>
-  </div>
-    <div class="variant thesis" data-v="F" hidden>
-      <div class="bg"></div>
-      <div class="pad">
-        <div class="runhead" style="width:100%"><div class="eyebrow"><span class="dot"></span>Рішення · Профілактика</div><div class="ix">Тетяна Пан</div></div>
-        <div class="body" style="grid-template-columns:1.06fr .94fr;gap:88px;width:100%">
-          <div class="txt">
-            <h2 class="anim2" style="font-size:58px;max-width:640px"><em class="g">Профілактика</em> — поки команда ще має ресурс.</h2>
-            <div class="steps" style="max-width:700px;gap:22px">
-              <div class="chip anim" style="background:color-mix(in srgb,var(--gold) 9%,var(--canvas));border:1.5px solid color-mix(in srgb,var(--gold) 34%,transparent);box-shadow:0 14px 34px var(--glow);border-radius:18px;padding:27px 34px"><span class="n" style="font-size:29px;min-width:52px">01</span><span class="t" style="font-size:35px">Помічати стан команди</span></div>
-              <div class="chip anim2" style="background:color-mix(in srgb,var(--gold) 9%,var(--canvas));border:1.5px solid color-mix(in srgb,var(--gold) 34%,transparent);box-shadow:0 14px 34px var(--glow);border-radius:18px;padding:27px 34px"><span class="n" style="font-size:29px;min-width:52px">02</span><span class="t" style="font-size:35px">Підтримувати прогрес</span></div>
-              <div class="chip anim3" style="background:color-mix(in srgb,var(--gold) 9%,var(--canvas));border:1.5px solid color-mix(in srgb,var(--gold) 34%,transparent);box-shadow:0 14px 34px var(--glow);border-radius:18px;padding:27px 34px"><span class="n" style="font-size:29px;min-width:52px">03</span><span class="t" style="font-size:35px">Створювати умови</span></div>
-            </div>
-          </div>
-          <div class="vis anim3">
-            <svg id="s10f-svg" viewBox="0 0 600 500" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:560px;height:auto" role="img" aria-label="Контурний щит профілактики над батареєю заряду команди — чотири з пʼяти">
-              <defs>
-                <radialGradient id="s10f-halo" cx="50%" cy="50%" r="50%">
-                  <stop offset="0%" stop-color="var(--gold)" stop-opacity="0.13"/>
-                  <stop offset="68%" stop-color="var(--gold)" stop-opacity="0.05"/>
-                  <stop offset="100%" stop-color="var(--gold)" stop-opacity="0"/>
-                </radialGradient>
-              </defs>
-              <ellipse id="s10f-glow" cx="280" cy="182" rx="210" ry="205" fill="url(#s10f-halo)"/>
-              <g id="s10f-battery">
-                <rect x="80" y="250" width="400" height="170" rx="24" fill="none" stroke="var(--gold)" stroke-width="3"/>
-                <path d="M484 303 H492 Q500 303 500 311 V359 Q500 367 492 367 H484 Z" fill="var(--gold)"/>
-                <rect x="96"  y="266" width="64" height="138" rx="9" fill="color-mix(in srgb,var(--gold) 46%,var(--canvas))"/>
-                <rect x="172" y="266" width="64" height="138" rx="9" fill="color-mix(in srgb,var(--gold) 46%,var(--canvas))"/>
-                <rect x="248" y="266" width="64" height="138" rx="9" fill="color-mix(in srgb,var(--gold) 46%,var(--canvas))"/>
-                <rect x="324" y="266" width="64" height="138" rx="9" fill="color-mix(in srgb,var(--gold) 46%,var(--canvas))"/>
-                <rect x="400" y="266" width="64" height="138" rx="9" fill="color-mix(in srgb,var(--faint) 86%,var(--canvas))"/>
-              </g>
-              <g id="s10f-shield" style="filter:drop-shadow(0 12px 26px var(--glow))">
-                <path d="M219 78 H341 Q355 78 355 92 V175 C355 218 322 244 280 262 C238 244 205 218 205 175 V92 Q205 78 219 78 Z" fill="var(--canvas)" stroke="var(--gold)" stroke-width="3.6"/>
-                <rect x="246" y="153" width="68" height="14" rx="7" fill="var(--gold)"/>
-                <rect x="273" y="126" width="14" height="68" rx="7" fill="var(--gold)"/>
-              </g>
-              <text id="s10f-cap" x="280" y="466" text-anchor="middle" fill="var(--faint)" font-family="'JetBrains Mono',monospace" font-size="23" letter-spacing="4.4">ЗАРЯД · 4 / 5</text>
-            </svg>
-          </div>
-        </div>
-        <div class="foot" style="width:100%"><span class="evt">Sales Forum<span class="sep">·</span>2026</span><span></span></div>
-      </div>
-    </div>
-    <div class="variant thesis" data-v="G" hidden><div class="bg"></div><div class="pad">
+    <div class="variant thesis" data-v="A"><div class="bg"></div><div class="pad">
 <div class="runhead" style="width:100%"><div class="eyebrow"><span class="dot"></span>Рішення · Профілактика</div><div class="ix">Тетяна Пан</div></div>
 <div class="body" style="width:100%;grid-template-columns:.86fr 1.18fr;gap:72px">
   <div class="txt">
@@ -1422,136 +1148,22 @@
       <!-- caption on the decline -->
       <text x="644" y="386" text-anchor="end" style="font-family:'JetBrains Mono',monospace;font-size:15px;letter-spacing:.18em;text-transform:uppercase" fill="var(--muted)">без втручання</text>
       <!-- axis captions -->
-      <text x="88" y="80" text-anchor="start" style="font-family:'JetBrains Mono',monospace;font-size:15px;letter-spacing:.2em;text-transform:uppercase" fill="var(--faint)">Ресурс</text>
+      <text x="150" y="80" text-anchor="start" style="font-family:'JetBrains Mono',monospace;font-size:15px;letter-spacing:.2em;text-transform:uppercase" fill="var(--faint)">Ресурс</text>
       <text x="644" y="432" text-anchor="end" style="font-family:'JetBrains Mono',monospace;font-size:15px;letter-spacing:.2em;text-transform:uppercase" fill="var(--faint)">Час</text>
     </svg>
   </div>
 </div>
 <div class="foot" style="width:100%"><span class="evt">Sales Forum<span class="sep">·</span>2026</span><span></span></div>
 </div></div>
+    </div>
     <div class="ix pagenum"><span class="num">10</span> / 16</div>
   </section>
 
   <section data-slide="11">
-    <div class="variant thesis" data-v="A">
-    <div class="bg"></div>
-    <div class="pad">
-      <div class="runhead"><div class="eyebrow"><span class="dot"></span>Рішення · Відновлення</div><div class="ix">Тетяна Пан</div></div>
-      <div class="body">
-        <div class="txt">
-          <h2 class="anim2" style="font-size:60px;max-width:680px">Коли енергії вже немає — <em class="g">дробити цілі.</em></h2>
-          <svg class="anim3" width="400" height="150" viewBox="0 0 400 150" aria-hidden="true">
-            <circle class="stroke" cx="64" cy="75" r="40"/>
-            <circle class="stroke" cx="64" cy="75" r="21"/>
-            <circle class="fillG" cx="64" cy="75" r="6"/>
-            <path class="stroke" d="M110 75 H176"/>
-            <path class="stroke" d="M176 24 V126"/>
-            <path class="stroke" d="M176 24 H298"/>
-            <path class="stroke" d="M176 58 H298"/>
-            <path class="stroke" d="M176 92 H298"/>
-            <path class="stroke" d="M176 126 H298"/>
-            <circle class="fillG" cx="313" cy="24" r="11"/>
-            <circle class="fillG" cx="313" cy="58" r="11"/>
-            <circle class="fillG" cx="313" cy="92" r="11"/>
-            <circle class="fillG" cx="313" cy="126" r="11"/>
-          </svg>
-        </div>
-        <div class="vis anim2">
-          <div class="steps" style="gap:18px;max-width:none;align-items:center">
-            <div class="chip" style="width:470px;white-space:nowrap;transform:translateX(-66px);background:linear-gradient(0deg,var(--glow),var(--glow));border:1.5px solid var(--panel-line);box-shadow:0 10px 26px rgba(120,78,20,.10)"><span class="n">01</span><span class="t">Визнати</span></div>
-            <div class="chip" style="width:470px;white-space:nowrap;transform:translateX(-22px);background:linear-gradient(0deg,var(--glow),var(--glow));border:1.5px solid var(--panel-line);box-shadow:0 10px 26px rgba(120,78,20,.10)"><span class="n">02</span><span class="t">Прибрати зайве</span></div>
-            <div class="chip" style="width:470px;white-space:nowrap;transform:translateX(22px);background:linear-gradient(0deg,var(--glow),var(--glow));border:1.5px solid var(--panel-line);box-shadow:0 10px 26px rgba(120,78,20,.10)"><span class="n">03</span><span class="t">Повернути вплив</span></div>
-            <div class="chip" style="width:470px;white-space:nowrap;transform:translateX(66px);background:linear-gradient(0deg,var(--glow),var(--glow));border:1.5px solid var(--panel-line);box-shadow:0 10px 26px rgba(120,78,20,.10)"><span class="n">04</span><span class="t">Дробити цілі</span></div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-    <div class="variant thesis" data-v="B" hidden>
-    <div class="bg"></div>
-    <div class="pad">
-      <div class="runhead"><div class="eyebrow"><span class="dot"></span>Рішення · Відновлення</div><div class="ix">Тетяна Пан</div></div>
-      <div style="flex:1;display:flex;flex-direction:column;justify-content:center;gap:72px">
-        <div style="display:flex;flex-direction:column;gap:32px">
-          <h2 class="anim2" style="font-size:62px">Коли енергії вже немає — <em class="g">дробити цілі.</em></h2>
-        </div>
-        <svg class="anim3" viewBox="0 0 1680 432" style="width:100%;height:auto" aria-hidden="true">
-          <defs>
-            <linearGradient id="s11bAcc" x1="0" y1="0" x2="1" y2="1">
-              <stop offset="0" stop-color="var(--gold-soft)"/>
-              <stop offset="1" stop-color="var(--gold)"/>
-            </linearGradient>
-          </defs>
-          <path d="M60 330 H1620" fill="none" stroke="var(--line)" stroke-width="3" stroke-linecap="round"/>
-          <path class="stroke" stroke-dasharray="2 14" d="M210 240 L610 196 L1010 152 L1410 108 L1530 95"/>
-          <path class="strokeM" stroke-dasharray="1 10" d="M210 286 V252"/>
-          <path class="strokeM" stroke-dasharray="1 10" d="M610 286 V208"/>
-          <path class="strokeM" stroke-dasharray="1 10" d="M1010 286 V164"/>
-          <path class="strokeM" stroke-dasharray="1 10" d="M1410 286 V120"/>
-          <circle class="fillG" cx="210" cy="240" r="7"/>
-          <circle class="fillG" cx="610" cy="196" r="7"/>
-          <circle class="fillG" cx="1010" cy="152" r="7"/>
-          <circle class="fillG" cx="1410" cy="108" r="7"/>
-          <circle class="fillG" cx="1530" cy="95" r="7"/>
-          <path class="stroke" d="M1530 90 V30"/>
-          <path d="M1530 30 L1588 45 L1530 60 Z" fill="var(--gold)"/>
-          <circle class="stroke" cx="210" cy="330" r="36" style="fill:var(--canvas)"/>
-          <circle class="stroke" cx="610" cy="330" r="36" style="fill:var(--canvas)"/>
-          <circle class="stroke" cx="1010" cy="330" r="36" style="fill:var(--canvas)"/>
-          <circle cx="1410" cy="330" r="38" fill="url(#s11bAcc)"/>
-          <text x="210" y="330" dy=".36em" text-anchor="middle" font-family="'Spectral',serif" font-size="34" fill="var(--ink)">01</text>
-          <text x="610" y="330" dy=".36em" text-anchor="middle" font-family="'Spectral',serif" font-size="34" fill="var(--ink)">02</text>
-          <text x="1010" y="330" dy=".36em" text-anchor="middle" font-family="'Spectral',serif" font-size="34" fill="var(--ink)">03</text>
-          <text x="1410" y="330" dy=".36em" text-anchor="middle" font-family="'Spectral',serif" font-size="36" font-weight="600" fill="#241a12">04</text>
-          <text x="210" y="408" text-anchor="middle" font-family="'Spectral',serif" font-size="32" fill="var(--ink)">Визнати</text>
-          <text x="610" y="408" text-anchor="middle" font-family="'Spectral',serif" font-size="32" fill="var(--ink)">Прибрати зайве</text>
-          <text x="1010" y="408" text-anchor="middle" font-family="'Spectral',serif" font-size="32" fill="var(--ink)">Повернути вплив</text>
-          <text x="1410" y="408" text-anchor="middle" font-family="'Spectral',serif" font-size="32" font-style="italic" fill="url(#s11bAcc)">Дробити цілі</text>
-        </svg>
-      </div>
-    </div>
-  </div>
-    <div class="variant thesis" data-v="C" hidden><div class="bg"></div><div class="pad center">
+    <div class="variant thesis" data-v="A"><div class="bg"></div><div class="pad center">
 <div class="runhead" style="width:100%"><div class="eyebrow"><span class="dot"></span>Рішення · Відновлення</div><div class="ix">Тетяна Пан</div></div>
 <div class="inner" style="width:100%">
-<div class="body" style="align-items:center;width:100%">
-<div class="txt"><h2 class="anim2" style="font-size:60px;max-width:620px">Коли енергії вже немає — <em class="g">дробити цілі.</em></h2></div>
-<div class="vis anim3">
-<svg viewBox="0 0 940 320" style="width:100%;height:auto;display:block" aria-hidden="true">
-<defs>
-<marker id="s11c-arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 Z" fill="var(--gold)"/></marker>
-</defs>
-<g>
-<rect x="30" y="30" width="270" height="270" rx="34" fill="color-mix(in srgb,var(--faint) 86%,var(--canvas))"/>
-<path d="M165 46 V284 M46 165 H284" stroke="var(--canvas)" stroke-width="3" stroke-linecap="round" stroke-dasharray="1 9" fill="none"/>
-</g>
-<path d="M332 165 H422" stroke="var(--gold)" stroke-width="2" stroke-linecap="round" fill="none" marker-end="url(#s11c-arr)"/>
-<g>
-<rect x="460" y="121" width="88" height="88" rx="16" fill="color-mix(in srgb,var(--gold) 42%,var(--canvas))" stroke="var(--gold)" stroke-width="1.5"/>
-<rect x="576" y="121" width="88" height="88" rx="16" fill="color-mix(in srgb,var(--gold) 42%,var(--canvas))" stroke="var(--gold)" stroke-width="1.5"/>
-<rect x="692" y="121" width="88" height="88" rx="16" fill="color-mix(in srgb,var(--gold) 42%,var(--canvas))" stroke="var(--gold)" stroke-width="1.5"/>
-<rect x="808" y="121" width="88" height="88" rx="16" fill="color-mix(in srgb,var(--gold) 42%,var(--canvas))" stroke="var(--gold)" stroke-width="1.5"/>
-<text x="504" y="172" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="21" font-weight="500" fill="var(--ink)">01</text>
-<text x="620" y="172" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="21" font-weight="500" fill="var(--ink)">02</text>
-<text x="736" y="172" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="21" font-weight="500" fill="var(--ink)">03</text>
-<text x="852" y="172" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="21" font-weight="500" fill="var(--ink)">04</text>
-</g>
-<g font-family="'JetBrains Mono',monospace" font-size="18" fill="var(--muted)" text-anchor="middle">
-<text x="504" y="243">Визнати</text>
-<text x="620" y="243">Прибрати<tspan x="620" dy="26">зайве</tspan></text>
-<text x="736" y="243">Повернути<tspan x="736" dy="26">вплив</tspan></text>
-<text x="852" y="243">Дробити<tspan x="852" dy="26">цілі</tspan></text>
-</g>
-</svg>
-</div>
-</div>
-</div>
-<div class="foot" style="width:100%"><span class="evt">Sales Forum<span class="sep">·</span>2026</span><span></span></div>
-</div></div>
-    <div class="variant thesis" data-v="D" hidden><div class="bg"></div><div class="pad center">
-<div class="runhead" style="width:100%"><div class="eyebrow"><span class="dot"></span>Рішення · Відновлення</div><div class="ix">Тетяна Пан</div></div>
-<div class="inner" style="width:100%">
-  <div style="display:flex;align-items:center;justify-content:flex-start;gap:72px;width:100%">
+  <div style="display:flex;align-items:center;justify-content:flex-start;gap:72px;width:100%;padding-left:120px">
     <div class="anim2" style="max-width:640px;flex:none;text-align:left">
       <h2 style="font-size:64px;margin:0;line-height:1.14;text-align:left;text-wrap:wrap;">Коли енергії вже немає —<br><em class="g">дробити цілі.</em></h2>
       <div class="sub" style="text-align:left;max-width:540px;margin-top:22px;">Велику ціль дробимо на маленькі кроки, які ще по силах, — і крок за кроком повертаємо рух.</div>
@@ -1573,6 +1185,7 @@
 </div>
 <div class="foot" style="width:100%"><span class="evt">Sales Forum<span class="sep">·</span>2026</span><span></span></div>
 </div></div>
+    </div>
     <div class="ix pagenum"><span class="num">11</span> / 16</div>
   </section>
 
@@ -1613,66 +1226,6 @@
 
   <section data-slide="13">
     <div class="variant thesis" data-v="A">
-    <div class="bg"></div>
-    <div class="pad">
-      <div class="runhead"><div class="eyebrow"><span class="dot"></span>Наслідки · Ключова теза</div><div class="ix">Тетяна Пан</div></div>
-      <div class="body">
-        <div class="txt">
-          <h2 class="anim2">Втрата енергії стає видимою <em class="g">спочатку клієнту</em> — і лише потім у звітах.</h2>
-        </div>
-        <div class="vis anim3">
-          <svg width="520" height="390" viewBox="0 0 440 330">
-            <path class="strokeM" d="M50 290 H410 M50 290 V30"/>
-            <path class="stroke" style="stroke-width:5" d="M62 100 H195 C255 100 282 140 314 210 C332 246 352 260 398 266"/>
-            <g>
-              <line x1="241" y1="92" x2="241" y2="74" stroke="var(--gold)" stroke-width="2.5" stroke-linecap="round" opacity=".55"/>
-              <circle cx="241" cy="110" r="14" fill="none" stroke="var(--gold)" stroke-width="2.5" opacity=".38"/>
-              <circle cx="241" cy="110" r="7.5" fill="var(--gold)"/>
-              <text x="241" y="60" text-anchor="middle" fill="var(--gold-soft)" font-family="JetBrains Mono" font-size="19" letter-spacing="1">клієнт</text>
-            </g>
-            <g>
-              <line x1="333" y1="245" x2="333" y2="259" stroke="var(--faint)" stroke-width="2.5" stroke-linecap="round"/>
-              <circle cx="333" cy="233" r="7.5" fill="var(--faint)"/>
-              <text x="333" y="279" text-anchor="middle" fill="var(--faint)" font-family="JetBrains Mono" font-size="19" letter-spacing="1">звіти</text>
-            </g>
-          </svg>
-        </div>
-      </div>
-    </div>
-  </div>
-    <div class="variant thesis" data-v="B" hidden>
-    <div class="bg"></div>
-    <div class="pad">
-      <div class="runhead"><div class="eyebrow"><span class="dot"></span>Наслідки · Ключова теза</div><div class="ix">Тетяна Пан</div></div>
-      <div class="body" style="display:flex;flex-direction:column;justify-content:center;align-items:flex-start;gap:52px">
-        <div class="txt" style="gap:30px">
-          <h2 class="anim2">Втрата енергії стає видимою <em class="g">спочатку клієнту</em> —<br>і лише потім у звітах.</h2>
-        </div>
-        <div class="anim3" style="align-self:center">
-          <svg width="1400" height="500" viewBox="0 0 1400 500">
-            <path class="strokeM" d="M70 440 H1330 M70 440 V70"/>
-            <path d="M355 150 H560 C680 150 730 220 800 330 C840 395 900 412 1020 418" fill="none" stroke="var(--faint)" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
-            <path class="stroke" style="stroke-width:5" d="M95 150 H300 C420 150 470 220 540 330 C580 395 640 412 760 418"/>
-            <line x1="676" y1="196" x2="676" y2="396" stroke="var(--gold)" stroke-width="2.5" stroke-dasharray="1 10" stroke-linecap="round" opacity=".8"/>
-            <text x="694" y="300" fill="var(--muted)" font-family="JetBrains Mono" font-size="20" letter-spacing="1">лаг</text>
-            <circle cx="676" cy="410" r="7" fill="var(--gold)"/>
-            <g>
-              <line x1="416" y1="202" x2="416" y2="218" stroke="var(--gold)" stroke-width="2.5" stroke-linecap="round" opacity=".55"/>
-              <circle cx="416" cy="182" r="13" fill="none" stroke="var(--gold)" stroke-width="2.5" opacity=".38"/>
-              <circle cx="416" cy="182" r="8" fill="var(--gold)"/>
-              <text x="416" y="244" text-anchor="middle" fill="var(--gold-soft)" font-family="JetBrains Mono" font-size="21" letter-spacing="1">клієнт</text>
-            </g>
-            <g>
-              <line x1="676" y1="166" x2="676" y2="150" stroke="var(--faint)" stroke-width="2.5" stroke-linecap="round"/>
-              <circle cx="676" cy="182" r="8" fill="var(--faint)"/>
-              <text x="676" y="136" text-anchor="middle" fill="var(--faint)" font-family="JetBrains Mono" font-size="21" letter-spacing="1">звіти</text>
-            </g>
-          </svg>
-        </div>
-      </div>
-    </div>
-  </div>
-    <div class="variant thesis" data-v="C" hidden>
   <div class="bg"></div>
   <div class="pad">
     <div class="runhead" style="width:100%">
@@ -1702,11 +1255,9 @@
           <path d="M100 128 H340 C410 128 410 360 480 360 H640" fill="none" stroke="var(--faint)" stroke-width="4" stroke-dasharray="2 13" stroke-linecap="round" stroke-linejoin="round"/>
           <!-- клієнт: суцільна золота крива, спадає раніше -->
           <path d="M100 128 H200 C270 128 270 360 340 360 H640" fill="none" stroke="var(--gold)" stroke-width="4.6" stroke-linecap="round" stroke-linejoin="round"/>
-
-          <!-- лаг: вертикальний пунктир між кривими -->
-          <line x1="340" y1="150" x2="340" y2="344" stroke="var(--gold)" stroke-width="2.5" stroke-dasharray="2 9" stroke-linecap="round" opacity="0.85"/>
-          <text x="356" y="252" fill="var(--muted)" font-family="'JetBrains Mono',monospace" font-size="19" letter-spacing="1">лаг</text>
-          <circle cx="340" cy="360" r="6" fill="var(--gold)"/>
+          
+          
+          
 
           <!-- маркер початку спаду: клієнт -->
           <circle cx="200" cy="128" r="30" fill="url(#s13cGlow)"/>
@@ -1715,8 +1266,8 @@
           <text x="200" y="94" text-anchor="middle" fill="var(--gold-soft)" font-family="'JetBrains Mono',monospace" font-size="18" letter-spacing="1.5">КЛІЄНТ БАЧИТЬ</text>
 
           <!-- маркер початку спаду: звіти -->
-          <circle cx="340" cy="128" r="26" fill="url(#s13cGlow)"/>
-          <circle cx="340" cy="128" r="7" fill="var(--gold)"/>
+          
+          
           <text x="498" y="256" fill="var(--faint)" font-family="'JetBrains Mono',monospace" font-size="18" letter-spacing="1.5">У ЗВІТАХ</text>
         </svg>
       </div>
@@ -1726,78 +1277,7 @@
     </div>
   </div>
 </div>
-    <div class="variant thesis" data-v="D" hidden>
-    <div class="bg"></div>
-    <div class="pad center">
-      <div class="runhead" style="width:100%"><div class="eyebrow"><span class="dot"></span>Наслідки · Ключова теза</div><div class="ix">Тетяна Пан</div></div>
-      <div class="body" style="width:100%;grid-template-columns:0.92fr 1.08fr;gap:96px">
-        <div class="txt" style="text-align:left;gap:34px">
-          <h2 class="anim2">Втрата енергії стає видимою <em class="g">спочатку клієнту</em> —<br>і лише потім у звітах.</h2>
-        </div>
-        <div class="vis anim3">
-          <svg width="820" height="430" viewBox="0 0 820 430" role="img" aria-label="Горизонтальна вісь часу: клієнт відчув раніше, у звітах з'явилось пізніше, між ними лаг">
-            <style>
-              @media (prefers-reduced-motion:no-preference){
-                [data-deck-active] .d13D-draw{stroke-dasharray:640;stroke-dashoffset:640;animation:d13Ddraw 1.15s .35s cubic-bezier(.3,.1,.25,1) forwards;}
-                [data-deck-active] .d13D-span{transform:scaleX(0);transform-origin:150px 0;animation:d13Dspan .8s .95s cubic-bezier(.22,.7,.2,1) forwards;}
-                [data-deck-active] .d13D-late{opacity:0;animation:d13Dfade .5s 1.5s ease-out forwards;}
-                [data-deck-active] .d13D-pulse{animation:d13Dpulse 3.4s 1.9s ease-in-out infinite;}
-                @keyframes d13Ddraw{to{stroke-dashoffset:0}}
-                @keyframes d13Dspan{to{transform:scaleX(1)}}
-                @keyframes d13Dfade{to{opacity:1}}
-                @keyframes d13Dpulse{0%,100%{opacity:.30}50%{opacity:.6}}
-              }
-            </style>
-            <defs>
-              <radialGradient id="d13D-glow" cx=".5" cy=".5" r=".5">
-                <stop offset="0" stop-color="var(--glow)"/>
-                <stop offset="1" stop-color="var(--glow)" stop-opacity="0"/>
-              </radialGradient>
-            </defs>
-
-            <!-- time axis -->
-            <line class="strokeM" x1="70" y1="272" x2="742" y2="272"/>
-            <path d="M742 272 L724 264 L724 280 Z" fill="var(--faint)"/>
-            <text x="742" y="308" text-anchor="end" fill="var(--faint)" font-family="'JetBrains Mono',monospace" font-size="18" letter-spacing="2">час</text>
-
-            <!-- highlighted lag segment (medova) sitting on the axis -->
-            <g class="d13D-span">
-              <rect x="248" y="263" width="292" height="18" rx="9" fill="color-mix(in srgb,var(--gold) 42%,var(--canvas))"/>
-            </g>
-
-            <!-- dimension bracket for the lag -->
-            <line class="d13D-late" x1="248" y1="256" x2="248" y2="182" stroke="var(--faint)" stroke-width="2" stroke-dasharray="2 9" stroke-linecap="round" opacity=".7"/>
-            <line class="d13D-late" x1="540" y1="256" x2="540" y2="182" stroke="var(--faint)" stroke-width="2" stroke-dasharray="2 9" stroke-linecap="round" opacity=".7"/>
-            <g class="d13D-late">
-              <line x1="262" y1="182" x2="526" y2="182" stroke="var(--gold)" stroke-width="2.5" stroke-linecap="round"/>
-              <path d="M248 182 L263 175 L263 189 Z" fill="var(--gold)"/>
-              <path d="M540 182 L525 175 L525 189 Z" fill="var(--gold)"/>
-            </g>
-            <g class="d13D-late">
-              <rect x="349" y="150" width="90" height="42" rx="21" fill="color-mix(in srgb,var(--gold) 42%,var(--canvas))" stroke="var(--panel-line)"/>
-              <text x="394" y="178" text-anchor="middle" fill="var(--gold-soft)" font-family="'JetBrains Mono',monospace" font-size="22" letter-spacing="3" font-weight="600">лаг</text>
-            </g>
-
-            <!-- earlier marker: client felt it (gold) -->
-            <circle class="d13D-pulse" cx="248" cy="272" r="26" fill="url(#d13D-glow)"/>
-            <circle cx="248" cy="272" r="17" fill="none" stroke="var(--gold)" stroke-width="2.5" opacity=".38"/>
-            <circle cx="248" cy="272" r="9" fill="var(--gold)"/>
-            <text x="248" y="340" text-anchor="middle" fill="var(--gold-soft)" font-family="'JetBrains Mono',monospace" font-size="21" letter-spacing="1">клієнт відчув</text>
-            <text x="248" y="368" text-anchor="middle" fill="var(--faint)" font-family="'JetBrains Mono',monospace" font-size="16" letter-spacing="2">раніше</text>
-
-            <!-- later marker: appeared in reports (grey) -->
-            <g class="d13D-late">
-              <circle cx="540" cy="272" r="15" fill="none" stroke="var(--faint)" stroke-width="2.5" opacity=".45"/>
-              <circle cx="540" cy="272" r="8" fill="var(--faint)"/>
-              <text x="540" y="340" text-anchor="middle" fill="var(--muted)" font-family="'JetBrains Mono',monospace" font-size="21" letter-spacing="1">у звітах</text>
-              <text x="540" y="368" text-anchor="middle" fill="var(--faint)" font-family="'JetBrains Mono',monospace" font-size="16" letter-spacing="2">пізніше</text>
-            </g>
-          </svg>
-        </div>
-      </div>
-      <div class="foot" style="width:100%"><span class="evt">Sales Forum<span class="sep">·</span>2026</span><span></span></div>
     </div>
-  </div>
     <div class="ix pagenum"><span class="num">13</span> / 16</div>
   </section>
 
@@ -1970,94 +1450,7 @@
   </section>
 
   <section data-slide="16">
-    <div class="variant center" data-v="A">
-    <div class="bg"></div>
-    <div class="pad center">
-      <div class="runhead" style="width:100%">
-        <div class="forum"><span>Sales&nbsp;Forum</span><span class="bar"></span><span class="yr">2026</span></div>
-        <div class="ix">Тетяна Пан</div>
-      </div>
-      <div class="inner">
-        <div class="eyebrow anim"><span class="dot"></span>Головна думка</div>
-        <h2 class="anim2" style="font-size:78px;max-width:1520px;">Енергія команди — не про настрій.<br>Це <em class="g">випереджальний показник</em> майбутнього доходу.</h2>
-        <svg class="anim3" width="520" height="170" viewBox="0 0 520 170" role="img" aria-label="Висхідний тренд">
-          <path class="strokeM" d="M16 150 H492" style="stroke-width:2.5;stroke-dasharray:2 12;opacity:.55"/>
-          <circle class="fillG" cx="16" cy="150" r="7"/>
-          <path class="stroke" d="M16 150 L464 27"/>
-          <path class="fillG" d="M493 19 L466.3 38.8 L459.9 15.6 Z"/>
-        </svg>
-      </div>
-      <div class="foot" style="width:100%"><span class="name">Бізнес-тренерка <b>Тетяна Пан</b></span><span></span></div>
-    </div>
-  </div>
-    <div class="variant center" data-v="B" hidden>
-    <div class="bg"></div>
-    <div class="pad center">
-      <div class="runhead" style="width:100%">
-        <div class="forum"><span>Sales&nbsp;Forum</span><span class="bar"></span><span class="yr">2026</span></div>
-        <div class="ix">Тетяна Пан</div>
-      </div>
-      <div class="inner" style="gap:52px">
-        <div class="eyebrow anim"><span class="dot"></span>Головна думка&nbsp;·&nbsp;варіант B</div>
-        <h2 class="anim2" style="font-size:76px;max-width:1480px;">Енергія команди — не про настрій.<br>Це <em class="g">випереджальний показник</em><br>майбутнього доходу.</h2>
-        <svg class="anim3" width="460" height="140" viewBox="0 0 460 140" role="img" aria-label="Зростання: 5 точок">
-          <circle cx="46" cy="112" r="8" fill="var(--sil-off)"/>
-          <circle cx="138" cy="96" r="8" fill="var(--sil-off)"/>
-          <circle cx="230" cy="78" r="8" fill="var(--sil-off)"/>
-          <circle cx="322" cy="58" r="8" fill="var(--sil-off)"/>
-          <circle cx="414" cy="34" r="30" fill="var(--glow)"/>
-          <circle cx="414" cy="34" r="18" fill="var(--glow)"/>
-          <circle cx="414" cy="34" r="11" class="fillG"/>
-        </svg>
-      </div>
-      <div class="foot" style="width:100%"><span class="name">Бізнес-тренерка <b>Тетяна Пан</b></span><span></span></div>
-    </div>
-  </div>
-    <div class="variant thesis" data-v="C" hidden><div class="bg"></div><div class="pad center">
-      <div class="runhead" style="width:100%"><div class="forum"><span>Sales&nbsp;Forum</span><span class="bar"></span><span class="yr">2026</span></div><div class="ix">Тетяна Пан</div></div>
-      <div class="inner">
-        <div class="eyebrow anim"><span class="dot"></span>Головна думка</div>
-        <h2 class="anim2" style="font-size:78px;max-width:1520px;">Енергія команди — не про настрій.<br>Це <em class="g">випереджальний показник</em> майбутнього доходу.</h2>
-        <svg class="anim3" width="270" height="270" viewBox="0 0 260 260" role="img" aria-label="Компас: золота стрілка вказує вгору-праворуч — на зростання">
-          <defs>
-            <radialGradient id="s16c-glow" cx="50%" cy="50%" r="50%">
-              <stop offset="0%" stop-color="var(--gold)" stop-opacity=".14"/>
-              <stop offset="58%" stop-color="var(--gold)" stop-opacity=".06"/>
-              <stop offset="100%" stop-color="var(--gold)" stop-opacity="0"/>
-            </radialGradient>
-          </defs>
-          <circle cx="130" cy="130" r="118" fill="url(#s16c-glow)"/>
-          <circle cx="130" cy="130" r="100" fill="none" stroke="color-mix(in srgb,var(--faint) 86%,var(--canvas))" stroke-width="2"/>
-          <g stroke="color-mix(in srgb,var(--faint) 86%,var(--canvas))" stroke-width="2" stroke-linecap="round">
-            <line x1="130" y1="38" x2="130" y2="45" transform="rotate(30 130 130)"/>
-            <line x1="130" y1="38" x2="130" y2="45" transform="rotate(60 130 130)"/>
-            <line x1="130" y1="38" x2="130" y2="45" transform="rotate(120 130 130)"/>
-            <line x1="130" y1="38" x2="130" y2="45" transform="rotate(150 130 130)"/>
-            <line x1="130" y1="38" x2="130" y2="45" transform="rotate(210 130 130)"/>
-            <line x1="130" y1="38" x2="130" y2="45" transform="rotate(240 130 130)"/>
-            <line x1="130" y1="38" x2="130" y2="45" transform="rotate(300 130 130)"/>
-            <line x1="130" y1="38" x2="130" y2="45" transform="rotate(330 130 130)"/>
-          </g>
-          <g stroke="var(--faint)" stroke-width="2.4" stroke-linecap="round">
-            <line x1="130" y1="38" x2="130" y2="52"/>
-            <line x1="130" y1="38" x2="130" y2="52" transform="rotate(90 130 130)"/>
-            <line x1="130" y1="38" x2="130" y2="52" transform="rotate(180 130 130)"/>
-            <line x1="130" y1="38" x2="130" y2="52" transform="rotate(270 130 130)"/>
-          </g>
-          <circle cx="200.7" cy="59.3" r="11" fill="var(--glow)"/>
-          <circle cx="200.7" cy="59.3" r="4.5" fill="var(--gold)"/>
-          <g transform="rotate(45 130 130)">
-            <polygon points="130,52 130,130 120,130" fill="var(--gold-soft)"/>
-            <polygon points="130,52 130,130 140,130" fill="var(--gold)"/>
-            <polygon points="120,130 140,130 130,176" fill="var(--sil-off)"/>
-          </g>
-          <circle cx="130" cy="130" r="8" fill="var(--canvas)" stroke="var(--gold)" stroke-width="2.6"/>
-          <circle cx="130" cy="130" r="3" fill="var(--gold)"/>
-        </svg>
-      </div>
-      <div class="foot" style="width:100%"><span class="name">Бізнес-тренерка <b>Тетяна Пан</b></span><span></span></div>
-    </div></div>
-    <div class="variant thesis" data-v="D" hidden>
+    <div class="variant thesis" data-v="A">
     <div class="bg"></div>
     <div class="pad center">
       <div class="runhead" style="width:100%"><div class="eyebrow"><span class="dot"></span>Головна думка</div><div class="ix">Тетяна Пан</div></div>
@@ -2107,158 +1500,7 @@
       <div class="foot" style="width:100%"><span class="evt">Sales Forum<span class="sep">·</span>2026</span><span></span></div>
     </div>
   </div>
-    <div class="variant thesis" data-v="E" hidden>
-    <div class="bg"></div>
-    <div class="pad center">
-      <div class="runhead" style="width:100%">
-        <div class="eyebrow"><span class="dot"></span>Головна думка</div>
-        <div class="ix">Тетяна Пан</div>
-      </div>
-      <div class="inner" style="gap:58px">
-        <h2 class="anim" style="font-size:76px;max-width:1560px;">Енергія команди — не про настрій.<br>Це <em class="g">випереджальний показник</em> майбутнього доходу.</h2>
-        <svg class="anim2" width="1120" height="336" viewBox="0 0 1200 360" role="img" aria-label="Дві криві: тонка золота крива енергії йде попереду, сіра крива доходу повторює її форму із запізненням">
-          <style>
-            @media (prefers-reduced-motion:no-preference){
-              [data-deck-active] .e16-draw{stroke-dasharray:1000;stroke-dashoffset:1000;animation:e16dash 1.5s .45s cubic-bezier(.3,.1,.25,1) forwards;}
-              [data-deck-active] .e16-draw2{stroke-dasharray:1000;stroke-dashoffset:1000;animation:e16dash 1.5s .85s cubic-bezier(.3,.1,.25,1) forwards;}
-              [data-deck-active] .e16-pop{opacity:0;animation:e16pop .6s 2.2s ease-out forwards;}
-              @keyframes e16dash{to{stroke-dashoffset:0}}
-              @keyframes e16pop{to{opacity:1}}
-            }
-          </style>
-          <defs>
-            <radialGradient id="e16-tipglow" cx=".5" cy=".5" r=".5">
-              <stop offset="0" stop-color="var(--glow)"/>
-              <stop offset="1" stop-color="var(--glow)" stop-opacity="0"/>
-            </radialGradient>
-          </defs>
-
-          <!-- baseline -->
-          <path d="M70 318 H1150" fill="none" stroke="var(--line)" stroke-width="2" stroke-linecap="round" stroke-dasharray="2 14" opacity=".55"/>
-
-          <!-- ДОХІД (revenue): сіра крива, запізніла копія золотої форми -->
-          <path class="e16-draw2" pathLength="1000" fill="none" stroke="var(--faint)" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"
-            d="M220.0,295.6 C231.2,295.5 265.0,295.3 287.5,294.9 C310.0,294.5 332.5,294.2 355.0,293.1 C377.5,292.0 400.0,291.1 422.5,288.4 C445.0,285.7 467.5,282.8 490.0,276.9 C512.5,271.0 535.0,263.1 557.5,253.0 C580.0,242.8 602.5,228.3 625.0,216.0 C647.5,203.7 670.0,189.2 692.5,179.0 C715.0,168.9 737.5,161.0 760.0,155.1 C782.5,149.2 805.0,146.3 827.5,143.6 C850.0,140.9 872.5,140.0 895.0,138.9 C917.5,137.8 940.0,137.5 962.5,137.1 C985.0,136.7 1018.8,136.5 1030.0,136.4"/>
-
-          <!-- ЕНЕРГІЯ (energy): тонка золота крива, веде попереду -->
-          <path class="e16-draw" pathLength="1000" fill="none" stroke="var(--gold)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"
-            d="M90.0,249.6 C101.2,249.5 135.0,249.3 157.5,248.9 C180.0,248.5 202.5,248.2 225.0,247.1 C247.5,246.0 270.0,245.1 292.5,242.4 C315.0,239.7 337.5,236.8 360.0,230.9 C382.5,225.0 405.0,217.1 427.5,207.0 C450.0,196.8 472.5,182.3 495.0,170.0 C517.5,157.7 540.0,143.2 562.5,133.0 C585.0,122.9 607.5,115.0 630.0,109.1 C652.5,103.2 675.0,100.3 697.5,97.6 C720.0,94.9 742.5,94.0 765.0,92.9 C787.5,91.8 810.0,91.5 832.5,91.1 C855.0,90.7 888.8,90.5 900.0,90.4"/>
-
-          <!-- стартові крапки -->
-          <circle cx="90" cy="249.6" r="4" fill="var(--faint)"/>
-          <circle cx="220" cy="295.6" r="4" fill="var(--sil-off)"/>
-
-          <!-- сірий кінчик доходу (позаду) -->
-          <circle cx="1030" cy="136.4" r="5.5" fill="var(--faint)"/>
-
-          <!-- золотий кінчик енергії: попереду й вище -->
-          <circle cx="900" cy="90.4" r="17" fill="url(#e16-tipglow)"/>
-          <circle cx="900" cy="90.4" r="6.5" fill="var(--gold)"/>
-
-          <!-- лаг: той самий рівень енергія бере раніше (ліворуч), дохід — згодом (праворуч) -->
-          <g class="e16-pop">
-            <circle cx="420.8" cy="210" r="4.5" fill="var(--gold)"/>
-            <path d="M424 210 H626" fill="none" stroke="var(--gold-soft)" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="1 9"/>
-            <path d="M639 210 L625 203.5 L625 216.5 Z" fill="var(--gold)"/>
-            <text x="527" y="192" text-anchor="middle" fill="var(--gold-soft)"
-              style="font-family:'JetBrains Mono',monospace;font-size:19px;letter-spacing:.2em;text-transform:uppercase;">Випередження</text>
-          </g>
-
-          <!-- підписи кривих -->
-          <text x="884" y="70" text-anchor="end" fill="var(--gold)"
-            style="font-family:'JetBrains Mono',monospace;font-size:21px;letter-spacing:.2em;text-transform:uppercase;font-weight:600;">Енергія</text>
-          <text x="1048" y="143" text-anchor="start" fill="var(--faint)"
-            style="font-family:'JetBrains Mono',monospace;font-size:21px;letter-spacing:.2em;text-transform:uppercase;">Дохід</text>
-        </svg>
-      </div>
-      <div class="foot" style="width:100%"><span class="evt">Sales Forum<span class="sep">·</span>2026</span><span></span></div>
     </div>
-  </div>
-    <div class="variant thesis" data-v="F" hidden>
-    <div class="bg"></div>
-    <div class="pad center">
-      <div class="runhead" style="width:100%">
-        <div class="forum"><span>Sales&nbsp;Forum</span><span class="bar"></span><span class="yr">2026</span></div>
-        <div class="ix">Тетяна Пан</div>
-      </div>
-      <div class="inner" style="gap:54px">
-        <div class="eyebrow anim"><span class="dot"></span>Головна думка</div>
-        <h2 class="anim2" style="font-size:78px;max-width:1520px;">Енергія команди — не про настрій.<br>Це <em class="g">випереджальний показник</em> майбутнього доходу.</h2>
-        <svg class="anim3" width="1160" height="329" viewBox="0 0 1200 340" role="img" aria-label="Батарея-джерело енергії живить висхідну стрілку доходу над сходинками зростання">
-          <style>
-            @media (prefers-reduced-motion:no-preference){
-              [data-deck-active] .d16F-cell{opacity:.16;animation:d16Fcharge .55s ease-out forwards;}
-              [data-deck-active] .d16F-c0{animation-delay:.15s}
-              [data-deck-active] .d16F-c1{animation-delay:.3s}
-              [data-deck-active] .d16F-c2{animation-delay:.45s}
-              [data-deck-active] .d16F-step{transform-box:fill-box;transform-origin:50% 100%;transform:scaleY(0);animation:d16Fgrow .72s cubic-bezier(.3,.1,.25,1) both;}
-              [data-deck-active] .d16F-s0{animation-delay:.35s}
-              [data-deck-active] .d16F-s1{animation-delay:.5s}
-              [data-deck-active] .d16F-s2{animation-delay:.65s}
-              [data-deck-active] .d16F-s3{animation-delay:.8s}
-              [data-deck-active] .d16F-s4{animation-delay:.95s}
-              [data-deck-active] .d16F-draw{stroke-dasharray:1000;stroke-dashoffset:1000;animation:d16Fdash 1.4s 1.2s cubic-bezier(.3,.1,.25,1) forwards;}
-              [data-deck-active] .d16F-pop{opacity:0;animation:d16Fpop .6s 2.35s ease-out forwards;}
-              @keyframes d16Fcharge{to{opacity:1}}
-              @keyframes d16Fgrow{to{transform:scaleY(1)}}
-              @keyframes d16Fdash{to{stroke-dashoffset:0}}
-              @keyframes d16Fpop{to{opacity:1}}
-            }
-          </style>
-          <defs>
-            <linearGradient id="d16F-arrow" gradientUnits="userSpaceOnUse" x1="206" y1="176" x2="1048" y2="46">
-              <stop offset="0" stop-color="var(--gold)"/>
-              <stop offset="1" stop-color="var(--gold-soft)"/>
-            </linearGradient>
-            <linearGradient id="d16F-cellgrad" gradientUnits="userSpaceOnUse" x1="0" y1="165" x2="0" y2="273">
-              <stop offset="0" stop-color="var(--gold-soft)"/>
-              <stop offset="1" stop-color="var(--gold)"/>
-            </linearGradient>
-            <radialGradient id="d16F-glow" cx=".5" cy=".5" r=".5">
-              <stop offset="0" stop-color="var(--glow)"/>
-              <stop offset="1" stop-color="var(--glow)" stop-opacity="0"/>
-            </radialGradient>
-          </defs>
-
-          <!-- baseline -->
-          <path d="M230 288 H1140" fill="none" stroke="var(--faint)" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="2 14" opacity=".42"/>
-
-          <!-- ascending step-blocks (growth substrate) -->
-          <g fill="color-mix(in srgb,var(--faint) 86%,var(--canvas))">
-            <path class="d16F-step d16F-s0" d="M300 288 L300 260 Q300 250 310 250 L380 250 Q390 250 390 260 L390 288 Z"/>
-            <path class="d16F-step d16F-s1" d="M430 288 L430 218 Q430 208 440 208 L510 208 Q520 208 520 218 L520 288 Z"/>
-            <path class="d16F-step d16F-s2" d="M560 288 L560 176 Q560 166 570 166 L640 166 Q650 166 650 176 L650 288 Z"/>
-            <path class="d16F-step d16F-s3" d="M690 288 L690 134 Q690 124 700 124 L770 124 Q780 124 780 134 L780 288 Z"/>
-            <path class="d16F-step d16F-s4" d="M820 288 L820 104 Q820 94 830 94 L900 94 Q910 94 910 104 L910 288 Z"/>
-          </g>
-
-          <!-- battery: energy source -->
-          <ellipse cx="148" cy="214" rx="138" ry="150" fill="url(#d16F-glow)"/>
-          <rect x="124" y="134" width="48" height="16" rx="6" fill="var(--gold)"/>
-          <rect x="96" y="150" width="104" height="138" rx="20" fill="none" stroke="var(--gold)" stroke-width="5"/>
-          <g class="d16F-cell d16F-c0"><rect x="111" y="165" width="18" height="108" rx="5" fill="url(#d16F-cellgrad)"/></g>
-          <g class="d16F-cell d16F-c1"><rect x="139" y="165" width="18" height="108" rx="5" fill="url(#d16F-cellgrad)"/></g>
-          <g class="d16F-cell d16F-c2"><rect x="167" y="165" width="18" height="108" rx="5" fill="url(#d16F-cellgrad)"/></g>
-
-          <!-- launch node at battery terminal -->
-          <circle cx="206" cy="176" r="15" fill="url(#d16F-glow)"/>
-          <circle cx="206" cy="176" r="8" fill="var(--gold)"/>
-
-          <!-- hero arrow: energy -> future revenue -->
-          <path class="d16F-draw" d="M206 176 L1006 52" pathLength="1000" fill="none" stroke="url(#d16F-arrow)" stroke-width="8" stroke-linecap="round"/>
-          <g class="d16F-pop">
-            <ellipse cx="1028" cy="52" rx="112" ry="100" fill="url(#d16F-glow)"/>
-            <path d="M1048 46 L1010 75 L1003 30 Z" fill="url(#d16F-arrow)"/>
-          </g>
-
-          <!-- labels -->
-          <text x="148" y="316" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="19" letter-spacing=".2em" fill="var(--muted)">ЕНЕРГІЯ</text>
-          <text class="d16F-pop" x="1016" y="106" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="20" letter-spacing=".2em" fill="var(--gold-soft)">ДОХІД</text>
-        </svg>
-      </div>
-      <div class="foot" style="width:100%"><span class="name">Бізнес-тренерка <b>Тетяна Пан</b></span><span></span></div>
-    </div>
-  </div>
     <div class="ix pagenum"><span class="num">16</span> / 16</div>
   </section>
 
