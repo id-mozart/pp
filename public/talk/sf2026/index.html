@@ -111,8 +111,10 @@
   /* Версії слайда: шари + перемикач справа-знизу (у друк не потрапляє) */
   section>.variant{position:absolute;inset:0;}
   .variant[hidden]{display:none!important;}
-  .vswitch{position:absolute;right:38px;bottom:26px;z-index:60;display:flex;gap:16px;
-    opacity:.55;transition:opacity .25s;}
+  .pagenum{position:absolute;right:38px;bottom:24px;z-index:55;}
+  @media print{.pagenum{right:34px;bottom:22px;}}
+  .vswitch{position:fixed;right:128px;bottom:20px;z-index:9999;display:flex;gap:12px;
+    align-items:center;opacity:.55;transition:opacity .25s;}
   .vswitch:hover{opacity:1;}
   .vswitch button{font-family:'JetBrains Mono',monospace;font-size:21px;letter-spacing:.1em;
     padding:8px 5px;border:0;background:none;color:var(--muted);cursor:pointer;transition:color .2s;}
@@ -156,7 +158,7 @@
       </div>
       <div class="foot" style="width:100%">
         <span class="name" style="font-size:26px">Бізнес-тренерка <b>Тетяна Пан</b></span>
-        <span class="ix"><span class="num">01</span><span>/&nbsp;16</span></span>
+        <span></span>
       </div>
     </div>
   </div>
@@ -172,7 +174,7 @@
         <div class="sub anim3" style="font-size:31px;max-width:860px;margin-top:40px">Як керівнику побачити невидимі сигнали виснаження, поки вони не стали втратами для бізнесу.</div>
       </div>
       <div class="foot" style="width:100%;align-items:flex-end">
-        <span class="ix"><span class="num">01</span><span>/&nbsp;16</span></span>
+        <span></span>
         <div class="anim3" style="display:flex;align-items:stretch;gap:26px;text-align:left">
           <div style="width:3px;border-radius:2px;background:linear-gradient(180deg,var(--gold-soft),var(--gold))"></div>
           <div style="display:flex;flex-direction:column;gap:10px">
@@ -184,14 +186,14 @@
       </div>
     </div>
   </div>
-    <div class="vswitch" aria-label="Версії слайда"><button type="button" data-v="A" class="on">A</button><button type="button" data-v="B">B</button></div>
+    <div class="ix pagenum"><span class="num">01</span> / 16</div>
   </section>
 
   <section data-slide="02">
     <div class="variant center" data-v="A">
     <div class="bg"></div>
     <div class="pad center">
-      <div class="runhead" style="width:100%"><div class="eyebrow"><span class="dot"></span>Вступ · Вправа</div><div class="ix"><span class="num">02</span> / 16</div></div>
+      <div class="runhead" style="width:100%"><div class="eyebrow"><span class="dot"></span>Вступ · Вправа</div><div class="ix">Тетяна Пан</div></div>
       <div class="inner">
         <h2 class="anim" style="font-size:84px;max-width:1420px;">Скільки у вас зараз енергії — <em class="g">від 1 до 5?</em></h2>
         <div class="battery anim2" style="gap:16px;">
@@ -212,7 +214,7 @@
     <div class="variant center" data-v="B" hidden>
     <div class="bg"></div>
     <div class="pad center">
-      <div class="runhead" style="width:100%"><div class="eyebrow"><span class="dot"></span>Вступ · Вправа</div><div class="ix"><span class="num">02</span> / 16</div></div>
+      <div class="runhead" style="width:100%"><div class="eyebrow"><span class="dot"></span>Вступ · Вправа</div><div class="ix">Тетяна Пан</div></div>
       <div class="inner" style="gap:52px;">
         <h2 class="anim" style="font-size:80px;max-width:1380px;">Скільки у вас зараз енергії — <em class="g">від 1 до 5?</em></h2>
         <div class="anim2" style="display:flex;align-items:flex-end;gap:36px;">
@@ -242,14 +244,14 @@
       <div class="foot" style="width:100%"><span class="evt">Sales Forum<span class="sep">·</span>2026</span><span></span></div>
     </div>
   </div>
-    <div class="vswitch" aria-label="Версії слайда"><button type="button" data-v="A" class="on">A</button><button type="button" data-v="B">B</button></div>
+    <div class="ix pagenum"><span class="num">02</span> / 16</div>
   </section>
 
   <section data-slide="03">
     <div class="variant thesis" data-v="A">
     <div class="bg"></div>
     <div class="pad center">
-      <div class="runhead" style="width:100%"><div class="eyebrow"><span class="dot"></span>Вступ · Вправа</div><div class="ix"><span class="num">03</span> / 16</div></div>
+      <div class="runhead" style="width:100%"><div class="eyebrow"><span class="dot"></span>Вступ · Вправа</div><div class="ix">Тетяна Пан</div></div>
       <div class="inner" style="padding-bottom:20px">
         <h2 class="anim" style="font-size:60px;max-width:1460px;line-height:1.12;"><em class="g">«Повертаємо енергію»</em></h2><div class="anim" style="font-family:'Inter',sans-serif;font-size:26px;letter-spacing:.03em;color:var(--muted);margin-top:-32px;">вправа · одна хвилина</div>
         <div class="anim2" style="display:grid;grid-template-columns:repeat(4,1fr);gap:30px;max-width:1680px;width:100%;margin-top:34px;"><div style="background:var(--panel);background:color-mix(in srgb,var(--gold) 11%,transparent);border:1.85px solid var(--panel-line);border-color:color-mix(in srgb,var(--gold) 26%,transparent);border-radius:22px;padding:40px 36px 36px;text-align:left;display:flex;flex-direction:column;gap:20px;min-height:340px;"><div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;"><div style="font-family:'JetBrains Mono',monospace;font-size:31px;font-weight:600;letter-spacing:.07em;color:color-mix(in srgb,var(--gold-soft) 72%,var(--canvas));">01</div><div style="margin-top:6px;"><div style="display:flex;align-items:center;gap:2px;"><div style="width:84px;height:30px;flex:none;display:flex;gap:5px;align-items:stretch;border:2px solid color-mix(in srgb,var(--gold-soft) 72%,var(--canvas));border-radius:9px;padding:5px;"><span style="width:10px;border-radius:2.5px;background:color-mix(in srgb,var(--gold-soft) 72%,var(--canvas))"></span><span style="width:10px;border-radius:2.5px;background:color-mix(in srgb,var(--gold-soft) 72%,var(--canvas))"></span></div><div style="flex:none;width:5px;height:14px;border-radius:0 3px 3px 0;background:color-mix(in srgb,var(--gold-soft) 72%,var(--canvas));"></div></div></div></div><p style="font-size:29px;line-height:1.4;color:color-mix(in srgb,var(--ink) 52%,transparent);margin:auto 0 0;">Стати на носочки й потягнутися вгору маківкою якнайвище.</p></div><div style="background:var(--panel);background:color-mix(in srgb,var(--gold) 11%,transparent);border:1.85px solid var(--panel-line);border-color:color-mix(in srgb,var(--gold) 40%,transparent);border-radius:22px;padding:40px 36px 36px;text-align:left;display:flex;flex-direction:column;gap:20px;min-height:340px;box-shadow:0 0 16px color-mix(in srgb,var(--gold) 10%,transparent);"><div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;"><div style="font-family:'JetBrains Mono',monospace;font-size:31px;font-weight:600;letter-spacing:.07em;color:color-mix(in srgb,var(--gold-soft) 80%,var(--canvas));">02</div><div style="margin-top:6px;"><div style="display:flex;align-items:center;gap:2px;"><div style="width:84px;height:30px;flex:none;display:flex;gap:5px;align-items:stretch;border:2px solid color-mix(in srgb,var(--gold-soft) 80%,var(--canvas));border-radius:9px;padding:5px;"><span style="width:10px;border-radius:2.5px;background:color-mix(in srgb,var(--gold-soft) 80%,var(--canvas))"></span><span style="width:10px;border-radius:2.5px;background:color-mix(in srgb,var(--gold-soft) 80%,var(--canvas))"></span><span style="width:10px;border-radius:2.5px;background:color-mix(in srgb,var(--gold-soft) 80%,var(--canvas))"></span></div><div style="flex:none;width:5px;height:14px;border-radius:0 3px 3px 0;background:color-mix(in srgb,var(--gold-soft) 80%,var(--canvas));"></div></div></div></div><p style="font-size:29px;line-height:1.4;color:color-mix(in srgb,var(--ink) 68%,transparent);margin:auto 0 0;">Плечима: два круги вперед і два круги назад, повільно.</p></div><div style="background:var(--panel);background:color-mix(in srgb,var(--gold) 11%,transparent);border:1.85px solid var(--panel-line);border-color:color-mix(in srgb,var(--gold) 56%,transparent);border-radius:22px;padding:40px 36px 36px;text-align:left;display:flex;flex-direction:column;gap:20px;min-height:340px;box-shadow:0 0 26px color-mix(in srgb,var(--gold) 17%,transparent);"><div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;"><div style="font-family:'JetBrains Mono',monospace;font-size:31px;font-weight:600;letter-spacing:.07em;color:color-mix(in srgb,var(--gold-soft) 88%,var(--canvas));">03</div><div style="margin-top:6px;"><div style="display:flex;align-items:center;gap:2px;"><div style="width:84px;height:30px;flex:none;display:flex;gap:5px;align-items:stretch;border:2px solid color-mix(in srgb,var(--gold-soft) 88%,var(--canvas));border-radius:9px;padding:5px;"><span style="width:10px;border-radius:2.5px;background:color-mix(in srgb,var(--gold-soft) 88%,var(--canvas))"></span><span style="width:10px;border-radius:2.5px;background:color-mix(in srgb,var(--gold-soft) 88%,var(--canvas))"></span><span style="width:10px;border-radius:2.5px;background:color-mix(in srgb,var(--gold-soft) 88%,var(--canvas))"></span><span style="width:10px;border-radius:2.5px;background:color-mix(in srgb,var(--gold-soft) 88%,var(--canvas))"></span></div><div style="flex:none;width:5px;height:14px;border-radius:0 3px 3px 0;background:color-mix(in srgb,var(--gold-soft) 88%,var(--canvas));"></div></div></div></div><p style="font-size:29px;line-height:1.4;color:color-mix(in srgb,var(--ink) 84%,transparent);margin:auto 0 0;">Глибокий вдих носом, затримка, повільний видих ротом. Тричі.</p></div><div style="background:var(--panel);background:color-mix(in srgb,var(--gold) 11%,transparent);border:1.85px solid var(--panel-line);border-color:color-mix(in srgb,var(--gold) 74%,transparent);border-radius:22px;padding:40px 36px 36px;text-align:left;display:flex;flex-direction:column;gap:20px;min-height:340px;box-shadow:0 5px 36px color-mix(in srgb,var(--gold) 25%,transparent);"><div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;"><div style="font-family:'JetBrains Mono',monospace;font-size:31px;font-weight:600;letter-spacing:.07em;color:color-mix(in srgb,var(--gold-soft) 95%,var(--canvas));">04</div><div style="margin-top:6px;"><div style="display:flex;align-items:center;gap:2px;"><div style="width:84px;height:30px;flex:none;display:flex;gap:5px;align-items:stretch;border:2px solid color-mix(in srgb,var(--gold-soft) 95%,var(--canvas));border-radius:9px;padding:5px;"><span style="width:10px;border-radius:2.5px;background:color-mix(in srgb,var(--gold-soft) 95%,var(--canvas))"></span><span style="width:10px;border-radius:2.5px;background:color-mix(in srgb,var(--gold-soft) 95%,var(--canvas))"></span><span style="width:10px;border-radius:2.5px;background:color-mix(in srgb,var(--gold-soft) 95%,var(--canvas))"></span><span style="width:10px;border-radius:2.5px;background:color-mix(in srgb,var(--gold-soft) 95%,var(--canvas))"></span><span style="width:10px;border-radius:2.5px;background:color-mix(in srgb,var(--gold-soft) 95%,var(--canvas))"></span></div><div style="flex:none;width:5px;height:14px;border-radius:0 3px 3px 0;background:color-mix(in srgb,var(--gold-soft) 95%,var(--canvas));"></div></div></div></div><p style="font-size:29px;line-height:1.4;color:color-mix(in srgb,var(--gold) 32%,var(--ink));margin:auto 0 0;">Посміхнутися сусідам праворуч і ліворуч від себе.</p></div></div>
@@ -261,7 +263,7 @@
     <div class="variant thesis" data-v="B" hidden>
     <div class="bg"></div>
     <div class="pad center">
-      <div class="runhead" style="width:100%"><div class="eyebrow"><span class="dot"></span>Вступ · Вправа</div><div class="ix"><span class="num">03</span> / 16</div></div>
+      <div class="runhead" style="width:100%"><div class="eyebrow"><span class="dot"></span>Вступ · Вправа</div><div class="ix">Тетяна Пан</div></div>
       <div class="inner" style="padding-bottom:36px">
         <h2 class="anim" style="font-size:60px;max-width:1460px;line-height:1.12;"><em class="g">«Повертаємо енергію»</em></h2><div class="anim" style="font-family:'Inter',sans-serif;font-size:26px;letter-spacing:.03em;color:var(--muted);margin-top:-32px;">вправа · одна хвилина</div>
         <div class="anim2" style="display:grid;grid-template-columns:repeat(4,1fr);gap:30px;max-width:1680px;width:100%;margin-top:34px;">
@@ -278,7 +280,7 @@
     <div class="variant thesis" data-v="C" hidden>
     <div class="bg"></div>
     <div class="pad center">
-      <div class="runhead" style="width:100%"><div class="eyebrow"><span class="dot"></span>Вступ · Вправа</div><div class="ix"><span class="num">03</span> / 16</div></div>
+      <div class="runhead" style="width:100%"><div class="eyebrow"><span class="dot"></span>Вступ · Вправа</div><div class="ix">Тетяна Пан</div></div>
       <div class="inner">
         <h2 class="anim" style="font-size:60px;max-width:1460px;line-height:1.12;"><em class="g">«Повертаємо енергію»</em></h2><div class="anim" style="font-family:'Inter',sans-serif;font-size:26px;letter-spacing:.03em;color:var(--muted);margin-top:-32px;">вправа · одна хвилина</div>
         <div class="anim2" style="display:grid;grid-template-columns:repeat(4,1fr);gap:26px;max-width:1560px;width:100%;margin-top:26px;">
@@ -292,14 +294,14 @@
       <div class="foot" style="width:100%"><span class="evt">Sales Forum<span class="sep">·</span>2026</span><span></span></div>
     </div>
   </div>
-    <div class="vswitch" aria-label="Версії слайда"><button type="button" data-v="A" class="on">A</button><button type="button" data-v="B">B</button><button type="button" data-v="C">C</button></div>
+    <div class="ix pagenum"><span class="num">03</span> / 16</div>
   </section>
 
   <section data-slide="04">
     <div class="variant thesis" data-v="A">
     <div class="bg"></div>
     <div class="pad">
-      <div class="runhead"><div class="eyebrow"><span class="dot"></span>Вступ</div><div class="ix"><span class="num">04</span> / 16</div></div>
+      <div class="runhead"><div class="eyebrow"><span class="dot"></span>Вступ</div><div class="ix">Тетяна Пан</div></div>
       <div class="body">
         <div class="txt" style="justify-content:center;">
           <h2 class="anim2"><em class="g">Понад 70%</em> українців відчували симптоми тривоги, депресії або сильного стресу.</h2>
@@ -325,7 +327,7 @@
     <div class="variant thesis" data-v="B" hidden>
     <div class="bg"></div>
     <div class="pad">
-      <div class="runhead"><div class="eyebrow"><span class="dot"></span>Вступ</div><div class="ix"><span class="num">04</span> / 16</div></div>
+      <div class="runhead"><div class="eyebrow"><span class="dot"></span>Вступ</div><div class="ix">Тетяна Пан</div></div>
       <div style="flex:1;display:flex;align-items:center;gap:110px;min-height:0;">
         <div class="anim" style="display:flex;flex-direction:column;gap:10px;flex:0 0 auto;">
           <div style="font-family:'JetBrains Mono',monospace;font-size:27px;letter-spacing:.3em;text-transform:uppercase;color:var(--gold-soft);padding-left:12px;">Понад</div>
@@ -350,14 +352,14 @@
       <div class="src anim3">Джерело: ВООЗ · 2025 · і лише кожен п’ятий звертався по допомогу</div>
     </div>
   </div>
-    <div class="vswitch" aria-label="Версії слайда"><button type="button" data-v="A" class="on">A</button><button type="button" data-v="B">B</button></div>
+    <div class="ix pagenum"><span class="num">04</span> / 16</div>
   </section>
 
   <section data-slide="05">
     <div class="variant thesis" data-v="A">
     <div class="bg"></div>
     <div class="pad">
-      <div class="runhead"><div class="eyebrow"><span class="dot"></span>Вступ · Ключова теза</div><div class="ix"><span class="num">05</span> / 16</div></div>
+      <div class="runhead"><div class="eyebrow"><span class="dot"></span>Вступ · Ключова теза</div><div class="ix">Тетяна Пан</div></div>
       <div class="body">
         <div class="txt">
           <h2 class="anim2">Бізнес планує зростання, спираючись на ресурс людей, <em class="g">якого вже може не бути.</em></h2>
@@ -384,7 +386,7 @@
     <div class="variant thesis" data-v="B" hidden>
     <div class="bg"></div>
     <div class="pad">
-      <div class="runhead"><div class="eyebrow"><span class="dot"></span>Вступ · Ключова теза</div><div class="ix"><span class="num">05</span> / 16</div></div>
+      <div class="runhead"><div class="eyebrow"><span class="dot"></span>Вступ · Ключова теза</div><div class="ix">Тетяна Пан</div></div>
       <div class="body">
         <div class="txt">
           <h2 class="anim2">Бізнес планує зростання, спираючись на ресурс людей, <em class="g">якого вже може не бути.</em></h2>
@@ -404,14 +406,14 @@
       </div>
     </div>
   </div>
-    <div class="vswitch" aria-label="Версії слайда"><button type="button" data-v="A" class="on">A</button><button type="button" data-v="B">B</button></div>
+    <div class="ix pagenum"><span class="num">05</span> / 16</div>
   </section>
 
   <section data-slide="06">
     <div class="variant thesis" data-v="A">
     <div class="bg"></div>
     <div class="pad">
-      <div class="runhead"><div class="eyebrow"><span class="dot"></span>Проблема</div><div class="ix"><span class="num">06</span> / 16</div></div>
+      <div class="runhead"><div class="eyebrow"><span class="dot"></span>Проблема</div><div class="ix">Тетяна Пан</div></div>
       <div class="body">
         <div class="txt">
           <h2 class="anim2" style="font-size:78px">Немає енергії — <em class="g">немає нових клієнтів.</em></h2>
@@ -435,7 +437,7 @@
     <div class="variant thesis" data-v="B" hidden>
     <div class="bg"></div>
     <div class="pad">
-      <div class="runhead"><div class="eyebrow"><span class="dot"></span>Проблема</div><div class="ix"><span class="num">06</span> / 16</div></div>
+      <div class="runhead"><div class="eyebrow"><span class="dot"></span>Проблема</div><div class="ix">Тетяна Пан</div></div>
       <div class="body">
         <div class="txt">
           <h2 class="anim2" style="font-size:78px">Немає енергії — <em class="g">немає нових клієнтів.</em></h2>
@@ -459,14 +461,14 @@
       </div>
     </div>
   </div>
-    <div class="vswitch" aria-label="Версії слайда"><button type="button" data-v="A" class="on">A</button><button type="button" data-v="B">B</button></div>
+    <div class="ix pagenum"><span class="num">06</span> / 16</div>
   </section>
 
   <section data-slide="07">
     <div class="variant thesis" data-v="A">
     <div class="bg"></div>
     <div class="pad">
-      <div class="runhead"><div class="eyebrow"><span class="dot"></span>Проблема</div><div class="ix"><span class="num">07</span> / 16</div></div>
+      <div class="runhead"><div class="eyebrow"><span class="dot"></span>Проблема</div><div class="ix">Тетяна Пан</div></div>
       <div class="body">
         <div class="txt">
           <h2 class="anim2" style="font-size:60px">Виснаження <em class="g">маскується</em> під прокрастинацію, брак ініціативи та «ринок зараз не той».</h2>
@@ -496,7 +498,7 @@
     <div class="variant thesis" data-v="B" hidden>
     <div class="bg"></div>
     <div class="pad">
-      <div class="runhead"><div class="eyebrow"><span class="dot"></span>Проблема</div><div class="ix"><span class="num">07</span> / 16</div></div>
+      <div class="runhead"><div class="eyebrow"><span class="dot"></span>Проблема</div><div class="ix">Тетяна Пан</div></div>
       <div class="body">
         <div class="txt">
           <h2 class="anim2" style="font-size:60px">Виснаження <em class="g">маскується</em> під прокрастинацію, брак ініціативи та «ринок зараз не той».</h2>
@@ -521,14 +523,14 @@
       </div>
     </div>
   </div>
-    <div class="vswitch" aria-label="Версії слайда"><button type="button" data-v="A" class="on">A</button><button type="button" data-v="B">B</button></div>
+    <div class="ix pagenum"><span class="num">07</span> / 16</div>
   </section>
 
   <section data-slide="08">
     <div class="variant thesis" data-v="A">
     <div class="bg"></div>
     <div class="pad">
-      <div class="runhead"><div class="eyebrow"><span class="dot"></span>Проблема · 4 інтелекти</div><div class="ix"><span class="num">08</span> / 16</div></div>
+      <div class="runhead"><div class="eyebrow"><span class="dot"></span>Проблема · 4 інтелекти</div><div class="ix">Тетяна Пан</div></div>
       <div class="body">
         <div class="txt">
           <h2 class="anim2">Коли знижується <em class="g">VQ</em> — просідають EQ, AQ та SQ.</h2>
@@ -580,7 +582,7 @@
     <div class="variant center" data-v="B" hidden>
     <div class="bg"></div>
     <div class="pad">
-      <div class="runhead"><div class="eyebrow"><span class="dot"></span>Проблема · 4 інтелекти</div><div class="ix"><span class="num">08</span> / 16</div></div>
+      <div class="runhead"><div class="eyebrow"><span class="dot"></span>Проблема · 4 інтелекти</div><div class="ix">Тетяна Пан</div></div>
       <div class="inner">
         <h2 class="anim" style="font-size:52px;max-width:1400px">Коли знижується <em class="g">VQ</em> — просідають EQ, AQ та SQ.</h2>
         <div class="vis anim2">
@@ -624,14 +626,14 @@
       </div>
     </div>
   </div>
-    <div class="vswitch" aria-label="Версії слайда"><button type="button" data-v="A" class="on">A</button><button type="button" data-v="B">B</button></div>
+    <div class="ix pagenum"><span class="num">08</span> / 16</div>
   </section>
 
   <section data-slide="09">
     <div class="variant thesis" data-v="A">
     <div class="bg"></div>
     <div class="pad">
-      <div class="runhead"><div class="eyebrow"><span class="dot"></span>Проблема · Ключова теза</div><div class="ix"><span class="num">09</span> / 16</div></div>
+      <div class="runhead"><div class="eyebrow"><span class="dot"></span>Проблема · Ключова теза</div><div class="ix">Тетяна Пан</div></div>
       <div class="body">
         <div class="txt">
           <h2 class="anim2">Менеджер знає, що потрібно робити. Але не має енергії витримати <em class="g">ще одну відмову.</em></h2>
@@ -651,7 +653,7 @@
     <div class="variant center" data-v="B" hidden>
     <div class="bg"></div>
     <div class="pad">
-      <div class="runhead"><div class="eyebrow"><span class="dot"></span>Проблема · Ключова теза</div><div class="ix"><span class="num">09</span> / 16</div></div>
+      <div class="runhead"><div class="eyebrow"><span class="dot"></span>Проблема · Ключова теза</div><div class="ix">Тетяна Пан</div></div>
       <div class="inner">
         <svg class="anim" viewBox="0 0 1424 280" fill="none" style="width:1180px;max-width:100%;height:auto">
           <!-- дзвінок 1: повна енергія -->
@@ -681,14 +683,14 @@
       </div>
     </div>
   </div>
-    <div class="vswitch" aria-label="Версії слайда"><button type="button" data-v="A" class="on">A</button><button type="button" data-v="B">B</button></div>
+    <div class="ix pagenum"><span class="num">09</span> / 16</div>
   </section>
 
   <section data-slide="10">
     <div class="variant thesis" data-v="A">
     <div class="bg"></div>
     <div class="pad">
-      <div class="runhead"><div class="eyebrow"><span class="dot"></span>Рішення · Профілактика</div><div class="ix"><span class="num">10</span> / 16</div></div>
+      <div class="runhead"><div class="eyebrow"><span class="dot"></span>Рішення · Профілактика</div><div class="ix">Тетяна Пан</div></div>
       <div class="body" style="grid-template-columns:1fr 1.1fr;gap:96px">
         <div class="txt">
           <h2 class="anim2" style="font-size:60px"><em class="g">Профілактика</em> — поки команда ще має ресурс.</h2>
@@ -706,7 +708,7 @@
     <div class="variant thesis" data-v="B" hidden>
     <div class="bg"></div>
     <div class="pad">
-      <div class="runhead"><div class="eyebrow"><span class="dot"></span>Рішення · Профілактика</div><div class="ix"><span class="num">10</span> / 16</div></div>
+      <div class="runhead"><div class="eyebrow"><span class="dot"></span>Рішення · Профілактика</div><div class="ix">Тетяна Пан</div></div>
       <div class="body" style="display:flex;flex-direction:column;align-items:stretch;justify-content:center;gap:70px">
         <div class="txt" style="gap:30px">
           <h2 class="anim2" style="font-size:60px;max-width:1150px"><em class="g">Профілактика</em> — поки команда ще має ресурс.</h2>
@@ -736,14 +738,14 @@
       </div>
     </div>
   </div>
-    <div class="vswitch" aria-label="Версії слайда"><button type="button" data-v="A" class="on">A</button><button type="button" data-v="B">B</button></div>
+    <div class="ix pagenum"><span class="num">10</span> / 16</div>
   </section>
 
   <section data-slide="11">
     <div class="variant thesis" data-v="A">
     <div class="bg"></div>
     <div class="pad">
-      <div class="runhead"><div class="eyebrow"><span class="dot"></span>Рішення · Відновлення</div><div class="ix"><span class="num">11</span> / 16</div></div>
+      <div class="runhead"><div class="eyebrow"><span class="dot"></span>Рішення · Відновлення</div><div class="ix">Тетяна Пан</div></div>
       <div class="body">
         <div class="txt">
           <h2 class="anim2" style="font-size:60px;max-width:680px">Коли енергії вже немає — <em class="g">дробити цілі.</em></h2>
@@ -777,7 +779,7 @@
     <div class="variant thesis" data-v="B" hidden>
     <div class="bg"></div>
     <div class="pad">
-      <div class="runhead"><div class="eyebrow"><span class="dot"></span>Рішення · Відновлення</div><div class="ix"><span class="num">11</span> / 16</div></div>
+      <div class="runhead"><div class="eyebrow"><span class="dot"></span>Рішення · Відновлення</div><div class="ix">Тетяна Пан</div></div>
       <div style="flex:1;display:flex;flex-direction:column;justify-content:center;gap:72px">
         <div style="display:flex;flex-direction:column;gap:32px">
           <h2 class="anim2" style="font-size:62px">Коли енергії вже немає — <em class="g">дробити цілі.</em></h2>
@@ -818,14 +820,14 @@
       </div>
     </div>
   </div>
-    <div class="vswitch" aria-label="Версії слайда"><button type="button" data-v="A" class="on">A</button><button type="button" data-v="B">B</button></div>
+    <div class="ix pagenum"><span class="num">11</span> / 16</div>
   </section>
 
   <section data-slide="12">
     <div class="variant thesis" data-v="A">
     <div class="bg"></div>
     <div class="pad">
-      <div class="runhead"><div class="eyebrow"><span class="dot"></span>Наслідки</div><div class="ix"><span class="num">12</span> / 16</div></div>
+      <div class="runhead"><div class="eyebrow"><span class="dot"></span>Наслідки</div><div class="ix">Тетяна Пан</div></div>
       <div class="body">
         <div class="txt">
           <h2 class="anim2" style="font-size:58px">Клієнт не знає, що менеджер виснажений. Але <em class="g">відчуває</em> неуважність і байдужий tone of voice.</h2>
@@ -849,7 +851,7 @@
     <div class="variant thesis" data-v="B" hidden>
     <div class="bg"></div>
     <div class="pad">
-      <div class="runhead"><div class="eyebrow"><span class="dot"></span>Наслідки</div><div class="ix"><span class="num">12</span> / 16</div></div>
+      <div class="runhead"><div class="eyebrow"><span class="dot"></span>Наслідки</div><div class="ix">Тетяна Пан</div></div>
       <div class="body">
         <div class="txt">
           <h2 class="anim2" style="font-size:58px">Клієнт не знає, що менеджер виснажений. Але <em class="g">відчуває</em> неуважність і байдужий tone of voice.</h2>
@@ -876,14 +878,14 @@
       </div>
     </div>
   </div>
-    <div class="vswitch" aria-label="Версії слайда"><button type="button" data-v="A" class="on">A</button><button type="button" data-v="B">B</button></div>
+    <div class="ix pagenum"><span class="num">12</span> / 16</div>
   </section>
 
   <section data-slide="13">
     <div class="variant thesis" data-v="A">
     <div class="bg"></div>
     <div class="pad">
-      <div class="runhead"><div class="eyebrow"><span class="dot"></span>Наслідки · Ключова теза</div><div class="ix"><span class="num">13</span> / 16</div></div>
+      <div class="runhead"><div class="eyebrow"><span class="dot"></span>Наслідки · Ключова теза</div><div class="ix">Тетяна Пан</div></div>
       <div class="body">
         <div class="txt">
           <h2 class="anim2">Втрата енергії стає видимою <em class="g">спочатку клієнту</em> — і лише потім у звітах.</h2>
@@ -911,7 +913,7 @@
     <div class="variant thesis" data-v="B" hidden>
     <div class="bg"></div>
     <div class="pad">
-      <div class="runhead"><div class="eyebrow"><span class="dot"></span>Наслідки · Ключова теза</div><div class="ix"><span class="num">13</span> / 16</div></div>
+      <div class="runhead"><div class="eyebrow"><span class="dot"></span>Наслідки · Ключова теза</div><div class="ix">Тетяна Пан</div></div>
       <div class="body" style="display:flex;flex-direction:column;justify-content:center;align-items:flex-start;gap:52px">
         <div class="txt" style="gap:30px">
           <h2 class="anim2">Втрата енергії стає видимою <em class="g">спочатку клієнту</em> —<br>і лише потім у звітах.</h2>
@@ -940,14 +942,14 @@
       </div>
     </div>
   </div>
-    <div class="vswitch" aria-label="Версії слайда"><button type="button" data-v="A" class="on">A</button><button type="button" data-v="B">B</button></div>
+    <div class="ix pagenum"><span class="num">13</span> / 16</div>
   </section>
 
   <section data-slide="14">
     <div class="variant center" data-v="A">
     <div class="bg"></div>
     <div class="pad center">
-      <div class="runhead" style="width:100%"><div class="eyebrow"><span class="dot"></span>Завершення · Вправа</div><div class="ix"><span class="num">14</span> / 16</div></div>
+      <div class="runhead" style="width:100%"><div class="eyebrow"><span class="dot"></span>Завершення · Вправа</div><div class="ix">Тетяна Пан</div></div>
       <div class="inner">
         <svg class="anim" width="460" height="300" viewBox="0 0 460 300" aria-hidden="true">
           <path class="stroke" d="M30 280 H130 V218 H230 V156 H330 V94 H430"/>
@@ -967,7 +969,7 @@
     <div class="variant center" data-v="B" hidden>
     <div class="bg"></div>
     <div class="pad center">
-      <div class="runhead" style="width:100%"><div class="eyebrow"><span class="dot"></span>Завершення · Вправа</div><div class="ix"><span class="num">14</span> / 16</div></div>
+      <div class="runhead" style="width:100%"><div class="eyebrow"><span class="dot"></span>Завершення · Вправа</div><div class="ix">Тетяна Пан</div></div>
       <div class="inner" style="gap:48px;">
         <svg class="anim" width="320" height="130" viewBox="0 0 320 130" aria-hidden="true">
           <path fill="var(--gold)" d="M160 34 Q165 65 196 70 Q165 75 160 106 Q155 75 124 70 Q155 65 160 34 Z"/>
@@ -985,7 +987,7 @@
     <div class="variant thesis" data-v="C" hidden>
     <div class="bg"></div>
     <div class="pad center">
-      <div class="runhead" style="width:100%"><div class="eyebrow"><span class="dot"></span>Завершення · Вправа</div><div class="ix"><span class="num">14</span> / 16</div></div>
+      <div class="runhead" style="width:100%"><div class="eyebrow"><span class="dot"></span>Завершення · Вправа</div><div class="ix">Тетяна Пан</div></div>
       <div class="inner" style="padding-bottom:36px">
         <h2 class="anim" style="font-size:62px;max-width:1520px;line-height:1.12;">Назвіть одну <em class="g">маленьку перемогу</em><br>своєї команди за останній місяць.</h2>
         <div class="anim2" style="display:grid;grid-template-columns:repeat(3,1fr);gap:30px;max-width:1460px;width:100%;margin-top:20px;">
@@ -997,14 +999,14 @@
       <div class="foot" style="width:100%"><span class="evt">Sales Forum<span class="sep">·</span>2026</span><span></span></div>
     </div>
   </div>
-    <div class="vswitch" aria-label="Версії слайда"><button type="button" data-v="A" class="on">A</button><button type="button" data-v="B">B</button><button type="button" data-v="C">C</button></div>
+    <div class="ix pagenum"><span class="num">14</span> / 16</div>
   </section>
 
   <section data-slide="15">
     <div class="variant thesis" data-v="A">
     <div class="bg"></div>
     <div class="pad">
-      <div class="runhead"><div class="eyebrow"><span class="dot"></span>Завершення · Фінальні тези</div><div class="ix"><span class="num">15</span> / 16</div></div>
+      <div class="runhead"><div class="eyebrow"><span class="dot"></span>Завершення · Фінальні тези</div><div class="ix">Тетяна Пан</div></div>
       <div class="body">
         <div class="txt">
           <h2 class="anim2">Наші люди не стали слабшими — вони <em class="g">занадто довго</em> змушені бути сильними.</h2>
@@ -1030,7 +1032,7 @@
     <div class="variant thesis" data-v="B" hidden>
     <div class="bg"></div>
     <div class="pad">
-      <div class="runhead"><div class="eyebrow"><span class="dot"></span>Завершення · Фінальні тези</div><div class="ix"><span class="num">15</span> / 16</div></div>
+      <div class="runhead"><div class="eyebrow"><span class="dot"></span>Завершення · Фінальні тези</div><div class="ix">Тетяна Пан</div></div>
       <div class="body" style="grid-template-columns:.9fr 1.1fr">
         <div class="vis anim">
           <svg width="483" height="460" viewBox="0 0 420 400" role="img" aria-label="Силует людини із золотою дугою підтримки за спиною">
@@ -1052,7 +1054,7 @@
       </div>
     </div>
   </div>
-    <div class="vswitch" aria-label="Версії слайда"><button type="button" data-v="A" class="on">A</button><button type="button" data-v="B">B</button></div>
+    <div class="ix pagenum"><span class="num">15</span> / 16</div>
   </section>
 
   <section data-slide="16">
@@ -1061,7 +1063,7 @@
     <div class="pad center">
       <div class="runhead" style="width:100%">
         <div class="forum"><span>Sales&nbsp;Forum</span><span class="bar"></span><span class="yr">2026</span></div>
-        <div class="ix"><span class="num">16</span> / 16</div>
+        <div class="ix">Тетяна Пан</div>
       </div>
       <div class="inner">
         <div class="eyebrow anim"><span class="dot"></span>Головна думка</div>
@@ -1081,7 +1083,7 @@
     <div class="pad center">
       <div class="runhead" style="width:100%">
         <div class="forum"><span>Sales&nbsp;Forum</span><span class="bar"></span><span class="yr">2026</span></div>
-        <div class="ix"><span class="num">16</span> / 16</div>
+        <div class="ix">Тетяна Пан</div>
       </div>
       <div class="inner" style="gap:52px">
         <div class="eyebrow anim"><span class="dot"></span>Головна думка&nbsp;·&nbsp;варіант B</div>
@@ -1099,22 +1101,40 @@
       <div class="foot" style="width:100%"><span class="name">Бізнес-тренерка <b>Тетяна Пан</b></span><span class="evt">Sales Forum<span class="sep">·</span>2026</span></div>
     </div>
   </div>
-    <div class="vswitch" aria-label="Версії слайда"><button type="button" data-v="A" class="on">A</button><button type="button" data-v="B">B</button></div>
+    <div class="ix pagenum"><span class="num">16</span> / 16</div>
   </section>
 
 </deck-stage>
 <script src="deck-stage.js"></script>
+<div class="vswitch" id="vswitch-global" aria-label="Версії слайда"></div>
 <script>
-  // Перемикач версій слайда: показує один шар .variant, анімації входу програються заново.
-  document.querySelectorAll('.vswitch').forEach(function(sw){
-    sw.addEventListener('click', function(e){
-      var b = e.target.closest('button[data-v]'); if(!b) return;
-      e.stopPropagation();
-      var sec = sw.closest('section');
-      sec.querySelectorAll(':scope > .variant').forEach(function(v){ v.hidden = v.dataset.v !== b.dataset.v; });
-      sw.querySelectorAll('button').forEach(function(x){ x.classList.toggle('on', x === b); });
-    });
-  });
+  // Глобальний перемикач версій активного слайда (поза межами слайда).
+  (function(){
+    var box = document.getElementById('vswitch-global');
+    function active(){ return document.querySelector('section[data-deck-active]'); }
+    function render(){
+      var sec = active();
+      var vars = sec ? sec.querySelectorAll(':scope > .variant') : [];
+      if(!sec || vars.length < 2){ box.style.display = 'none'; return; }
+      box.style.display = 'flex';
+      box.innerHTML = '';
+      vars.forEach(function(v){
+        var b = document.createElement('button');
+        b.type = 'button'; b.textContent = v.dataset.v;
+        if(!v.hidden) b.className = 'on';
+        b.addEventListener('click', function(e){
+          e.stopPropagation();
+          vars.forEach(function(x){ x.hidden = x !== v; });
+          render();
+        });
+        box.appendChild(b);
+      });
+    }
+    var ds = document.querySelector('deck-stage');
+    ds.addEventListener('slidechange', render);
+    customElements.whenDefined('deck-stage').then(function(){ setTimeout(render, 50); });
+    window.addEventListener('load', function(){ setTimeout(render, 200); });
+  })();
 </script>
 <script>
   (function(){
