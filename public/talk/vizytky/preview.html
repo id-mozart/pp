@@ -7,29 +7,27 @@
 <title>Превʼю візитки · Pan&amp;Partners</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-  :root{ --bg:#120C07; --line:rgba(197,120,40,.22); --ink:#F5EEE1; --muted:#B2A184; --gold:#EFBE6A; --gold-d:#C6791C; }
   *{ box-sizing:border-box; }
-  html,body{ margin:0; background:var(--bg); color:var(--ink); font-family:'Inter',sans-serif; -webkit-font-smoothing:antialiased; }
-  .top{ display:flex; align-items:center; gap:14px; padding:14px 22px; border-bottom:1px solid var(--line); flex-wrap:wrap; }
-  .top .brand{ font-family:'Spectral',serif; font-weight:600; font-size:19px; }
-  .top .brand span{ color:var(--gold); }
+  html,body{ margin:0; background:#d9d9d9; color:#2a2a2a; font-family:'Inter',sans-serif; -webkit-font-smoothing:antialiased; }
+  .top{ display:flex; align-items:center; gap:14px; padding:14px 22px; background:#ececec; border-bottom:1px solid rgba(0,0,0,.10); flex-wrap:wrap; position:sticky; top:0; z-index:5; }
+  .top .brand{ font-family:'Spectral',serif; font-weight:600; font-size:19px; color:#2a2a2a; }
+  .top .brand span{ color:#C6791C; }
   .top .sp{ flex:1; }
-  .btn{ font-family:'JetBrains Mono',monospace; font-size:12.5px; letter-spacing:.06em; color:var(--muted); background:none; border:1px solid var(--line); border-radius:8px; padding:8px 14px; cursor:pointer; text-decoration:none; transition:.15s; }
-  .btn:hover{ color:var(--gold); border-color:var(--gold); }
-  .btn.pri{ color:var(--gold); border-color:var(--gold); }
-  .wrap{ max-width:1180px; margin:0 auto; padding:44px 32px 90px; }
-  .pair{ display:flex; flex-direction:column; gap:20px; }
-  .side{ }
-  .side .lab{ font-family:'JetBrains Mono',monospace; font-size:12px; letter-spacing:.2em; text-transform:uppercase; color:#C9B79A; margin:0 0 12px; }
-  .stage{ border-radius:14px; overflow:hidden; box-shadow:0 26px 64px rgba(0,0,0,.5), 0 0 0 1px rgba(197,120,40,.14); width:calc(1004px * var(--s,.7)); height:calc(650px * var(--s,.7)); }
-  .scaler{ width:1004px; height:650px; transform:scale(var(--s,.7)); transform-origin:top left; }
+  .btn{ font-family:'JetBrains Mono',monospace; font-size:12.5px; letter-spacing:.06em; color:#5a5a5a; background:#fff; border:1px solid rgba(0,0,0,.14); border-radius:8px; padding:8px 14px; cursor:pointer; text-decoration:none; transition:.15s; }
+  .btn:hover{ color:#C6791C; border-color:#C6791C; }
+  .btn.pri{ color:#fff; background:linear-gradient(90deg,#E2A638,#C6791C); border-color:transparent; }
+  .wrap{ max-width:1240px; margin:0 auto; padding:48px 32px 100px; }
+  .pair{ display:flex; flex-wrap:wrap; gap:40px 34px; align-items:flex-start; }
+  .side .lab{ font-family:'JetBrains Mono',monospace; font-size:12px; letter-spacing:.2em; text-transform:uppercase; color:#7a7a7a; margin:0 0 12px; }
+  .stage{ border-radius:16px; overflow:hidden; box-shadow:0 18px 44px rgba(0,0,0,.22), 0 3px 10px rgba(0,0,0,.12); width:calc(1004px * var(--s,.5)); height:calc(650px * var(--s,.5)); }
+  .scaler{ width:1004px; height:650px; transform:scale(var(--s,.5)); transform-origin:top left; }
   .card{ position:relative; width:1004px; height:650px; overflow:hidden; }
   .el{ position:absolute; }
-  .empty{ color:var(--muted); font-size:15px; line-height:1.7; }
-  .empty a{ color:var(--gold); }
-  @media (min-width:1080px){ .pair{ flex-direction:row; align-items:flex-start; gap:34px; } }
+  .empty{ color:#5a5a5a; font-size:15px; line-height:1.7; }
+  .empty a{ color:#C6791C; }
   @media print{
     @page{ size:1004px 650px; margin:0; }
+    html,body{ background:#fff; }
     .top{ display:none; } .wrap{ padding:0; max-width:none; }
     .pair{ display:block; } .side .lab{ display:none; }
     .stage{ box-shadow:none; border-radius:0; width:1004px; height:650px; page-break-after:always; }
@@ -48,9 +46,9 @@
   <div class="wrap"><div class="pair" id="pair"></div></div>
 
 <script>
-/* Read-only preview of the current constructor layout (front + back). */
+/* Read-only preview of the current constructor layout — front + dark & light backs. */
 (function(){
-  var KEY='pp-vizytka-constructor-v4';
+  var KEY='pp-vizytka-constructor-v5';
   var FONTS={ serif:"'Spectral',serif", mono:"'JetBrains Mono',monospace", sans:"'Inter',sans-serif" };
   var ICONS={
     phone:'<path d="M13.832 16.568a1 1 0 0 0 1.213-.303l.355-.465A2 2 0 0 1 17 15h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2A18 18 0 0 1 2 4a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v3a2 2 0 0 1-.8 1.6l-.468.351a1 1 0 0 0-.292 1.233a14 14 0 0 0 6.392 6.384"/>',
@@ -67,14 +65,12 @@
     if(e.type==='line'){ return '<div class="el" style="'+pos+'"><div style="width:'+e.w+'px;height:'+e.h+'px;background:linear-gradient(90deg,#C6791C,rgba(198,121,28,0));"></div></div>'; }
     return '';
   }
-  function cardHTML(sideData){
-    return '<div class="card" style="background:'+sideData.bg+';">'+sideData.els.map(elHTML).join('')+'</div>';
-  }
+  function cardHTML(sideData){ return '<div class="card" style="background:'+sideData.bg+';">'+sideData.els.map(elHTML).join('')+'</div>'; }
+  function block(label, sideData){ return '<div class="side"><div class="lab">'+label+'</div><div class="stage"><div class="scaler">'+cardHTML(sideData)+'</div></div></div>'; }
   function fit(){
     var w=document.querySelector('.wrap').clientWidth;
-    var per = window.matchMedia('(min-width:1080px)').matches ? (w-34)/2 : w;
-    var s=Math.min(per/1004, 0.86);
-    document.documentElement.style.setProperty('--s', s);
+    var per = w>=1080 ? (w-68)/3 : (w>=720 ? (w-34)/2 : w);
+    document.documentElement.style.setProperty('--s', Math.min(per/1004, 0.62));
   }
 
   var model=null;
@@ -84,10 +80,9 @@
     pair.innerHTML='<div class="empty">Ще немає збереженого макета.<br>Відкрийте <a href="/talk/vizytky/edit.html">конструктор</a> — макет збережеться автоматично, і тут зʼявиться превʼю лиця та звороту.</div>';
     return;
   }
-  var back = model.backs[model.backSel] || model.backs.obsidian;
-  pair.innerHTML =
-    '<div class="side"><div class="lab">Лице</div><div class="stage"><div class="scaler">'+cardHTML(model.front)+'</div></div></div>'+
-    '<div class="side"><div class="lab">Зворот</div><div class="stage"><div class="scaler">'+cardHTML(back)+'</div></div></div>';
+  var dark = model.backs.obsidian || model.backs[model.backSel];
+  var light = model.backs.cream || model.backs[model.backSel];
+  pair.innerHTML = block('Лице', model.front) + block('Зворот — темний', dark) + block('Зворот — світлий', light);
   fit(); window.addEventListener('resize', fit);
   document.getElementById('print').addEventListener('click',function(){ window.print(); });
 })();
