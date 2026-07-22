@@ -22,6 +22,7 @@
   figcaption .idx{ color:#C6791C; }
   .stage{ width:calc(var(--card-w) * var(--s)); height:calc(var(--card-h) * var(--s)); border-radius:14px; overflow:hidden; box-shadow:0 30px 70px rgba(0,0,0,.5), 0 0 0 1px rgba(197,120,40,.14); }
   .scaler{ width:var(--card-w); height:var(--card-h); transform:scale(var(--s)); transform-origin:top left; }
+  .secttl{ font-family:'JetBrains Mono',monospace; font-size:13px; letter-spacing:.2em; text-transform:uppercase; color:#EFBE6A; margin:64px 0 30px; padding-top:30px; border-top:1px solid rgba(197,120,40,.22); }
   .note{ margin-top:60px; padding-top:24px; border-top:1px solid rgba(197,120,40,.18); color:#7A6A50; font-size:14px; font-family:'JetBrains Mono',monospace; letter-spacing:.06em; line-height:1.7; }
   @media (max-width:820px){ :root{ --s:.6; } }
   /* print each face at real size */
@@ -52,9 +53,6 @@
       <figcaption><span class="idx">V1 · лице</span> Компактна</figcaption>
       <div class="stage"><div class="scaler"><div class="card" style="width:1004px;height:650px;position:relative;overflow:hidden;background:linear-gradient(157deg,#F7F1E6 0%,#F1E7D4 100%);font-family:'Inter',sans-serif;color:#2A1D10;box-sizing:border-box;">
 
-  <!-- amber spine, left edge -->
-  <div style="position:absolute;left:0;top:0;bottom:0;width:7px;background:linear-gradient(180deg,#EFBE6A,#C6791C);"></div>
-
   <!-- wordmark (logo) -->
   <div style="position:absolute;left:76px;top:66px;">
     <img src="/talk/vizytky/assets/pan-partners-dark.svg" alt="Pan&amp;Partners" style="display:block;width:232px;height:auto;"/>
@@ -67,7 +65,7 @@
   <div style="position:absolute;left:74px;top:214px;font-family:'Spectral',serif;font-weight:500;font-size:74px;line-height:1;letter-spacing:-.5px;color:#2A1D10;">Тетяна&nbsp;Пан</div>
 
   <!-- signature (roles) -->
-  <div style="position:absolute;left:76px;top:296px;font-family:'JetBrains Mono',monospace;font-size:16px;letter-spacing:.12em;text-transform:uppercase;color:#C6791C;">Бізнес-тренерка&nbsp;·&nbsp;фасилітаторка&nbsp;·&nbsp;коуч&nbsp;·&nbsp;менторка</div>
+  <div style="position:absolute;left:76px;top:296px;font-family:'JetBrains Mono',monospace;font-size:16px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:#A85D0F;">Бізнес-тренерка&nbsp;·&nbsp;фасилітаторка&nbsp;·&nbsp;коуч&nbsp;·&nbsp;менторка</div>
 
   <!-- divider -->
   <div style="position:absolute;left:76px;top:342px;width:340px;height:1.5px;background:linear-gradient(90deg,#C6791C,rgba(198,121,28,0));"></div>
@@ -76,15 +74,15 @@
   <div style="position:absolute;left:76px;top:416px;display:flex;flex-direction:column;gap:15px;">
     <div style="display:flex;align-items:center;gap:20px;">
       <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="#C6791C" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" style="flex:none;"><path d="M13.832 16.568a1 1 0 0 0 1.213-.303l.355-.465A2 2 0 0 1 17 15h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2A18 18 0 0 1 2 4a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v3a2 2 0 0 1-.8 1.6l-.468.351a1 1 0 0 0-.292 1.233a14 14 0 0 0 6.392 6.384"/></svg>
-      <span style="font-family:'JetBrains Mono',monospace;font-size:22px;letter-spacing:.02em;color:#2A1D10;">+380&nbsp;50&nbsp;448-14-11</span>
+      <span style="font-family:'JetBrains Mono',monospace;font-size:24px;letter-spacing:.02em;color:#2A1D10;">+380&nbsp;50&nbsp;448-14-11</span>
     </div>
     <div style="display:flex;align-items:center;gap:20px;">
       <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="#C6791C" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" style="flex:none;"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
-      <span style="font-family:'JetBrains Mono',monospace;font-size:22px;letter-spacing:.02em;color:#2A1D10;">t.pan@pan-partners.agency</span>
+      <span style="font-family:'JetBrains Mono',monospace;font-size:24px;letter-spacing:.02em;color:#2A1D10;">t.pan@pan-partners.agency</span>
     </div>
     <div style="display:flex;align-items:center;gap:20px;">
       <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="#C6791C" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" style="flex:none;"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
-      <span style="font-family:'JetBrains Mono',monospace;font-size:22px;letter-spacing:.02em;color:#2A1D10;">pan-partners.agency</span>
+      <span style="font-family:'JetBrains Mono',monospace;font-size:24px;letter-spacing:.02em;color:#2A1D10;">pan-partners.agency</span>
     </div>
   </div>
 
@@ -113,9 +111,6 @@
       <figcaption><span class="idx">V2 · лице</span> Крупна · більший логотип і шрифти</figcaption>
       <div class="stage"><div class="scaler"><div class="card" style="width:1004px;height:650px;position:relative;overflow:hidden;background:linear-gradient(157deg,#F7F1E6 0%,#F1E7D4 100%);font-family:'Inter',sans-serif;color:#2A1D10;box-sizing:border-box;">
 
-  <!-- amber spine, left edge -->
-  <div style="position:absolute;left:0;top:0;bottom:0;width:9px;background:linear-gradient(180deg,#EFBE6A,#C6791C);"></div>
-
   <!-- wordmark (logo) -->
   <div style="position:absolute;left:80px;top:58px;">
     <img src="/talk/vizytky/assets/pan-partners-dark.svg" alt="Pan&amp;Partners" style="display:block;width:330px;height:auto;"/>
@@ -128,7 +123,7 @@
   <div style="position:absolute;left:78px;top:206px;font-family:'Spectral',serif;font-weight:500;font-size:96px;line-height:1;letter-spacing:-.5px;color:#2A1D10;">Тетяна&nbsp;Пан</div>
 
   <!-- signature (roles) -->
-  <div style="position:absolute;left:80px;top:308px;font-family:'JetBrains Mono',monospace;font-size:18px;letter-spacing:.12em;text-transform:uppercase;color:#C6791C;">Бізнес-тренерка&nbsp;·&nbsp;фасилітаторка&nbsp;·&nbsp;коуч&nbsp;·&nbsp;менторка</div>
+  <div style="position:absolute;left:80px;top:308px;font-family:'JetBrains Mono',monospace;font-size:18px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:#A85D0F;">Бізнес-тренерка&nbsp;·&nbsp;фасилітаторка&nbsp;·&nbsp;коуч&nbsp;·&nbsp;менторка</div>
 
   <!-- divider -->
   <div style="position:absolute;left:80px;top:360px;width:360px;height:2px;background:linear-gradient(90deg,#C6791C,rgba(198,121,28,0));"></div>
@@ -137,15 +132,15 @@
   <div style="position:absolute;left:80px;top:432px;display:flex;flex-direction:column;gap:16px;">
     <div style="display:flex;align-items:center;gap:22px;">
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#C6791C" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" style="flex:none;"><path d="M13.832 16.568a1 1 0 0 0 1.213-.303l.355-.465A2 2 0 0 1 17 15h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2A18 18 0 0 1 2 4a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v3a2 2 0 0 1-.8 1.6l-.468.351a1 1 0 0 0-.292 1.233a14 14 0 0 0 6.392 6.384"/></svg>
-      <span style="font-family:'JetBrains Mono',monospace;font-size:26px;letter-spacing:.02em;color:#2A1D10;">+380&nbsp;50&nbsp;448-14-11</span>
+      <span style="font-family:'JetBrains Mono',monospace;font-size:28px;letter-spacing:.02em;color:#2A1D10;">+380&nbsp;50&nbsp;448-14-11</span>
     </div>
     <div style="display:flex;align-items:center;gap:22px;">
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#C6791C" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" style="flex:none;"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
-      <span style="font-family:'JetBrains Mono',monospace;font-size:26px;letter-spacing:.02em;color:#2A1D10;">t.pan@pan-partners.agency</span>
+      <span style="font-family:'JetBrains Mono',monospace;font-size:28px;letter-spacing:.02em;color:#2A1D10;">t.pan@pan-partners.agency</span>
     </div>
     <div style="display:flex;align-items:center;gap:22px;">
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#C6791C" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" style="flex:none;"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
-      <span style="font-family:'JetBrains Mono',monospace;font-size:26px;letter-spacing:.02em;color:#2A1D10;">pan-partners.agency</span>
+      <span style="font-family:'JetBrains Mono',monospace;font-size:28px;letter-spacing:.02em;color:#2A1D10;">pan-partners.agency</span>
     </div>
   </div>
 
@@ -169,6 +164,179 @@
 </div></div></div>
     </figure>
 
+    </div>
+
+
+    <div class="secttl">Варіанти задника</div>
+    <div class="cards">
+    <figure class="frame">
+      <figcaption><span class="idx">Задник A</span> Кремовий (поточний)</figcaption>
+      <div class="stage"><div class="scaler"><div class="card" style="width:1004px;height:650px;position:relative;overflow:hidden;background:linear-gradient(157deg,#F7F1E6 0%,#F1E7D4 100%);font-family:'Inter',sans-serif;color:#2A1D10;box-sizing:border-box;">
+
+  <!-- wordmark (logo) -->
+  <div style="position:absolute;left:80px;top:58px;">
+    <img src="/talk/vizytky/assets/pan-partners-dark.svg" alt="Pan&amp;Partners" style="display:block;width:330px;height:auto;"/>
+  </div>
+
+  <!-- direction line — top-right corner -->
+  <div style="position:absolute;right:80px;top:70px;font-family:'JetBrains Mono',monospace;font-size:16.5px;letter-spacing:.2em;text-transform:uppercase;color:#6E5A3C;text-align:right;">Консалтинг&nbsp;·&nbsp;Продажі&nbsp;·&nbsp;Переговори</div>
+
+  <!-- name -->
+  <div style="position:absolute;left:78px;top:206px;font-family:'Spectral',serif;font-weight:500;font-size:96px;line-height:1;letter-spacing:-.5px;color:#2A1D10;">Тетяна&nbsp;Пан</div>
+
+  <!-- signature (roles) -->
+  <div style="position:absolute;left:80px;top:308px;font-family:'JetBrains Mono',monospace;font-size:18px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:#A85D0F;">Бізнес-тренерка&nbsp;·&nbsp;фасилітаторка&nbsp;·&nbsp;коуч&nbsp;·&nbsp;менторка</div>
+
+  <!-- divider -->
+  <div style="position:absolute;left:80px;top:360px;width:360px;height:2px;background:linear-gradient(90deg,#C6791C,rgba(198,121,28,0));"></div>
+
+  <!-- contacts — icons + value -->
+  <div style="position:absolute;left:80px;top:432px;display:flex;flex-direction:column;gap:16px;">
+    <div style="display:flex;align-items:center;gap:22px;">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#C6791C" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" style="flex:none;"><path d="M13.832 16.568a1 1 0 0 0 1.213-.303l.355-.465A2 2 0 0 1 17 15h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2A18 18 0 0 1 2 4a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v3a2 2 0 0 1-.8 1.6l-.468.351a1 1 0 0 0-.292 1.233a14 14 0 0 0 6.392 6.384"/></svg>
+      <span style="font-family:'JetBrains Mono',monospace;font-size:28px;letter-spacing:.02em;color:#2A1D10;">+380&nbsp;50&nbsp;448-14-11</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:22px;">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#C6791C" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" style="flex:none;"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+      <span style="font-family:'JetBrains Mono',monospace;font-size:28px;letter-spacing:.02em;color:#2A1D10;">t.pan@pan-partners.agency</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:22px;">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#C6791C" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" style="flex:none;"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
+      <span style="font-family:'JetBrains Mono',monospace;font-size:28px;letter-spacing:.02em;color:#2A1D10;">pan-partners.agency</span>
+    </div>
+  </div>
+
+  <!-- QR, bottom-right -->
+  <img src="/talk/vizytky/assets/qr-fancy.svg" width="206" height="206" alt="QR pan-partners.agency" style="position:absolute;right:56px;bottom:52px;display:block"/>
+
+</div></div></div>
+    </figure>
+    <figure class="frame">
+      <figcaption><span class="idx">Задник B</span> Тепле сяйво</figcaption>
+      <div class="stage"><div class="scaler"><div class="card" style="width:1004px;height:650px;position:relative;overflow:hidden;background:radial-gradient(90% 82% at 12% 8%, rgba(226,166,56,.18) 0%, rgba(226,166,56,0) 55%), linear-gradient(157deg,#F7F1E6 0%,#EFE1CB 100%);font-family:'Inter',sans-serif;color:#2A1D10;box-sizing:border-box;">
+
+  <!-- wordmark (logo) -->
+  <div style="position:absolute;left:80px;top:58px;">
+    <img src="/talk/vizytky/assets/pan-partners-dark.svg" alt="Pan&amp;Partners" style="display:block;width:330px;height:auto;"/>
+  </div>
+
+  <!-- direction line — top-right corner -->
+  <div style="position:absolute;right:80px;top:70px;font-family:'JetBrains Mono',monospace;font-size:16.5px;letter-spacing:.2em;text-transform:uppercase;color:#6E5A3C;text-align:right;">Консалтинг&nbsp;·&nbsp;Продажі&nbsp;·&nbsp;Переговори</div>
+
+  <!-- name -->
+  <div style="position:absolute;left:78px;top:206px;font-family:'Spectral',serif;font-weight:500;font-size:96px;line-height:1;letter-spacing:-.5px;color:#2A1D10;">Тетяна&nbsp;Пан</div>
+
+  <!-- signature (roles) -->
+  <div style="position:absolute;left:80px;top:308px;font-family:'JetBrains Mono',monospace;font-size:18px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:#A85D0F;">Бізнес-тренерка&nbsp;·&nbsp;фасилітаторка&nbsp;·&nbsp;коуч&nbsp;·&nbsp;менторка</div>
+
+  <!-- divider -->
+  <div style="position:absolute;left:80px;top:360px;width:360px;height:2px;background:linear-gradient(90deg,#C6791C,rgba(198,121,28,0));"></div>
+
+  <!-- contacts — icons + value -->
+  <div style="position:absolute;left:80px;top:432px;display:flex;flex-direction:column;gap:16px;">
+    <div style="display:flex;align-items:center;gap:22px;">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#C6791C" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" style="flex:none;"><path d="M13.832 16.568a1 1 0 0 0 1.213-.303l.355-.465A2 2 0 0 1 17 15h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2A18 18 0 0 1 2 4a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v3a2 2 0 0 1-.8 1.6l-.468.351a1 1 0 0 0-.292 1.233a14 14 0 0 0 6.392 6.384"/></svg>
+      <span style="font-family:'JetBrains Mono',monospace;font-size:28px;letter-spacing:.02em;color:#2A1D10;">+380&nbsp;50&nbsp;448-14-11</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:22px;">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#C6791C" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" style="flex:none;"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+      <span style="font-family:'JetBrains Mono',monospace;font-size:28px;letter-spacing:.02em;color:#2A1D10;">t.pan@pan-partners.agency</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:22px;">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#C6791C" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" style="flex:none;"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
+      <span style="font-family:'JetBrains Mono',monospace;font-size:28px;letter-spacing:.02em;color:#2A1D10;">pan-partners.agency</span>
+    </div>
+  </div>
+
+  <!-- QR, bottom-right -->
+  <img src="/talk/vizytky/assets/qr-fancy.svg" width="206" height="206" alt="QR pan-partners.agency" style="position:absolute;right:56px;bottom:52px;display:block"/>
+
+</div></div></div>
+    </figure>
+    <figure class="frame">
+      <figcaption><span class="idx">Задник C</span> Слонова кістка</figcaption>
+      <div class="stage"><div class="scaler"><div class="card" style="width:1004px;height:650px;position:relative;overflow:hidden;background:linear-gradient(160deg,#FBF7EF 0%,#F1E6D2 100%);font-family:'Inter',sans-serif;color:#2A1D10;box-sizing:border-box;">
+
+  <!-- wordmark (logo) -->
+  <div style="position:absolute;left:80px;top:58px;">
+    <img src="/talk/vizytky/assets/pan-partners-dark.svg" alt="Pan&amp;Partners" style="display:block;width:330px;height:auto;"/>
+  </div>
+
+  <!-- direction line — top-right corner -->
+  <div style="position:absolute;right:80px;top:70px;font-family:'JetBrains Mono',monospace;font-size:16.5px;letter-spacing:.2em;text-transform:uppercase;color:#6E5A3C;text-align:right;">Консалтинг&nbsp;·&nbsp;Продажі&nbsp;·&nbsp;Переговори</div>
+
+  <!-- name -->
+  <div style="position:absolute;left:78px;top:206px;font-family:'Spectral',serif;font-weight:500;font-size:96px;line-height:1;letter-spacing:-.5px;color:#2A1D10;">Тетяна&nbsp;Пан</div>
+
+  <!-- signature (roles) -->
+  <div style="position:absolute;left:80px;top:308px;font-family:'JetBrains Mono',monospace;font-size:18px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:#A85D0F;">Бізнес-тренерка&nbsp;·&nbsp;фасилітаторка&nbsp;·&nbsp;коуч&nbsp;·&nbsp;менторка</div>
+
+  <!-- divider -->
+  <div style="position:absolute;left:80px;top:360px;width:360px;height:2px;background:linear-gradient(90deg,#C6791C,rgba(198,121,28,0));"></div>
+
+  <!-- contacts — icons + value -->
+  <div style="position:absolute;left:80px;top:432px;display:flex;flex-direction:column;gap:16px;">
+    <div style="display:flex;align-items:center;gap:22px;">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#C6791C" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" style="flex:none;"><path d="M13.832 16.568a1 1 0 0 0 1.213-.303l.355-.465A2 2 0 0 1 17 15h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2A18 18 0 0 1 2 4a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v3a2 2 0 0 1-.8 1.6l-.468.351a1 1 0 0 0-.292 1.233a14 14 0 0 0 6.392 6.384"/></svg>
+      <span style="font-family:'JetBrains Mono',monospace;font-size:28px;letter-spacing:.02em;color:#2A1D10;">+380&nbsp;50&nbsp;448-14-11</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:22px;">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#C6791C" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" style="flex:none;"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+      <span style="font-family:'JetBrains Mono',monospace;font-size:28px;letter-spacing:.02em;color:#2A1D10;">t.pan@pan-partners.agency</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:22px;">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#C6791C" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" style="flex:none;"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
+      <span style="font-family:'JetBrains Mono',monospace;font-size:28px;letter-spacing:.02em;color:#2A1D10;">pan-partners.agency</span>
+    </div>
+  </div>
+
+  <!-- QR, bottom-right -->
+  <img src="/talk/vizytky/assets/qr-fancy.svg" width="206" height="206" alt="QR pan-partners.agency" style="position:absolute;right:56px;bottom:52px;display:block"/>
+
+</div></div></div>
+    </figure>
+    <figure class="frame">
+      <figcaption><span class="idx">Задник D</span> Обсидіан (темний)</figcaption>
+      <div class="stage"><div class="scaler"><div class="card" style="width:1004px;height:650px;position:relative;overflow:hidden;background:radial-gradient(135% 150% at 50% 38%, #1E1509 0%, #17100B 60%, #130C06 100%);font-family:'Inter',sans-serif;color:#F5EEE1;box-sizing:border-box;">
+
+  <!-- wordmark (logo) -->
+  <div style="position:absolute;left:80px;top:58px;">
+    <img src="/talk/vizytky/assets/pan-partners-light.svg" alt="Pan&amp;Partners" style="display:block;width:330px;height:auto;"/>
+  </div>
+
+  <!-- direction line — top-right corner -->
+  <div style="position:absolute;right:80px;top:70px;font-family:'JetBrains Mono',monospace;font-size:16.5px;letter-spacing:.2em;text-transform:uppercase;color:#B2A184;text-align:right;">Консалтинг&nbsp;·&nbsp;Продажі&nbsp;·&nbsp;Переговори</div>
+
+  <!-- name -->
+  <div style="position:absolute;left:78px;top:206px;font-family:'Spectral',serif;font-weight:500;font-size:96px;line-height:1;letter-spacing:-.5px;color:#F5EEE1;">Тетяна&nbsp;Пан</div>
+
+  <!-- signature (roles) -->
+  <div style="position:absolute;left:80px;top:308px;font-family:'JetBrains Mono',monospace;font-size:18px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:#EFBE6A;">Бізнес-тренерка&nbsp;·&nbsp;фасилітаторка&nbsp;·&nbsp;коуч&nbsp;·&nbsp;менторка</div>
+
+  <!-- divider -->
+  <div style="position:absolute;left:80px;top:360px;width:360px;height:2px;background:linear-gradient(90deg,#C6791C,rgba(198,121,28,0));"></div>
+
+  <!-- contacts — icons + value -->
+  <div style="position:absolute;left:80px;top:432px;display:flex;flex-direction:column;gap:16px;">
+    <div style="display:flex;align-items:center;gap:22px;">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#C6791C" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" style="flex:none;"><path d="M13.832 16.568a1 1 0 0 0 1.213-.303l.355-.465A2 2 0 0 1 17 15h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2A18 18 0 0 1 2 4a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v3a2 2 0 0 1-.8 1.6l-.468.351a1 1 0 0 0-.292 1.233a14 14 0 0 0 6.392 6.384"/></svg>
+      <span style="font-family:'JetBrains Mono',monospace;font-size:28px;letter-spacing:.02em;color:#F0E4CE;">+380&nbsp;50&nbsp;448-14-11</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:22px;">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#C6791C" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" style="flex:none;"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+      <span style="font-family:'JetBrains Mono',monospace;font-size:28px;letter-spacing:.02em;color:#F0E4CE;">t.pan@pan-partners.agency</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:22px;">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#C6791C" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" style="flex:none;"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
+      <span style="font-family:'JetBrains Mono',monospace;font-size:28px;letter-spacing:.02em;color:#F0E4CE;">pan-partners.agency</span>
+    </div>
+  </div>
+
+  <!-- QR, bottom-right -->
+  <div style="position:absolute;right:52px;bottom:48px;padding:12px;background:#F1E7D4;border-radius:20px;"><img src="/talk/vizytky/assets/qr-fancy.svg" width="200" height="200" alt="QR pan-partners.agency" style="position:relative;display:block"/></div>
+
+</div></div></div>
+    </figure>
     </div>
 
     <div class="note">
