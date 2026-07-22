@@ -75,11 +75,12 @@
     <select id="backsel" style="display:none;background:#241a12;border:1px solid var(--line);color:var(--ink);border-radius:9px;padding:8px 10px;font-family:'JetBrains Mono',monospace;font-size:12.5px;cursor:pointer;">
       <option value="obsidian">Обсидіан</option>
       <option value="cream">Кремовий</option>
-      <option value="mono">Монограма</option>
       <option value="amber">Амбер-панель</option>
     </select>
     <div class="sp"></div>
     <button class="btn" id="add">+ Текст</button>
+    <button class="btn" id="restore" title="Повернути видалені стандартні елементи (напр. підпис)">Відновити</button>
+    <a class="btn" href="/talk/vizytky/preview.html" target="_blank">Превʼю</a>
     <button class="btn" id="reset">Скинути</button>
     <button class="btn" id="save">Зберегти</button>
     <a class="btn" href="/talk/vizytky/">Галерея</a>
@@ -127,35 +128,25 @@
       backSel:'obsidian',
       backs:{
         obsidian:{ bg:'radial-gradient(135% 150% at 50% 40%, #1E1509 0%, #17100B 60%, #130C06 100%)', els:[
-          {id:'blogo', type:'image', src:'/talk/vizytky/assets/pan-partners-light.svg', x:224, y:250, w:556},
-          {id:'bline', type:'line', x:443, y:356, w:118, h:2},
-          {id:'btag',  type:'text', text:'Консалтинг · Продажі · Переговори', x:288, y:392, size:15, font:'mono', color:'#B2A184', weight:400, track:.34, upper:true, align:'left'}
+          {id:'amp', type:'image', src:'/talk/vizytky/assets/amp-amber.svg', x:430, y:198, w:260}
         ]},
         cream:{ bg:'linear-gradient(157deg,#F7F1E6 0%,#F1E7D4 100%)', els:[
-          {id:'blogo', type:'image', src:'/talk/vizytky/assets/pan-partners-dark.svg', x:224, y:250, w:556},
-          {id:'bline', type:'line', x:443, y:356, w:118, h:2},
-          {id:'btag',  type:'text', text:'Консалтинг · Продажі · Переговори', x:288, y:392, size:15, font:'mono', color:'#6E5A3C', weight:400, track:.34, upper:true, align:'left'}
-        ]},
-        mono:{ bg:'radial-gradient(130% 150% at 50% 42%, #241914 0%, #1A120A 55%, #120B06 100%)', els:[
-          {id:'amp',   type:'image', src:'/talk/vizytky/assets/amp-amber.svg', x:387, y:168, w:230},
-          {id:'bwm',   type:'text', text:'Pan&Partners', x:372, y:400, size:20, font:'mono', color:'#F0E4CE', weight:400, track:.44, upper:true, align:'left'},
-          {id:'btag',  type:'text', text:'Консалтинг · Продажі · Переговори', x:322, y:440, size:12, font:'mono', color:'#7A6A50', weight:400, track:.3, upper:true, align:'left'}
+          {id:'amp', type:'image', src:'/talk/vizytky/assets/amp-ink.svg', x:430, y:198, w:260}
         ]},
         amber:{ bg:'linear-gradient(152deg,#F0D08A 0%,#EFBE6A 26%,#E2A638 60%,#C6791C 100%)', els:[
-          {id:'amp',   type:'image', src:'/talk/vizytky/assets/amp-ink.svg', x:397, y:172, w:210},
-          {id:'bwm',   type:'text', text:'Pan&Partners', x:372, y:398, size:20, font:'mono', color:'#17100B', weight:400, track:.44, upper:true, align:'left'},
-          {id:'btag',  type:'text', text:'Консалтинг · Продажі · Переговори', x:322, y:438, size:12, font:'mono', color:'#3A2A12', weight:400, track:.3, upper:true, align:'left'}
+          {id:'amp', type:'image', src:'/talk/vizytky/assets/amp-ink.svg', x:430, y:198, w:260}
         ]}
       }
     };
   }
 
-  var KEY='pp-vizytka-constructor-v3';
+  var KEY='pp-vizytka-constructor-v4';
   var model, side='front', selId=null, dragging=null;
 
   function load(){
     try{ var raw=localStorage.getItem(KEY); if(raw){ model=JSON.parse(raw); return; } }catch(e){}
     model=defaults();
+    try{ localStorage.setItem(KEY, JSON.stringify(model)); }catch(e){} // seed so Превʼю has a layout
   }
   function persist(){ try{ localStorage.setItem(KEY, JSON.stringify(model)); }catch(e){} }
 
@@ -164,6 +155,21 @@
 
   function cur(){ return side==='front' ? model.front : model.backs[model.backSel]; }
   function el(id){ return cur().els.filter(function(e){return e.id===id;})[0]; }
+  /* keep every element at least partly on the card so nothing can be lost off-screen */
+  function clampEl(e){
+    e.x = Math.max(-260, Math.min(CARD_W-40, Math.round(e.x)));
+    e.y = Math.max(-24, Math.min(CARD_H-30, Math.round(e.y)));
+  }
+  /* re-add any standard element the user deleted, from the current defaults, without touching what's there */
+  function restoreMissing(){
+    var def = side==='front' ? defaults().front : defaults().backs[model.backSel];
+    var have={}; cur().els.forEach(function(e){ have[e.id]=1; });
+    var added=0;
+    def.els.forEach(function(de){ if(!have[de.id]){ cur().els.push(JSON.parse(JSON.stringify(de))); added++; } });
+    // also pull any off-screen elements back into view
+    cur().els.forEach(clampEl);
+    render(); persist(); return added;
+  }
 
   function styleText(e){
     return 'font-family:'+FONTS[e.font]+';font-size:'+e.size+'px;font-weight:'+e.weight+';letter-spacing:'+e.track+'em;'+
@@ -204,7 +210,7 @@
   card.addEventListener('pointermove', function(ev){
     if(!dragging) return;
     var s=scale(), dx=(ev.clientX-dragging.sx)/s, dy=(ev.clientY-dragging.sy)/s, e=dragging.e;
-    if(dragging.mode==='move'){ e.x=Math.round(dragging.ox+dx); e.y=Math.round(dragging.oy+dy); }
+    if(dragging.mode==='move'){ e.x=Math.round(dragging.ox+dx); e.y=Math.round(dragging.oy+dy); clampEl(e); }
     else { // resize: images by width, text/contact by size
       if(e.type==='image'||e.type==='line'){ e.w=Math.max(20, Math.round(dragging.ow+dx)); }
       else { e.size=Math.max(6, Math.round(dragging.osize+dy*0.5)); }
@@ -256,8 +262,8 @@
     var e=el(selId);
     var h=document.createElement('h3'); h.textContent=titleOf(e); panel.appendChild(h);
     // position
-    panel.appendChild(fld('X', num(e.x,function(v){ e.x=Math.round(v); render(); persist(); })));
-    panel.appendChild(fld('Y', num(e.y,function(v){ e.y=Math.round(v); render(); persist(); })));
+    panel.appendChild(fld('X', num(e.x,function(v){ e.x=Math.round(v); clampEl(e); render(); persist(); })));
+    panel.appendChild(fld('Y', num(e.y,function(v){ e.y=Math.round(v); clampEl(e); render(); persist(); })));
     if(e.type==='image'||e.type==='line'){
       panel.appendChild(fld('Ширина', stepper(e.w,function(v){ e.w=Math.max(10,Math.round(v)); render(); persist(); })));
     }
@@ -295,6 +301,7 @@
   document.getElementById('side').addEventListener('click',function(ev){ var b=ev.target.closest('button'); if(!b)return; side=b.dataset.side; selId=null; [].forEach.call(this.children,function(x){x.classList.toggle('on',x===b);}); syncBackSel(); render(); });
   backsel.addEventListener('change',function(){ model.backSel=backsel.value; selId=null; render(); persist(); });
   document.getElementById('add').addEventListener('click',function(){ var id='t'+Date.now(); cur().els.push({id:id,type:'text',text:'Новий текст',x:120,y:120,size:26,font:'sans',color: side==='back'?'#F5EEE1':'#2A1D10',weight:400,track:0,upper:false,align:'left'}); selId=id; render(); persist(); });
+  document.getElementById('restore').addEventListener('click',function(){ var n=restoreMissing(); this.textContent = n? ('Повернуто: '+n) : 'Все на місці'; var b=this; setTimeout(function(){ b.textContent='Відновити'; },1400); });
   document.getElementById('reset').addEventListener('click',function(){ if(confirm('Скинути макет до типового?')){ model=defaults(); selId=null; render(); persist(); } });
   document.getElementById('save').addEventListener('click',function(){ persist(); var b=this; var t=b.textContent; b.textContent='Збережено ✓'; setTimeout(function(){ b.textContent=t; },1200); });
   document.getElementById('print').addEventListener('click',function(){ var wasSel=selId; selId=null; render(); setTimeout(function(){ window.print(); selId=wasSel; render(); }, 60); });
