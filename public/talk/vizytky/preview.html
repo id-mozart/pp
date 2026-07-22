@@ -100,10 +100,12 @@
   }
 
   function fit(){
-    var w=document.querySelector('.wrap').clientWidth;
-    // two backs sit side by side in the second row — scale to fit two across
-    var per = w>=720 ? (w-34)/2 : w;
-    document.documentElement.style.setProperty('--s', Math.min(per/1004, 0.6));
+    // measure the flex container's content box (.pair sits inside .wrap padding)
+    var w=document.getElementById('pair').clientWidth;
+    // two backs sit side by side in the second row — scale to fit two across,
+    // with a little slack so an exact fit never wraps the second card below
+    var per = w>=700 ? (w-34-14)/2 : w;
+    document.documentElement.style.setProperty('--s', Math.min(per/1004, 0.62));
   }
 
   var model=null;
