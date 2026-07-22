@@ -68,6 +68,37 @@
   }
   function cardHTML(sideData){ return '<div class="card" style="background:'+sideData.bg+';">'+sideData.els.map(elHTML).join('')+'</div>'; }
   function block(label, sideData){ return '<div class="side"><div class="lab">'+label+'</div><div class="stage"><div class="scaler">'+cardHTML(sideData)+'</div></div></div>'; }
+  function defaults(){
+    return {
+      front:{
+        bg:'linear-gradient(157deg,#F7F1E6 0%,#F1E7D4 100%)',
+        els:[
+          {id:'logo', type:'image', src:'/talk/vizytky/assets/pan-partners-dark.svg', x:80, y:58, w:330},
+          {id:'dir',  type:'text', text:'Консалтинг · Продажі · Переговори', x:544, y:68, size:18, font:'mono', color:'#6E5A3C', weight:500, track:.12, upper:true, align:'right'},
+          {id:'name', type:'text', text:'Тетяна Пан', x:75, y:198, size:96, font:'serif', color:'#2A1D10', weight:500, track:0, upper:false, align:'left'},
+          {id:'roles',type:'text', text:'Бізнес-тренерка · коуч · менторка', x:80, y:312, size:22, font:'mono', color:'#A85D0F', weight:600, track:.05, upper:true, align:'left'},
+          {id:'line', type:'line', x:80, y:392, w:360, h:2},
+          {id:'phone',type:'contact', kind:'phone', text:'+380 50 448-14-11', x:80, y:452, size:28, color:'#2A1D10'},
+          {id:'mail', type:'contact', kind:'mail',  text:'t.pan@pan-partners.agency', x:80, y:506, size:28, color:'#2A1D10'},
+          {id:'site', type:'contact', kind:'globe', text:'pan-partners.agency', x:80, y:560, size:28, color:'#2A1D10'},
+          {id:'qr',   type:'image', src:'/talk/vizytky/assets/qr-fancy.svg', x:742, y:392, w:206}
+        ]
+      },
+      backSel:'obsidian',
+      backs:{
+        obsidian:{ bg:'radial-gradient(135% 150% at 50% 38%, #33240F 0%, #26190C 58%, #1C130B 100%)', els:[
+          {id:'amp', type:'image', src:'/talk/vizytky/assets/amp-amber.svg', x:392, y:210, w:260}
+        ]},
+        cream:{ bg:'linear-gradient(157deg,#F7F1E6 0%,#F1E7D4 100%)', els:[
+          {id:'amp', type:'image', src:'/talk/vizytky/assets/amp-amber.svg', x:392, y:210, w:260}
+        ]},
+        amber:{ bg:'linear-gradient(152deg,#F0D08A 0%,#EFBE6A 26%,#E2A638 60%,#C6791C 100%)', els:[
+          {id:'amp', type:'image', src:'/talk/vizytky/assets/amp-ink.svg', x:392, y:210, w:260}
+        ]}
+      }
+    };
+  }
+
   function fit(){
     var w=document.querySelector('.wrap').clientWidth;
     // two backs sit side by side in the second row — scale to fit two across
@@ -77,11 +108,8 @@
 
   var model=null;
   try{ var raw=localStorage.getItem(KEY); if(raw) model=JSON.parse(raw); }catch(e){}
+  if(!model) model=defaults(); // no saved layout yet — show the standard card
   var pair=document.getElementById('pair');
-  if(!model){
-    pair.innerHTML='<div class="empty">Ще немає збереженого макета.<br>Відкрийте <a href="/talk/vizytky/edit.html">конструктор</a> — макет збережеться автоматично, і тут зʼявиться превʼю лиця та звороту.</div>';
-    return;
-  }
   var dark = model.backs.obsidian || model.backs[model.backSel];
   var light = model.backs.cream || model.backs[model.backSel];
   pair.innerHTML =
