@@ -17,7 +17,8 @@
   .btn:hover{ color:#C6791C; border-color:#C6791C; }
   .btn.pri{ color:#fff; background:linear-gradient(90deg,#E2A638,#C6791C); border-color:transparent; }
   .wrap{ max-width:1240px; margin:0 auto; padding:48px 32px 100px; }
-  .pair{ display:flex; flex-wrap:wrap; gap:40px 34px; align-items:flex-start; }
+  .pair{ display:flex; flex-direction:column; gap:44px; }
+  .prow{ display:flex; flex-wrap:wrap; gap:34px; align-items:flex-start; }
   .side .lab{ font-family:'JetBrains Mono',monospace; font-size:12px; letter-spacing:.2em; text-transform:uppercase; color:#7a7a7a; margin:0 0 12px; }
   .stage{ border-radius:16px; overflow:hidden; box-shadow:0 18px 44px rgba(0,0,0,.22), 0 3px 10px rgba(0,0,0,.12); width:calc(1004px * var(--s,.5)); height:calc(650px * var(--s,.5)); }
   .scaler{ width:1004px; height:650px; transform:scale(var(--s,.5)); transform-origin:top left; }
@@ -69,8 +70,9 @@
   function block(label, sideData){ return '<div class="side"><div class="lab">'+label+'</div><div class="stage"><div class="scaler">'+cardHTML(sideData)+'</div></div></div>'; }
   function fit(){
     var w=document.querySelector('.wrap').clientWidth;
-    var per = w>=1080 ? (w-68)/3 : (w>=720 ? (w-34)/2 : w);
-    document.documentElement.style.setProperty('--s', Math.min(per/1004, 0.62));
+    // two backs sit side by side in the second row — scale to fit two across
+    var per = w>=720 ? (w-34)/2 : w;
+    document.documentElement.style.setProperty('--s', Math.min(per/1004, 0.6));
   }
 
   var model=null;
@@ -82,7 +84,9 @@
   }
   var dark = model.backs.obsidian || model.backs[model.backSel];
   var light = model.backs.cream || model.backs[model.backSel];
-  pair.innerHTML = block('Лице', model.front) + block('Зворот — темний', dark) + block('Зворот — світлий', light);
+  pair.innerHTML =
+    '<div class="prow">' + block('Лице', model.front) + '</div>' +
+    '<div class="prow">' + block('Зворот — темний', dark) + block('Зворот — світлий', light) + '</div>';
   fit(); window.addEventListener('resize', fit);
   document.getElementById('print').addEventListener('click',function(){ window.print(); });
 })();
