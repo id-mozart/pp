@@ -72,6 +72,12 @@
       <button data-side="front" class="on">Лице</button>
       <button data-side="back">Зворот</button>
     </div>
+    <select id="backsel" style="display:none;background:#241a12;border:1px solid var(--line);color:var(--ink);border-radius:9px;padding:8px 10px;font-family:'JetBrains Mono',monospace;font-size:12.5px;cursor:pointer;">
+      <option value="obsidian">Обсидіан</option>
+      <option value="cream">Кремовий</option>
+      <option value="mono">Монограма</option>
+      <option value="amber">Амбер-панель</option>
+    </select>
     <div class="sp"></div>
     <button class="btn" id="add">+ Текст</button>
     <button class="btn" id="reset">Скинути</button>
@@ -110,26 +116,41 @@
           {id:'logo', type:'image', src:'/talk/vizytky/assets/pan-partners-dark.svg', x:80, y:58, w:330},
           {id:'dir',  type:'text', text:'Консалтинг · Продажі · Переговори', x:544, y:68, size:18, font:'mono', color:'#6E5A3C', weight:500, track:.12, upper:true, align:'right'},
           {id:'name', type:'text', text:'Тетяна Пан', x:75, y:198, size:96, font:'serif', color:'#2A1D10', weight:500, track:0, upper:false, align:'left'},
-          {id:'roles',type:'text', text:'Бізнес-тренерка · фасилітаторка · коуч · менторка', x:80, y:300, size:18, font:'mono', color:'#A85D0F', weight:600, track:.05, upper:true, align:'left'},
-          {id:'line', type:'line', x:80, y:390, w:360, h:2},
+          {id:'roles',type:'text', text:'Бізнес-тренерка · коуч · менторка', x:80, y:312, size:20, font:'mono', color:'#A85D0F', weight:600, track:.05, upper:true, align:'left'},
+          {id:'line', type:'line', x:80, y:392, w:360, h:2},
           {id:'phone',type:'contact', kind:'phone', text:'+380 50 448-14-11', x:80, y:452, size:28, color:'#2A1D10'},
           {id:'mail', type:'contact', kind:'mail',  text:'t.pan@pan-partners.agency', x:80, y:506, size:28, color:'#2A1D10'},
           {id:'site', type:'contact', kind:'globe', text:'pan-partners.agency', x:80, y:560, size:28, color:'#2A1D10'},
           {id:'qr',   type:'image', src:'/talk/vizytky/assets/qr-fancy.svg', x:742, y:392, w:206}
         ]
       },
-      back:{
-        bg:'radial-gradient(135% 150% at 50% 40%, #1E1509 0%, #17100B 60%, #130C06 100%)',
-        els:[
+      backSel:'obsidian',
+      backs:{
+        obsidian:{ bg:'radial-gradient(135% 150% at 50% 40%, #1E1509 0%, #17100B 60%, #130C06 100%)', els:[
           {id:'blogo', type:'image', src:'/talk/vizytky/assets/pan-partners-light.svg', x:224, y:250, w:556},
           {id:'bline', type:'line', x:443, y:356, w:118, h:2},
-          {id:'btag',  type:'text', text:'Консалтинг · Продажі · Переговори', x:290, y:392, size:15, font:'mono', color:'#B2A184', weight:400, track:.34, upper:true, align:'left'}
-        ]
+          {id:'btag',  type:'text', text:'Консалтинг · Продажі · Переговори', x:288, y:392, size:15, font:'mono', color:'#B2A184', weight:400, track:.34, upper:true, align:'left'}
+        ]},
+        cream:{ bg:'linear-gradient(157deg,#F7F1E6 0%,#F1E7D4 100%)', els:[
+          {id:'blogo', type:'image', src:'/talk/vizytky/assets/pan-partners-dark.svg', x:224, y:250, w:556},
+          {id:'bline', type:'line', x:443, y:356, w:118, h:2},
+          {id:'btag',  type:'text', text:'Консалтинг · Продажі · Переговори', x:288, y:392, size:15, font:'mono', color:'#6E5A3C', weight:400, track:.34, upper:true, align:'left'}
+        ]},
+        mono:{ bg:'radial-gradient(130% 150% at 50% 42%, #241914 0%, #1A120A 55%, #120B06 100%)', els:[
+          {id:'amp',   type:'image', src:'/talk/vizytky/assets/amp-amber.svg', x:387, y:168, w:230},
+          {id:'bwm',   type:'text', text:'Pan&Partners', x:372, y:400, size:20, font:'mono', color:'#F0E4CE', weight:400, track:.44, upper:true, align:'left'},
+          {id:'btag',  type:'text', text:'Консалтинг · Продажі · Переговори', x:322, y:440, size:12, font:'mono', color:'#7A6A50', weight:400, track:.3, upper:true, align:'left'}
+        ]},
+        amber:{ bg:'linear-gradient(152deg,#F0D08A 0%,#EFBE6A 26%,#E2A638 60%,#C6791C 100%)', els:[
+          {id:'amp',   type:'image', src:'/talk/vizytky/assets/amp-ink.svg', x:397, y:172, w:210},
+          {id:'bwm',   type:'text', text:'Pan&Partners', x:372, y:398, size:20, font:'mono', color:'#17100B', weight:400, track:.44, upper:true, align:'left'},
+          {id:'btag',  type:'text', text:'Консалтинг · Продажі · Переговори', x:322, y:438, size:12, font:'mono', color:'#3A2A12', weight:400, track:.3, upper:true, align:'left'}
+        ]}
       }
     };
   }
 
-  var KEY='pp-vizytka-constructor-v2';
+  var KEY='pp-vizytka-constructor-v3';
   var model, side='front', selId=null, dragging=null;
 
   function load(){
@@ -141,7 +162,7 @@
   var card=document.getElementById('card');
   var panel=document.getElementById('panel');
 
-  function cur(){ return model[side]; }
+  function cur(){ return side==='front' ? model.front : model.backs[model.backSel]; }
   function el(id){ return cur().els.filter(function(e){return e.id===id;})[0]; }
 
   function styleText(e){
@@ -264,12 +285,15 @@
     }
     var hint=document.createElement('div'); hint.className='hint'; hint.textContent='Подвійний клік по тексту — редагувати. Стрілки — зсув.'; panel.appendChild(hint);
   }
-  function titleOf(e){ return ({logo:'Логотип',blogo:'Логотип',dir:'Напрям (кут)',name:"Ім'я",roles:'Підпис (ролі)',line:'Лінія',bline:'Лінія',phone:'Телефон',mail:'E-mail',site:'Сайт',qr:'QR-код',btag:'Підпис звороту'})[e.id] || 'Текст'; }
+  function titleOf(e){ return ({logo:'Логотип',blogo:'Логотип',amp:'Амперсанд',bwm:'Напис лого',dir:'Напрям (кут)',name:"Ім'я",roles:'Підпис (ролі)',line:'Лінія',bline:'Лінія',phone:'Телефон',mail:'E-mail',site:'Сайт',qr:'QR-код',btag:'Підпис звороту'})[e.id] || 'Текст'; }
 
   function removeEl(id){ cur().els=cur().els.filter(function(x){return x.id!==id;}); selId=null; render(); persist(); }
 
   /* ---------- toolbar ---------- */
-  document.getElementById('side').addEventListener('click',function(ev){ var b=ev.target.closest('button'); if(!b)return; side=b.dataset.side; selId=null; [].forEach.call(this.children,function(x){x.classList.toggle('on',x===b);}); render(); });
+  var backsel=document.getElementById('backsel');
+  function syncBackSel(){ backsel.style.display = side==='back' ? '' : 'none'; backsel.value=model.backSel; }
+  document.getElementById('side').addEventListener('click',function(ev){ var b=ev.target.closest('button'); if(!b)return; side=b.dataset.side; selId=null; [].forEach.call(this.children,function(x){x.classList.toggle('on',x===b);}); syncBackSel(); render(); });
+  backsel.addEventListener('change',function(){ model.backSel=backsel.value; selId=null; render(); persist(); });
   document.getElementById('add').addEventListener('click',function(){ var id='t'+Date.now(); cur().els.push({id:id,type:'text',text:'Новий текст',x:120,y:120,size:26,font:'sans',color: side==='back'?'#F5EEE1':'#2A1D10',weight:400,track:0,upper:false,align:'left'}); selId=id; render(); persist(); });
   document.getElementById('reset').addEventListener('click',function(){ if(confirm('Скинути макет до типового?')){ model=defaults(); selId=null; render(); persist(); } });
   document.getElementById('save').addEventListener('click',function(){ persist(); var b=this; var t=b.textContent; b.textContent='Збережено ✓'; setTimeout(function(){ b.textContent=t; },1200); });
@@ -285,7 +309,13 @@
   }
   window.addEventListener('resize', fit);
 
-  load(); render(); fit();
+  load();
+  // optional deep-link: ?side=back&v=mono — preselect a side / back variant
+  (function(){ var q=new URLSearchParams(location.search);
+    if(q.get('side')==='back'){ side='back'; document.querySelector('[data-side="back"]').classList.add('on'); document.querySelector('[data-side="front"]').classList.remove('on'); }
+    var v=q.get('v'); if(v && model.backs[v]) model.backSel=v;
+  })();
+  syncBackSel(); render(); fit();
 })();
 </script>
 </body>
