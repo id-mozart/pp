@@ -320,7 +320,7 @@
         <div class="txt" style="transform:translateX(-130px)">
           <h2 class="anim2" style="font-size:85px;margin:0;line-height:1.04">Тетяна <em class="g">Пан</em></h2>
           <div class="anim3" style="font-family:'JetBrains Mono',monospace;font-size:23.2px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold-soft);margin-top:8px">Бізнес-тренерка · фасилітаторка · коуч · менторка</div>
-          <div class="sub anim3" style="max-width:940px;margin-top:28px;font-size:33.4px;line-height:1.5">Понад 25 років у продажах і переговорах — від менеджерки й керівниці з продажів в «Олімпі»,<br>Danone та Coca-Cola до власної консалтингової компанії «Pan&amp;Partners». 17 років досвіду в навчанні команд продажів — сотні реальних угод, виконаних планів і сильних торгових команд.</div>
+          <div class="sub anim3" style="max-width:940px;margin-top:28px;font-size:33.4px;line-height:1.5">Понад 25 років у&nbsp;продажах і&nbsp;переговорах — від&nbsp;менеджерки й&nbsp;керівниці з&nbsp;продажів в&nbsp;«Олімпі»,<br>Danone та&nbsp;Coca-Cola до&nbsp;власної консалтингової компанії «Pan&amp;Partners». 17 років досвіду в&nbsp;навчанні команд продажів — сотні реальних угод, виконаних планів і&nbsp;сильних торгових команд.</div>
           </div>
       </div>
       <div class="foot" style="width:100%"><span></span><span></span></div>
@@ -958,7 +958,7 @@
       <div class="sub" style="text-align:left;max-width:640px;margin-top:22px;font-size:37px;">Велику ціль дробимо на маленькі кроки, які ще по силах, — і крок за кроком повертаємо рух.</div>
           
     </div>
-    <div class="anim3" style="position:relative;width:742px;height:410px;flex:none;transform:translateX(120px)">
+    <div class="anim3" style="position:relative;width:742px;height:410px;flex:none;transform:translateX(190px)">
       <div data-step="1" class="chip" style="position:absolute;left:0;bottom:0;width:470px;height:78px;display:flex;align-items:center;gap:26px;padding:0 34px;border-radius:16px;background:color-mix(in srgb,var(--gold) 4%,var(--canvas));border:2.5px solid color-mix(in srgb,var(--gold) 14%,var(--line));white-space:nowrap"><span class="n" style="font-size:22.8px">01</span><span class="t" style="font-size:28.8px">Визнати</span></div>
       <div data-step="2" class="chip" style="position:absolute;left:88px;bottom:90px;width:470px;height:78px;display:flex;align-items:center;gap:26px;padding:0 34px;border-radius:16px;background:color-mix(in srgb,var(--gold) 7%,var(--canvas));border:2.5px solid color-mix(in srgb,var(--gold) 30%,var(--line));white-space:nowrap"><span class="n" style="font-size:22.8px">02</span><span class="t" style="font-size:28.8px">Прибрати зайве</span></div>
       <div data-step="3" class="chip" style="position:absolute;left:176px;bottom:180px;width:470px;height:78px;display:flex;align-items:center;gap:26px;padding:0 34px;border-radius:16px;background:color-mix(in srgb,var(--gold) 10%,var(--canvas));border:2.5px solid color-mix(in srgb,var(--gold) 48%,var(--line));white-space:nowrap"><span class="n" style="font-size:22.8px">03</span><span class="t" style="font-size:28.8px">Повернути вплив</span></div>
@@ -1196,7 +1196,7 @@
 <script src="deck-stage.js"></script>
 <div id="deck-controls">
   <div class="export">
-    <button id="exp-pdf-dark" type="button" title="Завантажити PDF — темна тема">PDF</button>
+    <a id="exp-pdf-dark" href="sf2026-lg.pdf" download="Sales Forum 2026 — Тетяна Пан.pdf" title="Завантажити PDF (темна версія)">PDF</a>
     <button id="deck-edit" type="button" title="Редагувати тексти презентації">Редагувати</button>
   </div>
   <button id="go-present" type="button" title="Повноекранний показ — гортати стрілками, пробілом або кліком; Esc — вийти"><span class="ar" aria-hidden="true">⤢</span>Показ</button>
@@ -1211,17 +1211,8 @@
   <span class="ed-msg" id="ed-msg"></span>
 </div>
 <script>
-  // Експорт у PDF — друк поточного вигляду (deck-stage вже налаштував @media print).
-  (function(){
-    function toPDF(theme){
-      var root=document.documentElement, wasLight=root.classList.contains('light');
-      root.classList.toggle('light', theme==='light');
-      function restore(){ root.classList.toggle('light', wasLight); window.removeEventListener('afterprint',restore); }
-      window.addEventListener('afterprint', restore);
-      window.print();
-    }
-    var d=document.getElementById('exp-pdf-dark');  if(d) d.addEventListener('click', function(){ toPDF('dark'); });
-  })();
+  // Кнопка «PDF» — пряме завантаження заздалегідь згенерованого sf2026-lg.pdf
+  // (темна версія, 17 сторінок 16:9). Оновлюється скриптом рендера при зміні деки.
 </script>
 <script>
   /* Тема: перемикача більше немає — темна за замовчуванням, світла лише за
