@@ -3,6 +3,74 @@
 <head>
 <meta charset="UTF-8">
 <meta name="robots" content="noindex, nofollow">
+<script>
+/* Налаштування зберігаються НА СЕРВЕРІ (/api/talk/highlights), а не лише в браузері.
+   Сторінка читає localStorage синхронно під час ініціалізації, тож ми спершу
+   наповнюємо його з сервера (синхронний запит — payload малий, це внутрішня
+   сторінка), а далі дзеркалимо кожен запис назад. Кадри в iframe — того самого
+   походження, тому вони бачать уже наповнене сховище; запит робить лише
+   верхній документ. */
+(function(){
+  var KEYS=['hlOrder','hlDeco','hlPhotos','hlAdjust'], API='/api/talk/highlights';
+  var top=true; try{ top = (window.top===window.self); }catch(e){ top=false; }
+
+  if(top){
+    try{
+      var x=new XMLHttpRequest();
+      x.open('GET', API+'?t='+Date.now(), false);
+      x.send(null);
+      if(x.status===200){
+        var r=JSON.parse(x.responseText);
+        if(r && r.ok && r.data){
+          KEYS.forEach(function(k){
+            var v=r.data[k];
+            if(v!==undefined && v!==null){
+              try{ localStorage.setItem(k, JSON.stringify(v)); }catch(e){}
+            }
+          });
+        }
+      }
+    }catch(e){ console.warn('[hl] сервер недоступний — працюємо з локальними налаштуваннями', e); }
+  }
+
+  function toast(msg, bad){
+    var el=document.getElementById('hl-sync');
+    if(!el){
+      el=document.createElement('div'); el.id='hl-sync';
+      el.style.cssText='position:fixed;right:14px;bottom:14px;z-index:9999;padding:7px 12px;'+
+        'border-radius:8px;font:500 12px/1.2 system-ui,sans-serif;pointer-events:none;'+
+        'transition:opacity .3s;opacity:0';
+      document.body && document.body.appendChild(el);
+    }
+    if(!el) return;
+    el.textContent=msg;
+    el.style.background = bad ? 'rgba(150,40,40,.95)' : 'rgba(40,40,44,.92)';
+    el.style.color = bad ? '#ffd9d9' : '#EFBE6A';
+    el.style.opacity='1';
+    clearTimeout(el._t); el._t=setTimeout(function(){ el.style.opacity='0'; }, 1400);
+  }
+
+  var timer=null, orig=localStorage.setItem.bind(localStorage);
+  localStorage.setItem=function(k,v){
+    orig(k,v);
+    if(KEYS.indexOf(k)<0) return;
+    clearTimeout(timer);
+    timer=setTimeout(function(){
+      var payload={};
+      KEYS.forEach(function(kk){
+        var raw=localStorage.getItem(kk);
+        if(raw!=null){ try{ payload[kk]=JSON.parse(raw); }catch(e){} }
+      });
+      fetch(API,{method:'POST',headers:{'Content-Type':'application/json'},
+                 body:JSON.stringify(payload)})
+        .then(function(res){ return res.json().catch(function(){ return {ok:false}; }); })
+        .then(function(j){ toast(j && j.ok ? 'збережено на сервері' : 'не збереглося: '+((j&&j.error)||'помилка'), !(j&&j.ok)); })
+        .catch(function(){ toast('не збереглося — немає зв’язку', true); });
+    }, 700);
+  };
+})();
+</script>
+
 <title>Мокап — система «один диск, три марки»</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
