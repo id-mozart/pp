@@ -270,9 +270,23 @@
     localStorage.setItem('hlOrder',JSON.stringify(order));
   }
   function moveCirc(pos,dir){const to=pos+dir;if(to<0||to>=N)return;
-    [order[pos],order[to]]=[order[to],order[pos]];applyOrder();
+    [order[pos],order[to]]=[order[to],order[pos]];applyOrder();hideClipped();
     zpop.style.display='none';}
+  /* Кружечки, що не вміщаються у видиме вікно скріншота, ховаємо повністю —
+     інакше з обрізаного залишається вузька смужка збоку (виглядає як артефакт). */
+  function hideClipped(){
+    const vp=document.querySelector('#dark .viewport'); if(!vp) return;
+    const vr=vp.getBoundingClientRect();
+    darkCircs.forEach((c,i)=>{
+      const r=c.getBoundingClientRect();
+      const out = r.right > vr.right - 1 || r.left < vr.left + 1;
+      c.style.visibility = out ? 'hidden' : '';
+      if(darkLabs[i]) darkLabs[i].style.visibility = out ? 'hidden' : '';
+    });
+  }
   applyOrder();
+  hideClipped();
+  window.addEventListener('resize',hideClipped);
 
   /* ── стрічка прокручується, якщо кружечків більше, ніж влазить ─────── */
   const VIS=7, DSTEP=96, LSTEP=106;
