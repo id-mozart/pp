@@ -11,7 +11,7 @@
    походження, тому вони бачать уже наповнене сховище; запит робить лише
    верхній документ. */
 (function(){
-  var KEYS=['hlOrder','hlDeco','hlPhotos','hlAdjust'], API='/api/talk/highlights';
+  var KEYS=['hlOrder','hlDeco','hlPhotos','hlAdjust'], API='/api/talk/highlights', primed={};
   var top=true; try{ top = (window.top===window.self); }catch(e){ top=false; }
 
   if(top){
@@ -25,7 +25,8 @@
           KEYS.forEach(function(k){
             var v=r.data[k];
             if(v!==undefined && v!==null){
-              try{ localStorage.setItem(k, JSON.stringify(v)); }catch(e){}
+              var sv=JSON.stringify(v); primed[k]=sv;
+              try{ localStorage.setItem(k, sv); }catch(e){}
             }
           });
         }
@@ -50,10 +51,25 @@
     clearTimeout(el._t); el._t=setTimeout(function(){ el.style.opacity='0'; }, 1400);
   }
 
-  var timer=null, orig=localStorage.setItem.bind(localStorage);
+  /* Дзеркало в памʼяті: сховище браузера має ліміт (~5 МБ), а фото зберігаються
+     як data URL, тож setItem може впасти на квоті. Раніше це зривало й відправку
+     на сервер — усе, що не влізло локально, не зберігалось узагалі. Тепер сервер
+     первинний: значення тримаємо в памʼяті й шлемо завжди, а localStorage — лише
+     кеш, чиє переповнення нічого не ламає. */
+  var mem={}, timer=null;
+  KEYS.forEach(function(k){ if(primed[k]!==undefined) mem[k]=primed[k]; });  // те, що не влізло у сховище, лишається доступним
+  var orig=localStorage.setItem.bind(localStorage);
+  var origGet=localStorage.getItem.bind(localStorage);
+  localStorage.getItem=function(k){
+    var v=origGet(k);
+    return (v==null && Object.prototype.hasOwnProperty.call(mem,k)) ? mem[k] : v;
+  };
   localStorage.setItem=function(k,v){
-    orig(k,v);
+    var quota=false;
+    if(KEYS.indexOf(k)>=0) mem[k]=v;
+    try{ orig(k,v); }catch(e){ quota=true; if(KEYS.indexOf(k)<0) throw e; }
     if(KEYS.indexOf(k)<0) return;
+    if(quota) console.warn('[hl] локальне сховище переповнене — зберігаємо на сервер');
     clearTimeout(timer);
     timer=setTimeout(function(){
       var payload={};
@@ -270,23 +286,9 @@
     localStorage.setItem('hlOrder',JSON.stringify(order));
   }
   function moveCirc(pos,dir){const to=pos+dir;if(to<0||to>=N)return;
-    [order[pos],order[to]]=[order[to],order[pos]];applyOrder();hideClipped();
+    [order[pos],order[to]]=[order[to],order[pos]];applyOrder();
     zpop.style.display='none';}
-  /* Кружечки, що не вміщаються у видиме вікно скріншота, ховаємо повністю —
-     інакше з обрізаного залишається вузька смужка збоку (виглядає як артефакт). */
-  function hideClipped(){
-    const vp=document.querySelector('#dark .viewport'); if(!vp) return;
-    const vr=vp.getBoundingClientRect();
-    darkCircs.forEach((c,i)=>{
-      const r=c.getBoundingClientRect();
-      const out = r.right > vr.right - 1 || r.left < vr.left + 1;
-      c.style.visibility = out ? 'hidden' : '';
-      if(darkLabs[i]) darkLabs[i].style.visibility = out ? 'hidden' : '';
-    });
-  }
   applyOrder();
-  hideClipped();
-  window.addEventListener('resize',hideClipped);
 
   /* ── стрічка прокручується, якщо кружечків більше, ніж влазить ─────── */
   const VIS=7, DSTEP=96, LSTEP=106;
