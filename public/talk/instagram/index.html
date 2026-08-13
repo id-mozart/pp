@@ -399,7 +399,9 @@
   function saveFromDoc(doc){const s=doc.querySelector('.slide.active');if(!s)return;
     const store=JSON.parse(localStorage.getItem('hlAdjust')||'{}');
     s.querySelectorAll('[data-zoom]').forEach((el,i)=>{
-      store[(s.dataset.screenLabel||'s')+':'+i+':'+imgOf(el)]={z:+el.dataset.zoom,ox:+el.dataset.ox,oy:+el.dataset.oy}});
+      /* ключ мусить збігатися з keyOf() у highlights-system.html: для завантаженого
+         фото це dataset.imgid ('up-…'), бо imgOf() на data URL дає порожній рядок */
+      store[(s.dataset.screenLabel||'s')+':'+i+':'+(el.dataset.imgid||imgOf(el))]={z:+el.dataset.zoom,ox:+el.dataset.ox,oy:+el.dataset.oy}});
     localStorage.setItem('hlAdjust',JSON.stringify(store))}
   const syncPop=()=>popRows.forEach(o=>{o.out.textContent=(+o.el.dataset.zoom)+'%';
     o.r.value=o.el.dataset.zoom;o.off.textContent='x'+o.el.dataset.ox+' y'+o.el.dataset.oy});
