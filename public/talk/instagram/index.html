@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="robots" content="noindex, nofollow">
+<title>Мокап — система «один диск, три марки»</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%;overflow:hidden;font-family:'Inter',sans-serif}
+  body{background:#0b0b0b;display:flex;align-items:center;justify-content:center;
+    padding:20px 0}
+
+
+  .pane{display:none;flex:0 0 auto}
+  .pane.on{display:block}
+
+  /* ── ТЕМНА: реальний скрін профілю, поверх — живі обкладинки ───────── */
+  #dark .viewport{position:relative;width:1460px;height:940px;overflow:hidden;background:#000;
+    border-radius:10px;box-shadow:0 24px 80px rgba(0,0,0,.6)}
+  #dark .shotwrap{position:absolute;left:0;top:0;width:2291px;height:980px;
+    transform-origin:0 0;transform:scale(1.25) translate(-520px,-22px)}
+  #dark .shotwrap img{position:absolute;inset:0;width:2291px;height:980px;display:block}
+  #dark .circ{position:absolute;width:77px;height:77px;border-radius:50%;overflow:hidden}
+  #dark .circ iframe{position:absolute;left:50%;top:50%;width:1080px;height:1920px;border:0;
+    transform:translate(-50%,-50%) scale(.07130);transform-origin:center;display:block}
+
+  /* ── СВІТЛА: відтворений профіль у світлій темі Instagram ─────────── */
+  #light .page{width:1460px;height:940px;background:#fff;color:#000;padding:56px 0 0;
+    border-radius:10px;overflow:hidden;box-shadow:0 24px 80px rgba(0,0,0,.45)}
+  #light .prof{display:flex;gap:92px;width:740px;margin:0 auto}
+  #light .ava{flex:0 0 auto;width:150px;height:150px;border-radius:50%;overflow:hidden;background:#eee;
+    box-shadow:0 0 0 3px #fff,0 0 0 4px #dbdbdb}
+  #light .ava img{width:100%;height:100%;object-fit:cover;object-position:50% 16%;display:block}
+  #light .row1{display:flex;align-items:center;gap:12px}
+  #light .uname{font-size:22px;font-weight:400}
+  #light .verif{width:17px;height:17px;border-radius:50%;border:2px solid #a8a8a8}
+  #light .title{margin-top:10px;font-size:14.5px;color:#262626}
+  #light .stats{display:flex;gap:30px;margin-top:14px;font-size:14.5px;color:#262626}
+  #light .stats b{font-weight:600}
+  #light .bio{margin-top:15px;font-size:14px;line-height:1.55;color:#262626}
+  #light .bio .muted{color:#8e8e8e}
+  #light .bio .link{color:#00376b;font-weight:600}
+  #light .btns{display:flex;gap:9px;margin-top:20px}
+  #light .btn{width:292px;text-align:center;padding:9px 0;border-radius:9px;background:#efefef;
+    font-size:14.5px;font-weight:600;color:#262626}
+  #light .hl{display:flex;gap:24px;justify-content:center;margin-top:48px}
+  #light .h{width:82px;text-align:center}
+  #light .circ{width:82px;height:82px;border-radius:50%;overflow:hidden;position:relative;
+    box-shadow:0 0 0 2px #fff,0 0 0 3px #dbdbdb}
+  #light .circ iframe{position:absolute;left:50%;top:50%;width:1080px;height:1920px;border:0;
+    transform:translate(-50%,-50%) scale(.0759);transform-origin:center;display:block}
+  #light .h span{display:block;margin-top:11px;font-size:12.5px;color:#262626;
+    white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  #light .tabs{display:flex;justify-content:center;gap:110px;margin-top:40px;
+    border-top:1px solid #dbdbdb;padding-top:18px}
+  #light .tab{width:21px;height:21px;border:2px solid #8e8e8e;border-radius:4px}
+  #light .tab.on{border-color:#000}
+  #light .grid{display:grid;grid-template-columns:repeat(6,1fr);gap:4px;width:1180px;margin:18px auto 0}
+  #light .grid .t{position:relative;aspect-ratio:4/5;overflow:hidden;background:#eee}
+  #light .grid .t img{width:100%;height:100%;object-fit:cover;display:block}
+
+  /* попап регулювання масштабу фото в кружку (hover) */
+  #zpop{position:fixed;display:none;flex-direction:column;gap:8px;padding:12px 14px;border-radius:10px;
+    width:max-content;max-width:92vw;
+    background:rgba(28,28,30,.95);border:1px solid #3a3a3c;z-index:100;
+    font:12px ui-monospace,monospace;color:#c9c9cf;box-shadow:0 8px 28px rgba(0,0,0,.5)}
+  #zpop .zt{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#8e8e93}
+  #zpop label{display:flex;align-items:center;gap:10px}
+  #zpop span{width:96px;letter-spacing:.04em}
+  #zpop input{width:170px;accent-color:#D99A28}
+  #zpop b{width:50px;text-align:right;color:#EFBE6A;font-weight:400}
+  #zpop .ord{display:flex;align-items:center;gap:8px;padding-bottom:8px;margin-bottom:2px;
+    border-bottom:1px solid rgba(255,255,255,.12)}
+  #zpop .ord button{border:1px solid #4a4a4c;background:#2c2c2e;color:#EFBE6A;border-radius:7px;
+    width:30px;height:26px;font-size:15px;line-height:1;cursor:pointer}
+  #zpop .ord button:disabled{opacity:.32;cursor:default}
+  #zpop .ord i{font-style:normal;color:#8e8e93;letter-spacing:.06em}
+  #zpop .pick{border:1px solid #4a4a4c;background:#2c2c2e;color:#c9c9cf;border-radius:7px;
+    padding:3px 9px;font:12px ui-monospace,monospace;cursor:pointer;white-space:nowrap;margin-left:auto}
+  #zpop .pick:hover{border-color:#EFBE6A;color:#EFBE6A}
+  #zpop .deco{display:flex;flex-direction:column;gap:8px;padding-top:9px;margin-top:2px;
+    border-top:1px solid rgba(255,255,255,.12)}
+  #zpop .deco label{display:flex;align-items:center;gap:8px;cursor:pointer}
+  #zpop .deco input{width:auto;accent-color:#D99A28;cursor:pointer}
+  .circ.drop{outline:3px dashed #EFBE6A;outline-offset:2px}
+  .hlarrow{position:absolute;z-index:8;width:30px;height:30px;border-radius:50%;border:0;cursor:pointer;
+    background:rgba(255,255,255,.94);color:#111;font:600 16px/1 Inter,sans-serif;
+    display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,.45)}
+  .hlarrow[hidden]{display:none}
+</style>
+</head>
+<body>
+
+<!-- ТЕМНА -->
+<div class="pane on" id="dark">
+  <div class="viewport">
+    <div class="shotwrap">
+      <img src="screen.png?v=2" alt="">
+      <div style="position:absolute;left:813px;top:452px;width:96px;text-align:center;font:400 13px Inter,sans-serif;color:#e6e6e6;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Послуги</div>
+      <div style="position:absolute;left:909px;top:452px;width:96px;text-align:center;font:400 13px Inter,sans-serif;color:#e6e6e6;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Кейси</div>
+      <div style="position:absolute;left:1005px;top:452px;width:96px;text-align:center;font:400 13px Inter,sans-serif;color:#e6e6e6;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Відгуки</div>
+      <div style="position:absolute;left:1101px;top:452px;width:96px;text-align:center;font:400 13px Inter,sans-serif;color:#e6e6e6;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Подорожі</div>
+      <div style="position:absolute;left:1197px;top:452px;width:96px;text-align:center;font:400 13px Inter,sans-serif;color:#e6e6e6;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Нотатки</div>
+      <div style="position:absolute;left:1293px;top:452px;width:96px;text-align:center;font:400 13px Inter,sans-serif;color:#e6e6e6;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Думки</div>
+      <div style="position:absolute;left:1389px;top:452px;width:96px;text-align:center;font:400 13px Inter,sans-serif;color:#e6e6e6;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Курси</div>
+      <div style="position:absolute;left:1485px;top:452px;width:96px;text-align:center;font:400 13px Inter,sans-serif;color:#e6e6e6;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Різне</div>
+      <div style="position:absolute;left:1581px;top:452px;width:96px;text-align:center;font:400 13px Inter,sans-serif;color:#e6e6e6;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Події</div>
+      <div style="position:absolute;left:1677px;top:452px;width:96px;text-align:center;font:400 13px Inter,sans-serif;color:#e6e6e6;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Про мене</div>
+      <div class="circ" style="left:822px;top:356px"><iframe src="highlights-system.html?bare=1&s=0" scrolling="no"></iframe></div>
+      <div class="circ" style="left:918px;top:356px"><iframe src="highlights-system.html?bare=1&s=1" scrolling="no"></iframe></div>
+      <div class="circ" style="left:1014px;top:356px"><iframe src="highlights-system.html?bare=1&s=2" scrolling="no"></iframe></div>
+      <div class="circ" style="left:1110px;top:356px"><iframe src="highlights-system.html?bare=1&s=3" scrolling="no"></iframe></div>
+      <div class="circ" style="left:1206px;top:356px"><iframe src="highlights-system.html?bare=1&s=4" scrolling="no"></iframe></div>
+      <div class="circ" style="left:1302px;top:356px"><iframe src="highlights-system.html?bare=1&s=5" scrolling="no"></iframe></div>
+      <div class="circ" style="left:1398px;top:356px"><iframe src="highlights-system.html?bare=1&s=6" scrolling="no"></iframe></div>
+      <div class="circ" style="left:1494px;top:356px"><iframe src="highlights-system.html?bare=1&s=7" scrolling="no"></iframe></div>
+      <div class="circ" style="left:1590px;top:356px"><iframe src="highlights-system.html?bare=1&s=8" scrolling="no"></iframe></div>
+      <div class="circ" style="left:1686px;top:356px"><iframe src="highlights-system.html?bare=1&s=9" scrolling="no"></iframe></div>
+    </div>
+  </div>
+</div>
+
+<!-- СВІТЛА -->
+<div class="pane" id="light">
+  <div class="page">
+    <div class="prof">
+      <div class="ava"><img src="assets/tanya-photo.jpg" alt=""></div>
+      <div>
+        <div class="row1"><span class="uname">tetiana_pan.sales</span><span class="verif"></span></div>
+        <div class="title">Тетяна Пан | Продажі та переговори B2B | Наставництво</div>
+        <div class="stats"><span><b>319</b> posts</span><span><b>5,471</b> followers</span><span><b>978</b> following</span></div>
+        <div class="bio">25+ років власного досвіду у продажах<br>17+ років навчання команд у B2B<br>Pan&amp;Partners: тренінги, наставництво, консультації, онлайн-курси<br><span class="link">pan-partners.agency</span> <span class="muted">and 1 more</span></div>
+        <div class="btns"><div class="btn">Edit Profile</div><div class="btn">View archive</div></div>
+      </div>
+    </div>
+    <div class="hl">
+      <div class="h"><div class="circ"><iframe src="highlights-system.html?bare=1&s=0" scrolling="no"></iframe></div><span>Послуги</span></div>
+      <div class="h"><div class="circ"><iframe src="highlights-system.html?bare=1&s=1" scrolling="no"></iframe></div><span>Кейси</span></div>
+      <div class="h"><div class="circ"><iframe src="highlights-system.html?bare=1&s=2" scrolling="no"></iframe></div><span>Відгуки</span></div>
+      <div class="h"><div class="circ"><iframe src="highlights-system.html?bare=1&s=3" scrolling="no"></iframe></div><span>Подорожі</span></div>
+      <div class="h"><div class="circ"><iframe src="highlights-system.html?bare=1&s=4" scrolling="no"></iframe></div><span>Нотатки дружини</span></div>
+      <div class="h"><div class="circ"><iframe src="highlights-system.html?bare=1&s=5" scrolling="no"></iframe></div><span>Думки</span></div>
+      <div class="h"><div class="circ"><iframe src="highlights-system.html?bare=1&s=6" scrolling="no"></iframe></div><span>Курси</span></div>
+      <div class="h"><div class="circ"><iframe src="highlights-system.html?bare=1&s=7" scrolling="no"></iframe></div><span>Різне</span></div>
+      <div class="h"><div class="circ"><iframe src="highlights-system.html?bare=1&s=8" scrolling="no"></iframe></div><span>Події</span></div>
+      <div class="h"><div class="circ"><iframe src="highlights-system.html?bare=1&s=9" scrolling="no"></iframe></div><span>Про мене</span></div>
+    </div>
+    <div class="tabs"><div class="tab on"></div><div class="tab"></div><div class="tab"></div><div class="tab"></div><div class="tab"></div></div>
+    <div class="grid">
+      <div class="t"><img src="feed/f1.jpg" alt=""></div><div class="t"><img src="feed/f2.jpg" alt=""></div>
+      <div class="t"><img src="feed/f3.jpg" alt=""></div><div class="t"><img src="feed/f4.jpg" alt=""></div>
+      <div class="t"><img src="feed/f5.jpg" alt=""></div><div class="t"><img src="feed/f6.jpg" alt=""></div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const dk=document.getElementById('dark'), lt=document.getElementById('light');
+  function show(which){
+    const dark = which==='dark';
+    dk.classList.toggle('on',dark); lt.classList.toggle('on',!dark);
+    document.body.style.background = dark ? '#0b0b0b' : '#6e6e73';
+    fit();
+  }
+  /* світла тема — mockup-system.html?theme=light */
+  if(new URLSearchParams(location.search).get('theme')==='light')show('light');
+  function fit(){
+    const el=document.querySelector('.pane.on > *');
+    if(!el) return;
+    const s=Math.min(innerWidth/1460, (innerHeight-40)/940)*.98;
+    el.style.transformOrigin='center'; el.style.transform='scale('+s+')';
+  }
+  addEventListener('resize',fit); fit();
+
+  /* ── hover-регулювання масштабу + перетягування фото прямо на кружках ── */
+  const zpop=document.createElement('div');zpop.id='zpop';document.body.appendChild(zpop);
+  let hideT=null,popRows=[];
+  const slideN=fr=>{const m=fr.src.match(/[?&]s=(\d+)/);return m?+m[1]:null};
+
+  /* ── порядок кружечків ─────────────────────────────────────────────── */
+  const darkCircs=[...document.querySelectorAll('#dark .circ')];
+  const darkLabs=[...document.querySelectorAll('#dark .shotwrap > div')].filter(d=>d.style.top==='452px');
+  const lightCircs=[...document.querySelectorAll('#light .circ')];
+  const lightLabs=[...document.querySelectorAll('#light .h span')];
+  const N=darkCircs.length;
+  const nameDark=darkLabs.map(d=>d.textContent), nameLight=lightLabs.map(d=>d.textContent);
+  let order=(()=>{try{const s=JSON.parse(localStorage.getItem('hlOrder'));
+    if(Array.isArray(s)&&s.length===N&&s.every(v=>Number.isInteger(v)&&v>=0&&v<N)
+      &&new Set(s).size===N) return s}catch(e){}
+    return [...Array(N).keys()]})();
+  function applyOrder(){
+    order.forEach((sl,pos)=>{
+      const src='highlights-system.html?bare=1&s='+sl;
+      [[darkCircs,darkLabs,nameDark],[lightCircs,lightLabs,nameLight]].forEach(([cs,ls,nm])=>{
+        const fr=cs[pos]?.querySelector('iframe');
+        if(fr&&!fr.src.endsWith(src))fr.src=src;      // не перезавантажуємо без потреби
+        if(ls[pos])ls[pos].textContent=nm[sl];
+      });
+    });
+    localStorage.setItem('hlOrder',JSON.stringify(order));
+  }
+  function moveCirc(pos,dir){const to=pos+dir;if(to<0||to>=N)return;
+    [order[pos],order[to]]=[order[to],order[pos]];applyOrder();
+    zpop.style.display='none';}
+  applyOrder();
+
+  /* ── стрічка прокручується, якщо кружечків більше, ніж влазить ─────── */
+  const VIS=7, DSTEP=96, LSTEP=106;
+  (function buildStrips(){
+    const shot=document.querySelector('#dark .shotwrap');
+    const dStrip=document.createElement('div');
+    dStrip.style.cssText='position:absolute;left:813px;top:344px;width:'+(VIS*DSTEP-1)+'px;'+
+      'height:128px;overflow:hidden;background:#0C1014';
+    const dTrack=document.createElement('div');
+    dTrack.style.cssText='position:absolute;inset:0;transition:transform .18s ease';
+    dStrip.appendChild(dTrack);shot.appendChild(dStrip);
+    darkCircs.forEach(c=>{c.style.left=(parseFloat(c.style.left)-813)+'px';c.style.top='12px';dTrack.appendChild(c)});
+    darkLabs.forEach(d=>{d.style.left=(parseFloat(d.style.left)-813)+'px';d.style.top='108px';dTrack.appendChild(d)});
+
+    const hl=document.querySelector('#light .hl');
+    const lStrip=document.createElement('div');
+    lStrip.style.cssText='overflow:hidden;margin:48px auto 0;width:'+(VIS*LSTEP-24)+'px';
+    hl.parentNode.insertBefore(lStrip,hl);lStrip.appendChild(hl);
+    hl.style.margin='0';hl.style.justifyContent='flex-start';hl.style.transition='transform .18s ease';
+
+    const maxv=Math.max(0,N-VIS);
+    let pos=0, hovering=false, hideT2=null;
+
+    /* стрілки по краях стрічки — зʼявляються лише при наведенні */
+    const arrows=[];
+    function mkArrow(host,dir,css){const b=document.createElement('button');
+      b.className='hlarrow';b.textContent=dir<0?'‹':'›';b.style.cssText+=css;b.hidden=true;
+      b.onclick=()=>{pos=Math.max(0,Math.min(maxv,pos+dir));applyScroll(pos)};
+      host.appendChild(b);arrows.push({b,dir});return b}
+    function syncArrows(){arrows.forEach(a=>
+      a.b.hidden=!hovering||(a.dir<0?pos<=0:pos>=maxv))}
+    function watch(el){el.addEventListener('mouseenter',()=>{clearTimeout(hideT2);hovering=true;syncArrows()});
+      el.addEventListener('mouseleave',()=>{hideT2=setTimeout(()=>{hovering=false;syncArrows()},140)})}
+    function applyScroll(v){pos=v;
+      dTrack.style.transform='translateX('+(-v*DSTEP)+'px)';
+      hl.style.transform='translateX('+(-v*LSTEP)+'px)';
+      syncArrows()}
+    if(maxv>0){
+      mkArrow(shot,-1,'left:798px;top:380px');
+      mkArrow(shot, 1,'left:'+(813+VIS*DSTEP-31)+'px;top:380px');
+      const lWrap=document.createElement('div');lWrap.style.cssText='position:relative';
+      lStrip.parentNode.insertBefore(lWrap,lStrip);lWrap.appendChild(lStrip);
+      mkArrow(lWrap,-1,'left:-15px;top:26px');
+      mkArrow(lWrap, 1,'right:-15px;top:26px');
+      [dStrip,lWrap].concat(arrows.map(a=>a.b)).forEach(watch);
+    }
+    applyScroll(0);
+  })();
+
+  const framesFor=n=>[...document.querySelectorAll('.circ iframe')].filter(f=>slideN(f)===n);
+  const applyPos=el=>{el.style.backgroundPosition=
+    'calc('+el.dataset.bx+' + '+el.dataset.ox+'px) calc('+el.dataset.by+' + '+el.dataset.oy+'px)'};
+  const setAll=(n,i,fn)=>framesFor(n).forEach(f=>{const d=f.contentDocument;if(!d)return;
+    const tg=d.querySelectorAll('.slide.active [data-zoom]')[i];if(tg)fn(tg)});
+  /* збереження у localStorage — той самий ключ, що читає highlights-system.html */
+  const imgOf=el=>{const m=(el.style.backgroundImage||'').match(/[^/"')]+\.(?:jpe?g|png)/i);return m?m[0]:''};
+  const slotOf=el=>{const s=el.closest('.slide');
+    return (s.dataset.screenLabel||'s')+':'+[...s.querySelectorAll('[data-zoom]')].indexOf(el)};
+
+  /* ── завантаження свого фото у кружечок ────────────────────────────── */
+  function shrink(file,max=1800){return new Promise((res,rej)=>{const img=new Image();
+    img.onload=()=>{let w=img.naturalWidth,h=img.naturalHeight;
+      const k=Math.min(1,max/Math.max(w,h));w=Math.round(w*k);h=Math.round(h*k);
+      const c=document.createElement('canvas');c.width=w;c.height=h;
+      c.getContext('2d').drawImage(img,0,0,w,h);
+      URL.revokeObjectURL(img.src);res(c.toDataURL('image/jpeg',.86))};
+    img.onerror=rej;img.src=URL.createObjectURL(file)})}
+  /* ── декор кружечка: внутрішня обводка / плашка «нове» ─────────────── */
+  function decoApply(n,fn){let lab=null;
+    framesFor(n).forEach(f=>{const d=f.contentDocument;if(!d)return;
+      const s=d.querySelector('.slide.active');if(!s)return;lab=s.dataset.screenLabel;
+      fn(s.querySelector('.instroke'),s.querySelector('.newbadge'))});
+    return lab}
+  function decoSave(lab,patch){if(!lab)return;
+    const store=JSON.parse(localStorage.getItem('hlDeco')||'{}');
+    store[lab]=Object.assign({},store[lab],patch);
+    localStorage.setItem('hlDeco',JSON.stringify(store))}
+  function setDeco(n,which,on){
+    const lab=decoApply(n,(ring,badge)=>{const el=which==='ring'?ring:badge;
+      if(el)el.style.display=on?(which==='ring'?'block':'flex'):'none'});
+    decoSave(lab,{[which]:on})}
+  /* товщина обводки (px на макеті 1080) і розмір плашки (%) */
+  function setRingW(n,px){
+    const lab=decoApply(n,ring=>{if(ring)ring.style.setProperty('--rw',px+'px')});
+    decoSave(lab,{rw:+px})}
+  function setBadgeS(n,pc){
+    const lab=decoApply(n,(_,badge)=>{if(badge)badge.style.setProperty('--bsc',pc/100)});
+    decoSave(lab,{bs:+pc})}
+  /* положення плашки: зсув по горизонталі та висота на макеті 1080×1920 */
+  function setBadgePos(n,axis,v){
+    const lab=decoApply(n,(_,badge)=>{if(badge)badge.style.setProperty(
+      axis==='x'?'--bx':'--by',v+'px')});
+    decoSave(lab,axis==='x'?{bx:+v}:{by:+v})}
+
+  async function loadPhoto(n,i,file){
+    if(!file||!/^image\//.test(file.type))return;
+    const d=await shrink(file), id='up-'+file.name.replace(/\W+/g,'')+'-'+file.size;
+    let slot=null;
+    setAll(n,i,tg=>{slot=slotOf(tg);
+      tg.style.backgroundImage='url("'+d+'")';tg.dataset.imgid=id;
+      tg.dataset.ox=0;tg.dataset.oy=0;applyPos(tg)});
+    if(!slot)return;
+    const ps=JSON.parse(localStorage.getItem('hlPhotos')||'{}');ps[slot]={id,d};
+    try{localStorage.setItem('hlPhotos',JSON.stringify(ps))}
+    catch(e){alert('Фото не вмістилось у сховище браузера — показ працює,\nале до перезавантаження сторінки.')}
+    zpop.style.display='none';
+  }
+  function saveFromDoc(doc){const s=doc.querySelector('.slide.active');if(!s)return;
+    const store=JSON.parse(localStorage.getItem('hlAdjust')||'{}');
+    s.querySelectorAll('[data-zoom]').forEach((el,i)=>{
+      store[(s.dataset.screenLabel||'s')+':'+i+':'+imgOf(el)]={z:+el.dataset.zoom,ox:+el.dataset.ox,oy:+el.dataset.oy}});
+    localStorage.setItem('hlAdjust',JSON.stringify(store))}
+  const syncPop=()=>popRows.forEach(o=>{o.out.textContent=(+o.el.dataset.zoom)+'%';
+    o.r.value=o.el.dataset.zoom;o.off.textContent='x'+o.el.dataset.ox+' y'+o.el.dataset.oy});
+  function showPop(circ){
+    clearTimeout(hideT);
+    const fr=circ.querySelector('iframe'), n=slideN(fr);
+    let doc; try{doc=fr.contentDocument}catch(e){return}
+    if(!doc||!doc.body){return}
+    const els=doc.querySelectorAll('.slide.active [data-zoom]');
+    zpop.innerHTML='';popRows=[];
+    const t=document.createElement('div');t.className='zt';
+    t.textContent=(doc.querySelector('.slide.active')?.dataset.vname||'обкладинка')
+      +(els.length?' · тягни фото мишею':'');
+    zpop.appendChild(t);
+    /* рядок зміни порядку */
+    const pos=Math.max(darkCircs.indexOf(circ),lightCircs.indexOf(circ));
+    const ord=document.createElement('div');ord.className='ord';
+    const bL=document.createElement('button');bL.textContent='‹';bL.disabled=pos<=0;
+    const bR=document.createElement('button');bR.textContent='›';bR.disabled=pos>=N-1;
+    const oi=document.createElement('i');oi.textContent='позиція '+(pos+1)+' / '+N;
+    bL.onclick=()=>moveCirc(pos,-1); bR.onclick=()=>moveCirc(pos,1);
+    ord.append(bL,bR,oi);zpop.appendChild(ord);
+    els.forEach((el,i)=>{
+      const row=document.createElement('label');
+      const sp=document.createElement('span');sp.textContent=el.dataset.zn||('фото '+(i+1));
+      const r=document.createElement('input');r.type='range';r.min=80;r.max=700;r.step=0.5;r.value=el.dataset.zoom;
+      const out=document.createElement('b');out.textContent=(+r.value)+'%';
+      const off=document.createElement('b');off.style.width='auto';
+      off.textContent='x'+el.dataset.ox+' y'+el.dataset.oy;
+      r.oninput=()=>{out.textContent=(+r.value)+'%';
+        setAll(n,i,tg=>{tg.dataset.zoom=r.value;tg.style.backgroundSize=r.value+'% auto'});
+        saveFromDoc(doc)};
+      popRows.push({el,r,out,off});
+      row.append(sp,r,out,off);zpop.appendChild(row);
+    });
+    /* перемикачі декору */
+    const act=doc.querySelector('.slide.active');
+    const deco=document.createElement('div');deco.className='deco';
+    const saved=(JSON.parse(localStorage.getItem('hlDeco')||'{}'))[act?.dataset.screenLabel]||{};
+    [['ring','обводка','.instroke',12,90,+saved.rw||26,'px',setRingW],
+     ['badge','плашка «нове»','.newbadge',50,220,+saved.bs||100,'%',setBadgeS]
+    ].forEach(([k,txt,sel,mn,mx,val,unit,setter])=>{
+      const row=document.createElement('label');
+      const cb=document.createElement('input');cb.type='checkbox';cb.style.width='auto';
+      cb.checked=(act?.querySelector(sel)?.style.display||'none')!=='none';
+      cb.onchange=()=>setDeco(n,k,cb.checked);
+      const sp=document.createElement('span');sp.style.width='104px';sp.textContent=txt;
+      const r=document.createElement('input');r.type='range';r.min=mn;r.max=mx;r.step=1;r.value=val;
+      r.style.width='120px';
+      const out=document.createElement('b');out.textContent=val+unit;
+      r.oninput=()=>{out.textContent=r.value+unit;setter(n,+r.value);
+        if(!cb.checked){cb.checked=true;setDeco(n,k,true)}};
+      row.append(cb,sp,r,out);deco.appendChild(row)});
+    /* положення плашки «нове» */
+    const prow=document.createElement('label');
+    const psp=document.createElement('span');psp.style.width='104px';psp.textContent='розміщення';
+    prow.appendChild(psp);
+    [['x',-420,420,saved.bx==null?0:+saved.bx],['y',560,1420,saved.by==null?1368:+saved.by]]
+      .forEach(([ax,mn,mx,val])=>{
+        const r=document.createElement('input');r.type='range';r.min=mn;r.max=mx;r.step=4;r.value=val;
+        r.style.width='84px';r.title=ax==='x'?'↔ по горизонталі':'↕ по висоті';
+        r.oninput=()=>setBadgePos(n,ax,+r.value);
+        prow.appendChild(r)});
+    deco.appendChild(prow);
+    /* кнопка «своє фото» — або просто перетягни файл на кружечок */
+    const pick=document.createElement('button');pick.className='pick';
+    pick.textContent='↥ своє фото';
+    pick.onclick=()=>{const inp=document.createElement('input');inp.type='file';inp.accept='image/*';
+      inp.onchange=()=>loadPhoto(n,0,inp.files[0]);inp.click()};
+    deco.appendChild(pick);
+    zpop.appendChild(deco);
+
+    zpop.style.display='flex';zpop.style.left='0px';zpop.style.top='0px';
+    const rc=circ.getBoundingClientRect(),w=zpop.offsetWidth,h=zpop.offsetHeight;
+    let x=Math.max(8,Math.min(innerWidth-w-8,rc.left+rc.width/2-w/2));
+    let y=rc.bottom+10; if(y+h>innerHeight-8) y=rc.top-h-10;
+    zpop.style.left=x+'px';zpop.style.top=y+'px';
+  }
+  const scheduleHide=()=>{hideT=setTimeout(()=>zpop.style.display='none',350)};
+  document.querySelectorAll('.circ').forEach(c=>{
+    const cap=document.createElement('div');
+    cap.style.cssText='position:absolute;inset:0;z-index:2;cursor:grab;touch-action:none';
+    c.appendChild(cap);
+    c.addEventListener('mouseenter',()=>showPop(c));
+    c.addEventListener('mouseleave',scheduleHide);
+    /* drag & drop файлу просто на кружечок */
+    ['dragenter','dragover'].forEach(ev=>cap.addEventListener(ev,e=>{
+      e.preventDefault();e.dataTransfer.dropEffect='copy';c.classList.add('drop')}));
+    ['dragleave','dragend'].forEach(ev=>cap.addEventListener(ev,()=>c.classList.remove('drop')));
+    cap.addEventListener('drop',e=>{e.preventDefault();c.classList.remove('drop');
+      const fr=c.querySelector('iframe');loadPhoto(slideN(fr),0,e.dataTransfer.files[0])});
+    cap.addEventListener('dblclick',()=>{ // подвійний клік — скинути зсув
+      const fr=c.querySelector('iframe'),n=slideN(fr),d=fr.contentDocument;if(!d)return;
+      d.querySelectorAll('.slide.active [data-zoom]').forEach((el,i)=>
+        setAll(n,i,tg=>{tg.dataset.ox=0;tg.dataset.oy=0;applyPos(tg)}));
+      saveFromDoc(d);syncPop();
+    });
+    cap.addEventListener('pointerdown',e=>{
+      const fr=c.querySelector('iframe'),n=slideN(fr);
+      let doc; try{doc=fr.contentDocument}catch(err){return}
+      if(!doc||!doc.body)return;
+      const els=[...doc.querySelectorAll('.slide.active [data-zoom]')];
+      if(!els.length)return;
+      const frRect=fr.getBoundingClientRect();
+      // хіт-тест: який шар фото під курсором (для «Кейсів» — конкретна смуга)
+      const docX=(e.clientX-frRect.left)/frRect.width*1080,
+            docY=(e.clientY-frRect.top)/frRect.height*1920;
+      let tg=doc.elementFromPoint(docX,docY);
+      if(tg&&!tg.dataset.zoom)tg=tg.closest?tg.closest('[data-zoom]'):null;
+      const i=Math.max(0,els.indexOf(tg));
+      const scale=frRect.width/1080;
+      const sx=e.clientX,sy=e.clientY,ox0=+els[i].dataset.ox,oy0=+els[i].dataset.oy;
+      const a=(+(els[i].dataset.rot||0))*Math.PI/180,ca=Math.cos(a),sa=Math.sin(a);
+      e.preventDefault();cap.setPointerCapture(e.pointerId);cap.style.cursor='grabbing';
+      clearTimeout(hideT);
+      const move=ev=>{const dx=(ev.clientX-sx)/scale,dy=(ev.clientY-sy)/scale;
+        const ox=Math.round(ox0+dx*ca+dy*sa),oy=Math.round(oy0-dx*sa+dy*ca);
+        setAll(n,i,t2=>{t2.dataset.ox=ox;t2.dataset.oy=oy;applyPos(t2)});
+        saveFromDoc(doc);syncPop()};
+      const up=()=>{cap.style.cursor='grab';cap.removeEventListener('pointermove',move)};
+      cap.addEventListener('pointermove',move);
+      cap.addEventListener('pointerup',up,{once:true});
+    });
+  });
+  zpop.addEventListener('mouseenter',()=>clearTimeout(hideT));
+  zpop.addEventListener('mouseleave',scheduleHide);
+</script>
+</body>
+</html>

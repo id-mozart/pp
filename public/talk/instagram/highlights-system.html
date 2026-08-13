@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="robots" content="noindex, nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,500;0,600;1,500;1,600&display=swap" rel="stylesheet">
+<title>Актуальне — один диск, три марки</title>
+<style>
+  :root{--esp:#171009;--gold:#F2BE55}
+  *{box-sizing:border-box}
+  html,body{margin:0;height:100%;background:#0C1014}
+  body{display:flex;align-items:center;justify-content:center;overflow:hidden}
+  /* повний кадр 1080x1920, суцільний еспресо до всіх країв */
+  #deck{position:relative;flex:0 0 auto;width:1080px;height:1920px;background:var(--esp);overflow:hidden;
+    transform-origin:center;box-shadow:0 40px 120px rgba(0,0,0,.7)}
+  .slide{position:absolute;inset:0;opacity:0;pointer-events:none;background:var(--esp)}
+  .slide.active{opacity:1;pointer-events:auto}
+  /* запечене кільце: центр (540,959), Ø760, обведення 30 */
+  .ring{position:absolute;left:540px;top:959px;width:760px;height:760px;margin:-380px 0 0 -380px;
+    border-radius:50%;border:30px solid var(--gold)}
+  /* марка: кейлайн 480x480, той самий центр */
+  .mark{position:absolute;left:540px;top:959px;width:480px;height:480px;margin:-240px 0 0 -240px;
+    display:flex;align-items:center;justify-content:center}
+  .mark svg{width:100%;height:100%;display:block}
+  /* диск із фото: діаметр 700 = внутрішній край кільця */
+  .disc{position:absolute;left:540px;top:959px;width:700px;height:700px;margin:-350px 0 0 -350px;
+    border-radius:50%;overflow:hidden;background:#171009}
+  .st{position:absolute;left:50%;top:50%;width:1900px;height:386px;
+    background-size:cover;background-position:center 42%;transform-origin:center}
+  .disc .full{position:absolute;inset:0;background-size:cover;background-position:50% 34%}
+  .type{font-family:'Spectral',serif;font-weight:600;color:var(--gold);line-height:1;white-space:nowrap}
+  /* необовʼязковий декор кружечка: внутрішня обводка + плашка «нове» */
+  /* обводка йде по самому краю кропа Instagram: центр (540,959), радіус 540 */
+  /* зовнішній край обводки — за 3px від краю кропа (радіус 540 → 537) */
+  .instroke{position:absolute;left:540px;top:959px;width:1074px;height:1074px;margin:-537px 0 0 -537px;
+    border-radius:50%;pointer-events:none;display:none;
+    --rw:26px;
+    background:conic-gradient(from 205deg,#FBE3A4,#F2BE55 22%,#E09A32 45%,#9C5714 62%,#D9822B 80%,#FBE3A4);
+    -webkit-mask:radial-gradient(circle closest-side,transparent calc(100% - var(--rw)),#000 calc(100% - var(--rw)));
+            mask:radial-gradient(circle closest-side,transparent calc(100% - var(--rw)),#000 calc(100% - var(--rw)))}
+  .newbadge{position:absolute;left:calc(540px + var(--bx,0px));top:var(--by,1368px);
+    transform:translate(-50%,-50%) scale(var(--bsc,1));
+    background:linear-gradient(135deg,#FBE3A4 0%,#F2BE55 42%,#D9822B 100%);
+    color:var(--esp);letter-spacing:.15em;
+    font:800 90px/1 system-ui,-apple-system,'Helvetica Neue',sans-serif;
+    padding:30px 50px 34px;border-radius:999px;pointer-events:none;display:none;
+    box-shadow:0 14px 46px rgba(0,0,0,.42)}
+
+  .nav{position:fixed;top:50%;transform:translateY(-50%);width:54px;height:54px;border-radius:50%;
+    border:1px solid rgba(255,255,255,.22);background:rgba(20,15,10,.6);color:#EFBE6A;font-size:24px;
+    cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:50}
+  #prev{left:24px}#next{right:24px}
+  .dots{position:fixed;bottom:22px;left:50%;transform:translateX(-50%);display:flex;gap:9px;z-index:50}
+  .dot{width:9px;height:9px;border-radius:50%;background:rgba(255,255,255,.3);cursor:pointer}
+  .dot.on{width:30px;border-radius:5px;background:#D99A28}
+  .count{position:fixed;top:22px;right:26px;font-family:ui-monospace,monospace;font-size:14px;
+    letter-spacing:.18em;color:rgba(255,255,255,.5);z-index:50}
+  .vlabel{position:fixed;top:22px;left:26px;font-family:ui-monospace,monospace;font-size:14px;
+    letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.55);z-index:50}
+  #zpanel{position:fixed;left:26px;bottom:56px;display:none;flex-direction:column;gap:10px;
+    padding:14px 16px;border-radius:12px;background:rgba(20,15,10,.85);border:1px solid rgba(255,255,255,.14);
+    font-family:ui-monospace,monospace;font-size:12px;color:rgba(255,255,255,.75);z-index:60}
+  #zpanel label{display:flex;align-items:center;gap:10px}
+  #zpanel span{width:100px;letter-spacing:.06em}
+  #zpanel input{width:180px;accent-color:#D99A28}
+  #zpanel b{width:52px;text-align:right;color:#EFBE6A;font-weight:400}
+</style>
+</head>
+<body>
+<div id="deck">
+
+<!-- 01 ПОСЛУГИ · саме фото (тренінг); іконка-портфель нижче в коментарі -->
+<section class="slide active" data-screen-label="01-poslugy" data-vname="Послуги · саме фото">
+  <div data-zoom="200" data-zn="фото" data-bx="86%" data-by="40%" data-ox="0" data-oy="0" style="position:absolute;inset:0;background-image:url('photos/poslugy.jpg');background-size:200% auto;background-position:86% 40%;background-repeat:no-repeat;background-color:#171009"></div>
+</section>
+<!--
+<section class="slide active" data-screen-label="01-poslugy" data-vname="Послуги · solid">
+  <div class="ring"></div>
+  <div class="mark"><svg viewBox="0 0 24 24">
+    <rect x="2.5" y="7" width="19" height="13" rx="2.2" fill="#F2BE55"/>
+    <path d="M8.6 7V5.7A1.7 1.7 0 0 1 10.3 4h3.4a1.7 1.7 0 0 1 1.7 1.7V7" fill="none" stroke="#F2BE55" stroke-width="1.6" stroke-linecap="round"/>
+    <rect x="2.5" y="12.05" width="19" height="1.05" fill="#171009"/>
+    <rect x="10.2" y="11.1" width="3.6" height="2.95" rx="1" fill="#171009"/>
+  </svg></div>
+</section>
+-->
+
+<!-- 02 КЕЙСИ · саме фото (команда); версія «три фото по діагоналі» нижче в коментарі -->
+<section class="slide" data-screen-label="02-keysy" data-vname="Кейси · саме фото">
+  <div data-zoom="150" data-zn="фото" data-bx="50%" data-by="55%" data-ox="0" data-oy="0" style="position:absolute;inset:0;background-image:url('photos/case-cert.jpg');background-size:150% auto;background-position:50% 55%;background-repeat:no-repeat;background-color:#171009"></div>
+</section>
+<!--
+<section class="slide" data-screen-label="02-keysy" data-vname="Кейси · три фото по діагоналі">
+  <div style="position:absolute;inset:0;overflow:hidden;background:#171009">
+    <div class="st" data-zoom="100" data-zn="верхнє фото" data-bx="50%" data-by="42%" data-ox="0" data-oy="0" data-rot="-30" style="background-image:url('photos/case1.jpg');transform:translate(calc(-50% - 208px),calc(-50% - 360px)) rotate(-30deg)"></div>
+    <div class="st" data-zoom="100" data-zn="середнє фото" data-bx="50%" data-by="42%" data-ox="0" data-oy="0" data-rot="-30" style="background-image:url('photos/case-team.jpg');height:369px;transform:translate(-50%,-50%) rotate(-30deg)"></div>
+    <div class="st" data-zoom="100" data-zn="нижнє фото" data-bx="50%" data-by="42%" data-ox="0" data-oy="0" data-rot="-30" style="background-image:url('photos/case3.jpg');transform:translate(calc(-50% + 208px),calc(-50% + 360px)) rotate(-30deg)"></div>
+  </div>
+</section>
+-->
+
+<!-- 03 ВІДГУКИ · саме фото (відгук Сергія); марка-лапки нижче в коментарі -->
+<section class="slide" data-screen-label="03-vidhuky" data-vname="Відгуки · саме фото">
+  <div data-zoom="154" data-zn="фото" data-bx="51%" data-by="43%" data-ox="0" data-oy="0" style="position:absolute;inset:0;background-image:url('photos/vidhuky-serhiy.jpg');background-size:154% auto;background-position:51% 43%;background-repeat:no-repeat;background-color:#171009"></div>
+</section>
+<!--
+<section class="slide" data-screen-label="03-vidhuky" data-vname="Відгуки · type «">
+  <div class="ring"></div>
+  <div class="mark"><span class="type" style="font-size:600px;font-style:italic;position:relative;top:-4px">«</span></div>
+</section>
+-->
+
+<!-- 04 ПОДОРОЖІ · саме фото (Одеса); іконка-літачок нижче в коментарі -->
+<section class="slide" data-screen-label="04-podorozhi" data-vname="Подорожі · саме фото">
+  <div data-zoom="140" data-zn="фото" data-bx="66%" data-by="98%" data-ox="0" data-oy="0" style="position:absolute;inset:0;background-image:url('photos/notatky-sea.jpg');background-size:140% auto;background-position:66% 98%;background-repeat:no-repeat;background-color:#171009"></div>
+</section>
+<!--
+<section class="slide" data-screen-label="04-podorozhi" data-vname="Подорожі · line">
+  <div class="ring"></div>
+  <div class="mark"><svg viewBox="0 0 24 24" fill="none" stroke="#F2BE55" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M21.4 2.6 2.4 10.1l7.7 2.9 2.9 7.7z"/>
+    <path d="M21.4 2.6 10.1 13z"/>
+    <path d="M21.4 2.6 10.1 13"/>
+  </svg></div>
+</section>
+-->
+
+<!-- 05 НОТАТКИ ДРУЖИНИ · SOLID · вертикальна маса -->
+<section class="slide" data-screen-label="05-notatky" data-vname="Нотатки · саме фото">
+  <div data-zoom="160" data-zn="фото" data-bx="34%" data-by="102%" data-ox="0" data-oy="0" style="position:absolute;inset:0;background-image:url('photos/notatky-couple.jpg');background-size:160% auto;background-position:34% 102%;background-repeat:no-repeat;background-color:#171009"></div>
+</section>
+
+<!-- 06 ДУМКИ · SOLID · саме фото -->
+<section class="slide" data-screen-label="06-dumky" data-vname="Думки · саме фото">
+  <div data-zoom="105" data-zn="фото" data-bx="0%" data-by="44%" data-ox="0" data-oy="0" style="position:absolute;inset:0;background-image:url('photos/dumky-tan.jpg');background-size:105% auto;background-position:0% 44%;background-repeat:no-repeat;background-color:#171009"></div>
+</section>
+
+<!-- 07 КУРСИ · саме фото (ноутбук з міні-курсом); іконка-плеєр нижче в коментарі -->
+<section class="slide" data-screen-label="07-kursy" data-vname="Курси · саме фото">
+  <div data-zoom="145" data-zn="фото" data-bx="71%" data-by="54%" data-ox="0" data-oy="0" style="position:absolute;inset:0;background-image:url('photos/kursy-laptop.jpg');background-size:145% auto;background-position:71% 54%;background-repeat:no-repeat;background-color:#171009"></div>
+</section>
+<!--
+<section class="slide" data-screen-label="07-kursy" data-vname="Курси · solid">
+  <div class="ring"></div>
+  <div class="mark"><svg viewBox="0 0 24 24">
+    <rect x="2.5" y="4.4" width="19" height="12.6" rx="2" fill="#F2BE55"/>
+    <path d="M10.1 7.9l5.1 2.8-5.1 2.8z" fill="#171009"/>
+    <rect x="10.9" y="17" width="2.2" height="2.9" fill="#F2BE55"/>
+    <rect x="7.8" y="19.6" width="8.4" height="1.7" rx=".85" fill="#F2BE55"/>
+  </svg></div>
+</section>
+-->
+
+<!-- 08 РІЗНЕ · саме фото (2000 грн, спина до спини) -->
+<section class="slide" data-screen-label="08-rizne" data-vname="Різне · саме фото">
+  <div data-zoom="110" data-zn="фото" data-bx="74%" data-by="49%" data-ox="0" data-oy="0" style="position:absolute;inset:0;background-image:url('photos/rizne-2000.jpg');background-size:110% auto;background-position:74% 49%;background-repeat:no-repeat;background-color:#171009"></div>
+</section>
+
+<!-- 09 ПОДІЇ · саме фото (Sales Forum) -->
+<section class="slide" data-screen-label="09-podii" data-vname="Події · саме фото">
+  <div data-zoom="110" data-zn="фото" data-bx="28%" data-by="42%" data-ox="0" data-oy="0" style="position:absolute;inset:0;background-image:url('photos/podii-forum.jpg');background-size:110% auto;background-position:28% 42%;background-repeat:no-repeat;background-color:#171009"></div>
+</section>
+
+<!-- 10 ПРО МЕНЕ · саме фото (портрет на темному) -->
+<section class="slide" data-screen-label="10-pro-mene" data-vname="Про мене · саме фото">
+  <div data-zoom="128" data-zn="фото" data-bx="46%" data-by="34%" data-ox="0" data-oy="0" style="position:absolute;inset:0;background-image:url('photos/pro-mene.jpg');background-size:128% auto;background-position:46% 34%;background-repeat:no-repeat;background-color:#171009"></div>
+</section>
+
+</div>
+<button class="nav" id="prev">‹</button><button class="nav" id="next">›</button>
+<div class="dots" id="dots"></div><div class="count" id="count"></div><div class="vlabel" id="vlabel"></div>
+<div id="zpanel"></div>
+<script>
+  const slides=[...document.querySelectorAll('.slide')],dots=document.getElementById('dots'),
+        count=document.getElementById('count'),vlabel=document.getElementById('vlabel');
+  let cur=0;
+  slides.forEach((s,i)=>{const d=document.createElement('div');d.className='dot';d.onclick=()=>go(i);dots.appendChild(d)});
+  function go(n){cur=Math.max(0,Math.min(slides.length-1,n));
+    slides.forEach((s,i)=>s.classList.toggle('active',i===cur));
+    [...dots.children].forEach((d,i)=>d.classList.toggle('on',i===cur));
+    count.textContent=String(cur+1).padStart(2,'0')+' / '+String(slides.length).padStart(2,'0');
+    vlabel.textContent=slides[cur].dataset.vname||'';buildPanel();}
+  /* ручне регулювання: слайдер масштабу + перетягування фото мишею */
+  const zpanel=document.getElementById('zpanel');
+  function applyPos(el){el.style.backgroundPosition=
+    'calc('+el.dataset.bx+' + '+el.dataset.ox+'px) calc('+el.dataset.by+' + '+el.dataset.oy+'px)'}
+  /* збереження налаштувань у localStorage (спільне для мокапа й цієї сторінки) */
+  const hlStore=JSON.parse(localStorage.getItem('hlAdjust')||'{}');
+  /* ключ містить id картинки — при заміні фото старе кадрування не «прилипає» */
+  function imgOf(el){const m=(el.style.backgroundImage||'').match(/[^/"')]+\.(?:jpe?g|png)/i);return m?m[0]:''}
+  function slotOf(el){const s=el.closest('.slide');
+    return (s.dataset.screenLabel||'s')+':'+[...s.querySelectorAll('[data-zoom]')].indexOf(el)}
+  function keyOf(el){return slotOf(el)+':'+(el.dataset.imgid||'')}
+  /* фото, завантажені через інтерфейс, живуть у localStorage */
+  document.querySelectorAll('[data-zoom]').forEach(el=>el.dataset.imgid=imgOf(el));
+  const hlPhotos=JSON.parse(localStorage.getItem('hlPhotos')||'{}');
+  document.querySelectorAll('[data-zoom]').forEach(el=>{const p=hlPhotos[slotOf(el)];if(!p)return;
+    el.style.backgroundImage='url("'+p.d+'")';el.dataset.imgid=p.id});
+  /* декор: внутрішня обводка та плашка «нове» — вмикається в мокапі */
+  const hlDeco=JSON.parse(localStorage.getItem('hlDeco')||'{}');
+  document.querySelectorAll('.slide').forEach(s=>{
+    const ring=document.createElement('div');ring.className='instroke';
+    const badge=document.createElement('div');badge.className='newbadge';badge.textContent='НОВЕ';
+    s.append(ring,badge);
+    const d=hlDeco[s.dataset.screenLabel]||{};
+    if(d.ring)ring.style.display='block';
+    if(d.badge)badge.style.display='flex';
+    if(d.rw)ring.style.setProperty('--rw',d.rw+'px');
+    if(d.bs)badge.style.setProperty('--bsc',d.bs/100);
+    if(d.bx!=null)badge.style.setProperty('--bx',d.bx+'px');
+    if(d.by!=null)badge.style.setProperty('--by',d.by+'px');});
+  function saveEl(el){hlStore[keyOf(el)]={z:+el.dataset.zoom,ox:+el.dataset.ox,oy:+el.dataset.oy};
+    localStorage.setItem('hlAdjust',JSON.stringify(hlStore))}
+  document.querySelectorAll('[data-zoom]').forEach(el=>{const v=hlStore[keyOf(el)];if(!v)return;
+    el.dataset.zoom=v.z;el.dataset.ox=v.ox;el.dataset.oy=v.oy;
+    el.style.backgroundSize=v.z+'% auto';applyPos(el)});
+  function syncRow(el){if(el._offB)el._offB.textContent='x'+el.dataset.ox+' y'+el.dataset.oy}
+  function buildPanel(){if(bare)return;const els=slides[cur].querySelectorAll('[data-zoom]');
+    zpanel.innerHTML='';zpanel.style.display=els.length?'flex':'none';
+    els.forEach((el,i)=>{const row=document.createElement('label');
+      const span=document.createElement('span');span.textContent=el.dataset.zn||('фото '+(i+1));
+      const r=document.createElement('input');r.type='range';r.min=80;r.max=700;r.step=0.5;r.value=el.dataset.zoom;
+      const out=document.createElement('b');out.textContent=(+r.value)+'%';
+      const off=document.createElement('b');off.style.width='auto';el._offB=off;syncRow(el);
+      r.oninput=()=>{el.dataset.zoom=r.value;el.style.backgroundSize=r.value+'% auto';out.textContent=(+r.value)+'%';saveEl(el)};
+      row.append(span,r,out,off);zpanel.appendChild(row)});}
+  let curS=1;
+  if(!new URLSearchParams(location.search).has('bare'))
+    document.querySelectorAll('[data-zoom]').forEach(el=>{
+      el.style.cursor='grab';el.style.touchAction='none';
+      el.addEventListener('pointerdown',e=>{
+        e.preventDefault();el.setPointerCapture(e.pointerId);el.style.cursor='grabbing';
+        const sx=e.clientX,sy=e.clientY,ox0=+el.dataset.ox,oy0=+el.dataset.oy;
+        const a=(+(el.dataset.rot||0))*Math.PI/180,ca=Math.cos(a),sa=Math.sin(a);
+        const move=ev=>{const dx=(ev.clientX-sx)/curS,dy=(ev.clientY-sy)/curS;
+          el.dataset.ox=Math.round(ox0+dx*ca+dy*sa);el.dataset.oy=Math.round(oy0-dx*sa+dy*ca);
+          applyPos(el);syncRow(el);saveEl(el)};
+        const up=()=>{el.style.cursor='grab';el.removeEventListener('pointermove',move)};
+        el.addEventListener('pointermove',move);
+        el.addEventListener('pointerup',up,{once:true});
+      });
+    });
+  document.getElementById('prev').onclick=()=>go(cur-1);
+  document.getElementById('next').onclick=()=>go(cur+1);
+  addEventListener('keydown',e=>{if(e.target.tagName==='INPUT')return;
+    if(e.key==='ArrowLeft')go(cur-1);if(e.key==='ArrowRight')go(cur+1)});
+  const q=new URLSearchParams(location.search); const bare=q.has('bare');
+  function fit(){const d=document.getElementById('deck');
+    if(bare){d.style.transform='none';return;}
+    const s=Math.min(innerWidth/1080,innerHeight/1920)*.92;curS=s;d.style.transform='scale('+s+')';}
+  if(bare){document.body.style.display='block';document.documentElement.style.background='transparent';
+    document.body.style.background='transparent';
+    for(const el of document.querySelectorAll('.nav,.dots,.count,.vlabel,#zpanel')) el.style.display='none';
+    document.getElementById('deck').style.boxShadow='none';}
+  addEventListener('resize',fit);fit();go(+(q.get('s')||0));
+</script>
+</body>
+</html>
