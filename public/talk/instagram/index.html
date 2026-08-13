@@ -260,7 +260,7 @@
     return [...Array(N).keys()]})();
   function applyOrder(){
     order.forEach((sl,pos)=>{
-      const src='highlights-system.html?bare=1&s='+sl;
+      const src='/talk/instagram/highlights-system.html?bare=1&s='+sl;
       [[darkCircs,darkLabs,nameDark],[lightCircs,lightLabs,nameLight]].forEach(([cs,ls,nm])=>{
         const fr=cs[pos]?.querySelector('iframe');
         if(fr&&!fr.src.endsWith(src))fr.src=src;      // не перезавантажуємо без потреби
