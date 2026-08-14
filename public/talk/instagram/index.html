@@ -529,5 +529,135 @@
   zpop.addEventListener('mouseenter',()=>clearTimeout(hideT));
   zpop.addEventListener('mouseleave',scheduleHide);
 </script>
+
+<script>
+/* ─── Експорт обкладинок хайлайтів у ZIP ────────────────────────────────
+   Кожен кружечок — це слайд 1080×1920: фото з background-size:<zoom>% auto
+   і background-position:calc(bx + ox px) calc(by + oy px). Малюємо те саме
+   на canvas (плюс обводку/плашку, якщо ввімкнені) і пакуємо у ZIP без
+   стиснення — JPEG уже стиснутий, тож архів збирається кількома рядками
+   замість зовнішньої бібліотеки. */
+(function(){
+  var W=1080, H=1920;
+
+  /* ── мінімальний ZIP (метод store) ── */
+  var CRC=(function(){var t=[];for(var n=0;n<256;n++){var c=n;for(var k=0;k<8;k++)c=c&1?0xEDB88320^(c>>>1):c>>>1;t[n]=c>>>0}return t})();
+  function crc32(u8){var c=0xFFFFFFFF;for(var i=0;i<u8.length;i++)c=CRC[(c^u8[i])&0xFF]^(c>>>8);return (c^0xFFFFFFFF)>>>0}
+  function zip(files){
+    var chunks=[], central=[], off=0;
+    function u32(v){return [v&255,(v>>>8)&255,(v>>>16)&255,(v>>>24)&255]}
+    function u16(v){return [v&255,(v>>>8)&255]}
+    files.forEach(function(f){
+      var name=new TextEncoder().encode(f.name), data=f.data, c=crc32(data);
+      var local=[].concat([80,75,3,4],u16(20),u16(0x0800),u16(0),u16(0),u16(0),
+                          u32(c),u32(data.length),u32(data.length),u16(name.length),u16(0));
+      chunks.push(new Uint8Array(local), name, data);
+      central.push({name:name,crc:c,size:data.length,off:off});
+      off += local.length + name.length + data.length;
+    });
+    var cd=[], cdLen=0;
+    central.forEach(function(e){
+      var h=[].concat([80,75,1,2],u16(20),u16(20),u16(0x0800),u16(0),u16(0),u16(0),
+                      u32(e.crc),u32(e.size),u32(e.size),u16(e.name.length),
+                      u16(0),u16(0),u16(0),u16(0),u32(0),u32(e.off));
+      cd.push(new Uint8Array(h), e.name); cdLen += h.length + e.name.length;
+    });
+    var end=new Uint8Array([].concat([80,75,5,6],u16(0),u16(0),u16(central.length),u16(central.length),
+                                     u32(cdLen),u32(off),u16(0)));
+    return new Blob(chunks.concat(cd,[end]),{type:'application/zip'});
+  }
+
+  function loadImg(src){return new Promise(function(res,rej){
+    var im=new Image(); im.onload=function(){res(im)}; im.onerror=rej; im.src=src; })}
+
+  /* один слайд → canvas */
+  async function renderSlide(slide, deco){
+    var cv=document.createElement('canvas'); cv.width=W; cv.height=H;
+    var g=cv.getContext('2d');
+    var el=slide.querySelector('[data-zoom]');
+    var cs=el?getComputedStyle(el):null;
+    g.fillStyle=(cs&&cs.backgroundColor&&cs.backgroundColor!=='rgba(0, 0, 0, 0)')?cs.backgroundColor:'#171009';
+    g.fillRect(0,0,W,H);
+    if(el){
+      var m=(el.style.backgroundImage||'').match(/url\(["']?([^"')]+)/);
+      if(m){
+        var im=await loadImg(m[1]);
+        var zoom=parseFloat(el.dataset.zoom)||100;
+        var iw=W*zoom/100, ih=iw*(im.naturalHeight/im.naturalWidth);
+        var bx=parseFloat(el.dataset.bx)||0, by=parseFloat(el.dataset.by)||0;
+        var ox=parseFloat(el.dataset.ox)||0, oy=parseFloat(el.dataset.oy)||0;
+        g.drawImage(im, (W-iw)*bx/100+ox, (H-ih)*by/100+oy, iw, ih);
+      }
+    }
+    if(deco&&deco.ring){
+      var rw=+deco.rw||26, R=(1074-rw)/2;
+      var grad=g.createConicGradient? g.createConicGradient(205*Math.PI/180,540,959) : null;
+      if(grad){ [[0,'#FBE3A4'],[.22,'#F2BE55'],[.45,'#E09A32'],[.62,'#9C5714'],[.80,'#D9822B'],[1,'#FBE3A4']]
+                 .forEach(function(st){grad.addColorStop(st[0],st[1])}); g.strokeStyle=grad; }
+      else g.strokeStyle='#E09A32';
+      g.lineWidth=rw; g.beginPath(); g.arc(540,959,R,0,Math.PI*2); g.stroke();
+    }
+    if(deco&&deco.badge){
+      var sc=(+deco.bs||100)/100, bx2=540+(+deco.bx||0), by2=(+deco.by!=null?+deco.by:1368);
+      g.save(); g.translate(bx2,by2); g.scale(sc,sc);
+      var pad=46, fs=90; g.font='800 '+fs+'px system-ui,sans-serif';
+      try{ g.letterSpacing='0.15em'; }catch(e){}
+      var tw=g.measureText('НОВЕ').width, bw=tw+pad*2, bh=fs+pad;
+      var lg=g.createLinearGradient(-bw/2,-bh/2,bw/2,bh/2);
+      lg.addColorStop(0,'#FBE3A4'); lg.addColorStop(.42,'#F2BE55'); lg.addColorStop(1,'#D9822B');
+      g.fillStyle=lg; g.beginPath();
+      if(g.roundRect) g.roundRect(-bw/2,-bh/2,bw,bh,bh/2); else g.rect(-bw/2,-bh/2,bw,bh);
+      g.fill();
+      g.fillStyle='#171009'; g.textAlign='center'; g.textBaseline='middle'; g.fillText('НОВЕ',0,2);
+      g.restore();
+    }
+    return cv;
+  }
+
+  function blobBytes(b){return new Promise(function(res){var r=new FileReader();
+    r.onload=function(){res(new Uint8Array(r.result))}; r.readAsArrayBuffer(b)})}
+  function safe(n){return String(n||'').replace(/[\\/:*?"<>|]+/g,'').trim()||'highlight'}
+
+  var btn=document.createElement('button');
+  btn.id='hl-zip'; btn.type='button'; btn.textContent='⬇ Обкладинки ZIP';
+  btn.style.cssText='position:fixed;right:14px;top:14px;z-index:9999;padding:9px 14px;border-radius:9px;'+
+    'border:1px solid rgba(239,190,106,.45);background:rgba(28,28,30,.92);color:#EFBE6A;cursor:pointer;'+
+    'font:600 13px/1 system-ui,sans-serif';
+  document.body.appendChild(btn);
+
+  btn.addEventListener('click', async function(){
+    var old=btn.textContent; btn.disabled=true; btn.textContent='Готую…';
+    try{
+      var deco={}; try{ deco=JSON.parse(localStorage.getItem('hlDeco')||'{}'); }catch(e){}
+      var files=[], seen={};
+      /* кружечки беремо у поточному порядку показу; назву — зі слайда
+         (data-vname «Послуги · саме фото» → «Послуги»), бо змінні мокапа
+         живуть у своєму IIFE і звідси недоступні */
+      var circs=[].slice.call(document.querySelectorAll('#dark .circ'));
+      for(var pos=0; pos<circs.length; pos++){
+        var fr=circs[pos].querySelector('iframe');
+        var doc=fr&&fr.contentDocument;
+        var slide=doc&&doc.querySelector('.slide.active');
+        if(!slide) continue;
+        var lab=slide.dataset.screenLabel||('slide'+pos);
+        if(seen[lab]) continue; seen[lab]=1;
+        var title=((slide.dataset.vname||'').split('·')[0]||'').trim()||lab;
+        btn.textContent='Готую… '+(pos+1)+'/'+circs.length;
+        var cv=await renderSlide(slide, deco[lab]);
+        var blob=await new Promise(function(r){cv.toBlob(r,'image/jpeg',0.95)});
+        files.push({name:String(files.length+1).padStart(2,'0')+'-'+safe(title)+'.jpg', data: await blobBytes(blob)});
+      }
+      if(!files.length){ alert('Кружечки ще не завантажились — спробуй за мить.'); return; }
+      var url=URL.createObjectURL(zip(files));
+      var a=document.createElement('a'); a.href=url; a.download='highlights-covers.zip';
+      document.body.appendChild(a); a.click(); a.remove();
+      setTimeout(function(){URL.revokeObjectURL(url)},4000);
+      btn.textContent='Готово ✓'; setTimeout(function(){btn.textContent=old},1600);
+    }catch(e){
+      console.error(e); alert('Не вдалося зібрати архів: '+e.message); btn.textContent=old;
+    }finally{ btn.disabled=false; }
+  });
+})();
+</script>
 </body>
 </html>
