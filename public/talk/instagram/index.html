@@ -590,8 +590,12 @@
       }
     }
     if(deco&&deco.ring){
+      /* .instroke: коло 1074px у центрі (540,959), маска лишає кільце завширшки rw
+         по зовнішньому краю → радіус центру штриха = 537 - rw/2.
+         CSS conic-gradient «from 205deg» рахує від 12 години, canvas — від 3-ї,
+         тому знімаємо 90°. */
       var rw=+deco.rw||26, R=(1074-rw)/2;
-      var grad=g.createConicGradient? g.createConicGradient(205*Math.PI/180,540,959) : null;
+      var grad=g.createConicGradient? g.createConicGradient((205-90)*Math.PI/180,540,959) : null;
       if(grad){ [[0,'#FBE3A4'],[.22,'#F2BE55'],[.45,'#E09A32'],[.62,'#9C5714'],[.80,'#D9822B'],[1,'#FBE3A4']]
                  .forEach(function(st){grad.addColorStop(st[0],st[1])}); g.strokeStyle=grad; }
       else g.strokeStyle='#E09A32';
@@ -600,15 +604,16 @@
     if(deco&&deco.badge){
       var sc=(+deco.bs||100)/100, bx2=540+(+deco.bx||0), by2=(+deco.by!=null?+deco.by:1368);
       g.save(); g.translate(bx2,by2); g.scale(sc,sc);
-      var pad=46, fs=90; g.font='800 '+fs+'px system-ui,sans-serif';
+      /* .newbadge: font 800 90px, letter-spacing .15em, padding 30px 50px 34px */
+      var fs=90; g.font='800 '+fs+'px system-ui,-apple-system,"Helvetica Neue",sans-serif';
       try{ g.letterSpacing='0.15em'; }catch(e){}
-      var tw=g.measureText('НОВЕ').width, bw=tw+pad*2, bh=fs+pad;
+      var tw=g.measureText('НОВЕ').width, bw=tw+100, bh=fs+30+34;
       var lg=g.createLinearGradient(-bw/2,-bh/2,bw/2,bh/2);
       lg.addColorStop(0,'#FBE3A4'); lg.addColorStop(.42,'#F2BE55'); lg.addColorStop(1,'#D9822B');
       g.fillStyle=lg; g.beginPath();
       if(g.roundRect) g.roundRect(-bw/2,-bh/2,bw,bh,bh/2); else g.rect(-bw/2,-bh/2,bw,bh);
       g.fill();
-      g.fillStyle='#171009'; g.textAlign='center'; g.textBaseline='middle'; g.fillText('НОВЕ',0,2);
+      g.fillStyle='#171009'; g.textAlign='center'; g.textBaseline='middle'; g.fillText('НОВЕ',0,-2);
       g.restore();
     }
     return cv;
