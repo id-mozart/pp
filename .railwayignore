@@ -1,6 +1,8 @@
-node_modules
-.next
-.git
-reference
-.claude
-*.log
+# Робочі матеріали соцмереж (вихідники постів, відео, HEIC) — на проді не потрібні.
+# Готові сторінки лежать окремо в public/talk/.
+SocialMedia/
+
+# Локальні артефакти збірки та залежності
+.next/
+node_modules/
+.git/
