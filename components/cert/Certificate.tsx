@@ -4,7 +4,7 @@ import type { Cert } from "@/lib/certs";
 
 /**
  * Сертифікат A4 landscape у стилі Pan&Partners. Пʼять варіантів верстки
- * (classic · band · minimal · ornament · dark) на спільних токенах бренду:
+ * (classic · band · ornament) на спільних токенах бренду:
  * кремовий лист, золоті лінії, Spectral / Inter / JetBrains Mono / Playfair.
  * Друк — через @media print (297×210 мм).
  */
@@ -25,7 +25,7 @@ export const CERT_CSS = `
   #cert-a4 .num{ font-family:var(--font-jetbrains),monospace; font-size:8.5pt; letter-spacing:.22em; color:var(--faint); white-space:nowrap; }
   #cert-a4 .kicker{ font-family:var(--font-jetbrains),monospace; font-size:8pt; letter-spacing:.34em; text-transform:uppercase; color:var(--acc); }
   #cert-a4 h1{ font-family:var(--font-spectral),Georgia,serif; font-weight:500; font-size:56pt; line-height:1; letter-spacing:.02em; margin-top:4mm; }
-  #cert-a4 h1 em{ font-style:italic; color:var(--amber); }
+  #cert-a4 h1 em{ font-style:normal; color:inherit; }
   #cert-a4 .name{ font-family:var(--font-spectral),serif; font-size:32pt; line-height:1.1; margin-top:12mm; }
   #cert-a4 .verb{ font-family:var(--font-spectral),serif; font-style:italic; font-size:13pt; color:var(--muted); margin-top:4mm; }
   #cert-a4 .prog{ font-size:15.5pt; line-height:1.35; font-weight:500; margin-top:3mm; max-width:210mm; text-transform:uppercase; letter-spacing:.02em; }
@@ -51,7 +51,7 @@ export const CERT_CSS = `
   #cert-a4 .v-band{ padding:0; flex-direction:row; }
   #cert-a4 .v-band .side{ width:58mm; background:linear-gradient(180deg,#D2701C,#C98A2B); color:#FCF8F1; padding:14mm 9mm; display:flex; flex-direction:column; position:relative; }
   #cert-a4 .v-band .side .brand{ color:#FCF8F1; font-size:17pt; line-height:1.1; }
-  #cert-a4 .v-band .side .brand em{ color:#2A2018; }
+  #cert-a4 .v-band .side .brand em{ color:#FCF8F1; }
   #cert-a4 .v-band .side .brand-sub{ color:rgba(252,248,241,.8); margin-top:2mm; letter-spacing:.24em; }
   #cert-a4 .v-band .side .big{ margin-top:auto; font-family:var(--font-playfair),serif; font-size:120mm; line-height:.8; color:rgba(252,248,241,.18); margin-left:-4mm; }
   #cert-a4 .v-band .side .num{ color:rgba(252,248,241,.85); margin-top:6mm; }
@@ -60,20 +60,11 @@ export const CERT_CSS = `
   #cert-a4 .v-band h1{ font-size:48pt; }
   #cert-a4 .v-band .name{ margin-top:10mm; }
 
-  /* ── minimal ── */
-  #cert-a4 .v-minimal{ background:#FFFDF9; padding:14mm 20mm 14mm; }
-  #cert-a4 .v-minimal .rh{ display:flex; align-items:center; gap:6mm; }
-  #cert-a4 .v-minimal .body{ flex:1; display:flex; flex-direction:column; justify-content:center; }
-  #cert-a4 .v-minimal .title{ font-family:var(--font-jetbrains),monospace; font-size:10pt; letter-spacing:.5em; text-transform:uppercase; color:var(--acc); }
-  #cert-a4 .v-minimal .name{ font-style:italic; font-size:58pt; line-height:1; margin-top:8mm; letter-spacing:-.01em; }
-  #cert-a4 .v-minimal .verb{ margin-top:8mm; font-style:normal; font-size:12pt; }
-  #cert-a4 .v-minimal .prog{ text-transform:none; font-family:var(--font-spectral),serif; font-weight:500; font-size:19pt; letter-spacing:0; line-height:1.3; max-width:230mm; }
-  #cert-a4 .v-minimal .trainers{ margin-top:auto; padding-top:10mm; border-top:1px solid var(--line); gap:16mm; }
-  #cert-a4 .v-minimal .tr{ border:0; padding:0; }
-  #cert-a4 .v-minimal .foot{ border:0; padding-top:5mm; }
-
   /* ── ornament ── */
   #cert-a4 .v-ornament{ padding:14mm; }
+  #cert-a4 .v-ornament .grid{ position:absolute; inset:0; pointer-events:none; overflow:hidden; display:grid; grid-template-columns:repeat(9,1fr); grid-auto-rows:34mm; align-content:start; padding:2mm 0 0 2mm; }
+  #cert-a4 .v-ornament .grid span{ font-family:var(--font-playfair),Georgia,serif; font-size:26mm; line-height:34mm; text-align:center; color:var(--amber); opacity:.055; }
+  #cert-a4 .v-ornament .grid span:nth-child(2n){ opacity:.035; }
   #cert-a4 .v-ornament .frame{ position:absolute; inset:6mm; border:3pt solid var(--amber); pointer-events:none; }
   #cert-a4 .v-ornament .frame2{ position:absolute; inset:9mm; border:.6pt solid var(--gold); pointer-events:none; }
   #cert-a4 .v-ornament .inner{ flex:1; display:flex; flex-direction:column; align-items:center; text-align:center; padding:8mm 16mm 4mm; position:relative; z-index:1; }
@@ -94,20 +85,6 @@ export const CERT_CSS = `
   #cert-a4 .v-ornament .sg .r{ font-size:8.5pt; color:var(--muted); margin-top:1mm; }
   #cert-a4 .v-ornament .bottom{ display:flex; justify-content:space-between; width:100%; margin-top:6mm; font-family:var(--font-jetbrains),monospace; font-size:8pt; letter-spacing:.22em; text-transform:uppercase; color:var(--faint); }
 
-  /* ── dark ── */
-  #cert-a4 .v-dark{ background:#1A1410; color:#F5E9D7; --line:rgba(245,233,215,.22); --muted:#C9B79A; --faint:#9C8B73; }
-  #cert-a4 .v-dark .glow{ position:absolute; right:-40mm; top:-40mm; width:170mm; height:170mm; border-radius:50%; background:radial-gradient(circle, rgba(210,112,28,.28) 0%, rgba(210,112,28,0) 65%); pointer-events:none; }
-  #cert-a4 .v-dark .edge{ position:absolute; inset:7mm; border:.75pt solid rgba(226,166,56,.55); pointer-events:none; }
-  #cert-a4 .v-dark .rh{ display:flex; align-items:center; gap:6mm; position:relative; z-index:1; }
-  #cert-a4 .v-dark .brand{ color:#F5E9D7; }
-  #cert-a4 .v-dark .body{ flex:1; display:flex; flex-direction:column; justify-content:center; position:relative; z-index:1; padding:0 6mm; }
-  #cert-a4 .v-dark h1{ color:#F5E9D7; }
-  #cert-a4 .v-dark h1 em{ color:#E2A638; }
-  #cert-a4 .v-dark .kicker{ color:#E2A638; }
-  #cert-a4 .v-dark .prog{ color:#F5E9D7; }
-  #cert-a4 .v-dark .tr{ border-left-color:#E2A638; }
-  #cert-a4 .v-dark .foot .site{ color:#E2A638; }
-  #cert-a4 .v-dark .band-b{ background:linear-gradient(90deg,#E8AC3C,#CE651E); }
 
   @media print{
     @page{ size:297mm 210mm; margin:0; }
@@ -147,7 +124,7 @@ export function Certificate({ c }: { c: Cert }) {
             </div>
             <div className="body">
               <div className="kicker">Pan&amp;Partners · {c.place || "Україна"} · {c.year}</div>
-              <h1>Серти<em>фікат</em></h1>
+              <h1>Сертифікат</h1>
               <div className="name">{c.name}</div>
               <div className="verb">{c.verb} програму</div>
               <div className="prog">{c.program}</div>
@@ -172,7 +149,7 @@ export function Certificate({ c }: { c: Cert }) {
                 <span className="num">pan-partners.agency</span>
               </div>
               <div className="body">
-                <h1>Серти<em>фікат</em></h1>
+                <h1>Сертифікат</h1>
                 <div className="name">{c.name}</div>
                 <div className="verb">{c.verb} програму</div>
                 <div className="prog">{c.program}</div>
@@ -183,31 +160,15 @@ export function Certificate({ c }: { c: Cert }) {
             </div>
           </>
         )}
-        {v === "minimal" && (
-          <>
-            <div className="rh">
-              <span className="brand">Pan<em>&amp;</em>Partners</span><span className="brand-sub">Training and Consulting</span>
-              <span className="fill" /><span className="num">№ {c.number || "—"}</span>
-            </div>
-            <div className="body">
-              <div className="title">Сертифікат</div>
-              <div className="name">{c.name}</div>
-              <div className="verb">{c.verb} програму</div>
-              <div className="prog">{c.program}</div>
-              <div className="meta">{meta(c)}</div>
-            </div>
-            <Trainers c={c} />
-            <div className="foot"><span className="pl">{c.place || "Україна"}, {c.year}</span><span className="site">pan-partners.agency</span></div>
-          </>
-        )}
         {v === "ornament" && (
           <>
+            <div className="grid" aria-hidden>{Array.from({ length: 63 }).map((_, i) => <span key={i}>&amp;</span>)}</div>
             <div className="frame" /><div className="frame2" />
             <div className="inner">
               <div className="brand">Pan<em>&amp;</em>Partners</div>
               <div className="brand-sub">Training and Consulting</div>
               <div className="orn"><i /><b /><i /></div>
-              <h1>Серти<em>фікат</em></h1>
+              <h1>Сертифікат</h1>
               <div className="verb">засвідчує, що</div>
               <div className="name">{c.name}</div>
               <div className="verb">{c.verb} програму</div>
@@ -220,26 +181,6 @@ export function Certificate({ c }: { c: Cert }) {
               </div>
               <div className="bottom"><span>{c.place || "Україна"} · {c.year}</span><span>№ {c.number || "—"}</span></div>
             </div>
-          </>
-        )}
-        {v === "dark" && (
-          <>
-            <div className="glow" /><div className="edge" />
-            <div className="rh">
-              <span className="brand">Pan<em>&amp;</em>Partners</span><span className="brand-sub">Training and Consulting</span>
-              <span className="fill" /><span className="num">№ {c.number || "—"}</span>
-            </div>
-            <div className="body">
-              <div className="kicker">{c.place || "Україна"} · {c.year}</div>
-              <h1>Серти<em>фікат</em></h1>
-              <div className="name">{c.name}</div>
-              <div className="verb">{c.verb} програму</div>
-              <div className="prog">{c.program}</div>
-              <div className="meta">{meta(c)}</div>
-              <Trainers c={c} />
-            </div>
-            <div className="foot"><span className="pl">{c.place || "Україна"}, {c.year}</span><span className="site">pan-partners.agency</span></div>
-            <div className="band-b" />
           </>
         )}
       </section>

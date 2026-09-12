@@ -1,12 +1,10 @@
 /** Сертифікат учасника — модель даних і санітизація. */
 
-export type CertVariant = "classic" | "band" | "minimal" | "ornament" | "dark";
+export type CertVariant = "classic" | "band" | "ornament";
 export const CERT_VARIANTS: { id: CertVariant; label: string; desc: string }[] = [
   { id: "classic", label: "Класика", desc: "кремовий лист, подвійна золота рамка, великий «&» на фоні" },
   { id: "band", label: "Смуга", desc: "вертикальна золота смуга зліва, текст праворуч" },
-  { id: "minimal", label: "Мінімал", desc: "багато повітря, велике імʼя курсивом, тонкі лінії" },
-  { id: "ornament", label: "Урочистий", desc: "центрована композиція, широка рамка, лінії для підписів" },
-  { id: "dark", label: "Темний", desc: "темний лист, кремовий текст, золоті акценти" },
+  { id: "ornament", label: "Урочистий", desc: "центрована композиція, сітка з амперсандів на фоні, лінії для підписів" },
 ];
 
 export type Cert = {
