@@ -49,7 +49,7 @@ export const CERT_CSS = `
   #cert-a4 .v-ornament .frame{ position:absolute; inset:7mm; border:.75pt solid var(--gold); pointer-events:none; }
   #cert-a4 .v-ornament .frame2{ position:absolute; inset:9mm; border:.4pt solid rgba(201,138,43,.45); pointer-events:none; }
   #cert-a4 .v-ornament .inner{ flex:1; display:flex; flex-direction:column; align-items:center; text-align:center; padding:11mm 16mm 7mm; position:relative; z-index:1; }
-  #cert-a4 .v-ornament .tag{ position:absolute; top:12.5mm; font-family:var(--font-jetbrains),monospace; font-size:8pt; letter-spacing:.22em; text-transform:uppercase; color:var(--faint); z-index:2; white-space:nowrap; }
+  #cert-a4 .v-ornament .tag{ position:absolute; top:12.3mm; font-family:var(--font-jetbrains),monospace; font-size:9.5pt; letter-spacing:.24em; text-transform:uppercase; color:var(--muted); z-index:2; white-space:nowrap; }
   #cert-a4 .v-ornament .tag.l{ left:14mm; }
   #cert-a4 .v-ornament .tag.r{ right:14mm; }
   /* нижні кути: QR + адреса сайту зліва, печатка справа */
@@ -57,7 +57,7 @@ export const CERT_CSS = `
   #cert-a4 .v-ornament .qr img{ width:19mm; height:19mm; display:block; }
   #cert-a4 .v-ornament .qr .site{ font-family:var(--font-jetbrains),monospace; font-size:8pt; letter-spacing:.2em; text-transform:uppercase; color:var(--acc); white-space:nowrap; }
   #cert-a4 .v-ornament .qr .hint{ font-family:var(--font-spectral),serif; font-style:italic; font-size:8.5pt; color:var(--muted); margin-top:.8mm; white-space:nowrap; }
-  #cert-a4 .v-ornament .seal{ position:absolute; right:13mm; bottom:9.5mm; width:34mm; height:34mm; z-index:2; }
+  #cert-a4 .v-ornament .seal{ position:absolute; right:13mm; bottom:15mm; width:36mm; height:36mm; z-index:2; }
   #cert-a4 .v-ornament .seal text{ font-family:var(--font-jetbrains),monospace; font-size:5.6px; letter-spacing:.32em; text-transform:uppercase; fill:var(--gold); }
   #cert-a4 .v-ornament .seal .amp{ font-family:var(--font-playfair),Georgia,serif; font-size:44px; letter-spacing:0; }
   #cert-a4 .v-ornament .orn.dbl{ margin-top:5mm; }
@@ -128,14 +128,16 @@ export function Certificate({ c }: { c: Cert }) {
             </div>
             <svg className="seal" viewBox="0 0 100 100" aria-hidden>
               <defs>
-                <path id={gid + "c"} d="M50 50 m-38 0 a38 38 0 1 1 76 0 a38 38 0 1 1 -76 0" />
+                <path id={gid + "c"} d="M50 50 m0 36.5 a36.5 36.5 0 1 1 0 -73 a36.5 36.5 0 1 1 0 73" />
                 <linearGradient id={gid + "s"} x1="0" y1="0" x2="1" y2="1"><stop offset="0" stopColor="#D99A28" /><stop offset="1" stopColor="#C15612" /></linearGradient>
               </defs>
-              <circle cx="50" cy="50" r="48" fill="none" stroke="#C98A2B" strokeWidth="1" />
-              <circle cx="50" cy="50" r="45.5" fill="none" stroke="#C98A2B" strokeWidth=".4" />
-              <circle cx="50" cy="50" r="30" fill="none" stroke="#C98A2B" strokeWidth=".6" />
-              <text textLength="238" lengthAdjust="spacing"><textPath href={"#" + gid + "c"} textLength="238" lengthAdjust="spacing">Pan &amp; Partners · Training and Consulting ·</textPath></text>
-              <text x="50" y="65" textAnchor="middle" className="amp" fill={`url(#${gid}s)`}>&amp;</text>
+              <circle cx="50" cy="50" r="48.5" fill="none" stroke="#C98A2B" strokeWidth="1.1" />
+              <circle cx="50" cy="50" r="46.6" fill="none" stroke="#C98A2B" strokeWidth=".35" />
+              <circle cx="50" cy="50" r="44.3" fill="none" stroke="#C98A2B" strokeWidth="1.4" strokeDasharray=".4 3.08" strokeLinecap="round" opacity=".9" />
+              <circle cx="50" cy="50" r="30.5" fill="#FBF6EC" stroke="#C98A2B" strokeWidth=".7" />
+              <circle cx="50" cy="50" r="28.3" fill="none" stroke="#C98A2B" strokeWidth=".35" strokeDasharray="1.2 1.6" />
+              <text textLength="229" lengthAdjust="spacing"><textPath href={"#" + gid + "c"} textLength="229" lengthAdjust="spacing">Pan &amp; Partners · Training and Consulting ·</textPath></text>
+              <text x="50" y="64.5" textAnchor="middle" className="amp" fill={`url(#${gid}s)`}>&amp;</text>
             </svg>
             <div className="inner">
               <div className="brand">Pan<em>&amp;</em>Partners</div>
