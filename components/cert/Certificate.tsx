@@ -57,8 +57,9 @@ export const CERT_CSS = `
   #cert-a4 .v-ornament h1{ font-size:54pt; margin-top:5mm; letter-spacing:.14em; text-transform:uppercase; font-weight:500; }
   #cert-a4 .v-ornament h1 em{ font-style:normal; }
   #cert-a4 .v-ornament .verb{ margin-top:7mm; }
+  #cert-a4 .v-ornament .name + .verb{ margin-top:3.5mm; }
   #cert-a4 .v-ornament .name{ margin-top:2mm; font-size:40pt; font-style:italic; background:linear-gradient(96deg,#D99A28 0%,#CE7A1A 55%,#C15612 100%); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; color:transparent; padding:0 2mm; }
-  #cert-a4 .v-ornament .prog{ margin:4mm -10mm 0; width:calc(100% + 20mm); max-width:none; padding:3.5mm 6mm; font-size:24pt; line-height:1.25; white-space:pre-line; }
+  #cert-a4 .v-ornament .prog{ margin-top:3mm; max-width:230mm; padding:4mm 8mm; font-size:22pt; white-space:pre-line; }
   #cert-a4 .v-ornament .signs{ display:flex; gap:22mm; margin-top:auto; padding-top:6mm; }
   #cert-a4 .v-ornament .sg{ width:74mm; text-align:center; }
   #cert-a4 .v-ornament .sg .l{ height:1.4mm; background:radial-gradient(circle at center, var(--ink) .55pt, transparent .85pt) 0 0/2.2mm 1.4mm repeat-x; opacity:.55; margin-bottom:2.5mm; }
