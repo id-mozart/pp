@@ -90,6 +90,16 @@ export function CertEditor({ initial, saved: savedInit, dbReady }: { initial: Ce
     if (c.id === s.id) fresh();
   }
 
+  function printPdf() {
+    // Chrome бере назву файлу PDF з document.title — підставляємо номер та ім'я.
+    const prev = document.title;
+    const fname = ["Сертифікат", c.number, c.name].filter(Boolean).join(" ").replace(/[\\/:*?"<>|]+/g, " ").trim();
+    document.title = fname || "Сертифікат";
+    const restore = () => { document.title = prev; window.removeEventListener("afterprint", restore); };
+    window.addEventListener("afterprint", restore);
+    window.print();
+  }
+
   const stText: Record<Status, string> = { idle: "", dirty: "не збережено", saving: "зберігаю…", saved: "збережено", error: "помилка збереження" };
 
   return (
@@ -99,7 +109,7 @@ export function CertEditor({ initial, saved: savedInit, dbReady }: { initial: Ce
         <span className="name">Сертифікати <em>· {c.number ? `№ ${c.number}` : ""}</em></span>
         <span className="st">{stText[status]}</span>
         <button className="btn" onClick={fresh}>+ новий</button>
-        <button className="btn" onClick={() => window.print()}>Завантажити PDF</button>
+        <button className="btn" onClick={printPdf}>Завантажити PDF</button>
         <button className="btn pri" onClick={save} disabled={status === "saving"}>Зберегти</button>
         <Link href="/admin" className="btn">← Панель</Link>
       </div>
