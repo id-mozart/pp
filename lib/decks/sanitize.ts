@@ -39,7 +39,7 @@ function sanitizePage(p: any): DeckPage | null {
 }
 
 // Ілюстрації, які прибрано з дефолтної деки під час дизайн-проходу: у збережених даних їх теж скидаємо.
-const RETIRED = /\/(kpi\.jpg|funnel\.png|target\.jpg|bant\.jpg|talk\.jpg|questions\.jpg|goals\.jpg)$/;
+const RETIRED = /\/(kpi\.jpg|funnel\.png|target\.jpg|bant\.jpg|talk\.jpg|questions\.jpg|goals\.jpg|garfield\.jpg)$/;
 
 /**
  * Підтягує дизайн-оновлення з дефолтної деки у збережену версію (за id сторінки):
@@ -58,6 +58,7 @@ function upgradePage(saved: DeckPage, def: DeckPage | undefined): DeckPage {
     const ours = !saved.image || /\/deck\/novapay\/(np-|tania|hand\.png)/.test(saved.image);
     if (ours) { out.image = def.image; out.fit = def.fit; out.panel = def.panel; }
   }
+  if (def.type === "closing" && saved.type === "closing" && (!saved.image || /\/deck\/novapay\/tania/.test(saved.image))) out.image = def.image;
   if ("image" in out && typeof out.image === "string" && RETIRED.test(out.image)) { if ("image" in def && (def as any).image) out.image = (def as any).image; else delete out.image; }
   return out as DeckPage;
 }
