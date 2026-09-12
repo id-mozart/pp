@@ -47,7 +47,7 @@ export const CERT_CSS = `
   #cert-a4 .v-ornament .grid span.o{ transform:translateX(11.6mm); }
   #cert-a4 .v-ornament .frame{ position:absolute; inset:7mm; border:.75pt solid var(--gold); pointer-events:none; }
   #cert-a4 .v-ornament .frame2{ position:absolute; inset:9mm; border:.4pt solid rgba(201,138,43,.45); pointer-events:none; }
-  #cert-a4 .v-ornament .inner{ flex:1; display:flex; flex-direction:column; align-items:center; text-align:center; padding:6mm 16mm 9mm; position:relative; z-index:1; }
+  #cert-a4 .v-ornament .inner{ flex:1; display:flex; flex-direction:column; align-items:center; text-align:center; padding:11mm 16mm 9mm; position:relative; z-index:1; }
   #cert-a4 .v-ornament .tag{ position:absolute; top:12.5mm; font-family:var(--font-jetbrains),monospace; font-size:8pt; letter-spacing:.22em; text-transform:uppercase; color:var(--faint); z-index:2; white-space:nowrap; }
   #cert-a4 .v-ornament .tag.l{ left:14mm; }
   #cert-a4 .v-ornament .tag.r{ right:14mm; }
@@ -66,7 +66,7 @@ export const CERT_CSS = `
   #cert-a4 .v-ornament .signs{ display:flex; gap:22mm; margin-top:auto; padding-top:6mm; }
   #cert-a4 .v-ornament .sg{ width:74mm; text-align:center; }
   #cert-a4 .v-ornament .sg .l{ height:1.4mm; background:radial-gradient(circle at center, var(--ink) .55pt, transparent .85pt) 0 0/2.2mm 1.4mm repeat-x; opacity:.55; margin-bottom:2.5mm; }
-  #cert-a4 .v-ornament .sg .n{ font-family:var(--font-spectral),serif; font-size:22pt; line-height:1.1; font-style:italic; color:var(--ink); opacity:.78; }
+  #cert-a4 .v-ornament .sg .n{ font-family:var(--font-spectral),serif; font-size:20pt; line-height:1.1; font-style:italic; color:var(--ink); opacity:.78; }
   #cert-a4 .v-ornament .sg .r{ font-size:11pt; color:var(--muted); margin-top:.4mm; }
 
 
