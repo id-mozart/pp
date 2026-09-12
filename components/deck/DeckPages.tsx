@@ -108,9 +108,8 @@ export const DECK_CSS = `
   #deck-a4 td[contenteditable]:empty{ min-height:6mm; display:block; }
 
   /* cover */
-  #deck-a4 .t-cover .np{ position:absolute; right:16mm; top:9.5mm; height:9mm; width:auto; z-index:3; }
   #deck-a4 .t-cover .rh .tag{ visibility:hidden; }
-  #deck-a4 .t-cover .cv{ display:grid; grid-template-columns:1fr 92mm; gap:16mm; flex:1; min-height:0; margin-top:6mm; }
+  #deck-a4 .t-cover .cv{ display:grid; grid-template-columns:1fr 118mm; gap:14mm; flex:1; min-height:0; margin-top:6mm; }
   #deck-a4 .t-cover .cv-l{ display:flex; flex-direction:column; padding-top:16mm; }
   #deck-a4 .t-cover .eyebrow{ font-family:var(--font-jetbrains),monospace; font-size:8.5pt; letter-spacing:.28em; text-transform:uppercase; color:var(--acc); }
   #deck-a4 .t-cover h1{ font-size:48pt; line-height:.98; margin-top:7mm; letter-spacing:-.012em; }
@@ -119,9 +118,9 @@ export const DECK_CSS = `
   #deck-a4 .t-cover .sub:empty{ display:none; }
   #deck-a4 .t-cover .who{ margin-top:auto; padding-top:8mm; font-size:11.5pt; line-height:1.6; color:var(--ink); border-top:1px solid var(--line); max-width:150mm; }
   #deck-a4 .t-cover .who .w{ font-family:var(--font-jetbrains),monospace; font-size:7.8pt; letter-spacing:.24em; text-transform:uppercase; color:var(--faint); margin-top:1.5mm; }
-  #deck-a4 .t-cover .cv-r{ position:relative; align-self:stretch; }
-  #deck-a4 .t-cover .cv-r img{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:center 12%; filter:saturate(.85) contrast(1.02); z-index:1; }
-  #deck-a4 .t-cover .cv-r .frame{ position:absolute; top:4mm; left:4mm; right:-4mm; bottom:-4mm; border:.75pt solid var(--gold); z-index:0; }
+  #deck-a4 .t-cover .cv-r{ position:relative; align-self:stretch; display:flex; flex-direction:column; align-items:flex-end; }
+  #deck-a4 .t-cover .cv-r .np-big{ width:96mm; height:auto; display:block; margin-top:6mm; }
+  #deck-a4 .t-cover .cv-r .ill{ flex:1; min-height:0; width:100%; object-fit:contain; object-position:right bottom; display:block; margin-top:4mm; max-height:96mm; filter:drop-shadow(0 14px 26px rgba(80,40,160,.18)); }
   #deck-a4 .t-cover .foot{ margin-top:10mm; }
   #deck-a4 .t-cover .band{ position:absolute; left:0; right:0; bottom:0; height:5mm; background:linear-gradient(90deg,var(--amber),var(--gold)); }
 
@@ -144,20 +143,28 @@ export const DECK_CSS = `
   #deck-a4 .t-section .withimg .num{ font-size:150pt; }
 
   /* about */
-  #deck-a4 .t-about .hero{ display:grid; grid-template-columns:1fr 150mm; gap:10mm; margin-top:4mm; align-items:start; flex:1; }
-  #deck-a4 .t-about .hero.nologos{ grid-template-columns:1fr 92mm; gap:16mm; }
-  #deck-a4 .t-about ul.bul li{ font-size:14pt; }
-  #deck-a4 .t-about ul.bul{ gap:4mm; margin-top:7mm; }
-  #deck-a4 .t-about h1{ margin-top:4mm; font-size:34pt; }
-  #deck-a4 .t-about .portrait{ position:relative; width:52mm; }
-  #deck-a4 .t-about .nologos .portrait{ width:88mm; }
-  #deck-a4 .t-about .nologos .portrait img{ height:128mm; }
-  #deck-a4 .t-about .portrait img{ display:block; width:100%; height:66mm; object-fit:cover; object-position:center 15%; position:relative; z-index:1; filter:saturate(.9); }
+  #deck-a4 .t-about .hero{ display:grid; grid-template-columns:1fr 74mm; gap:12mm; margin-top:3mm; align-items:start; }
+  #deck-a4 .t-about h1{ margin-top:3mm; font-size:34pt; }
+  #deck-a4 .t-about .role{ font-size:10.5pt; line-height:1.5; color:var(--muted); margin-top:3mm; max-width:170mm; }
+  #deck-a4 .t-about .role:empty{ display:none; }
+  #deck-a4 .t-about .quote{ position:relative; margin-top:5mm; background:var(--band); border-radius:4px; padding:3.5mm 6mm 3.5mm 8mm; font-family:var(--font-spectral),serif; font-size:11.2pt; line-height:1.45; }
+  #deck-a4 .t-about .quote::before{ content:""; position:absolute; left:0; top:0; bottom:0; width:3pt; background:var(--amber); border-radius:4px 0 0 4px; }
+  #deck-a4 .t-about .quote:empty{ display:none; }
+  #deck-a4 .t-about .portrait{ position:relative; width:74mm; }
+  #deck-a4 .t-about .portrait img{ display:block; width:100%; height:92mm; object-fit:cover; object-position:center 15%; position:relative; z-index:1; filter:saturate(.9); }
   #deck-a4 .t-about .portrait .frame{ position:absolute; top:3mm; left:3mm; right:-2.6mm; bottom:-2.3mm; border:.75pt solid var(--gold); }
+  #deck-a4 .t-about .stats{ display:grid; grid-template-columns:repeat(4,1fr); margin-top:6mm; }
+  #deck-a4 .t-about .stat{ padding:0 5mm; border-left:1px solid var(--line); }
+  #deck-a4 .t-about .stat:first-child{ border-left:0; padding-left:0; }
+  #deck-a4 .t-about .stat .n{ font-family:var(--font-spectral),serif; font-style:italic; font-weight:500; font-size:22pt; line-height:1; color:var(--acc); }
+  #deck-a4 .t-about .stat .t{ font-size:8.4pt; line-height:1.45; color:var(--muted); margin-top:2mm; }
+  #deck-a4 .t-about .bottom{ display:grid; grid-template-columns:1fr 1fr; column-gap:12mm; margin-top:5mm; align-items:start; }
+  #deck-a4 .t-about .bottom ul.bul{ margin-top:3mm; gap:2mm; }
+  #deck-a4 .t-about .bottom ul.bul li{ font-size:9.4pt; line-height:1.45; }
+  #deck-a4 .t-about .note{ font-size:9.4pt; line-height:1.5; color:var(--ink); margin-top:3mm; }
   #deck-a4 .t-about .note:empty{ display:none; }
-  #deck-a4 .t-about .note{ margin-top:6mm; font-family:var(--font-spectral),serif; font-style:italic; font-size:15pt; color:var(--acc); }
-  #deck-a4 .t-about .right{ display:grid; grid-template-columns:52mm 1fr; gap:8mm; align-items:start; }
-  #deck-a4 .t-about .logos{ width:100%; max-height:66mm; object-fit:contain; object-position:left top; display:block; }
+  #deck-a4 .t-about .logos{ display:block; width:100%; max-width:130mm; max-height:12mm; object-fit:contain; object-position:left; margin-top:6mm; }
+  #deck-a4 .t-about .lab{ margin-top:4mm; }
 
   /* closing */
   #deck-a4 .t-closing .wrap{ display:grid; grid-template-columns:1fr 62mm; gap:14mm; margin-top:auto; margin-bottom:auto; align-items:center; }
@@ -369,7 +376,6 @@ function PageBody({ p, set, editable }: { p: DeckPage; set: Patch; editable: boo
     case "cover":
       return (
         <>
-          <img className="np" src="/deck/novapay/novapay-logo.png" alt="NovaPay" />
           <div className="cv">
             <div className="cv-l">
               <E tag="p" className="eyebrow" value={p.eyebrow} onChange={(v) => set({ eyebrow: v })} editable={e} ph="надзаголовок" />
@@ -381,8 +387,8 @@ function PageBody({ p, set, editable }: { p: DeckPage; set: Patch; editable: boo
               </div>
             </div>
             <div className="cv-r">
-              <img src="/deck/novapay/tania.jpg" alt="" />
-              <div className="frame" />
+              <img className="np-big" src="/deck/novapay/novapay-logo.png" alt="NovaPay" />
+              <img className="ill" src="/deck/novapay/money.png" alt="" />
             </div>
           </div>
           <div className="band" />
@@ -391,30 +397,38 @@ function PageBody({ p, set, editable }: { p: DeckPage; set: Patch; editable: boo
     case "about":
       return (
         <>
-          <div className={"hero" + (p.logos ? "" : " nologos")}>
+          <div className="hero">
             <div>
-              <div className="lab" style={{ marginTop: "6mm" }}>Тренерка</div>
+              <div className="lab" style={{ marginTop: "4mm" }}>Тренерка</div>
               <Title p={p} set={set} editable={e} />
-              <EList className="bul" items={p.facts} onChange={(v) => set({ facts: v })} editable={e} />
-              <E tag="p" className="note" value={p.note} onChange={(v) => set({ note: v })} editable={e} ph="" />
+              <E tag="p" className="role" value={p.role ?? ""} onChange={(v) => set({ role: v })} editable={e} ph="" />
+              <E tag="div" className="quote" value={p.quote ?? ""} onChange={(v) => set({ quote: v })} editable={e} ph="" />
+              {p.stats && p.stats.length ? (
+                <div className="stats">
+                  {p.stats.map((st, k) => (
+                    <div className="stat" key={k}>
+                      <E tag="div" className="n" value={st.n} onChange={(v) => set({ stats: p.stats!.map((x, j) => (j === k ? { ...x, n: v } : x)) })} editable={e} ph="" />
+                      <E tag="div" className="t" value={st.t} onChange={(v) => set({ stats: p.stats!.map((x, j) => (j === k ? { ...x, t: v } : x)) })} editable={e} ph="" />
+                    </div>
+                  ))}
+                </div>
+              ) : null}
             </div>
-            {p.logos ? (
-              <div className="right">
-                <div className="portrait">
-                  <img src={p.image} alt="" />
-                  <div className="frame" />
-                </div>
-                <div>
-                  <div className="lab" style={{ marginTop: 0 }}>Наші клієнти</div>
-                  <img className="logos" src={p.logos} alt="" style={{ marginTop: "4mm" }} />
-                </div>
-              </div>
-            ) : (
-              <div className="portrait">
-                <img src={p.image} alt="" />
-                <div className="frame" />
-              </div>
-            )}
+            <div className="portrait">
+              <img src={p.image} alt="" />
+              <div className="frame" />
+            </div>
+          </div>
+          <div className="bottom">
+            <div>
+              <div className="lab">Моя спеціалізація</div>
+              <EList className="bul" items={p.facts} onChange={(v) => set({ facts: v })} editable={e} />
+            </div>
+            <div>
+              <div className="lab">Географія проєктів</div>
+              <E tag="p" className="note" value={p.note} onChange={(v) => set({ note: v })} editable={e} ph="" />
+              {p.logos ? <img className="logos" src={p.logos} alt="" /> : null}
+            </div>
           </div>
         </>
       );

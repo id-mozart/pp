@@ -16,7 +16,7 @@ function sanitizePage(p: any): DeckPage | null {
     case "cover":
       return { id, type: "cover", eyebrow: s(p.eyebrow, 200), title: s(p.title, 300), titleEm: s(p.titleEm, 300), sub: s(p.sub, 500), who: s(p.who, 300), when: s(p.when, 200) };
     case "about":
-      return { id, type: "about", title: s(p.title, 200), titleEm: s(p.titleEm, 200), facts: strs(p.facts, 8), note: s(p.note, 500), image: img(p.image), logos: img(p.logos) };
+      return { id, type: "about", title: s(p.title, 200), titleEm: s(p.titleEm, 200), role: s(p.role, 500) || undefined, quote: s(p.quote, 800) || undefined, stats: arr(p.stats, 6).map((c: any) => ({ n: s(c?.n, 40), t: s(c?.t, 300) })), facts: strs(p.facts, 8), note: s(p.note, 800), image: img(p.image), logos: img(p.logos) };
     case "section":
       return { id, type: "section", num: s(p.num, 10), title: s(p.title, 300), sub: s(p.sub, 500), image: img(p.image) || undefined };
     case "text":

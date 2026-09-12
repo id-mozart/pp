@@ -6,7 +6,7 @@
 
 export type DeckPage =
   | { id: string; type: "cover"; eyebrow: string; title: string; titleEm: string; sub: string; who: string; when: string }
-  | { id: string; type: "about"; title: string; titleEm: string; facts: string[]; note: string; image: string; logos: string }
+  | { id: string; type: "about"; title: string; titleEm: string; role?: string; quote?: string; stats?: { n: string; t: string }[]; facts: string[]; note: string; image: string; logos: string }
   | { id: string; type: "section"; num: string; title: string; sub: string; image?: string }
   | { id: string; type: "text"; title: string; titleEm: string; lead: string; paras: string[]; callout: string; image?: string }
   | { id: string; type: "bullets"; title: string; titleEm: string; lead: string; items: string[]; callout: string; image?: string }
@@ -49,7 +49,7 @@ export function blankPage(type: DeckPageType): DeckPage {
     case "cover":
       return { id, type, eyebrow: "Тренінг", title: "Назва", titleEm: "тренінгу", sub: "Підзаголовок", who: "Бізнес-тренерка Тетяна Пан", when: "Україна, 2026" };
     case "about":
-      return { id, type, title: "Тетяна", titleEm: "Пан", facts: ["Факт 1", "Факт 2", "Факт 3"], note: "", image: "/deck/novapay/tania.jpg", logos: "/deck/novapay/clients.png" };
+      return { id, type, title: "Тетяна", titleEm: "Пан", role: "", quote: "", stats: [], facts: ["Факт 1", "Факт 2", "Факт 3"], note: "", image: "/brand/profile-portrait.jpg", logos: "" };
     case "section":
       return { id, type, num: "01", title: "Назва розділу", sub: "" };
     case "text":

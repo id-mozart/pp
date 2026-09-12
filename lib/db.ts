@@ -67,6 +67,13 @@ async function ensureSchema(p: Pool) {
         );
         CREATE INDEX IF NOT EXISTS talk_variants_deck_idx
           ON talk_variants (deck, updated_at DESC);
+        CREATE TABLE IF NOT EXISTS certificates (
+          id          uuid PRIMARY KEY,
+          number      text,
+          data        jsonb NOT NULL,
+          created_at  timestamptz NOT NULL DEFAULT now(),
+          updated_at  timestamptz NOT NULL DEFAULT now()
+        );
       `);
     })().catch((e) => {
       // Don't cache a transient cold-start failure forever — let it retry.
@@ -236,6 +243,39 @@ export async function countTalkVariants(deck: string): Promise<number> {
 export async function deleteTalkVariant(id: string, deck: string): Promise<boolean> {
   return withDb(async (p) => {
     await p.query(`DELETE FROM talk_variants WHERE id = $1 AND deck = $2`, [id, deck]);
+    return true;
+  }, false);
+}
+
+/* ───────────────────────── Certificates ───────────────────────── */
+
+export type CertRow = { id: string; number: string | null; data: unknown; created_at: string; updated_at: string };
+
+export async function listCertificates(limit = 300): Promise<CertRow[]> {
+  return withDb(async (p) => {
+    const { rows } = await p.query(
+      `SELECT id, number, data, created_at, updated_at FROM certificates ORDER BY updated_at DESC LIMIT $1`,
+      [limit],
+    );
+    return rows as CertRow[];
+  }, []);
+}
+
+export async function saveCertificate(v: { id?: string; number: string; data: unknown }): Promise<string | null> {
+  return withDb(async (p) => {
+    const id = v.id || randomUUID();
+    await p.query(
+      `INSERT INTO certificates (id, number, data) VALUES ($1, $2, $3)
+       ON CONFLICT (id) DO UPDATE SET number = EXCLUDED.number, data = EXCLUDED.data, updated_at = now()`,
+      [id, v.number, JSON.stringify(v.data)],
+    );
+    return id;
+  }, null);
+}
+
+export async function deleteCertificate(id: string): Promise<boolean> {
+  return withDb(async (p) => {
+    await p.query(`DELETE FROM certificates WHERE id = $1`, [id]);
     return true;
   }, false);
 }
