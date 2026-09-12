@@ -234,7 +234,7 @@ export const DECK_CSS = `
   /* ── колонки як картки ── */
   #deck-a4 .col{ background:var(--band); border-radius:5px; padding:5mm 6mm 6mm; border-top:2.5pt solid var(--amber); display:grid; grid-template-rows:subgrid; grid-row:span 2; }
   #deck-a4 .cols{ grid-template-rows:auto 1fr; }
-  #deck-a4 .col h3{ border-bottom:0; padding-bottom:1mm; display:flex; align-items:flex-end; flex-wrap:wrap; }
+  #deck-a4 .col h3{ border-bottom:0; padding-bottom:1mm; display:flex; align-items:flex-start; align-self:start; flex-wrap:wrap; }
   #deck-a4 .cols{ align-items:stretch; }
 
   /* ── кроки як таймлайн ── */
