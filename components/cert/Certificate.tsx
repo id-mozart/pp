@@ -1,5 +1,6 @@
 "use client";
 
+import { useId } from "react";
 import type { Cert } from "@/lib/certs";
 
 /**
@@ -61,11 +62,12 @@ export const CERT_CSS = `
   #cert-a4 .v-ornament h1 em{ font-style:normal; }
   #cert-a4 .v-ornament .verb{ margin-top:7mm; }
   #cert-a4 .v-ornament .name + .verb{ margin-top:3.5mm; }
-  #cert-a4 .v-ornament .name{ margin-top:2mm; font-size:40pt; font-style:italic; background:linear-gradient(96deg,#D99A28 0%,#CE7A1A 55%,#C15612 100%); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; color:transparent; padding:0 2mm; }
+  #cert-a4 .v-ornament .name{ margin-top:2mm; width:100%; height:19mm; display:block; overflow:visible; }
+  #cert-a4 .v-ornament .name text{ font-family:var(--font-spectral),serif; font-size:40pt; font-style:italic; }
   #cert-a4 .v-ornament .prog{ margin-top:3mm; max-width:230mm; padding:4mm 8mm; font-size:22pt; white-space:pre-line; }
   #cert-a4 .v-ornament .signs{ display:flex; gap:22mm; margin-top:auto; padding-top:6mm; }
   #cert-a4 .v-ornament .sg{ width:74mm; text-align:center; }
-  #cert-a4 .v-ornament .sg .l{ height:1.4mm; background:radial-gradient(circle at center, var(--ink) .55pt, transparent .85pt) 0 0/1.8mm 1.4mm repeat-x; opacity:.55; margin-bottom:2.5mm; }
+  #cert-a4 .v-ornament .sg .l{ display:block; width:100%; height:1.6mm; margin-bottom:2.5mm; }
   #cert-a4 .v-ornament .sg .n{ font-family:var(--font-spectral),serif; font-size:20pt; line-height:1.1; font-style:italic; color:var(--ink); opacity:.78; }
   #cert-a4 .v-ornament .sg .r{ font-size:11pt; color:var(--muted); margin-top:.4mm; }
 
@@ -93,6 +95,8 @@ function Trainers({ c }: { c: Cert }) {
 
 export function Certificate({ c }: { c: Cert }) {
   const v = "ornament";
+  // Унікальний id градієнта: однакові id у прихованих мініатюрах ламають заливку при друку.
+  const gid = "g" + useId().replace(/[^a-zA-Z0-9]/g, "");
   return (
     <div id="cert-a4">
       <style dangerouslySetInnerHTML={{ __html: CERT_CSS }} />
@@ -111,13 +115,16 @@ export function Certificate({ c }: { c: Cert }) {
               <div className="orn"><i /><b /><i /></div>
               <h1>Сертифікат</h1>
               <div className="verb">засвідчує, що</div>
-              <div className="name">{c.name}</div>
+              <svg className="name" aria-label={c.name} role="img">
+                <defs><linearGradient id={gid} x1="0" y1="0" x2="1" y2="0"><stop offset="0" stopColor="#D99A28" /><stop offset=".55" stopColor="#CE7A1A" /><stop offset="1" stopColor="#C15612" /></linearGradient></defs>
+                <text x="50%" y="74%" textAnchor="middle" fill={`url(#${gid})`}>{c.name}</text>
+              </svg>
               <div className="verb">{c.verb} програму</div>
               <div className="prog">{c.program}</div>
               <div className="meta">{c.hours}</div>
               <div className="signs">
                 {c.trainers.map((t, i) => (
-                  <div className="sg" key={i}><div className="l" /><div className="n">{t.name}</div><div className="r">{t.role}</div></div>
+                  <div className="sg" key={i}><svg className="l"><line x1="2" y1="50%" x2="100%" y2="50%" stroke="#2A2018" strokeOpacity=".55" strokeWidth="1.5" strokeLinecap="round" strokeDasharray="0.01 6.8" /></svg><div className="n">{t.name}</div><div className="r">{t.role}</div></div>
                 ))}
               </div>
             </div>
