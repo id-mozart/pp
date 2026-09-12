@@ -135,6 +135,10 @@ export const DECK_CSS = `
   #deck-a4 .t-section .secwrap{ display:grid; grid-template-columns:auto 1fr; column-gap:14mm; align-items:end; margin:auto 0; padding-bottom:14mm; }
   #deck-a4 .t-section .num{ font-family:var(--font-spectral),serif; font-style:italic; font-weight:500; font-size:190pt; line-height:.78; color:var(--amber); }
   #deck-a4 .t-section .num:empty{ display:none; }
+  #deck-a4 .t-section .num[contenteditable]{ min-width:.6em; }
+  #deck-a4 .t-section .secwrap:has(> .num:empty){ grid-template-columns:1fr; }
+  #deck-a4 .t-section .sec-t{ min-width:0; }
+  #deck-a4 .t-section h1{ overflow-wrap:normal; word-break:normal; hyphens:none; }
   #deck-a4 .t-section .sec-t{ padding-bottom:6mm; }
   #deck-a4 .t-section .kicker{ font-family:var(--font-jetbrains),monospace; font-size:8pt; letter-spacing:.26em; text-transform:uppercase; color:var(--faint); margin-bottom:6mm; display:flex; align-items:center; gap:4mm; }
   #deck-a4 .t-section .kicker::after{ content:""; width:40mm; height:1px; background:var(--gold); }
@@ -186,8 +190,9 @@ export const DECK_CSS = `
   #deck-a4 .t-section .secimg.panel img{ width:74%; height:auto; object-fit:contain; filter:drop-shadow(0 22px 34px rgba(20,0,60,.45)); }
   #deck-a4 .t-section.has-img .rh, #deck-a4 .t-section.has-img .foot{ margin-right:112mm; }
   #deck-a4 .t-section.has-img .secwrap{ padding-right:112mm; position:relative; z-index:1; }
-  #deck-a4 .t-section.has-img .num{ font-size:140pt; }
-  #deck-a4 .t-section.has-img h1{ font-size:30pt; }
+  #deck-a4 .t-section.has-img .num{ font-size:120pt; }
+  #deck-a4 .t-section.has-img h1{ font-size:28pt; }
+  #deck-a4 .t-section.has-img .secwrap{ column-gap:10mm; }
   #deck-a4 .t-section.fit-top .secimg{ right:0; left:0; bottom:auto; width:auto; height:94mm; }
   #deck-a4 .t-section.fit-top .secimg::after{ content:""; position:absolute; inset:0; background:linear-gradient(180deg,rgba(20,12,6,.35),rgba(20,12,6,0) 45%); }
   #deck-a4 .t-section.fit-top .rh{ position:relative; z-index:1; margin-right:0; }
