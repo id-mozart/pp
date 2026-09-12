@@ -1,7 +1,17 @@
 /** Сертифікат учасника — модель даних і санітизація. */
 
+export type CertVariant = "classic" | "band" | "minimal" | "ornament" | "dark";
+export const CERT_VARIANTS: { id: CertVariant; label: string; desc: string }[] = [
+  { id: "classic", label: "Класика", desc: "кремовий лист, подвійна золота рамка, великий «&» на фоні" },
+  { id: "band", label: "Смуга", desc: "вертикальна золота смуга зліва, текст праворуч" },
+  { id: "minimal", label: "Мінімал", desc: "багато повітря, велике імʼя курсивом, тонкі лінії" },
+  { id: "ornament", label: "Урочистий", desc: "центрована композиція, широка рамка, лінії для підписів" },
+  { id: "dark", label: "Темний", desc: "темний лист, кремовий текст, золоті акценти" },
+];
+
 export type Cert = {
   id?: string;
+  variant: CertVariant;
   number: string; // напр. 00004158
   name: string; // ПІБ учасника
   verb: string; // завершив / завершила
@@ -14,11 +24,12 @@ export type Cert = {
 };
 
 export const CERT_DEFAULT: Cert = {
+  variant: "classic",
   number: "00004158",
-  name: "Ім'я Прізвище",
+  name: "Бабін Сергій",
   verb: "завершив",
-  program: "Назва програми",
-  trainers: [{ name: "Тетяна Пан", role: "бізнес-тренерка" }],
+  program: "Особиста ефективність менеджера в керуванні діяльністю та особистим життям",
+  trainers: [{ name: "Тетяна Пан", role: "бізнес-тренерка" }, { name: "Валентин Кім", role: "бізнес-тренер" }],
   place: "Україна",
   year: String(new Date().getFullYear()),
   date: "",
@@ -31,6 +42,7 @@ export function sanitizeCert(input: any): Cert {
   const trainers = Array.isArray(input?.trainers) ? input.trainers.slice(0, 4) : [];
   return {
     id: input?.id ? s(input.id, 40) : undefined,
+    variant: (CERT_VARIANTS.some((v) => v.id === input?.variant) ? input.variant : "classic") as CertVariant,
     number: s(input?.number, 20),
     name: s(input?.name, 120),
     verb: s(input?.verb, 40) || "завершив",

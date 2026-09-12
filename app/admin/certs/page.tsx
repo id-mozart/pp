@@ -9,9 +9,10 @@ export const metadata: Metadata = {
 };
 export const dynamic = "force-dynamic";
 
-export default async function CertsPage() {
+export default async function CertsPage({ searchParams }: { searchParams?: { variant?: string } }) {
   const rows = await listCertificates();
   const saved = rows.map((r) => ({ ...sanitizeCert(r.data), id: r.id, number: r.number ?? "", updated_at: r.updated_at }));
   const initial: Cert = { ...CERT_DEFAULT, number: nextNumber(rows.map((r) => r.number)) };
+  if (searchParams?.variant) initial.variant = sanitizeCert({ ...initial, variant: searchParams.variant }).variant;
   return <CertEditor initial={initial} saved={saved} dbReady={hasDb()} />;
 }

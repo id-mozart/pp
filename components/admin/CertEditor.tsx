@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { Certificate } from "@/components/cert/Certificate";
-import { CERT_DEFAULT, nextNumber, type Cert } from "@/lib/certs";
+import { CERT_DEFAULT, CERT_VARIANTS, nextNumber, type Cert } from "@/lib/certs";
 
 type Saved = Cert & { id: string; updated_at?: string };
 type Status = "idle" | "dirty" | "saving" | "saved" | "error";
@@ -21,6 +21,14 @@ const CSS = `
   #cert-ui .btn{ border:1px solid rgba(226,166,56,.45); border-radius:10px; padding:8px 14px; font-size:13px; color:#F5E9D7; background:transparent; cursor:pointer; }
   #cert-ui .btn:hover{ border-color:#E2A638; color:#E2A638; }
   #cert-ui .btn.pri{ background:linear-gradient(96deg,#E8AC3C,#CE651E); color:#241A10; border-color:transparent; font-weight:600; }
+  #cert-ui .vars{ display:flex; gap:10px; padding:16px 24px 0; overflow-x:auto; }
+  #cert-ui .var{ flex:0 0 auto; width:190px; border:2px solid transparent; border-radius:12px; background:#FCF8F1; padding:8px; cursor:pointer; text-align:left; transition:border-color .15s; }
+  #cert-ui .var.on{ border-color:#C4621F; }
+  #cert-ui .var .th{ height:96px; border-radius:6px; overflow:hidden; position:relative; background:#eee; }
+  #cert-ui .var .th > div{ position:absolute; left:0; top:0; transform:scale(.155); transform-origin:0 0; pointer-events:none; }
+  #cert-ui .var .th > div .sheet{ box-shadow:none; }
+  #cert-ui .var .lb{ font-family:var(--font-spectral),serif; font-size:15px; color:#2A2018; margin-top:8px; }
+  #cert-ui .var .ds{ font-size:11px; color:#7A6A54; line-height:1.35; margin-top:2px; }
   #cert-ui .wrap{ display:grid; grid-template-columns:380px 1fr; gap:24px; padding:24px; align-items:start; }
   #cert-ui .panel{ background:#FCF8F1; border-radius:14px; padding:18px; box-shadow:0 10px 30px rgba(60,40,15,.12); }
   #cert-ui .panel h2{ font-family:var(--font-spectral),serif; font-weight:500; font-size:20px; color:#2A2018; margin:0 0 12px; }
@@ -40,7 +48,7 @@ const CSS = `
   #cert-ui .item .t small{ display:block; color:#7A6A54; font-size:11px; }
   #cert-ui .item button{ border:1px solid rgba(140,116,82,.4); border-radius:7px; background:#fff; cursor:pointer; font-size:12px; padding:4px 8px; color:#5E4C36; }
   #cert-ui .item button:hover{ border-color:#C4621F; color:#C4621F; }
-  @media print{ #cert-ui{ background:#fff; padding:0; } #cert-ui .bar, #cert-ui .panel{ display:none !important; }
+  @media print{ #cert-ui{ background:#fff; padding:0; } #cert-ui .bar, #cert-ui .panel, #cert-ui .vars{ display:none !important; }
     #cert-ui .wrap{ display:block; padding:0; } #cert-ui .preview{ display:block; } }
 `;
 
@@ -94,6 +102,15 @@ export function CertEditor({ initial, saved: savedInit, dbReady }: { initial: Ce
         <button className="btn" onClick={() => window.print()}>Завантажити PDF</button>
         <button className="btn pri" onClick={save} disabled={status === "saving"}>Зберегти</button>
         <Link href="/admin" className="btn">← Панель</Link>
+      </div>
+      <div className="vars">
+        {CERT_VARIANTS.map((v) => (
+          <button key={v.id} className={"var" + (c.variant === v.id ? " on" : "")} onClick={() => set({ variant: v.id })}>
+            <div className="th"><div><Certificate c={{ ...c, variant: v.id }} /></div></div>
+            <div className="lb">{v.label}</div>
+            <div className="ds">{v.desc}</div>
+          </button>
+        ))}
       </div>
       <div className="wrap">
         <div className="panel">
