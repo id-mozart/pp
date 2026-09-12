@@ -59,6 +59,7 @@ export const CERT_CSS = `
   #cert-a4 .v-ornament .qr .hint{ font-family:var(--font-spectral),serif; font-style:italic; font-size:8.5pt; color:var(--muted); margin-top:.8mm; white-space:nowrap; }
   #cert-a4 .v-ornament .seal{ position:absolute; right:13mm; bottom:15mm; width:36mm; height:36mm; z-index:2; }
   #cert-a4 .v-ornament .seal text{ font-family:var(--font-jetbrains),monospace; font-size:5.6px; letter-spacing:.32em; text-transform:uppercase; fill:var(--gold); }
+  #cert-a4 .v-ornament .seal .sep{ font-size:7px; letter-spacing:0; }
   #cert-a4 .v-ornament .seal .amp{ font-family:var(--font-playfair),Georgia,serif; font-size:44px; letter-spacing:0; }
   #cert-a4 .v-ornament .orn.dbl{ margin-top:5mm; }
   #cert-a4 .v-ornament .orn.dbl i{ width:44mm; height:3px; border-top:1px solid var(--gold); border-bottom:1px solid var(--gold); background:none; opacity:.85; }
@@ -136,7 +137,7 @@ export function Certificate({ c }: { c: Cert }) {
               <circle cx="50" cy="50" r="44.3" fill="none" stroke="#C98A2B" strokeWidth="1.4" strokeDasharray=".4 3.08" strokeLinecap="round" opacity=".9" />
               <circle cx="50" cy="50" r="30.5" fill="#FBF6EC" stroke="#C98A2B" strokeWidth=".7" />
               <circle cx="50" cy="50" r="28.3" fill="none" stroke="#C98A2B" strokeWidth=".35" strokeDasharray="1.2 1.6" />
-              <text textLength="229" lengthAdjust="spacing" transform="rotate(120 50 50)"><textPath href={"#" + gid + "c"} textLength="229" lengthAdjust="spacing">Pan &amp; Partners · Training and Consulting ·</textPath></text>
+              <text textLength="229" lengthAdjust="spacing" transform="rotate(125 50 50)"><textPath href={"#" + gid + "c"} textLength="229" lengthAdjust="spacing">{"Pan & Partners\u00A0\u00A0"}<tspan className="sep">•</tspan>{"\u00A0\u00A0Training and Consulting\u00A0\u00A0"}<tspan className="sep">•</tspan>{"\u00A0\u00A0"}</textPath></text>
               <text x="50" y="64.5" textAnchor="middle" className="amp" fill={`url(#${gid}s)`}>&amp;</text>
             </svg>
             <div className="inner">
