@@ -19,6 +19,7 @@ const UI_CSS = `
   #deck-ui .bar .st{ font-family:var(--font-jetbrains),monospace; font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:#B8A386; margin-right:8px; }
   #deck-ui .btn{ border:1px solid rgba(226,166,56,.45); border-radius:10px; padding:8px 14px; font-size:13px; color:#F5E9D7; background:transparent; cursor:pointer; }
   #deck-ui .btn:hover{ border-color:#E2A638; color:#E2A638; }
+  #deck-ui .btn.on{ border-color:#E2A638; color:#E2A638; }
   #deck-ui .btn.pri{ background:linear-gradient(96deg,#E8AC3C,#CE651E); color:#241A10; border-color:transparent; font-weight:600; }
   #deck-ui .btn.pri:hover{ filter:brightness(1.05); color:#241A10; }
   #deck-ui select{ border:1px solid rgba(226,166,56,.45); border-radius:10px; padding:8px 10px; font-size:13px; color:#F5E9D7; background:#2A2018; }
@@ -105,6 +106,7 @@ export function DeckEditor({ initial, dbReady, only, bare }: { initial: Deck; db
           ))}
         </select>
         <button className="btn" onClick={addPage}>+ сторінка</button>
+        <button className={"btn" + (deck.caps ? " on" : "")} onClick={() => update((d) => ({ ...d, caps: !d.caps }))} title="Заголовки великими літерами">{deck.caps ? "Aa → АБВ" : "АБВ → Aa"}</button>
         <button className="btn" onClick={() => window.print()}>Завантажити PDF</button>
         <button className="btn" onClick={reset}>Скинути</button>
         <button className="btn pri" onClick={save} disabled={status === "saving"}>Зберегти</button>

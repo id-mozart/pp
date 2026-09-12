@@ -50,6 +50,20 @@ export const DECK_CSS = `
   #deck-a4 .lab{ font-family:var(--font-jetbrains),monospace; font-size:7.5pt; letter-spacing:.24em; text-transform:uppercase; color:var(--faint); display:flex; align-items:center; gap:4mm; margin-top:8mm; }
   #deck-a4 .lab::after{ content:""; flex:1; height:1px; background:var(--line); }
 
+  /* капс-заголовки (перемикач) */
+  #deck-a4.caps h1{ text-transform:uppercase; letter-spacing:.035em; font-size:calc(24pt * var(--kh,1)); line-height:1.12; }
+  #deck-a4.caps .t-cover h1{ font-size:38pt; letter-spacing:.03em; line-height:1.06; }
+  #deck-a4.caps .t-cover h1 em{ font-size:22pt; letter-spacing:.04em; }
+  #deck-a4.caps .t-section h1{ font-size:30pt; }
+  #deck-a4.caps .t-section .withimg h1{ font-size:26pt; }
+  #deck-a4.caps .t-about h1{ font-size:28pt; }
+  #deck-a4.caps .t-closing h1{ font-size:32pt; }
+  #deck-a4.caps .col h3, #deck-a4.caps .step .h{ text-transform:uppercase; letter-spacing:.06em; font-size:calc(10.5pt * var(--k,1)); font-style:normal; }
+  /* кольорові маркери психотипів */
+  #deck-a4 .chip{ display:inline-block; width:.62em; height:.62em; border-radius:99px; margin-right:.35em; vertical-align:baseline; transform:translateY(-.02em); }
+  #deck-a4 .chip.red{ background:#D9342B; } #deck-a4 .chip.yellow{ background:#F2C230; } #deck-a4 .chip.blue{ background:#2F62C7; }
+  #deck-a4 .t-gallery .lead{ font-size:calc(17pt * var(--k,1)); font-style:italic; color:var(--acc); }
+
   /* bullets */
   #deck-a4 ul.bul{ list-style:none; margin-top:5mm; display:flex; flex-direction:column; gap:calc(2.6mm * var(--k,1)); max-width:230mm; }
   #deck-a4 ul.bul li{ position:relative; padding-left:6mm; font-size:calc(11.8pt * var(--k,1)); line-height:1.5; }
@@ -244,6 +258,14 @@ function WithImg({ image, children }: { image?: string; children: React.ReactNod
   );
 }
 
+function chipFor(text: string): string | null {
+  const t = text.trim().toLowerCase();
+  if (t.startsWith("червон")) return "red";
+  if (t.startsWith("жовт")) return "yellow";
+  if (t.startsWith("син")) return "blue";
+  return null;
+}
+
 function Title({ p, set, editable, className }: { p: { title: string; titleEm: string }; set: Patch; editable: boolean; className?: string }) {
   return (
     <h1 className={className}>
@@ -323,7 +345,7 @@ export function DeckPages({
 }) {
   const rh = onRunhead ?? (() => {});
   return (
-    <div id="deck-a4">
+    <div id="deck-a4" className={deck.caps ? "caps" : undefined}>
       <style dangerouslySetInnerHTML={{ __html: DECK_CSS }} />
       {deck.pages.map((p, i) => {
         if (only && only !== i + 1) return null;
@@ -448,6 +470,7 @@ function PageBody({ p, set, editable }: { p: DeckPage; set: Patch; editable: boo
             {p.cols.map((c, k) => (
               <div className="col" key={k}>
                 <h3>
+                  {chipFor(c.head) ? <span className={"chip " + chipFor(c.head)} /> : null}
                   <E value={c.head} onChange={(v) => set({ cols: p.cols.map((x, j) => (j === k ? { ...x, head: v } : x)) })} editable={e} ph="підзаголовок" />
                 </h3>
                 <EList className="bul sm" items={c.items} onChange={(v) => set({ cols: p.cols.map((x, j) => (j === k ? { ...x, items: v } : x)) })} editable={e} />
@@ -490,6 +513,12 @@ function PageBody({ p, set, editable }: { p: DeckPage; set: Patch; editable: boo
               {p.rows.map((r, ri) => (
                 <tr key={ri}>
                   {p.head.map((_, ci) => (
+                    ci === 0 && chipFor(r[0] ?? "") ? (
+                      <td key={ci}>
+                        <span className={"chip " + chipFor(r[0] ?? "")} />
+                        <E value={r[0] ?? ""} onChange={(v) => set({ rows: p.rows.map((row, j) => (j === ri ? p.head.map((__, c) => (c === 0 ? v : row[c] ?? "")) : row)) })} editable={e} ph="" />
+                      </td>
+                    ) : (
                     <E
                       key={ci}
                       tag="td"
@@ -498,6 +527,7 @@ function PageBody({ p, set, editable }: { p: DeckPage; set: Patch; editable: boo
                       editable={e}
                       ph=""
                     />
+                    )
                   ))}
                 </tr>
               ))}
@@ -510,7 +540,10 @@ function PageBody({ p, set, editable }: { p: DeckPage; set: Patch; editable: boo
       return (
         <>
           <Title p={p} set={set} editable={e} />
-          <E tag="p" className="lead" value={p.lead} onChange={(v) => set({ lead: v })} editable={e} ph="лід" />
+          <p className="lead" style={{ display: p.lead ? undefined : "none" }}>
+            {chipFor(p.lead) ? <span className={"chip " + chipFor(p.lead)} /> : null}
+            <E value={p.lead} onChange={(v) => set({ lead: v })} editable={e} ph="лід" />
+          </p>
           <div className="gal">
             {p.images.map((im, k) => (
               <figure key={k}>

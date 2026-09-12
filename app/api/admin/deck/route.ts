@@ -48,6 +48,7 @@ function sanitize(input: any, slug: string): Deck {
     slug,
     name: s(input?.name, 200) || base?.name || slug,
     runhead: s(input?.runhead, 200) || base?.runhead || "",
+    caps: !!input?.caps,
     pages: pages.length ? pages : base?.pages ?? [],
   };
 }

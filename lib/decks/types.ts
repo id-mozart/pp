@@ -22,6 +22,7 @@ export type Deck = {
   slug: string;
   name: string;
   runhead: string; // напис у колонтитулі, напр. «NovaPay · Активні продажі · 2026»
+  caps?: boolean; // заголовки капсом
   pages: DeckPage[];
 };
 
