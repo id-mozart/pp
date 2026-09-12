@@ -1,9 +1,7 @@
 /** Сертифікат учасника — модель даних і санітизація. */
 
-export type CertVariant = "classic" | "band" | "ornament";
+export type CertVariant = "ornament";
 export const CERT_VARIANTS: { id: CertVariant; label: string; desc: string }[] = [
-  { id: "classic", label: "Класика", desc: "кремовий лист, подвійна золота рамка, великий «&» на фоні" },
-  { id: "band", label: "Смуга", desc: "вертикальна золота смуга зліва, текст праворуч" },
   { id: "ornament", label: "Урочистий", desc: "центрована композиція, сітка з амперсандів на фоні, лінії для підписів" },
 ];
 
@@ -22,7 +20,7 @@ export type Cert = {
 };
 
 export const CERT_DEFAULT: Cert = {
-  variant: "classic",
+  variant: "ornament",
   number: "00004158",
   name: "Бабін Сергій",
   verb: "завершив",
@@ -40,7 +38,7 @@ export function sanitizeCert(input: any): Cert {
   const trainers = Array.isArray(input?.trainers) ? input.trainers.slice(0, 4) : [];
   return {
     id: input?.id ? s(input.id, 40) : undefined,
-    variant: (CERT_VARIANTS.some((v) => v.id === input?.variant) ? input.variant : "classic") as CertVariant,
+    variant: (CERT_VARIANTS.some((v) => v.id === input?.variant) ? input.variant : "ornament") as CertVariant,
     number: s(input?.number, 20),
     name: s(input?.name, 120),
     verb: s(input?.verb, 40) || "завершив",

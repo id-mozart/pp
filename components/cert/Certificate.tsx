@@ -40,36 +40,16 @@ export const CERT_CSS = `
   #cert-a4 .foot .site{ font-family:var(--font-jetbrains),monospace; font-size:8pt; letter-spacing:.22em; color:var(--acc); }
   #cert-a4 .band-b{ position:absolute; left:0; right:0; bottom:0; height:4mm; background:linear-gradient(90deg,var(--amber),var(--gold)); }
 
-  /* ── classic ── */
-  #cert-a4 .v-classic .edge{ position:absolute; inset:7mm; border:.75pt solid var(--gold); pointer-events:none; }
-  #cert-a4 .v-classic .edge2{ position:absolute; inset:9mm; border:.5pt solid rgba(201,138,43,.35); pointer-events:none; }
-  #cert-a4 .v-classic .wm{ position:absolute; right:-14mm; bottom:-26mm; font-family:var(--font-playfair),Georgia,serif; font-size:190mm; line-height:1; color:var(--amber); opacity:.05; pointer-events:none; user-select:none; }
-  #cert-a4 .v-classic .rh{ display:flex; align-items:center; gap:6mm; position:relative; z-index:1; }
-  #cert-a4 .v-classic .body{ flex:1; display:flex; flex-direction:column; justify-content:center; position:relative; z-index:1; padding:0 6mm; }
-
-  /* ── band ── */
-  #cert-a4 .v-band{ padding:0; flex-direction:row; }
-  #cert-a4 .v-band .side{ width:58mm; background:linear-gradient(180deg,#D2701C,#C98A2B); color:#FCF8F1; padding:14mm 9mm; display:flex; flex-direction:column; position:relative; }
-  #cert-a4 .v-band .side .brand{ color:#FCF8F1; font-size:20pt; line-height:1.1; }
-  #cert-a4 .v-band .side .brand em{ color:#FCF8F1; }
-  #cert-a4 .v-band .side .brand-sub{ color:rgba(252,248,241,.8); margin-top:2mm; letter-spacing:.24em; }
-  #cert-a4 .v-band .side .big{ margin-top:auto; font-family:var(--font-playfair),serif; font-size:120mm; line-height:.8; color:rgba(252,248,241,.18); margin-left:-4mm; }
-  #cert-a4 .v-band .side .num{ color:rgba(252,248,241,.85); margin-top:6mm; }
-  #cert-a4 .v-band .main{ flex:1; padding:16mm 18mm 14mm 16mm; display:flex; flex-direction:column; }
-  #cert-a4 .v-band .main .body{ flex:1; display:flex; flex-direction:column; justify-content:center; }
-  #cert-a4 .v-band h1{ font-size:56pt; }
-  #cert-a4 .v-band .name{ margin-top:10mm; }
-
   /* ── ornament ── */
   #cert-a4 .v-ornament{ padding:14mm; }
-  #cert-a4 .v-ornament .grid{ position:absolute; inset:0; pointer-events:none; overflow:hidden; display:grid; grid-template-columns:repeat(14,1fr); grid-auto-rows:18mm; align-content:start; padding:6mm 0 0 4mm; }
-  #cert-a4 .v-ornament .grid span{ font-family:var(--font-playfair),Georgia,serif; font-size:7mm; line-height:18mm; text-align:center; color:#2A2018; opacity:.07; }
+  #cert-a4 .v-ornament .grid{ position:absolute; inset:0; pointer-events:none; overflow:hidden; display:grid; grid-template-columns:repeat(12,1fr); grid-auto-rows:20mm; align-content:start; padding:6mm 0 0 4mm; }
+  #cert-a4 .v-ornament .grid span{ font-family:var(--font-playfair),Georgia,serif; font-size:9mm; line-height:20mm; text-align:center; color:#2A2018; opacity:.1; }
   #cert-a4 .v-ornament .grid span.o{ transform:translateX(50%); }
-  #cert-a4 .v-ornament .frame{ position:absolute; inset:6mm; border:3pt solid var(--amber); pointer-events:none; }
-  #cert-a4 .v-ornament .frame2{ position:absolute; inset:9mm; border:.6pt solid var(--gold); pointer-events:none; }
-  #cert-a4 .v-ornament .inner{ flex:1; display:flex; flex-direction:column; align-items:center; text-align:center; padding:8mm 16mm 4mm; position:relative; z-index:1; }
-  #cert-a4 .v-ornament .brand{ font-size:28pt; }
-  #cert-a4 .v-ornament .brand-sub{ font-size:8pt; }
+  #cert-a4 .v-ornament .frame{ position:absolute; inset:7mm; border:.75pt solid var(--gold); pointer-events:none; }
+  #cert-a4 .v-ornament .frame2{ position:absolute; inset:9mm; border:.4pt solid rgba(201,138,43,.45); pointer-events:none; }
+  #cert-a4 .v-ornament .inner{ flex:1; display:flex; flex-direction:column; align-items:center; text-align:center; padding:6mm 16mm 4mm; position:relative; z-index:1; }
+  #cert-a4 .v-ornament .brand{ font-size:40pt; line-height:1; }
+  #cert-a4 .v-ornament .brand-sub{ font-size:9pt; letter-spacing:.36em; margin-top:2.5mm; }
   #cert-a4 .v-ornament .brand-sub{ margin-top:1.5mm; }
   #cert-a4 .v-ornament .orn{ display:flex; align-items:center; gap:4mm; margin-top:7mm; color:var(--gold); }
   #cert-a4 .v-ornament .orn i{ display:block; width:36mm; height:1px; background:var(--gold); }
@@ -77,13 +57,13 @@ export const CERT_CSS = `
   #cert-a4 .v-ornament h1{ font-size:54pt; margin-top:5mm; letter-spacing:.14em; text-transform:uppercase; font-weight:500; }
   #cert-a4 .v-ornament h1 em{ font-style:normal; }
   #cert-a4 .v-ornament .verb{ margin-top:7mm; }
-  #cert-a4 .v-ornament .name{ margin-top:2mm; font-size:34pt; }
+  #cert-a4 .v-ornament .name{ margin-top:2mm; font-size:40pt; font-style:italic; background:linear-gradient(96deg,#D99A28 0%,#CE7A1A 55%,#C15612 100%); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; color:transparent; padding:0 2mm; }
   #cert-a4 .v-ornament .prog{ margin-top:5mm; max-width:220mm; padding:4mm 8mm; }
   #cert-a4 .v-ornament .signs{ display:flex; gap:22mm; margin-top:auto; padding-top:10mm; }
-  #cert-a4 .v-ornament .sg{ width:64mm; text-align:center; }
+  #cert-a4 .v-ornament .sg{ width:74mm; text-align:center; }
   #cert-a4 .v-ornament .sg .l{ height:1px; background:var(--ink); opacity:.5; margin-bottom:2.5mm; }
-  #cert-a4 .v-ornament .sg .n{ font-family:var(--font-spectral),serif; font-size:12.5pt; }
-  #cert-a4 .v-ornament .sg .r{ font-size:8.5pt; color:var(--muted); margin-top:1mm; }
+  #cert-a4 .v-ornament .sg .n{ font-family:var(--font-spectral),serif; font-size:17pt; }
+  #cert-a4 .v-ornament .sg .r{ font-size:10pt; color:var(--muted); margin-top:1.5mm; }
   #cert-a4 .v-ornament .bottom{ display:flex; justify-content:space-between; width:100%; margin-top:6mm; font-family:var(--font-jetbrains),monospace; font-size:8pt; letter-spacing:.22em; text-transform:uppercase; color:var(--faint); }
 
 
@@ -111,56 +91,11 @@ function Trainers({ c }: { c: Cert }) {
 const meta = (c: Cert) => [c.hours, c.date].filter(Boolean).join(" · ");
 
 export function Certificate({ c }: { c: Cert }) {
-  const v = c.variant || "classic";
+  const v = "ornament";
   return (
     <div id="cert-a4">
       <style dangerouslySetInnerHTML={{ __html: CERT_CSS }} />
       <section className={`sheet v-${v}`}>
-        {v === "classic" && (
-          <>
-            <div className="edge" /><div className="edge2" /><div className="wm">&amp;</div>
-            <div className="rh">
-              <span className="brand">Pan<em>&amp;</em>Partners</span><span className="brand-sub">Training and Consulting</span>
-              <span className="fill" /><span className="num">№ {c.number || "—"}</span>
-            </div>
-            <div className="body">
-              <div className="kicker">Pan&amp;Partners · {c.place || "Україна"} · {c.year}</div>
-              <h1>Сертифікат</h1>
-              <div className="name">{c.name}</div>
-              <div className="verb">{c.verb} програму</div>
-              <div className="prog">{c.program}</div>
-              <div className="meta">{meta(c)}</div>
-              <Trainers c={c} />
-            </div>
-            <div className="foot"><span className="pl">{c.place || "Україна"}, {c.year}</span><span className="site">pan-partners.agency</span></div>
-            <div className="band-b" />
-          </>
-        )}
-        {v === "band" && (
-          <>
-            <div className="side">
-              <div className="brand">Pan<em>&amp;</em>Partners</div>
-              <div className="brand-sub">Training and Consulting</div>
-              <div className="big">&amp;</div>
-              <div className="num">№ {c.number || "—"}</div>
-            </div>
-            <div className="main">
-              <div className="rh" style={{ display: "flex", alignItems: "center", gap: "6mm" }}>
-                <span className="kicker">{c.place || "Україна"} · {c.year}</span><span className="fill" />
-                <span className="num">pan-partners.agency</span>
-              </div>
-              <div className="body">
-                <h1>Сертифікат</h1>
-                <div className="name">{c.name}</div>
-                <div className="verb">{c.verb} програму</div>
-                <div className="prog">{c.program}</div>
-                <div className="meta">{meta(c)}</div>
-                <Trainers c={c} />
-              </div>
-              <div className="foot"><span className="pl">Підтверджує участь та завершення програми</span><span className="site">{c.place || "Україна"}, {c.year}</span></div>
-            </div>
-          </>
-        )}
         {v === "ornament" && (
           <>
             <div className="grid" aria-hidden>{Array.from({ length: 14 * 12 }).map((_, i) => <span key={i} className={Math.floor(i / 14) % 2 ? "o" : undefined}>&amp;</span>)}</div>
