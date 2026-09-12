@@ -9,7 +9,7 @@ import type { Cert } from "@/lib/certs";
  * Друк — через @media print (297×210 мм).
  */
 export const CERT_CSS = `
-  #cert-a4{ --sheet:#FCF8F1; --band:#F4ECDC; --ink:#2A2018; --muted:#5E4C36; --faint:#9C8B73;
+  #cert-a4{ --sheet:#FFFFFF; --band:#F4ECDC; --ink:#2A2018; --muted:#5E4C36; --faint:#9C8B73;
     --line:rgba(140,116,82,.36); --acc:#C4621F; --amber:#D2701C; --gold:#C98A2B;
     -webkit-print-color-adjust:exact; print-color-adjust:exact;
     font-family:var(--font-inter),system-ui,sans-serif; color:var(--ink); }
@@ -42,9 +42,9 @@ export const CERT_CSS = `
 
   /* ── ornament ── */
   #cert-a4 .v-ornament{ padding:14mm; }
-  #cert-a4 .v-ornament .grid{ position:absolute; inset:9mm; pointer-events:none; overflow:hidden; display:grid; grid-template-columns:repeat(12,1fr); grid-auto-rows:19mm; align-content:center; justify-items:center; }
-  #cert-a4 .v-ornament .grid span{ font-family:var(--font-playfair),Georgia,serif; font-size:11.5mm; line-height:19mm; color:#2A2018; opacity:.055; }
-  #cert-a4 .v-ornament .grid span.o{ transform:translateX(11.6mm); }
+  #cert-a4 .v-ornament .grid{ position:absolute; inset:9mm; pointer-events:none; overflow:hidden; display:grid; grid-template-columns:repeat(24,1fr); grid-auto-rows:19mm; align-content:center; }
+  #cert-a4 .v-ornament .grid span{ grid-column:span 2; font-family:var(--font-playfair),Georgia,serif; font-size:11.5mm; line-height:19mm; text-align:center; color:#2A2018; opacity:.045; }
+  #cert-a4 .v-ornament .grid i{ grid-column:span 1; }
   #cert-a4 .v-ornament .frame{ position:absolute; inset:7mm; border:.75pt solid var(--gold); pointer-events:none; }
   #cert-a4 .v-ornament .frame2{ position:absolute; inset:9mm; border:.4pt solid rgba(201,138,43,.45); pointer-events:none; }
   #cert-a4 .v-ornament .inner{ flex:1; display:flex; flex-direction:column; align-items:center; text-align:center; padding:11mm 16mm 7mm; position:relative; z-index:1; }
@@ -99,7 +99,9 @@ export function Certificate({ c }: { c: Cert }) {
       <section className={`sheet v-${v}`}>
         {v === "ornament" && (
           <>
-            <div className="grid" aria-hidden>{Array.from({ length: 12 * 12 }).map((_, i) => <span key={i} className={Math.floor(i / 12) % 2 ? "o" : undefined}>&amp;</span>)}</div>
+            <div className="grid" aria-hidden>{Array.from({ length: 10 }).flatMap((_, r) => r % 2
+              ? [<i key={`a${r}`} />, ...Array.from({ length: 11 }).map((_, k) => <span key={`${r}-${k}`}>&amp;</span>), <i key={`b${r}`} />]
+              : Array.from({ length: 12 }).map((_, k) => <span key={`${r}-${k}`}>&amp;</span>))}</div>
             <div className="frame" /><div className="frame2" />
             <div className="tag l">{[c.place || "Україна", c.date || c.year].filter(Boolean).join(" · ")}</div>
             <div className="tag r">№ {c.number || "—"}</div>
