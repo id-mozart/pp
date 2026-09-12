@@ -52,6 +52,19 @@ export const CERT_CSS = `
   #cert-a4 .v-ornament .tag{ position:absolute; top:12.5mm; font-family:var(--font-jetbrains),monospace; font-size:8pt; letter-spacing:.22em; text-transform:uppercase; color:var(--faint); z-index:2; white-space:nowrap; }
   #cert-a4 .v-ornament .tag.l{ left:14mm; }
   #cert-a4 .v-ornament .tag.r{ right:14mm; }
+  /* нижні кути: QR + адреса сайту зліва, печатка справа */
+  #cert-a4 .v-ornament .qr{ position:absolute; left:14mm; bottom:11mm; display:flex; flex-direction:column; align-items:flex-start; gap:2mm; z-index:2; text-align:left; }
+  #cert-a4 .v-ornament .qr img{ width:19mm; height:19mm; display:block; }
+  #cert-a4 .v-ornament .qr .site{ font-family:var(--font-jetbrains),monospace; font-size:8pt; letter-spacing:.2em; text-transform:uppercase; color:var(--acc); white-space:nowrap; }
+  #cert-a4 .v-ornament .qr .hint{ font-family:var(--font-spectral),serif; font-style:italic; font-size:8.5pt; color:var(--muted); margin-top:.8mm; white-space:nowrap; }
+  #cert-a4 .v-ornament .seal{ position:absolute; right:13mm; bottom:9.5mm; width:34mm; height:34mm; z-index:2; }
+  #cert-a4 .v-ornament .seal text{ font-family:var(--font-jetbrains),monospace; font-size:5.6px; letter-spacing:.32em; text-transform:uppercase; fill:var(--gold); }
+  #cert-a4 .v-ornament .seal .amp{ font-family:var(--font-playfair),Georgia,serif; font-size:44px; letter-spacing:0; }
+  #cert-a4 .v-ornament .orn.dbl{ margin-top:5mm; }
+  #cert-a4 .v-ornament .orn.dbl i{ width:44mm; height:3px; border-top:1px solid var(--gold); border-bottom:1px solid var(--gold); background:none; opacity:.85; }
+  #cert-a4 .v-ornament .orn.dbl b{ width:3mm; height:3mm; }
+  #cert-a4 .v-ornament .orn.dbl b::after{ content:""; position:absolute; inset:.7mm; background:var(--gold); }
+  #cert-a4 .v-ornament .orn b{ position:relative; }
   #cert-a4 .v-ornament .brand{ font-size:40pt; line-height:1; }
   #cert-a4 .v-ornament .brand-sub{ font-size:9pt; letter-spacing:.36em; margin-top:2.5mm; }
   #cert-a4 .v-ornament .brand-sub{ margin-top:1.5mm; }
@@ -109,10 +122,25 @@ export function Certificate({ c }: { c: Cert }) {
             <div className="frame" /><div className="frame2" />
             <div className="tag l">{[c.place || "Україна", c.date || c.year].filter(Boolean).join(" · ")}</div>
             <div className="tag r">№ {c.number || "—"}</div>
+            <div className="qr">
+              <img src="/cert/qr-site.svg" alt="QR: pan-partners.agency" />
+              <div><div className="site">pan-partners.agency</div><div className="hint">Скануй і дізнайся більше</div></div>
+            </div>
+            <svg className="seal" viewBox="0 0 100 100" aria-hidden>
+              <defs>
+                <path id={gid + "c"} d="M50 50 m-38 0 a38 38 0 1 1 76 0 a38 38 0 1 1 -76 0" />
+                <linearGradient id={gid + "s"} x1="0" y1="0" x2="1" y2="1"><stop offset="0" stopColor="#D99A28" /><stop offset="1" stopColor="#C15612" /></linearGradient>
+              </defs>
+              <circle cx="50" cy="50" r="48" fill="none" stroke="#C98A2B" strokeWidth="1" />
+              <circle cx="50" cy="50" r="45.5" fill="none" stroke="#C98A2B" strokeWidth=".4" />
+              <circle cx="50" cy="50" r="30" fill="none" stroke="#C98A2B" strokeWidth=".6" />
+              <text textLength="238" lengthAdjust="spacing"><textPath href={"#" + gid + "c"} textLength="238" lengthAdjust="spacing">Pan &amp; Partners · Training and Consulting ·</textPath></text>
+              <text x="50" y="65" textAnchor="middle" className="amp" fill={`url(#${gid}s)`}>&amp;</text>
+            </svg>
             <div className="inner">
               <div className="brand">Pan<em>&amp;</em>Partners</div>
               <div className="brand-sub">Training and Consulting</div>
-              <div className="orn"><i /><b /><i /></div>
+              <div className="orn dbl"><i /><b /><i /></div>
               <h1>Сертифікат</h1>
               <div className="verb">засвідчує, що</div>
               <svg className="name" aria-label={c.name} role="img">
