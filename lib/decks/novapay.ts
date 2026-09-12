@@ -32,7 +32,7 @@ export const NOVAPAY_DECK: Deck = {
         "Проведення навчання з продажу та переговорів, управління ключовими клієнтами.",
       ],
       note: "Географія проєктів: Україна, Казахстан, Узбекистан, Туркменістан, Європа (Чехія, Іспанія, Польща), США, Китай. Понад 1500 навчальних програм з продажу та переговорів у сфері B2B та B2C.",
-      image: I + "tania.jpg", logos: I + "profile-strip.png" },
+      image: I + "tania-profile.jpg", logos: I + "profile-strip.png" },
     // 4
     { id: "s04", type: "text", title: "Наші", titleEm: "клієнти", lead: "Понад 1 500 проектів було завершено в сфері B2B та B2C:", paras: [], callout: "", image: I + "clients.png" },
     // 5
@@ -246,6 +246,6 @@ export const NOVAPAY_DECK: Deck = {
     // 60
     { id: "s60", type: "table", title: "Action", titleEm: "plan", lead: "Що потрібно зробити після нашої зустрічі — перші 3 кроки?", head: ["#", "Захід / дія", "Як зрозумію, що досяг — індикатори досягнення", "Терміни / період-ть"], rows: [["1.", "", "", ""], ["2.", "", "", ""], ["3.", "", "", ""]], callout: "" },
     // 61
-    { id: "s61", type: "closing", title: "Дякую", titleEm: "за активність", sub: "Підписуйтесь на мій Інстаграм: @tetiana_pan.sales", contacts: ["+38 067 007 0710", "+38 050 448 1411", "+38 066 730 6237"], image: I + "tania.jpg", qr: I + "instagram.jpg" },
+    { id: "s61", type: "closing", title: "Дякую", titleEm: "за активність", sub: "Підписуйтесь на мій Інстаграм: @tetiana_pan.sales", contacts: ["+38 067 007 0710", "+38 050 448 1411", "+38 066 730 6237"], image: I + "tania-profile.jpg", qr: I + "instagram.jpg" },
   ],
 };

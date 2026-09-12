@@ -37,12 +37,12 @@ export const DECK_CSS = `
   #deck-a4 .foot .tl b{ color:var(--acc); font-weight:500; }
 
   /* типографіка */
-  #deck-a4 h1{ font-family:var(--font-spectral),Georgia,serif; font-size:calc(30pt * var(--kh,1)); font-weight:500; line-height:1.06; letter-spacing:-.005em; margin-top:7mm; }
+  #deck-a4 h1{ font-family:var(--font-spectral),Georgia,serif; font-size:calc(34pt * var(--kh,1)); font-weight:500; line-height:1.06; letter-spacing:-.005em; margin-top:7mm; }
   #deck-a4 h1 em, #deck-a4 h2 em{ color:var(--amber); font-style:italic; }
-  #deck-a4 .lead{ font-family:var(--font-spectral),serif; font-size:calc(13.5pt * var(--k,1)); line-height:1.48; color:var(--ink); margin-top:4mm; max-width:220mm; }
+  #deck-a4 .lead{ font-family:var(--font-spectral),serif; font-size:calc(14.5pt * var(--k,1)); line-height:1.48; color:var(--ink); margin-top:4mm; max-width:220mm; }
   #deck-a4 .lead:empty{ display:none; }
   #deck-a4 h1:has(> [contenteditable]:empty + em > [contenteditable]:empty){ display:none; }
-  #deck-a4 .para{ font-size:calc(11.5pt * var(--k,1)); line-height:1.55; color:var(--ink); margin-top:4mm; max-width:220mm; }
+  #deck-a4 .para{ font-size:calc(12.2pt * var(--k,1)); line-height:1.55; color:var(--ink); margin-top:4mm; max-width:220mm; }
   #deck-a4 .callout{ position:relative; margin-top:6mm; max-width:230mm; background:var(--band); border-radius:4px; padding:4.5mm 7mm 4.5mm 9mm;
     font-family:var(--font-spectral),serif; font-size:calc(13pt * var(--k,1)); line-height:1.45; }
   #deck-a4 .callout::before{ content:""; position:absolute; left:0; top:0; bottom:0; width:3pt; background:var(--amber); border-radius:4px 0 0 4px; }
@@ -64,11 +64,17 @@ export const DECK_CSS = `
   #deck-a4 .chip.red{ background:#D9342B; } #deck-a4 .chip.yellow{ background:#F2C230; } #deck-a4 .chip.blue{ background:#2F62C7; }
   #deck-a4 .t-gallery .lead{ font-size:calc(17pt * var(--k,1)); font-style:italic; color:var(--acc); }
 
+  /* тіло сторінки */
+  #deck-a4 .pb{ display:flex; flex-direction:column; flex:1; min-height:0; }
+  #deck-a4 .sheet[data-sparse] .pb{ justify-content:center; padding-bottom:6mm; }
+  #deck-a4 .sheet[data-sparse] .pb > h1:first-child, #deck-a4 .sheet[data-sparse] .withimg h1:first-child{ margin-top:0; }
+  #deck-a4 .t-cover .pb, #deck-a4 .t-section .pb, #deck-a4 .t-closing .pb{ display:contents; }
+
   /* bullets */
   #deck-a4 ul.bul{ list-style:none; margin-top:5mm; display:flex; flex-direction:column; gap:calc(2.6mm * var(--k,1)); max-width:230mm; }
-  #deck-a4 ul.bul li{ position:relative; padding-left:6mm; font-size:calc(11.8pt * var(--k,1)); line-height:1.5; }
+  #deck-a4 ul.bul li{ position:relative; padding-left:6mm; font-size:calc(12.5pt * var(--k,1)); line-height:1.5; }
   #deck-a4 ul.bul li::before{ content:""; position:absolute; left:0; top:.55em; width:3.6pt; height:3.6pt; border-radius:99px; background:var(--amber); }
-  #deck-a4 ul.bul.sm li{ font-size:calc(10.2pt * var(--k,1)); line-height:1.45; }
+  #deck-a4 ul.bul.sm li{ font-size:calc(10.8pt * var(--k,1)); line-height:1.45; }
   #deck-a4 ul.bul.sm{ gap:2mm; margin-top:3mm; }
 
   /* ілюстрація праворуч */
@@ -83,7 +89,7 @@ export const DECK_CSS = `
   /* gallery */
   #deck-a4 .gal{ display:grid; grid-template-columns:repeat(3,1fr); gap:8mm; margin-top:7mm; }
   #deck-a4 .gal figure{ text-align:center; }
-  #deck-a4 .gal img{ width:100%; height:96mm; object-fit:cover; display:block; border-radius:3px; border:.75pt solid var(--line); }
+  #deck-a4 .gal img{ width:100%; height:100mm; object-fit:cover; display:block; border-radius:3px; border:.75pt solid var(--line); }
   #deck-a4 .gal figcaption{ font-family:var(--font-spectral),serif; font-style:italic; font-size:15pt; color:var(--acc); margin-top:3mm; }
   #deck-a4 .t-section .withimg .fig img{ max-height:120mm; }
   #deck-a4 .t-closing .qr{ width:34mm; height:34mm; object-fit:contain; display:block; margin-top:6mm; border:0; padding:0; }
@@ -98,7 +104,7 @@ export const DECK_CSS = `
   #deck-a4 .step{ display:grid; grid-template-columns:60mm 1fr; gap:6mm; padding:calc(3.2mm * var(--k,1)) 0; border-top:1px solid var(--line); align-items:baseline; }
   #deck-a4 .step:first-child{ border-top:0; }
   #deck-a4 .step .h{ font-family:var(--font-spectral),serif; font-style:italic; font-size:calc(13.5pt * var(--k,1)); color:var(--acc); line-height:1.3; }
-  #deck-a4 .step .t{ font-size:calc(11.5pt * var(--k,1)); line-height:1.5; }
+  #deck-a4 .step .t{ font-size:calc(12.2pt * var(--k,1)); line-height:1.5; }
 
   /* table */
   #deck-a4 table{ width:100%; border-collapse:collapse; margin-top:6mm; font-size:calc(10pt * var(--k,1)); line-height:1.42; }
@@ -151,7 +157,7 @@ export const DECK_CSS = `
   #deck-a4 .t-about .quote::before{ content:""; position:absolute; left:0; top:0; bottom:0; width:3pt; background:var(--amber); border-radius:4px 0 0 4px; }
   #deck-a4 .t-about .quote:empty{ display:none; }
   #deck-a4 .t-about .portrait{ position:relative; width:74mm; }
-  #deck-a4 .t-about .portrait img{ display:block; width:100%; height:92mm; object-fit:cover; object-position:center 15%; position:relative; z-index:1; filter:saturate(.9); }
+  #deck-a4 .t-about .portrait img{ display:block; width:100%; height:92mm; object-fit:cover; object-position:center 10%; position:relative; z-index:1; filter:saturate(.9); }
   #deck-a4 .t-about .portrait .frame{ position:absolute; top:3mm; left:3mm; right:-2.6mm; bottom:-2.3mm; border:.75pt solid var(--gold); }
   #deck-a4 .t-about .stats{ display:grid; grid-template-columns:repeat(4,1fr); margin-top:6mm; }
   #deck-a4 .t-about .stat{ padding:0 5mm; border-left:1px solid var(--line); }
@@ -171,7 +177,7 @@ export const DECK_CSS = `
   #deck-a4 .t-closing h1{ font-size:40pt; margin-top:0; }
   #deck-a4 .t-closing .sub{ font-family:var(--font-spectral),serif; font-size:13pt; color:var(--muted); margin-top:6mm; }
   #deck-a4 .t-closing ul.ct{ list-style:none; margin-top:8mm; display:flex; flex-direction:column; gap:1.5mm; font-family:var(--font-jetbrains),monospace; font-size:10pt; color:var(--acc); }
-  #deck-a4 .t-closing .wrap > img{ width:62mm; height:78mm; object-fit:cover; object-position:center 20%; display:block; border:.75pt solid var(--gold); padding:3mm; background:#fff; }
+  #deck-a4 .t-closing .wrap > img{ width:62mm; height:78mm; object-fit:cover; object-position:center 10%; display:block; border:.75pt solid var(--gold); padding:3mm; background:#fff; }
 
   @media print{
     @page{ size:297mm 210mm; margin:0; }
@@ -322,7 +328,7 @@ function Sheet({ deck, i, cls, page, children, editable, onRunhead }: { deck: De
         <span className="fill" />
         <E value={deck.runhead} onChange={onRunhead} editable={editable} className="tag" ph="колонтитул" />
       </div>
-      {children}
+      <div className="pb">{children}</div>
       <div className="foot">
         <span className="tl">
           <b>Тетяна Пан</b> · Pan&amp;Partners · pan-partners.agency

@@ -18,17 +18,17 @@ export const CERT_CSS = `
     padding:16mm 18mm 14mm; display:flex; flex-direction:column; box-shadow:0 24px 70px rgba(60,40,15,.22); }
   #cert-a4 .serif{ font-family:var(--font-spectral),Georgia,serif; }
   #cert-a4 .mono{ font-family:var(--font-jetbrains),monospace; letter-spacing:.24em; text-transform:uppercase; }
-  #cert-a4 .brand{ font-family:var(--font-playfair),Georgia,serif; font-size:19pt; font-weight:500; white-space:nowrap; }
+  #cert-a4 .brand{ font-family:var(--font-playfair),Georgia,serif; font-size:23pt; font-weight:500; white-space:nowrap; }
   #cert-a4 .brand em{ color:var(--amber); font-style:normal; }
   #cert-a4 .brand-sub{ font-family:var(--font-jetbrains),monospace; font-size:7.2pt; letter-spacing:.3em; text-transform:uppercase; color:var(--faint); white-space:nowrap; }
   #cert-a4 .fill{ flex:1; height:1px; background:var(--line); }
   #cert-a4 .num{ font-family:var(--font-jetbrains),monospace; font-size:8.5pt; letter-spacing:.22em; color:var(--faint); white-space:nowrap; }
   #cert-a4 .kicker{ font-family:var(--font-jetbrains),monospace; font-size:8pt; letter-spacing:.34em; text-transform:uppercase; color:var(--acc); }
-  #cert-a4 h1{ font-family:var(--font-spectral),Georgia,serif; font-weight:500; font-size:56pt; line-height:1; letter-spacing:.02em; margin-top:4mm; }
+  #cert-a4 h1{ font-family:var(--font-spectral),Georgia,serif; font-weight:500; font-size:64pt; line-height:1; letter-spacing:.02em; margin-top:4mm; }
   #cert-a4 h1 em{ font-style:normal; color:inherit; }
   #cert-a4 .name{ font-family:var(--font-spectral),serif; font-size:32pt; line-height:1.1; margin-top:12mm; }
   #cert-a4 .verb{ font-family:var(--font-spectral),serif; font-style:italic; font-size:13pt; color:var(--muted); margin-top:4mm; }
-  #cert-a4 .prog{ font-size:15.5pt; line-height:1.35; font-weight:500; margin-top:3mm; max-width:210mm; text-transform:uppercase; letter-spacing:.02em; }
+  #cert-a4 .prog{ font-family:var(--font-spectral),serif; font-size:19pt; line-height:1.3; font-weight:500; margin-top:4mm; max-width:210mm; padding:4mm 0; border-top:1px solid var(--line); border-bottom:1px solid var(--line); }
   #cert-a4 .meta{ font-family:var(--font-jetbrains),monospace; font-size:8.5pt; letter-spacing:.14em; color:var(--faint); margin-top:4mm; text-transform:uppercase; }
   #cert-a4 .meta:empty{ display:none; }
   #cert-a4 .trainers{ display:flex; gap:12mm; margin-top:14mm; }
@@ -50,34 +50,35 @@ export const CERT_CSS = `
   /* ── band ── */
   #cert-a4 .v-band{ padding:0; flex-direction:row; }
   #cert-a4 .v-band .side{ width:58mm; background:linear-gradient(180deg,#D2701C,#C98A2B); color:#FCF8F1; padding:14mm 9mm; display:flex; flex-direction:column; position:relative; }
-  #cert-a4 .v-band .side .brand{ color:#FCF8F1; font-size:17pt; line-height:1.1; }
+  #cert-a4 .v-band .side .brand{ color:#FCF8F1; font-size:20pt; line-height:1.1; }
   #cert-a4 .v-band .side .brand em{ color:#FCF8F1; }
   #cert-a4 .v-band .side .brand-sub{ color:rgba(252,248,241,.8); margin-top:2mm; letter-spacing:.24em; }
   #cert-a4 .v-band .side .big{ margin-top:auto; font-family:var(--font-playfair),serif; font-size:120mm; line-height:.8; color:rgba(252,248,241,.18); margin-left:-4mm; }
   #cert-a4 .v-band .side .num{ color:rgba(252,248,241,.85); margin-top:6mm; }
   #cert-a4 .v-band .main{ flex:1; padding:16mm 18mm 14mm 16mm; display:flex; flex-direction:column; }
   #cert-a4 .v-band .main .body{ flex:1; display:flex; flex-direction:column; justify-content:center; }
-  #cert-a4 .v-band h1{ font-size:48pt; }
+  #cert-a4 .v-band h1{ font-size:56pt; }
   #cert-a4 .v-band .name{ margin-top:10mm; }
 
   /* ── ornament ── */
   #cert-a4 .v-ornament{ padding:14mm; }
-  #cert-a4 .v-ornament .grid{ position:absolute; inset:0; pointer-events:none; overflow:hidden; display:grid; grid-template-columns:repeat(9,1fr); grid-auto-rows:34mm; align-content:start; padding:2mm 0 0 2mm; }
-  #cert-a4 .v-ornament .grid span{ font-family:var(--font-playfair),Georgia,serif; font-size:26mm; line-height:34mm; text-align:center; color:var(--amber); opacity:.055; }
-  #cert-a4 .v-ornament .grid span:nth-child(2n){ opacity:.035; }
+  #cert-a4 .v-ornament .grid{ position:absolute; inset:0; pointer-events:none; overflow:hidden; display:grid; grid-template-columns:repeat(14,1fr); grid-auto-rows:18mm; align-content:start; padding:6mm 0 0 4mm; }
+  #cert-a4 .v-ornament .grid span{ font-family:var(--font-playfair),Georgia,serif; font-size:7mm; line-height:18mm; text-align:center; color:#2A2018; opacity:.07; }
+  #cert-a4 .v-ornament .grid span.o{ transform:translateX(50%); }
   #cert-a4 .v-ornament .frame{ position:absolute; inset:6mm; border:3pt solid var(--amber); pointer-events:none; }
   #cert-a4 .v-ornament .frame2{ position:absolute; inset:9mm; border:.6pt solid var(--gold); pointer-events:none; }
   #cert-a4 .v-ornament .inner{ flex:1; display:flex; flex-direction:column; align-items:center; text-align:center; padding:8mm 16mm 4mm; position:relative; z-index:1; }
-  #cert-a4 .v-ornament .brand{ font-size:21pt; }
+  #cert-a4 .v-ornament .brand{ font-size:28pt; }
+  #cert-a4 .v-ornament .brand-sub{ font-size:8pt; }
   #cert-a4 .v-ornament .brand-sub{ margin-top:1.5mm; }
   #cert-a4 .v-ornament .orn{ display:flex; align-items:center; gap:4mm; margin-top:7mm; color:var(--gold); }
   #cert-a4 .v-ornament .orn i{ display:block; width:36mm; height:1px; background:var(--gold); }
   #cert-a4 .v-ornament .orn b{ display:block; width:2.4mm; height:2.4mm; border:.6pt solid var(--gold); transform:rotate(45deg); }
-  #cert-a4 .v-ornament h1{ font-size:44pt; margin-top:5mm; letter-spacing:.14em; text-transform:uppercase; font-weight:500; }
+  #cert-a4 .v-ornament h1{ font-size:54pt; margin-top:5mm; letter-spacing:.14em; text-transform:uppercase; font-weight:500; }
   #cert-a4 .v-ornament h1 em{ font-style:normal; }
   #cert-a4 .v-ornament .verb{ margin-top:7mm; }
   #cert-a4 .v-ornament .name{ margin-top:2mm; font-size:34pt; }
-  #cert-a4 .v-ornament .prog{ margin-top:5mm; max-width:220mm; }
+  #cert-a4 .v-ornament .prog{ margin-top:5mm; max-width:220mm; padding:4mm 8mm; }
   #cert-a4 .v-ornament .signs{ display:flex; gap:22mm; margin-top:auto; padding-top:10mm; }
   #cert-a4 .v-ornament .sg{ width:64mm; text-align:center; }
   #cert-a4 .v-ornament .sg .l{ height:1px; background:var(--ink); opacity:.5; margin-bottom:2.5mm; }
@@ -162,7 +163,7 @@ export function Certificate({ c }: { c: Cert }) {
         )}
         {v === "ornament" && (
           <>
-            <div className="grid" aria-hidden>{Array.from({ length: 63 }).map((_, i) => <span key={i}>&amp;</span>)}</div>
+            <div className="grid" aria-hidden>{Array.from({ length: 14 * 12 }).map((_, i) => <span key={i} className={Math.floor(i / 14) % 2 ? "o" : undefined}>&amp;</span>)}</div>
             <div className="frame" /><div className="frame2" />
             <div className="inner">
               <div className="brand">Pan<em>&amp;</em>Partners</div>
