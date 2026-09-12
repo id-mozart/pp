@@ -179,6 +179,79 @@ export const DECK_CSS = `
   #deck-a4 .t-closing ul.ct{ list-style:none; margin-top:8mm; display:flex; flex-direction:column; gap:1.5mm; font-family:var(--font-jetbrains),monospace; font-size:10pt; color:var(--acc); }
   #deck-a4 .t-closing .wrap > img{ width:62mm; height:78mm; object-fit:cover; object-position:center 10%; display:block; border:.75pt solid var(--gold); padding:3mm; background:#fff; }
 
+  /* ── розділ: повнокадрове фото праворуч / смуга зверху / фіолетова панель ── */
+  #deck-a4 .t-section .secimg{ position:absolute; top:0; right:0; bottom:0; width:118mm; overflow:hidden; background:#5E2AC4; z-index:0; }
+  #deck-a4 .t-section .secimg img{ width:100%; height:100%; object-fit:cover; object-position:center; display:block; }
+  #deck-a4 .t-section .secimg.panel{ display:flex; align-items:center; justify-content:center; background:radial-gradient(120% 90% at 30% 20%,#7A45E6 0%,#5E2AC4 55%,#3F167F 100%); }
+  #deck-a4 .t-section .secimg.panel img{ width:74%; height:auto; object-fit:contain; filter:drop-shadow(0 22px 34px rgba(20,0,60,.45)); }
+  #deck-a4 .t-section.has-img .rh, #deck-a4 .t-section.has-img .foot{ margin-right:112mm; }
+  #deck-a4 .t-section.has-img .secwrap{ padding-right:112mm; position:relative; z-index:1; }
+  #deck-a4 .t-section.has-img .num{ font-size:140pt; }
+  #deck-a4 .t-section.has-img h1{ font-size:30pt; }
+  #deck-a4 .t-section.fit-top .secimg{ right:0; left:0; bottom:auto; width:auto; height:94mm; }
+  #deck-a4 .t-section.fit-top .secimg::after{ content:""; position:absolute; inset:0; background:linear-gradient(180deg,rgba(20,12,6,.35),rgba(20,12,6,0) 45%); }
+  #deck-a4 .t-section.fit-top .rh{ position:relative; z-index:1; margin-right:0; }
+  #deck-a4 .t-section.fit-top .rh .wm, #deck-a4 .t-section.fit-top .rh .tag{ color:#fff; }
+  #deck-a4 .t-section.fit-top .rh .wm em{ color:#F0B450; }
+  #deck-a4 .t-section.fit-top .rh .fill{ background:rgba(255,255,255,.45); }
+  #deck-a4 .t-section.fit-top .foot{ margin-right:0; }
+  #deck-a4 .t-section.fit-top .pb{ display:flex; flex-direction:column; justify-content:center; flex:1; min-height:0; padding-top:80mm; }
+  #deck-a4 .t-section.fit-top .secwrap{ padding:0 0 4mm; margin:0; align-items:end; }
+  #deck-a4 .t-section.fit-top .num{ font-size:120pt; line-height:.8; }
+  #deck-a4 .t-section.fit-top h1{ font-size:30pt; max-width:230mm; }
+
+  /* ── картки (bullets variant=cards) ── */
+  #deck-a4 .cards{ display:grid; grid-template-columns:repeat(3,1fr); gap:6mm; margin-top:7mm; }
+  #deck-a4 .cards[data-n="2"], #deck-a4 .cards[data-n="4"]{ grid-template-columns:repeat(2,1fr); }
+  #deck-a4 .cards[data-n="5"], #deck-a4 .cards[data-n="6"]{ grid-template-columns:repeat(3,1fr); }
+  #deck-a4 .cards[data-n="7"], #deck-a4 .cards[data-n="8"]{ grid-template-columns:repeat(4,1fr); gap:4.5mm; }
+  #deck-a4 .card{ background:var(--band); border-radius:5px; padding:5.5mm 6.5mm 6mm; border-top:2.5pt solid var(--amber); min-height:calc(30mm * var(--k,1)); display:flex; flex-direction:column; gap:2.5mm; }
+  #deck-a4 .card .n{ font-family:var(--font-spectral),serif; font-style:italic; font-weight:500; font-size:calc(20pt * var(--k,1)); line-height:1; color:var(--acc); }
+  #deck-a4 .card .t{ font-size:calc(11.5pt * var(--k,1)); line-height:1.45; }
+  #deck-a4 .cards[data-n="7"] .card .t, #deck-a4 .cards[data-n="8"] .card .t{ font-size:calc(10.5pt * var(--k,1)); }
+
+  /* ── репліки (bullets variant=bubbles) ── */
+  #deck-a4 .bubbles{ display:flex; flex-direction:column; gap:calc(3mm * var(--k,1)); margin-top:6mm; max-width:215mm; }
+  #deck-a4 .bubble{ position:relative; align-self:flex-start; background:var(--band); border-radius:12px 12px 12px 3px; padding:3.2mm 6mm 3.2mm 9mm; font-family:var(--font-spectral),serif; font-style:italic; font-size:calc(12.5pt * var(--k,1)); line-height:1.4; max-width:190mm; }
+  #deck-a4 .bubble::before{ content:"“"; position:absolute; left:3mm; top:1.2mm; font-family:var(--font-playfair),serif; font-size:calc(20pt * var(--k,1)); line-height:1; color:var(--amber); font-style:normal; }
+  #deck-a4 .bubble:nth-child(even){ margin-left:8mm; background:#fff; border:1px solid var(--line); }
+
+  /* ── колонки як картки ── */
+  #deck-a4 .col{ background:var(--band); border-radius:5px; padding:5mm 6mm 5.5mm; border-top:2.5pt solid var(--amber); }
+  #deck-a4 .col h3{ border-bottom:0; padding-bottom:1mm; }
+  #deck-a4 .cols{ align-items:stretch; }
+
+  /* ── кроки як таймлайн ── */
+  #deck-a4 .step{ grid-template-columns:8mm 58mm 1fr; column-gap:5mm; border-top:0; padding:calc(3.6mm * var(--k,1)) 0; align-items:start; }
+  #deck-a4 .step::before{ content:""; position:absolute; left:2.9mm; top:0; bottom:0; width:1px; background:var(--line); }
+  #deck-a4 .step{ position:relative; }
+  #deck-a4 .step:first-child::before{ top:50%; }
+  #deck-a4 .step:last-child::before{ bottom:50%; }
+  #deck-a4 .step .dot{ width:6mm; height:6mm; border-radius:99px; background:var(--sheet); border:1.7pt solid var(--amber); position:relative; z-index:1; margin-top:.15em; box-shadow:0 0 0 2mm var(--sheet); }
+  #deck-a4 .step .dot::after{ content:""; position:absolute; inset:1.5mm; border-radius:99px; background:var(--amber); }
+
+  /* ── цитата на всю сторінку (text без заголовка, лише callout) ── */
+  #deck-a4 .qp{ display:grid; grid-template-columns:1fr 128mm; gap:16mm; flex:1; align-items:center; min-height:0; margin-top:4mm; }
+  #deck-a4 .qp .q{ font-family:var(--font-spectral),serif; font-style:italic; font-size:26pt; line-height:1.32; color:var(--ink); max-width:130mm; }
+  #deck-a4 .qp .q::before{ content:"“"; display:block; font-family:var(--font-playfair),serif; font-style:normal; font-size:80pt; line-height:.55; color:var(--amber); margin-bottom:4mm; }
+  #deck-a4 .qp .fig{ width:128mm; height:148mm; overflow:hidden; border-radius:5px; box-shadow:0 14px 34px rgba(60,40,15,.18); }
+  #deck-a4 .qp .fig img{ width:100%; height:100%; object-fit:cover; display:block; }
+
+  /* ── галерея психотипів: кольорова смуга ── */
+  #deck-a4 .gal[data-chip="red"] img{ border-top:5pt solid #D9342B; }
+  #deck-a4 .gal[data-chip="yellow"] img{ border-top:5pt solid #F2C230; }
+  #deck-a4 .gal[data-chip="blue"] img{ border-top:5pt solid #2F62C7; }
+  #deck-a4 .gal img{ height:108mm; box-shadow:0 10px 26px rgba(60,40,15,.14); }
+
+  /* ── таблиці: зебра ── */
+  #deck-a4 tbody tr:nth-child(even) td{ background:rgba(244,236,220,.55); }
+  #deck-a4 td:first-child{ padding-left:2mm; }
+
+  /* ── фінал/контакти ── */
+  #deck-a4 .t-closing .wrap{ grid-template-columns:1fr 78mm; }
+  #deck-a4 .t-closing .wrap > img{ width:78mm; height:98mm; }
+  #deck-a4 .t-closing ul.ct{ font-size:12.5pt; gap:2.5mm; }
+
   @media print{
     @page{ size:297mm 210mm; margin:0; }
     html, body{ background:#fff !important; margin:0 !important; padding:0 !important; height:auto !important; }
@@ -301,6 +374,7 @@ function density(p: DeckPage): { k: number; kh: number } {
   if (p.type === "cover" || p.type === "section" || p.type === "closing" || p.type === "about") return { k: 1, kh: 1 };
   let n = textLen(p);
   if ("image" in p && p.image) n *= 1.6;
+  if (p.type === "bullets" && p.variant === "cards") n *= 1.35;
   if (p.type === "table") n *= 1.4;
   const k = n < 220 ? 1.5 : n < 420 ? 1.32 : n < 700 ? 1.16 : n < 1100 ? 1.05 : 1;
   const cap = p.type === "table" ? 1.25 : 1.5;
@@ -322,7 +396,7 @@ function Sheet({ deck, i, cls, page, children, editable, onRunhead }: { deck: De
     }
   }, [k, page]);
   return (
-    <section ref={ref} className={`sheet ${cls ?? ""}`} data-page={i + 1} data-sparse={k >= 1.32 ? "1" : undefined} style={{ ["--k" as any]: k, ["--kh" as any]: Math.min(1.2, k) }}>
+    <section ref={ref} className={`sheet ${cls ?? ""}${page.type === "section" && page.image ? " has-img" + (page.fit === "top" ? " fit-top" : "") : ""}`} data-page={i + 1} data-sparse={k >= 1.32 ? "1" : undefined} style={{ ["--k" as any]: k, ["--kh" as any]: Math.min(1.2, k) }}>
       <div className="rh">
         <span className="wm">Pan<em>&amp;</em>Partners</span>
         <span className="fill" />
@@ -440,7 +514,8 @@ function PageBody({ p, set, editable }: { p: DeckPage; set: Patch; editable: boo
       );
     case "section":
       return (
-        <WithImg image={p.image}>
+        <>
+          {p.image ? <div className={"secimg" + (p.panel ? " panel" : "")}><img src={p.image} alt="" /></div> : null}
           <div className="secwrap">
             <E tag="div" className="num serif" value={p.num} onChange={(v) => set({ num: v })} editable={e} ph="" />
             <div className="sec-t">
@@ -451,9 +526,17 @@ function PageBody({ p, set, editable }: { p: DeckPage; set: Patch; editable: boo
               <E tag="p" className="sub" value={p.sub} onChange={(v) => set({ sub: v })} editable={e} ph="" />
             </div>
           </div>
-        </WithImg>
+        </>
       );
     case "text":
+      if (!p.title && !p.titleEm && !p.lead && !p.paras.length && p.image) {
+        return (
+          <div className="qp">
+            <E tag="div" className="q" value={p.callout} onChange={(v) => set({ callout: v })} editable={e} ph="цитата" />
+            <div className="fig"><img src={p.image} alt="" /></div>
+          </div>
+        );
+      }
       return (
         <WithImg image={p.image}>
           <Title p={p} set={set} editable={e} />
@@ -472,15 +555,39 @@ function PageBody({ p, set, editable }: { p: DeckPage; set: Patch; editable: boo
           <E tag="div" className="callout" value={p.callout} onChange={(v) => set({ callout: v })} editable={e} ph="" />
         </WithImg>
       );
-    case "bullets":
+    case "bullets": {
+      const split = (t: string) => { const m = t.match(/^\s*(\d+)\s*[.)]\s*(.*)$/s); return m ? { n: m[1], t: m[2] } : { n: "", t }; };
+      const body =
+        p.variant === "cards" ? (
+          <div className="cards" data-n={String(Math.min(8, Math.max(2, p.items.length)))}>
+            {p.items.map((it, k) => {
+              const { n, t } = split(it);
+              return (
+                <div className="card" key={k}>
+                  <div className="n">{(n || String(k + 1)).padStart(2, "0")}</div>
+                  <E tag="div" className="t" value={t} onChange={(v) => set({ items: p.items.map((x, j) => (j === k ? (n ? `${n}. ${v}` : v) : x)) })} editable={e} ph="…" />
+                </div>
+              );
+            })}
+          </div>
+        ) : p.variant === "bubbles" ? (
+          <div className="bubbles">
+            {p.items.map((it, k) => (
+              <E key={k} tag="div" className="bubble" value={it} onChange={(v) => set({ items: p.items.map((x, j) => (j === k ? v : x)) })} editable={e} ph="…" />
+            ))}
+          </div>
+        ) : (
+          <EList className="bul" items={p.items} onChange={(v) => set({ items: v })} editable={e} />
+        );
       return (
         <WithImg image={p.image}>
           <Title p={p} set={set} editable={e} />
           <E tag="p" className="lead" value={p.lead} onChange={(v) => set({ lead: v })} editable={e} ph="лід" />
-          <EList className="bul" items={p.items} onChange={(v) => set({ items: v })} editable={e} />
+          {body}
           <E tag="div" className="callout" value={p.callout} onChange={(v) => set({ callout: v })} editable={e} ph="" />
         </WithImg>
       );
+    }
     case "twocol":
       return (
         <WithImg image={p.image}>
@@ -507,6 +614,7 @@ function PageBody({ p, set, editable }: { p: DeckPage; set: Patch; editable: boo
           <div className="steps">
             {p.steps.map((st, k) => (
               <div className="step" key={k}>
+                <span className="dot" />
                 <E tag="div" className="h" value={st.head} onChange={(v) => set({ steps: p.steps.map((x, j) => (j === k ? { ...x, head: v } : x)) })} editable={e} ph="крок" />
                 <E tag="div" className="t" value={st.text} onChange={(v) => set({ steps: p.steps.map((x, j) => (j === k ? { ...x, text: v } : x)) })} editable={e} ph="опис" />
               </div>
@@ -564,7 +672,7 @@ function PageBody({ p, set, editable }: { p: DeckPage; set: Patch; editable: boo
             {chipFor(p.lead) ? <span className={"chip " + chipFor(p.lead)} /> : null}
             <E value={p.lead} onChange={(v) => set({ lead: v })} editable={e} ph="лід" />
           </p>
-          <div className="gal">
+          <div className="gal" data-chip={chipFor(p.lead) ?? undefined}>
             {p.images.map((im, k) => (
               <figure key={k}>
                 <img src={im.src} alt="" />

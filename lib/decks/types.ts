@@ -2,14 +2,18 @@
  * Редагована A4-презентація («дека»). Кожна сторінка — один із простих
  * шаблонів; вміст зберігається як JSON у таблиці content під ключем deck:<slug>.
  * Поле `image` (необов'язкове) у текстових шаблонах — ілюстрація у правій колонці.
+ * `variant` у списках: list (звичайний), cards (картки-плитки), bubbles (репліки).
+ * У розділах `fit`: right (повнокадрова панель праворуч, типово) або top (широка смуга зверху);
+ * `panel` — обʼєкт із прозорим фоном на фіолетовій панелі NovaPay.
  */
+export type BulletsVariant = "list" | "cards" | "bubbles";
 
 export type DeckPage =
   | { id: string; type: "cover"; eyebrow: string; title: string; titleEm: string; sub: string; who: string; when: string }
   | { id: string; type: "about"; title: string; titleEm: string; role?: string; quote?: string; stats?: { n: string; t: string }[]; facts: string[]; note: string; image: string; logos: string }
-  | { id: string; type: "section"; num: string; title: string; sub: string; image?: string }
+  | { id: string; type: "section"; num: string; title: string; sub: string; image?: string; fit?: "right" | "top"; panel?: boolean }
   | { id: string; type: "text"; title: string; titleEm: string; lead: string; paras: string[]; callout: string; image?: string }
-  | { id: string; type: "bullets"; title: string; titleEm: string; lead: string; items: string[]; callout: string; image?: string }
+  | { id: string; type: "bullets"; title: string; titleEm: string; lead: string; items: string[]; callout: string; image?: string; variant?: BulletsVariant }
   | { id: string; type: "twocol"; title: string; titleEm: string; lead: string; cols: { head: string; items: string[] }[]; image?: string }
   | { id: string; type: "steps"; title: string; titleEm: string; lead: string; steps: { head: string; text: string }[]; image?: string }
   | { id: string; type: "table"; title: string; titleEm: string; lead: string; head: string[]; rows: string[][]; callout: string }

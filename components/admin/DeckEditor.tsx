@@ -130,6 +130,13 @@ export function DeckEditor({ initial, dbReady, only, bare }: { initial: Deck; db
               <button title="Вниз" onClick={() => move(i, 1)}>↓</button>
               <button title="Дублювати" onClick={() => duplicate(i)}>⧉</button>
               <button title="Видалити" onClick={() => remove(i)}>✕</button>
+              {deck.pages[i].type === "bullets" && (
+                <button title="Вигляд списку: список → картки → репліки" onClick={() => {
+                  const cur = (deck.pages[i] as any).variant ?? "list";
+                  const next = cur === "list" ? "cards" : cur === "cards" ? "bubbles" : "list";
+                  patchPage(i, { variant: next === "list" ? undefined : next });
+                }}>◫</button>
+              )}
               <span className="ty">{PAGE_TYPE_LABELS[deck.pages[i].type]}</span>
             </div>
           )}

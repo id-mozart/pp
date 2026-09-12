@@ -18,11 +18,11 @@ function sanitizePage(p: any): DeckPage | null {
     case "about":
       return { id, type: "about", title: s(p.title, 200), titleEm: s(p.titleEm, 200), role: s(p.role, 500) || undefined, quote: s(p.quote, 800) || undefined, stats: arr(p.stats, 6).map((c: any) => ({ n: s(c?.n, 40), t: s(c?.t, 300) })), facts: strs(p.facts, 8), note: s(p.note, 800), image: img(p.image), logos: img(p.logos) };
     case "section":
-      return { id, type: "section", num: s(p.num, 10), title: s(p.title, 300), sub: s(p.sub, 500), image: img(p.image) || undefined };
+      return { id, type: "section", num: s(p.num, 10), title: s(p.title, 300), sub: s(p.sub, 500), image: img(p.image) || undefined, fit: p.fit === "top" ? "top" : undefined, panel: p.panel ? true : undefined };
     case "text":
       return { id, type: "text", title: s(p.title, 300), titleEm: s(p.titleEm, 300), lead: s(p.lead, 1500), paras: strs(p.paras, 12), callout: s(p.callout, 1000), image: img(p.image) || undefined };
     case "bullets":
-      return { id, type: "bullets", title: s(p.title, 300), titleEm: s(p.titleEm, 300), lead: s(p.lead, 1500), items: strs(p.items, 20), callout: s(p.callout, 1000), image: img(p.image) || undefined };
+      return { id, type: "bullets", title: s(p.title, 300), titleEm: s(p.titleEm, 300), lead: s(p.lead, 1500), items: strs(p.items, 20), callout: s(p.callout, 1000), image: img(p.image) || undefined, variant: p.variant === "cards" || p.variant === "bubbles" ? p.variant : undefined };
     case "twocol":
       return { id, type: "twocol", title: s(p.title, 300), titleEm: s(p.titleEm, 300), lead: s(p.lead, 1500), cols: arr(p.cols, 6).map((c: any) => ({ head: s(c?.head, 300), items: strs(c?.items, 20) })), image: img(p.image) || undefined };
     case "steps":
@@ -38,9 +38,31 @@ function sanitizePage(p: any): DeckPage | null {
   }
 }
 
+// Ілюстрації, які прибрано з дефолтної деки під час дизайн-проходу: у збережених даних їх теж скидаємо.
+const RETIRED = /\/(kpi\.jpg|funnel\.png|target\.jpg|bant\.jpg|talk\.jpg|questions\.jpg|goals\.jpg)$/;
+
+/**
+ * Підтягує дизайн-оновлення з дефолтної деки у збережену версію (за id сторінки):
+ * варіанти списків, повнокадрові фото розділів, зміну типу сторінки — тексти користувача лишаються.
+ */
+function upgradePage(saved: DeckPage, def: DeckPage | undefined): DeckPage {
+  if (!def) return saved;
+  const out: any = { ...saved };
+  if (saved.type !== def.type) {
+    if (saved.type === "text" && def.type === "bullets") return { ...def, title: saved.title, titleEm: saved.titleEm, lead: saved.lead, items: saved.paras.length ? saved.paras : def.items, callout: saved.callout };
+    if (saved.type === "text" && def.type === "closing") return { ...def, title: saved.title, titleEm: saved.titleEm, contacts: saved.paras.length ? saved.paras : def.contacts };
+    return saved;
+  }
+  if (def.type === "bullets" && saved.type === "bullets") { if (!saved.variant && def.variant) out.variant = def.variant; }
+  if (def.type === "section" && saved.type === "section") { if (def.image && !saved.image) out.image = def.image; if (def.fit && !saved.fit) out.fit = def.fit; if (def.panel && !saved.panel) out.panel = def.panel; }
+  if ("image" in out && typeof out.image === "string" && RETIRED.test(out.image)) { if ("image" in def && (def as any).image) out.image = (def as any).image; else delete out.image; }
+  return out as DeckPage;
+}
+
 export function sanitizeDeck(input: any, slug: string): Deck {
   const base = DECK_DEFAULTS[slug];
-  const pages = arr(input?.pages, 80).map(sanitizePage).filter(Boolean) as DeckPage[];
+  const byId = new Map<string, DeckPage>((base?.pages ?? []).map((p) => [p.id, p]));
+  const pages = (arr(input?.pages, 80).map(sanitizePage).filter(Boolean) as DeckPage[]).map((p) => upgradePage(p, byId.get(p.id)));
   return {
     slug,
     name: s(input?.name, 200) || base?.name || slug,
