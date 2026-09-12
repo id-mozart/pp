@@ -15,7 +15,7 @@ export const NOVAPAY_DECK: Deck = {
     // 1
     { id: "s01", type: "cover", eyebrow: "Sell NovaPay", title: "Продажі в B2B —", titleEm: "від 1-го дзвінка до закриття угоди", sub: "", who: "Бізнес-тренерка Тетяна Пан", when: "Україна, 2026" },
     // 2
-    { id: "s02", type: "closing", title: "Наші", titleEm: "контакти", sub: "", contacts: ["+38 067 007 0710", "+38 050 448 1411", "+38 066 730 6237"], image: I + "tania-laptop-2.jpg" },
+    { id: "s02", type: "closing", title: "Наші", titleEm: "контакти", sub: "", contacts: ["+38 067 007 0710", "+38 050 448 1411", "+38 066 730 6237"], image: I + "tania-mic-2.jpg" },
     // 3
     { id: "s03", type: "about", title: "Тетяна", titleEm: "Пан",
       role: "Бізнес-тренерка, фасилітаторка, коуч, менторка, експертка з навчання та розвитку команд і керівників, засновниця компанії «Pan&Partners»",
@@ -246,6 +246,6 @@ export const NOVAPAY_DECK: Deck = {
     // 60
     { id: "s60", type: "table", title: "Action", titleEm: "plan", lead: "Що потрібно зробити після нашої зустрічі — перші 3 кроки?", head: ["#", "Захід / дія", "Як зрозумію, що досяг — індикатори досягнення", "Терміни / період-ть"], rows: [["1.", "", "", ""], ["2.", "", "", ""], ["3.", "", "", ""]], callout: "" },
     // 61
-    { id: "s61", type: "closing", title: "Дякую", titleEm: "за активність", sub: "Підписуйтесь на мій Інстаграм: @tetiana_pan.sales", contacts: ["+38 067 007 0710", "+38 050 448 1411", "+38 066 730 6237"], image: I + "tania.jpg", qr: I + "instagram.jpg" },
+    { id: "s61", type: "closing", title: "Дякую", titleEm: "за активність", sub: "Підписуйтесь на мій Інстаграм: @tetiana_pan.sales", contacts: ["+38 067 007 0710", "+38 050 448 1411", "+38 066 730 6237"], image: I + "tania-laptop-bw.jpg", qr: I + "qr-instagram.svg" },
   ],
 };

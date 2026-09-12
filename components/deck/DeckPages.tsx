@@ -65,7 +65,7 @@ export const DECK_CSS = `
   #deck-a4 .t-gallery .lead{ font-size:calc(17pt * var(--k,1)); font-style:italic; color:var(--acc); }
 
   /* тіло сторінки */
-  #deck-a4 .pb{ display:flex; flex-direction:column; flex:1; min-height:0; padding-bottom:5mm; }
+  #deck-a4 .pb{ display:flex; flex-direction:column; flex:1; min-height:0; padding-bottom:7mm; }
   #deck-a4 .sheet[data-sparse] .pb{ justify-content:flex-start; padding-bottom:0; }
   #deck-a4 .t-cover .pb, #deck-a4 .t-section .pb, #deck-a4 .t-closing .pb{ display:contents; }
 
@@ -96,21 +96,23 @@ export const DECK_CSS = `
   #deck-a4 .cols[data-n="3"]{ grid-template-columns:repeat(3,1fr); }
   #deck-a4 .cols[data-n="4"]{ grid-template-columns:repeat(4,1fr); column-gap:5mm; }
   #deck-a4 .cols[data-n="4"] .col{ padding:4mm 4.5mm 4.5mm; }
+  #deck-a4 .cols[data-n="4"] .col h3{ min-height:3.9em; }
   #deck-a4 .col h3{ font-family:var(--font-spectral),serif; font-style:italic; font-weight:500; font-size:calc(13.5pt * var(--k,1)); color:var(--acc); line-height:1.25; padding-bottom:2mm; border-bottom:1px solid var(--line); }
 
   /* steps */
   #deck-a4 .steps{ margin-top:5mm; display:flex; flex-direction:column; max-width:240mm; }
   #deck-a4 .step{ display:grid; grid-template-columns:60mm 1fr; gap:6mm; padding:calc(3.2mm * var(--k,1)) 0; border-top:1px solid var(--line); align-items:baseline; }
   #deck-a4 .step:first-child{ border-top:0; }
-  #deck-a4 .step .h{ font-family:var(--font-spectral),serif; font-style:italic; font-size:calc(13.5pt * var(--k,1)); color:var(--acc); line-height:1.3; }
-  #deck-a4 .step .t{ font-size:calc(12.2pt * var(--k,1)); line-height:1.5; }
+  #deck-a4 .step .h{ font-family:var(--font-spectral),serif; font-style:italic; font-size:calc(13.5pt * min(var(--k,1), 1.18)); color:var(--acc); line-height:1.3; }
+  #deck-a4 .step .t{ font-size:calc(12.2pt * min(var(--k,1), 1.18)); line-height:1.5; }
 
   /* table */
   #deck-a4 table{ width:100%; border-collapse:collapse; margin-top:6mm; font-size:calc(10.5pt * var(--k,1)); line-height:1.42; }
-  #deck-a4 th{ text-align:left; font-family:var(--font-jetbrains),monospace; font-size:7.8pt; letter-spacing:.12em; text-transform:uppercase; color:var(--faint); padding:0 3mm 2.4mm 0; border-bottom:1px solid var(--ink); font-weight:500; }
+  #deck-a4 th{ text-align:left; font-family:var(--font-jetbrains),monospace; font-size:7.8pt; letter-spacing:.12em; text-transform:uppercase; color:var(--faint); padding:0 6mm 2.4mm 0; border-bottom:1px solid var(--ink); font-weight:500; }
   #deck-a4 td{ vertical-align:top; padding:calc(2.8mm * var(--k,1)) 3mm calc(2.8mm * var(--k,1)) 0; border-bottom:1px solid var(--line); }
   #deck-a4 td:first-child{ color:var(--acc); font-family:var(--font-spectral),serif; font-style:italic; font-size:calc(11pt * var(--k,1)); width:17%; }
   #deck-a4 table[data-num] td:first-child{ width:6%; white-space:nowrap; }
+  #deck-a4 table[data-cols="4"]:not(.ws) td:nth-child(2){ width:34%; } #deck-a4 table[data-cols="4"]:not(.ws) td:nth-child(3){ width:22%; }
   #deck-a4 table[data-num] td:nth-child(3){ width:24%; }
   #deck-a4 td[contenteditable]:empty{ min-height:6mm; display:block; }
 
@@ -192,6 +194,8 @@ export const DECK_CSS = `
   #deck-a4 .t-section.has-img .rh, #deck-a4 .t-section.has-img .foot{ margin-right:112mm; }
   #deck-a4 .t-section.has-img .secwrap{ padding-right:112mm; position:relative; z-index:1; }
   #deck-a4 .t-section.has-img .num{ font-size:120pt; }
+  #deck-a4 .t-section.is-step .num{ font-size:88pt; }
+  #deck-a4 .t-section.is-step h1{ font-size:26pt; }
   #deck-a4 .t-section.has-img h1{ font-size:28pt; }
   #deck-a4 .t-section.has-img .secwrap{ column-gap:10mm; }
   #deck-a4 .t-section.fit-top .secimg{ right:0; left:0; bottom:auto; width:auto; height:94mm; }
@@ -220,7 +224,7 @@ export const DECK_CSS = `
   #deck-a4 .bubbles{ display:flex; flex-direction:column; gap:calc(3mm * var(--k,1)); margin-top:6mm; max-width:215mm; }
   #deck-a4 .bubble{ position:relative; align-self:flex-start; background:var(--band); border-radius:12px 12px 12px 3px; padding:3.2mm 6mm 3.2mm 9mm; font-family:var(--font-spectral),serif; font-style:italic; font-size:calc(12.5pt * var(--k,1)); line-height:1.4; max-width:190mm; }
   #deck-a4 .bubble::before{ content:"“"; position:absolute; left:3mm; top:1.2mm; font-family:var(--font-playfair),serif; font-size:calc(20pt * var(--k,1)); line-height:1; color:var(--amber); font-style:normal; }
-  #deck-a4 .bubble:nth-child(even){ margin-left:8mm; background:#fff; border:1px solid var(--line); }
+  #deck-a4 .bubble:nth-child(even){ margin-left:0; }
 
   /* ── колонки як картки ── */
   #deck-a4 .col{ background:var(--band); border-radius:5px; padding:5mm 6mm 5.5mm; border-top:2.5pt solid var(--amber); }
@@ -248,7 +252,7 @@ export const DECK_CSS = `
   #deck-a4 .gal[data-chip="yellow"] img{ border-top:5pt solid #F2C230; }
   #deck-a4 .gal[data-chip="blue"] img{ border-top:5pt solid #2F62C7; }
   #deck-a4 .gal img{ height:108mm; box-shadow:0 10px 26px rgba(60,40,15,.14); object-position:center 25%; }
-  #deck-a4 .gal figure:has(figcaption:not(:empty)) img{ object-fit:contain; background:var(--band); height:100mm; }
+  #deck-a4 .gal figure:has(figcaption:not(:empty)) img{ object-fit:cover; object-position:center; height:100mm; }
 
   /* ── таблиці: зебра ── */
   #deck-a4 tbody tr:nth-child(even) td{ background:rgba(244,236,220,.55); }
@@ -265,7 +269,7 @@ export const DECK_CSS = `
   #deck-a4 .notes .lines{ flex:1; min-height:0; background:linear-gradient(to top,var(--line) .25mm,transparent .25mm) left bottom / 100% 8.6mm repeat-y; margin-top:2mm; }
   #deck-a4 table.ws td{ height:calc(var(--rowh,18mm) * var(--k,1)); vertical-align:top; padding-top:3mm; }
   #deck-a4 table.ws td:empty{ background-image:linear-gradient(to top,var(--line) .25mm,transparent .25mm); background-size:100% 8.6mm; background-position:left bottom; background-repeat:repeat-y; background-origin:content-box; background-clip:content-box; }
-  #deck-a4 table.ws.c3 th:first-child{ width:34%; } #deck-a4 table.ws.c3 th:nth-child(2){ width:24%; } #deck-a4 table.ws.c3 th:last-child{ width:42%; }
+  #deck-a4 table.ws.c3 th:first-child{ width:40%; } #deck-a4 table.ws.c3 th:nth-child(2){ width:18%; } #deck-a4 table.ws.c3 th:last-child{ width:42%; }
   #deck-a4 table.ws.c3[data-num] th:first-child{ width:6%; } #deck-a4 table.ws.c3[data-num] th:nth-child(2){ width:52%; }
   #deck-a4 table.ws.c4 th:nth-child(2), #deck-a4 table.ws.c4 th:nth-child(3){ width:35%; } #deck-a4 table.ws.c4 th:last-child{ width:20%; }
   #deck-a4 table.ws td:first-child{ width:auto; }
@@ -282,7 +286,7 @@ export const DECK_CSS = `
   #deck-a4 .t-closing .wrap > img{ position:absolute; top:0; right:0; bottom:0; width:118mm; height:100%; object-fit:cover; object-position:center 15%; border:0; padding:0; background:none; }
   #deck-a4 .t-closing .rh, #deck-a4 .t-closing .foot{ margin-right:112mm; }
   #deck-a4 .t-closing h1{ font-size:40pt; }
-  #deck-a4 .t-closing .qr{ mix-blend-mode:multiply; width:38mm; height:38mm; margin-top:8mm; }
+  #deck-a4 .t-closing .qr{ width:34mm; height:34mm; margin-top:9mm; }
   #deck-a4 table.ws tbody tr:nth-child(even) td{ background-color:transparent; }
 
   #deck-a4 .fullimg{ flex:1; min-height:0; display:flex; align-items:center; margin-top:8mm; }
@@ -301,6 +305,14 @@ export const DECK_CSS = `
 `;
 
 type Patch = (patch: Record<string, unknown>) => void;
+
+/** Типографічні заміни лише для показу (у дані повертаються звичайні пробіли/дефіси): «5‑й крок», прийменники не висять. */
+function typo(v: string): string {
+  return v
+    .replace(/(\d)-(й|го|му|ша|ші|ім|ий|ої|ому)(?!\p{L})/gu, "$1\u2011$2")
+    .replace(/(\d\u2011й)\s+(крок)/gu, "$1\u00A0$2")
+    .replace(/(^|[\s(«])([\p{L}]{1,2})\s+(?=\S)/gu, "$1$2\u00A0");
+}
 
 /* ───────── editable primitives ───────── */
 
@@ -333,7 +345,7 @@ function E({
         if (v !== value) onChange(v);
       }}
     >
-      {value.replace(/(\d)-(й|го|му|ша|ші|ім|ий|ої|ому)(?!\p{L})/gu, "$1\u2011$2")}
+      {typo(value)}
     </T>
   );
 }
@@ -363,7 +375,7 @@ function EList({
       }}
     >
       {items.map((it, i) => (
-        <li key={i}>{it}</li>
+        <li key={i}>{typo(it)}</li>
       ))}
     </ul>
   );
@@ -432,11 +444,11 @@ function Sheet({ deck, i, cls, page, children, editable, onRunhead }: { deck: De
       const fits = () => !(el.scrollHeight > el.clientHeight + 2 || (pb ? pb.scrollHeight > pb.clientHeight + 2 : false));
       let v = d.k;
       const floor = page.type === "table" ? 0.7 : 0.62;
-      const apply = () => { el.style.setProperty("--k", String(v)); el.style.setProperty("--kh", String(Math.min(1.2, v))); };
+      const apply = () => { el.style.setProperty("--k", String(v)); el.style.setProperty("--kh", String(v >= 1.1 ? 1.1 : v < 0.95 ? 0.9 : 1)); };
       apply();
       for (let i = 0; i < 24 && !fits() && v > floor; i++) { v = Math.round((v - 0.04) * 100) / 100; apply(); }
       // поле «Нотатки» лишаємо тільки якщо на нього є хоча б 18 мм
-      if (notes && notes.getBoundingClientRect().height < 68) { notes.style.display = "none"; }
+      if (notes && notes.getBoundingClientRect().height < 98) { notes.style.display = "none"; }
       setK(v);
     };
     fit();
@@ -447,7 +459,7 @@ function Sheet({ deck, i, cls, page, children, editable, onRunhead }: { deck: De
     return () => window.clearTimeout(t);
   }, [d.k, page]);
   return (
-    <section ref={ref} className={`sheet ${cls ?? ""}${page.type === "section" && page.image ? " has-img" + (page.fit === "top" ? " fit-top" : "") : ""}`} data-page={i + 1} data-sparse={k >= 1.32 ? "1" : undefined} style={{ ["--k" as any]: k, ["--kh" as any]: Math.min(1.2, k) }}>
+    <section ref={ref} className={`sheet ${cls ?? ""}${page.type === "section" && page.image ? " has-img" + (page.fit === "top" ? " fit-top" : "") : ""}${page.type === "section" && /^\d+-й крок/i.test(page.title) ? " is-step" : ""}`} data-page={i + 1} data-sparse={k >= 1.32 ? "1" : undefined} style={{ ["--k" as any]: k, ["--kh" as any]: Math.min(1.2, k) }}>
       <div className="rh">
         <span className="wm">Pan<em>&amp;</em>Partners</span>
         <span className="fill" />
@@ -702,7 +714,7 @@ function PageBody({ p, set, editable, prev }: { p: DeckPage; set: Patch; editabl
         <>
           <Title p={p} set={set} editable={e} />
           <E tag="p" className="lead" value={p.lead} onChange={(v) => set({ lead: v })} editable={e} ph="лід" />
-          <table className={ws ? `ws c${p.head.length}` : undefined} data-hl={hl ?? undefined} data-num={numbered ? "1" : undefined} style={rowh ? ({ ["--rowh" as any]: rowh } as any) : undefined}>
+          <table className={ws ? `ws c${p.head.length}` : undefined} data-hl={hl ?? undefined} data-num={numbered ? "1" : undefined} data-cols={String(p.head.length)} style={rowh ? ({ ["--rowh" as any]: rowh } as any) : undefined}>
             <thead>
               <tr>
                 {p.head.map((h, k) => (

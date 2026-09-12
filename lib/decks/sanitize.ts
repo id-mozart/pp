@@ -58,7 +58,7 @@ function upgradePage(saved: DeckPage, def: DeckPage | undefined): DeckPage {
     const ours = !saved.image || /\/deck\/novapay\/(np-|tania|hand\.png)/.test(saved.image);
     if (ours) { out.image = def.image; out.fit = def.fit; out.panel = def.panel; }
   }
-  if (def.type === "closing" && saved.type === "closing" && (!saved.image || /\/deck\/novapay\/tania/.test(saved.image))) out.image = def.image;
+  if (def.type === "closing" && saved.type === "closing") { if (!saved.image || /\/deck\/novapay\/tania/.test(saved.image)) out.image = def.image; if (def.qr && (!saved.qr || /instagram\.jpg$/.test(saved.qr))) out.qr = def.qr; }
   if ("image" in out && typeof out.image === "string" && RETIRED.test(out.image)) { if ("image" in def && (def as any).image) out.image = (def as any).image; else delete out.image; }
   return out as DeckPage;
 }
