@@ -91,7 +91,7 @@ export const DECK_CSS = `
   /* gallery */
   #deck-a4 .gal{ display:grid; grid-template-columns:repeat(3,1fr); gap:8mm; margin-top:7mm; }
   #deck-a4 .gal figure{ text-align:center; }
-  #deck-a4 .gal img{ width:100%; height:100mm; object-fit:cover; display:block; border-radius:3px; border:.75pt solid var(--line); }
+  #deck-a4 .gal img{ width:100%; height:100mm; object-fit:cover; display:block; border-radius:3px; border:.75pt solid var(--line); mix-blend-mode:multiply; }
   #deck-a4 .gal figcaption{ font-family:var(--font-spectral),serif; font-style:italic; font-size:15pt; color:var(--acc); margin-top:3mm; }
   #deck-a4 .t-section .withimg .fig img{ max-height:120mm; }
   #deck-a4 .t-closing .qr{ width:34mm; height:34mm; object-fit:contain; display:block; margin-top:6mm; border:0; padding:0; }
@@ -99,8 +99,7 @@ export const DECK_CSS = `
   #deck-a4 .cols{ display:grid; grid-template-columns:1fr 1fr; column-gap:10mm; row-gap:6mm; margin-top:6mm; }
   #deck-a4 .cols[data-n="3"]{ grid-template-columns:repeat(3,1fr); }
   #deck-a4 .cols[data-n="4"]{ grid-template-columns:repeat(4,1fr); column-gap:5mm; }
-  #deck-a4 .cols[data-n="4"] .col{ padding:4mm 4.5mm 4.5mm; }
-  #deck-a4 .cols[data-n="4"] .col h3, #deck-a4 .cols[data-n="3"] .col h3{ min-height:3.9em; }
+  #deck-a4 .cols[data-n="4"] .col{ padding:4mm 4.5mm 6mm; }
   #deck-a4 .col h3{ font-family:var(--font-spectral),serif; font-style:italic; font-weight:500; font-size:calc(13.5pt * var(--k,1)); color:var(--acc); line-height:1.25; padding-bottom:2mm; border-bottom:1px solid var(--line); }
 
   /* steps */
@@ -181,7 +180,7 @@ export const DECK_CSS = `
   #deck-a4 .t-about .note{ font-size:9.4pt; line-height:1.5; color:var(--ink); margin-top:3mm; }
   #deck-a4 .t-about .note:empty{ display:none; }
   #deck-a4 .t-about .logos{ display:block; width:100%; max-width:150mm; max-height:16mm; object-fit:contain; object-position:left; margin-top:6mm; }
-  #deck-a4 .t-about .lab{ margin-top:4mm; }
+  #deck-a4 .t-about .lab{ margin-top:2.5mm; }
 
   /* closing */
   #deck-a4 .t-closing .wrap{ display:grid; grid-template-columns:1fr 62mm; gap:14mm; margin-top:auto; margin-bottom:auto; align-items:center; }
@@ -233,8 +232,9 @@ export const DECK_CSS = `
   #deck-a4 .bubble:nth-child(even){ margin-left:0; }
 
   /* ── колонки як картки ── */
-  #deck-a4 .col{ background:var(--band); border-radius:5px; padding:5mm 6mm 5.5mm; border-top:2.5pt solid var(--amber); }
-  #deck-a4 .col h3{ border-bottom:0; padding-bottom:1mm; min-height:2.6em; display:flex; align-items:flex-end; flex-wrap:wrap; }
+  #deck-a4 .col{ background:var(--band); border-radius:5px; padding:5mm 6mm 6mm; border-top:2.5pt solid var(--amber); display:grid; grid-template-rows:subgrid; grid-row:span 2; }
+  #deck-a4 .cols{ grid-template-rows:auto 1fr; }
+  #deck-a4 .col h3{ border-bottom:0; padding-bottom:1mm; display:flex; align-items:flex-end; flex-wrap:wrap; }
   #deck-a4 .cols{ align-items:stretch; }
 
   /* ── кроки як таймлайн ── */
@@ -318,7 +318,8 @@ function typo(v: string): string {
   return v
     .replace(/(\d)-(й|го|му|ша|ші|ім|ий|ої|ому)(?!\p{L})/gu, "$1\u2011$2")
     .replace(/(\d\u2011й)\s+(крок)/gu, "$1\u00A0$2")
-    .replace(/(^|[\s(«])([\p{L}]{1,2})\s+(?=\S)/gu, "$1$2\u00A0");
+    .replace(/(?<=^|[\s(«])([\p{L}]{1,2})\s+(?=\S)/gu, "$1\u00A0")
+    .replace(/\s+—/g, "\u00A0—");
 }
 
 /* ───────── editable primitives ───────── */
