@@ -30,9 +30,9 @@ export const DECK_CSS = `
   #deck-a4 .rh .wm{ font-family:var(--font-playfair),Georgia,serif; font-size:13.5pt; font-weight:500; white-space:nowrap; }
   #deck-a4 .rh .wm em{ color:var(--amber); font-style:normal; }
   #deck-a4 .rh .fill{ flex:1; height:1px; background:var(--line); }
-  #deck-a4 .rh .tag{ font-family:var(--font-jetbrains),monospace; font-size:7.1pt; letter-spacing:.24em; text-transform:uppercase; color:var(--faint); white-space:nowrap; }
+  #deck-a4 .rh .tag{ font-family:var(--font-jetbrains),monospace; font-size:7.8pt; letter-spacing:.16em; text-transform:uppercase; color:var(--faint); white-space:nowrap; }
   #deck-a4 .foot{ display:flex; align-items:flex-end; justify-content:space-between; border-top:1px solid var(--line); padding-top:3mm; margin-top:auto; }
-  #deck-a4 .foot .pg{ font-family:var(--font-jetbrains),monospace; font-size:7.1pt; letter-spacing:.22em; color:var(--faint); }
+  #deck-a4 .foot .pg{ font-family:var(--font-jetbrains),monospace; font-size:7.8pt; letter-spacing:.16em; color:var(--faint); }
   #deck-a4 .foot .tl{ font-family:var(--font-spectral),serif; font-style:italic; font-size:9.5pt; color:var(--muted); }
   #deck-a4 .foot .tl b{ color:var(--acc); font-weight:500; }
 
@@ -43,7 +43,7 @@ export const DECK_CSS = `
   #deck-a4 .lead:empty{ display:none; }
   #deck-a4 h1:has(> [contenteditable]:empty + em > [contenteditable]:empty){ display:none; }
   #deck-a4 .para{ font-size:calc(12.2pt * var(--k,1)); line-height:1.55; color:var(--ink); margin-top:4mm; max-width:220mm; }
-  #deck-a4 .callout{ position:relative; margin-top:6mm; max-width:230mm; background:var(--band); border-radius:4px; padding:4.5mm 7mm 4.5mm 9mm;
+  #deck-a4 .callout{ position:relative; margin-top:6mm; max-width:100%; background:var(--band); border-radius:4px; padding:4.5mm 7mm 4.5mm 9mm;
     font-family:var(--font-spectral),serif; font-size:calc(13pt * var(--k,1)); line-height:1.45; }
   #deck-a4 .callout::before{ content:""; position:absolute; left:0; top:0; bottom:0; width:3pt; background:var(--amber); border-radius:4px 0 0 4px; }
   #deck-a4 .callout:empty{ display:none; }
@@ -66,7 +66,7 @@ export const DECK_CSS = `
 
   /* тіло сторінки */
   #deck-a4 .pb{ display:flex; flex-direction:column; flex:1; min-height:0; }
-  #deck-a4 .sheet[data-sparse] .pb{ justify-content:center; padding-bottom:6mm; }
+  #deck-a4 .sheet[data-sparse] .pb{ justify-content:flex-start; padding-bottom:0; }
   #deck-a4 .sheet[data-sparse] .pb > h1:first-child, #deck-a4 .sheet[data-sparse] .withimg h1:first-child{ margin-top:0; }
   #deck-a4 .t-cover .pb, #deck-a4 .t-section .pb, #deck-a4 .t-closing .pb{ display:contents; }
 
@@ -80,9 +80,9 @@ export const DECK_CSS = `
   /* ілюстрація праворуч */
   #deck-a4 .withimg{ display:grid; grid-template-columns:1fr calc(84mm * var(--k,1)); column-gap:12mm; align-items:start; flex:1; min-height:0; }
   #deck-a4 .withimg .fig{ width:calc(84mm * var(--k,1)); height:100%; max-height:150mm; display:flex; align-items:center; justify-content:center; }
-  #deck-a4 .withimg .fig img{ max-width:100%; max-height:150mm; box-shadow:0 10px 30px rgba(60,40,15,.14); object-fit:contain; display:block; border-radius:3px; }
+  #deck-a4 .withimg .fig img{ max-width:100%; max-height:150mm; object-fit:contain; display:block; mix-blend-mode:multiply; }
   #deck-a4 .body{ min-width:0; }
-  #deck-a4 .sheet[data-sparse] .withimg{ align-items:center; }
+  #deck-a4 .sheet[data-sparse] .withimg{ align-items:start; }
   #deck-a4 .sheet[data-sparse] .withimg .fig{ max-height:none; height:auto; }
   #deck-a4 .sheet[data-sparse] .withimg .fig img{ max-height:150mm; }
   #deck-a4 .sheet[data-sparse] .body > h1:first-child{ margin-top:0; }
@@ -96,7 +96,8 @@ export const DECK_CSS = `
   /* twocol */
   #deck-a4 .cols{ display:grid; grid-template-columns:1fr 1fr; column-gap:10mm; row-gap:6mm; margin-top:6mm; }
   #deck-a4 .cols[data-n="3"]{ grid-template-columns:repeat(3,1fr); }
-  #deck-a4 .cols[data-n="4"]{ grid-template-columns:repeat(4,1fr); column-gap:7mm; }
+  #deck-a4 .cols[data-n="4"]{ grid-template-columns:repeat(4,1fr); column-gap:5mm; }
+  #deck-a4 .cols[data-n="4"] .col{ padding:4mm 4.5mm 4.5mm; }
   #deck-a4 .col h3{ font-family:var(--font-spectral),serif; font-style:italic; font-weight:500; font-size:calc(13.5pt * var(--k,1)); color:var(--acc); line-height:1.25; padding-bottom:2mm; border-bottom:1px solid var(--line); }
 
   /* steps */
@@ -107,10 +108,11 @@ export const DECK_CSS = `
   #deck-a4 .step .t{ font-size:calc(12.2pt * var(--k,1)); line-height:1.5; }
 
   /* table */
-  #deck-a4 table{ width:100%; border-collapse:collapse; margin-top:6mm; font-size:calc(10pt * var(--k,1)); line-height:1.42; }
-  #deck-a4 th{ text-align:left; font-family:var(--font-jetbrains),monospace; font-size:7pt; letter-spacing:.18em; text-transform:uppercase; color:var(--faint); padding:0 3mm 2.4mm 0; border-bottom:1px solid var(--ink); font-weight:500; }
+  #deck-a4 table{ width:100%; border-collapse:collapse; margin-top:6mm; font-size:calc(10.5pt * var(--k,1)); line-height:1.42; }
+  #deck-a4 th{ text-align:left; font-family:var(--font-jetbrains),monospace; font-size:7.8pt; letter-spacing:.12em; text-transform:uppercase; color:var(--faint); padding:0 3mm 2.4mm 0; border-bottom:1px solid var(--ink); font-weight:500; }
   #deck-a4 td{ vertical-align:top; padding:calc(2.8mm * var(--k,1)) 3mm calc(2.8mm * var(--k,1)) 0; border-bottom:1px solid var(--line); }
-  #deck-a4 td:first-child{ color:var(--acc); font-family:var(--font-spectral),serif; font-style:italic; font-size:calc(10.5pt * var(--k,1)); white-space:nowrap; }
+  #deck-a4 td:first-child{ color:var(--acc); font-family:var(--font-spectral),serif; font-style:italic; font-size:calc(11pt * var(--k,1)); width:17%; }
+  #deck-a4 table[data-num] td:first-child{ width:6%; white-space:nowrap; }
   #deck-a4 td[contenteditable]:empty{ min-height:6mm; display:block; }
 
   /* cover */
@@ -160,20 +162,20 @@ export const DECK_CSS = `
   #deck-a4 .t-about .quote{ position:relative; margin-top:5mm; background:var(--band); border-radius:4px; padding:3.5mm 6mm 3.5mm 8mm; font-family:var(--font-spectral),serif; font-size:11.2pt; line-height:1.45; }
   #deck-a4 .t-about .quote::before{ content:""; position:absolute; left:0; top:0; bottom:0; width:3pt; background:var(--amber); border-radius:4px 0 0 4px; }
   #deck-a4 .t-about .quote:empty{ display:none; }
-  #deck-a4 .t-about .portrait{ position:relative; width:74mm; }
+  #deck-a4 .t-about .portrait{ position:relative; width:71mm; margin-top:4mm; }
   #deck-a4 .t-about .portrait img{ display:block; width:100%; height:92mm; object-fit:cover; object-position:center 10%; position:relative; z-index:1; filter:saturate(.9); }
-  #deck-a4 .t-about .portrait .frame{ position:absolute; top:3mm; left:3mm; right:-2.6mm; bottom:-2.3mm; border:.75pt solid var(--gold); }
+  #deck-a4 .t-about .portrait .frame{ position:absolute; top:3mm; left:-3mm; right:3mm; bottom:-2.6mm; border:.75pt solid var(--gold); }
   #deck-a4 .t-about .stats{ display:grid; grid-template-columns:repeat(4,1fr); margin-top:6mm; }
   #deck-a4 .t-about .stat{ padding:0 5mm; border-left:1px solid var(--line); }
   #deck-a4 .t-about .stat:first-child{ border-left:0; padding-left:0; }
   #deck-a4 .t-about .stat .n{ font-family:var(--font-spectral),serif; font-style:italic; font-weight:500; font-size:22pt; line-height:1; color:var(--acc); }
-  #deck-a4 .t-about .stat .t{ font-size:8.4pt; line-height:1.45; color:var(--muted); margin-top:2mm; }
+  #deck-a4 .t-about .stat .t{ font-size:9pt; line-height:1.45; color:var(--muted); margin-top:2mm; }
   #deck-a4 .t-about .bottom{ display:grid; grid-template-columns:1fr 1fr; column-gap:12mm; margin-top:5mm; align-items:start; }
   #deck-a4 .t-about .bottom ul.bul{ margin-top:3mm; gap:2mm; }
   #deck-a4 .t-about .bottom ul.bul li{ font-size:9.4pt; line-height:1.45; }
   #deck-a4 .t-about .note{ font-size:9.4pt; line-height:1.5; color:var(--ink); margin-top:3mm; }
   #deck-a4 .t-about .note:empty{ display:none; }
-  #deck-a4 .t-about .logos{ display:block; width:100%; max-width:130mm; max-height:12mm; object-fit:contain; object-position:left; margin-top:6mm; }
+  #deck-a4 .t-about .logos{ display:block; width:100%; max-width:150mm; max-height:16mm; object-fit:contain; object-position:left; margin-top:6mm; }
   #deck-a4 .t-about .lab{ margin-top:4mm; }
 
   /* closing */
@@ -210,7 +212,7 @@ export const DECK_CSS = `
   #deck-a4 .cards[data-n="2"], #deck-a4 .cards[data-n="4"]{ grid-template-columns:repeat(2,1fr); }
   #deck-a4 .cards[data-n="5"], #deck-a4 .cards[data-n="6"]{ grid-template-columns:repeat(3,1fr); }
   #deck-a4 .cards[data-n="7"], #deck-a4 .cards[data-n="8"]{ grid-template-columns:repeat(4,1fr); gap:4.5mm; }
-  #deck-a4 .card{ background:var(--band); border-radius:5px; padding:5.5mm 6.5mm 6mm; border-top:2.5pt solid var(--amber); min-height:calc(30mm * var(--k,1)); display:flex; flex-direction:column; gap:2.5mm; }
+  #deck-a4 .card{ background:var(--band); border-radius:5px; padding:5.5mm 6.5mm 6mm; border-top:2.5pt solid var(--amber); min-height:calc(28mm * var(--k,1)); display:flex; flex-direction:column; gap:2.5mm; }
   #deck-a4 .card .n{ font-family:var(--font-spectral),serif; font-style:italic; font-weight:500; font-size:calc(20pt * var(--k,1)); line-height:1; color:var(--acc); }
   #deck-a4 .card .t{ font-size:calc(11.5pt * var(--k,1)); line-height:1.45; }
   #deck-a4 .cards[data-n="7"] .card .t, #deck-a4 .cards[data-n="8"] .card .t{ font-size:calc(10.5pt * var(--k,1)); }
@@ -223,7 +225,7 @@ export const DECK_CSS = `
 
   /* ── колонки як картки ── */
   #deck-a4 .col{ background:var(--band); border-radius:5px; padding:5mm 6mm 5.5mm; border-top:2.5pt solid var(--amber); }
-  #deck-a4 .col h3{ border-bottom:0; padding-bottom:1mm; }
+  #deck-a4 .col h3{ border-bottom:0; padding-bottom:1mm; min-height:calc(2.5em * 1.25); }
   #deck-a4 .cols{ align-items:stretch; }
 
   /* ── кроки як таймлайн ── */
@@ -256,6 +258,29 @@ export const DECK_CSS = `
   #deck-a4 .t-closing .wrap{ grid-template-columns:1fr 78mm; }
   #deck-a4 .t-closing .wrap > img{ width:78mm; height:98mm; }
   #deck-a4 .t-closing ul.ct{ font-size:12.5pt; gap:2.5mm; }
+
+  /* ── робочі аркуші: порожні клітинки/картки з лінійками для письма ── */
+  #deck-a4 .notes{ flex:1; min-height:20mm; display:flex; flex-direction:column; padding-top:6mm; }
+  #deck-a4 .notes .lab{ margin-top:0; }
+  #deck-a4 .notes .lines{ flex:1; min-height:12mm; background:repeating-linear-gradient(180deg,transparent 0 8.6mm,var(--line) 8.6mm 8.85mm); margin-top:2mm; }
+  #deck-a4 table.ws td{ height:calc(var(--rowh,18mm) * var(--k,1)); vertical-align:top; padding-top:3mm; }
+  #deck-a4 table.ws td:empty{ background-image:repeating-linear-gradient(180deg,transparent 0 8.6mm,var(--line) 8.6mm 8.85mm); background-origin:content-box; background-clip:content-box; }
+  #deck-a4 table.ws th:last-child, #deck-a4 table.ws.ans th:nth-child(3){ width:42%; }
+  #deck-a4 .card .t:empty{ flex:1; min-height:22mm; background:repeating-linear-gradient(180deg,transparent 0 8.6mm,var(--line) 8.6mm 8.85mm); }
+  /* ── таблиця психотипів після галереї: активний рядок ── */
+  #deck-a4 table[data-hl] tr[data-chip]{ opacity:.55; }
+  #deck-a4 table[data-hl="red"] tr[data-chip="red"], #deck-a4 table[data-hl="yellow"] tr[data-chip="yellow"], #deck-a4 table[data-hl="blue"] tr[data-chip="blue"]{ opacity:1; }
+  #deck-a4 table[data-hl="red"] tr[data-chip="red"] td, #deck-a4 table[data-hl="yellow"] tr[data-chip="yellow"] td, #deck-a4 table[data-hl="blue"] tr[data-chip="blue"] td{ background:var(--band) !important; }
+  /* ── заголовки: без пробілу після дефіса, без розриву «5‑й» ── */
+  #deck-a4 h1 .nosp{ display:none; }
+
+  /* ── фінал/контакти: фото на повну висоту праворуч, як у розділах ── */
+  #deck-a4 .t-closing .wrap{ display:block; margin:auto 0; padding-right:112mm; }
+  #deck-a4 .t-closing .wrap > img{ position:absolute; top:0; right:0; bottom:0; width:118mm; height:100%; object-fit:cover; object-position:center 15%; border:0; padding:0; background:none; }
+  #deck-a4 .t-closing .rh, #deck-a4 .t-closing .foot{ margin-right:112mm; }
+  #deck-a4 .t-closing h1{ font-size:40pt; }
+  #deck-a4 .t-closing .qr{ mix-blend-mode:multiply; width:38mm; height:38mm; margin-top:8mm; }
+  #deck-a4 table.ws tbody tr:nth-child(even) td{ background:transparent; }
 
   @media print{
     @page{ size:297mm 210mm; margin:0; }
@@ -360,7 +385,7 @@ function chipFor(text: string): string | null {
 function Title({ p, set, editable, className }: { p: { title: string; titleEm: string }; set: Patch; editable: boolean; className?: string }) {
   return (
     <h1 className={className}>
-      <E value={p.title} onChange={(v) => set({ title: v })} editable={editable} ph="Заголовок" />{" "}
+      <E value={p.title} onChange={(v) => set({ title: v })} editable={editable} ph="Заголовок" />{/-$/.test(p.title.trim()) ? "" : " "}
       <em>
         <E value={p.titleEm} onChange={(v) => set({ titleEm: v })} editable={editable} ph="акцент" />
       </em>
@@ -390,16 +415,21 @@ function Sheet({ deck, i, cls, page, children, editable, onRunhead }: { deck: De
   const d = density(page);
   const ref = useRef<HTMLElement>(null);
   const [k, setK] = useState(d.k);
-  // При зміні вмісту — почати з розрахункового масштабу, потім зменшувати, поки не вміститься.
-  useLayoutEffect(() => { setK(d.k); }, [d.k, page]);
+  // Синхронно підбираємо масштаб: від розрахункового вниз, поки вміст не вміститься (детерміновано для друку).
   useLayoutEffect(() => {
     const el = ref.current;
     if (!el) return;
-    if (el.scrollHeight > el.clientHeight + 2 && k > 0.8) {
-      const id = requestAnimationFrame(() => setK((v) => Math.round((v - 0.05) * 100) / 100));
-      return () => cancelAnimationFrame(id);
+    const pb = el.querySelector<HTMLElement>(":scope > .pb");
+    const fits = () => !(el.scrollHeight > el.clientHeight + 2 || (pb ? pb.scrollHeight > pb.clientHeight + 2 : false));
+    let v = d.k;
+    const floor = page.type === "table" ? 0.7 : 0.62;
+    el.style.setProperty("--k", String(v)); el.style.setProperty("--kh", String(Math.min(1.2, v)));
+    for (let i = 0; i < 24 && !fits() && v > floor; i++) {
+      v = Math.round((v - 0.04) * 100) / 100;
+      el.style.setProperty("--k", String(v)); el.style.setProperty("--kh", String(Math.min(1.2, v)));
     }
-  }, [k, page]);
+    setK(v);
+  }, [d.k, page]);
   return (
     <section ref={ref} className={`sheet ${cls ?? ""}${page.type === "section" && page.image ? " has-img" + (page.fit === "top" ? " fit-top" : "") : ""}`} data-page={i + 1} data-sparse={k >= 1.32 ? "1" : undefined} style={{ ["--k" as any]: k, ["--kh" as any]: Math.min(1.2, k) }}>
       <div className="rh">
@@ -446,7 +476,7 @@ export function DeckPages({
           <div key={p.id} style={{ position: "relative" }}>
             {renderControls?.(i)}
             <Sheet deck={deck} i={i} cls={"t-" + p.type} page={p} editable={editable} onRunhead={rh}>
-              <PageBody p={p} set={set} editable={editable} />
+              <PageBody p={p} set={set} editable={editable} prev={deck.pages[i - 1]} />
             </Sheet>
           </div>
         );
@@ -455,8 +485,13 @@ export function DeckPages({
   );
 }
 
-function PageBody({ p, set, editable }: { p: DeckPage; set: Patch; editable: boolean }) {
+function PageBody({ p, set, editable, prev }: { p: DeckPage; set: Patch; editable: boolean; prev?: DeckPage }) {
   const e = editable;
+  // Розріджені текстові сторінки — це роздатковий матеріал: знизу поле для нотаток.
+  const sparse = density(p).k >= 1.32 && !("image" in p && p.image);
+  const notes = sparse && ((p.type === "bullets" && p.variant !== "bubbles") || p.type === "text" || p.type === "twocol" || p.type === "steps") ? (
+    <div className="notes"><div className="lab">Нотатки</div><div className="lines" /></div>
+  ) : null;
   switch (p.type) {
     case "cover":
       return (
@@ -524,7 +559,7 @@ function PageBody({ p, set, editable }: { p: DeckPage; set: Patch; editable: boo
           <div className="secwrap">
             <E tag="div" className="num serif" value={p.num} onChange={(v) => set({ num: v })} editable={e} ph="" />
             <div className="sec-t">
-              <div className="kicker">Розділ</div>
+              <div className="kicker">{/^\d+-й крок/i.test(p.title) ? "Крок" : "Розділ"}</div>
               <h1>
                 <E value={p.title} onChange={(v) => set({ title: v })} editable={e} ph="Назва розділу" />
               </h1>
@@ -558,6 +593,7 @@ function PageBody({ p, set, editable }: { p: DeckPage; set: Patch; editable: boo
             />
           ))}
           <E tag="div" className="callout" value={p.callout} onChange={(v) => set({ callout: v })} editable={e} ph="" />
+          {notes}
         </WithImg>
       );
     case "bullets": {
@@ -590,6 +626,7 @@ function PageBody({ p, set, editable }: { p: DeckPage; set: Patch; editable: boo
           <E tag="p" className="lead" value={p.lead} onChange={(v) => set({ lead: v })} editable={e} ph="лід" />
           {body}
           <E tag="div" className="callout" value={p.callout} onChange={(v) => set({ callout: v })} editable={e} ph="" />
+          {notes}
         </WithImg>
       );
     }
@@ -609,6 +646,7 @@ function PageBody({ p, set, editable }: { p: DeckPage; set: Patch; editable: boo
               </div>
             ))}
           </div>
+          {notes}
         </WithImg>
       );
     case "steps":
@@ -625,14 +663,21 @@ function PageBody({ p, set, editable }: { p: DeckPage; set: Patch; editable: boo
               </div>
             ))}
           </div>
+          {notes}
         </WithImg>
       );
-    case "table":
+    case "table": {
+      const cells = p.rows.flatMap((r) => r.slice(1));
+      const emptyRatio = cells.length ? cells.filter((c) => !c.trim()).length / cells.length : 0;
+      const ws = emptyRatio >= 0.4;
+      const hl = prev && prev.type === "gallery" ? chipFor(prev.lead) : null;
+      const numbered = p.head[0] === "#" || p.rows.every((r) => /^\d+\.?$/.test((r[0] ?? "").trim()));
+      const rowh = ws ? `${Math.max(11, Math.min(38, Math.floor(118 / Math.max(1, p.rows.length))))}mm` : undefined;
       return (
         <>
           <Title p={p} set={set} editable={e} />
           <E tag="p" className="lead" value={p.lead} onChange={(v) => set({ lead: v })} editable={e} ph="лід" />
-          <table>
+          <table className={ws ? "ws" : undefined} data-hl={hl ?? undefined} data-num={numbered ? "1" : undefined} style={rowh ? ({ ["--rowh" as any]: rowh } as any) : undefined}>
             <thead>
               <tr>
                 {p.head.map((h, k) => (
@@ -644,7 +689,7 @@ function PageBody({ p, set, editable }: { p: DeckPage; set: Patch; editable: boo
             </thead>
             <tbody>
               {p.rows.map((r, ri) => (
-                <tr key={ri}>
+                <tr key={ri} data-chip={chipFor(r[0] ?? "") ?? undefined}>
                   {p.head.map((_, ci) => (
                     ci === 0 && chipFor(r[0] ?? "") ? (
                       <td key={ci}>
@@ -669,6 +714,7 @@ function PageBody({ p, set, editable }: { p: DeckPage; set: Patch; editable: boo
           <E tag="div" className="callout" value={p.callout} onChange={(v) => set({ callout: v })} editable={e} ph="" />
         </>
       );
+    }
     case "gallery":
       return (
         <>

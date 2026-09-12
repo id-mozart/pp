@@ -54,7 +54,10 @@ function upgradePage(saved: DeckPage, def: DeckPage | undefined): DeckPage {
     return saved;
   }
   if (def.type === "bullets" && saved.type === "bullets") { if (!saved.variant && def.variant) out.variant = def.variant; }
-  if (def.type === "section" && saved.type === "section") { if (def.image && !saved.image) out.image = def.image; if (def.fit && !saved.fit) out.fit = def.fit; if (def.panel && !saved.panel) out.panel = def.panel; }
+  if (def.type === "section" && saved.type === "section") {
+    const ours = !saved.image || /\/deck\/novapay\/(np-|tania|hand\.png)/.test(saved.image);
+    if (ours) { out.image = def.image; out.fit = def.fit; out.panel = def.panel; }
+  }
   if ("image" in out && typeof out.image === "string" && RETIRED.test(out.image)) { if ("image" in def && (def as any).image) out.image = (def as any).image; else delete out.image; }
   return out as DeckPage;
 }
