@@ -53,7 +53,7 @@ export const CERT_CSS = `
   #cert-a4 .v-ornament .tag.l{ left:14mm; }
   #cert-a4 .v-ornament .tag.r{ right:14mm; }
   /* нижні кути: QR + адреса сайту зліва, печатка справа */
-  #cert-a4 .v-ornament .qr{ position:absolute; left:14mm; bottom:11mm; display:flex; flex-direction:column; align-items:flex-start; gap:2mm; z-index:2; text-align:left; }
+  #cert-a4 .v-ornament .qr{ position:absolute; left:14mm; bottom:15.5mm; display:flex; flex-direction:column; align-items:flex-start; gap:2mm; z-index:2; text-align:left; }
   #cert-a4 .v-ornament .qr img{ width:19mm; height:19mm; display:block; }
   #cert-a4 .v-ornament .qr .site{ font-family:var(--font-jetbrains),monospace; font-size:8pt; letter-spacing:.2em; text-transform:uppercase; color:var(--acc); white-space:nowrap; }
   #cert-a4 .v-ornament .qr .hint{ font-family:var(--font-spectral),serif; font-style:italic; font-size:8.5pt; color:var(--muted); margin-top:.8mm; white-space:nowrap; }
