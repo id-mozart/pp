@@ -44,12 +44,12 @@ export const CERT_CSS = `
   /* ── ornament ── */
   #cert-a4 .v-ornament{ padding:14mm; }
   #cert-a4 .v-ornament .grid{ position:absolute; inset:9mm; pointer-events:none; overflow:hidden; display:grid; grid-template-columns:repeat(24,1fr); grid-auto-rows:19mm; align-content:center; }
-  #cert-a4 .v-ornament .grid span{ grid-column:span 2; font-family:var(--font-playfair),Georgia,serif; font-size:11.5mm; line-height:19mm; text-align:center; color:#2A2018; opacity:.045; }
+  #cert-a4 .v-ornament .grid span{ grid-column:span 2; font-family:var(--font-playfair),Georgia,serif; font-size:11.5mm; line-height:19mm; text-align:center; color:#2A2018; opacity:.058; }
   #cert-a4 .v-ornament .grid i{ grid-column:span 1; }
   #cert-a4 .v-ornament .frame{ position:absolute; inset:7mm; border:.75pt solid var(--gold); pointer-events:none; }
   #cert-a4 .v-ornament .frame2{ position:absolute; inset:9mm; border:.4pt solid rgba(201,138,43,.45); pointer-events:none; }
-  #cert-a4 .v-ornament .inner{ flex:1; display:flex; flex-direction:column; align-items:center; text-align:center; padding:11mm 16mm 7mm; position:relative; z-index:1; }
-  #cert-a4 .v-ornament .tag{ position:absolute; top:11.6mm; font-family:var(--font-jetbrains),monospace; font-size:11.5pt; font-weight:600; letter-spacing:.24em; text-transform:uppercase; color:var(--acc); z-index:2; white-space:nowrap; }
+  #cert-a4 .v-ornament .inner{ flex:1; display:flex; flex-direction:column; align-items:center; text-align:center; padding:11mm 16mm 5mm; position:relative; z-index:1; }
+  #cert-a4 .v-ornament .tag{ position:absolute; top:13.6mm; font-family:var(--font-jetbrains),monospace; font-size:11.5pt; font-weight:600; letter-spacing:.24em; text-transform:uppercase; color:var(--acc); z-index:2; white-space:nowrap; }
   #cert-a4 .v-ornament .tag.l{ left:14mm; }
   #cert-a4 .v-ornament .tag.r{ right:14mm; }
   /* нижні кути: QR + адреса сайту зліва, печатка справа */
@@ -124,7 +124,7 @@ export function Certificate({ c }: { c: Cert }) {
             <div className="tag r">№ {c.number || "—"}</div>
             <div className="qr">
               <img src="/cert/qr-site.svg" alt="QR: pan-partners.agency" />
-              <div><div className="site">pan-partners.agency</div><div className="hint">Скануй і дізнайся більше</div></div>
+              <div className="site">pan-partners.agency</div>
             </div>
             <svg className="seal" viewBox="0 0 100 100" aria-hidden>
               <defs>
@@ -136,7 +136,7 @@ export function Certificate({ c }: { c: Cert }) {
               <circle cx="50" cy="50" r="44.3" fill="none" stroke="#C98A2B" strokeWidth="1.4" strokeDasharray=".4 3.08" strokeLinecap="round" opacity=".9" />
               <circle cx="50" cy="50" r="30.5" fill="#FBF6EC" stroke="#C98A2B" strokeWidth=".7" />
               <circle cx="50" cy="50" r="28.3" fill="none" stroke="#C98A2B" strokeWidth=".35" strokeDasharray="1.2 1.6" />
-              <text textLength="229" lengthAdjust="spacing"><textPath href={"#" + gid + "c"} textLength="229" lengthAdjust="spacing">Pan &amp; Partners · Training and Consulting ·</textPath></text>
+              <text textLength="229" lengthAdjust="spacing" transform="rotate(120 50 50)"><textPath href={"#" + gid + "c"} textLength="229" lengthAdjust="spacing">Pan &amp; Partners · Training and Consulting ·</textPath></text>
               <text x="50" y="64.5" textAnchor="middle" className="amp" fill={`url(#${gid}s)`}>&amp;</text>
             </svg>
             <div className="inner">
