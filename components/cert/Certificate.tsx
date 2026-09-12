@@ -61,6 +61,7 @@ export const CERT_CSS = `
   #cert-a4 .v-ornament .seal text{ font-family:var(--font-jetbrains),monospace; font-size:5.6px; letter-spacing:.32em; text-transform:uppercase; fill:var(--gold); }
   #cert-a4 .v-ornament .seal .sep{ font-size:7px; letter-spacing:0; }
   #cert-a4 .v-ornament .seal .amp{ font-family:var(--font-playfair),Georgia,serif; font-size:44px; letter-spacing:0; }
+  #cert-a4 .v-ornament .orn2{ display:block; width:100mm; height:6mm; margin-top:5mm; overflow:visible; }
   #cert-a4 .v-ornament .orn.dbl{ margin-top:5mm; }
   #cert-a4 .v-ornament .orn.dbl i{ width:44mm; height:3px; border-top:1px solid var(--gold); border-bottom:1px solid var(--gold); background:none; opacity:.85; }
   #cert-a4 .v-ornament .orn.dbl b{ width:3mm; height:3mm; }
@@ -143,7 +144,13 @@ export function Certificate({ c }: { c: Cert }) {
             <div className="inner">
               <div className="brand">Pan<em>&amp;</em>Partners</div>
               <div className="brand-sub">Training and Consulting</div>
-              <div className="orn dbl"><i /><b /><i /></div>
+              <svg className="orn2" viewBox="0 0 100 6" aria-hidden>
+                <g stroke="#C98A2B" strokeWidth=".26" fill="none">
+                  <path d="M0 2.62H44.6M0 3.38H44.6M55.4 2.62H100M55.4 3.38H100" />
+                  <path d="M50 1.2 51.8 3 50 4.8 48.2 3z" />
+                </g>
+                <path d="M50 2.3 50.7 3 50 3.7 49.3 3z" fill="#C98A2B" />
+              </svg>
               <h1>Сертифікат</h1>
               <div className="verb">засвідчує, що</div>
               <svg className="name" aria-label={c.name} role="img">
