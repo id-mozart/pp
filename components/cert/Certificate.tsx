@@ -43,11 +43,14 @@ export const CERT_CSS = `
   /* ── ornament ── */
   #cert-a4 .v-ornament{ padding:14mm; }
   #cert-a4 .v-ornament .grid{ position:absolute; inset:9mm; pointer-events:none; overflow:hidden; display:grid; grid-template-columns:repeat(12,1fr); grid-auto-rows:19mm; align-content:center; justify-items:center; }
-  #cert-a4 .v-ornament .grid span{ font-family:var(--font-playfair),Georgia,serif; font-size:11.5mm; line-height:19mm; color:#2A2018; opacity:.07; }
-  #cert-a4 .v-ornament .grid span.o{ transform:translateX(100%); }
+  #cert-a4 .v-ornament .grid span{ font-family:var(--font-playfair),Georgia,serif; font-size:11.5mm; line-height:19mm; color:#2A2018; opacity:.055; }
+  #cert-a4 .v-ornament .grid span.o{ transform:translateX(11.6mm); }
   #cert-a4 .v-ornament .frame{ position:absolute; inset:7mm; border:.75pt solid var(--gold); pointer-events:none; }
   #cert-a4 .v-ornament .frame2{ position:absolute; inset:9mm; border:.4pt solid rgba(201,138,43,.45); pointer-events:none; }
-  #cert-a4 .v-ornament .inner{ flex:1; display:flex; flex-direction:column; align-items:center; text-align:center; padding:6mm 16mm 4mm; position:relative; z-index:1; }
+  #cert-a4 .v-ornament .inner{ flex:1; display:flex; flex-direction:column; align-items:center; text-align:center; padding:6mm 16mm 9mm; position:relative; z-index:1; }
+  #cert-a4 .v-ornament .tag{ position:absolute; top:12.5mm; font-family:var(--font-jetbrains),monospace; font-size:8pt; letter-spacing:.22em; text-transform:uppercase; color:var(--faint); z-index:2; white-space:nowrap; }
+  #cert-a4 .v-ornament .tag.l{ left:14mm; }
+  #cert-a4 .v-ornament .tag.r{ right:14mm; }
   #cert-a4 .v-ornament .brand{ font-size:40pt; line-height:1; }
   #cert-a4 .v-ornament .brand-sub{ font-size:9pt; letter-spacing:.36em; margin-top:2.5mm; }
   #cert-a4 .v-ornament .brand-sub{ margin-top:1.5mm; }
@@ -65,7 +68,6 @@ export const CERT_CSS = `
   #cert-a4 .v-ornament .sg .l{ height:1.4mm; background:radial-gradient(circle at center, var(--ink) .55pt, transparent .85pt) 0 0/2.2mm 1.4mm repeat-x; opacity:.55; margin-bottom:2.5mm; }
   #cert-a4 .v-ornament .sg .n{ font-family:var(--font-spectral),serif; font-size:22pt; line-height:1.1; font-style:italic; color:var(--ink); opacity:.78; }
   #cert-a4 .v-ornament .sg .r{ font-size:11pt; color:var(--muted); margin-top:.4mm; }
-  #cert-a4 .v-ornament .bottom{ display:flex; justify-content:space-between; width:100%; margin-top:4.5mm; font-family:var(--font-jetbrains),monospace; font-size:8pt; letter-spacing:.22em; text-transform:uppercase; color:var(--faint); }
 
 
   @media print{
@@ -89,8 +91,6 @@ function Trainers({ c }: { c: Cert }) {
   );
 }
 
-const meta = (c: Cert) => [c.hours, c.date].filter(Boolean).join(" · ");
-
 export function Certificate({ c }: { c: Cert }) {
   const v = "ornament";
   return (
@@ -101,6 +101,8 @@ export function Certificate({ c }: { c: Cert }) {
           <>
             <div className="grid" aria-hidden>{Array.from({ length: 12 * 12 }).map((_, i) => <span key={i} className={Math.floor(i / 12) % 2 ? "o" : undefined}>&amp;</span>)}</div>
             <div className="frame" /><div className="frame2" />
+            <div className="tag l">{[c.place || "Україна", c.date || c.year].filter(Boolean).join(" · ")}</div>
+            <div className="tag r">№ {c.number || "—"}</div>
             <div className="inner">
               <div className="brand">Pan<em>&amp;</em>Partners</div>
               <div className="brand-sub">Training and Consulting</div>
@@ -110,13 +112,12 @@ export function Certificate({ c }: { c: Cert }) {
               <div className="name">{c.name}</div>
               <div className="verb">{c.verb} програму</div>
               <div className="prog">{c.program}</div>
-              <div className="meta">{meta(c)}</div>
+              <div className="meta">{c.hours}</div>
               <div className="signs">
                 {c.trainers.map((t, i) => (
                   <div className="sg" key={i}><div className="l" /><div className="n">{t.name}</div><div className="r">{t.role}</div></div>
                 ))}
               </div>
-              <div className="bottom"><span>{c.place || "Україна"} · {c.year}</span><span>№ {c.number || "—"}</span></div>
             </div>
           </>
         )}
