@@ -35,3 +35,6 @@ yarn-error.log*
 # editor / local reference (kept out of repo)
 /reference/
 /.claude/
+
+# Робочі матеріали соцмереж: 1.4 ГБ вихідників і відео, у git не тримаємо (на прод теж не йдуть, див. .railwayignore)
+SocialMedia/
