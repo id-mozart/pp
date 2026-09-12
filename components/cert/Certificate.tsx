@@ -45,14 +45,8 @@ export const CERT_CSS = `
   #cert-a4 .v-ornament .grid{ position:absolute; inset:9mm; pointer-events:none; overflow:hidden; display:grid; grid-template-columns:repeat(12,1fr); grid-auto-rows:19mm; align-content:center; justify-items:center; }
   #cert-a4 .v-ornament .grid span{ font-family:var(--font-playfair),Georgia,serif; font-size:11.5mm; line-height:19mm; color:#2A2018; opacity:.07; }
   #cert-a4 .v-ornament .grid span.o{ transform:translateX(100%); }
-  #cert-a4 .v-ornament .frame{ position:absolute; inset:7mm; border:1pt solid var(--gold); pointer-events:none; }
-  #cert-a4 .v-ornament .frame2{ position:absolute; inset:8.6mm; border:.4pt solid rgba(201,138,43,.5); pointer-events:none; }
-  #cert-a4 .v-ornament .cn{ position:absolute; width:16mm; height:16mm; pointer-events:none; border:0 solid var(--gold); border-top-width:2pt; border-left-width:2pt; }
-  #cert-a4 .v-ornament .cn::after{ content:""; position:absolute; left:-2.2mm; top:-2.2mm; width:2.6mm; height:2.6mm; background:var(--sheet); border:.8pt solid var(--gold); transform:rotate(45deg); }
-  #cert-a4 .v-ornament .cn.tl{ left:5.6mm; top:5.6mm; }
-  #cert-a4 .v-ornament .cn.tr{ right:5.6mm; top:5.6mm; transform:scaleX(-1); }
-  #cert-a4 .v-ornament .cn.bl{ left:5.6mm; bottom:5.6mm; transform:scaleY(-1); }
-  #cert-a4 .v-ornament .cn.br{ right:5.6mm; bottom:5.6mm; transform:scale(-1); }
+  #cert-a4 .v-ornament .frame{ position:absolute; inset:7mm; border:.75pt solid var(--gold); pointer-events:none; }
+  #cert-a4 .v-ornament .frame2{ position:absolute; inset:9mm; border:.4pt solid rgba(201,138,43,.45); pointer-events:none; }
   #cert-a4 .v-ornament .inner{ flex:1; display:flex; flex-direction:column; align-items:center; text-align:center; padding:6mm 16mm 4mm; position:relative; z-index:1; }
   #cert-a4 .v-ornament .brand{ font-size:40pt; line-height:1; }
   #cert-a4 .v-ornament .brand-sub{ font-size:9pt; letter-spacing:.36em; margin-top:2.5mm; }
@@ -68,7 +62,7 @@ export const CERT_CSS = `
   #cert-a4 .v-ornament .signs{ display:flex; gap:22mm; margin-top:auto; padding-top:10mm; }
   #cert-a4 .v-ornament .sg{ width:74mm; text-align:center; }
   #cert-a4 .v-ornament .sg .l{ height:0; border-top:1.4pt dotted var(--ink); opacity:.55; margin-bottom:2.5mm; }
-  #cert-a4 .v-ornament .sg .n{ font-family:var(--font-spectral),serif; font-size:25pt; line-height:1.1; }
+  #cert-a4 .v-ornament .sg .n{ font-family:var(--font-spectral),serif; font-size:22pt; line-height:1.1; font-style:italic; color:var(--ink); opacity:.78; }
   #cert-a4 .v-ornament .sg .r{ font-size:11pt; color:var(--muted); margin-top:.4mm; }
   #cert-a4 .v-ornament .bottom{ display:flex; justify-content:space-between; width:100%; margin-top:6mm; font-family:var(--font-jetbrains),monospace; font-size:8pt; letter-spacing:.22em; text-transform:uppercase; color:var(--faint); }
 
@@ -105,7 +99,7 @@ export function Certificate({ c }: { c: Cert }) {
         {v === "ornament" && (
           <>
             <div className="grid" aria-hidden>{Array.from({ length: 12 * 12 }).map((_, i) => <span key={i} className={Math.floor(i / 12) % 2 ? "o" : undefined}>&amp;</span>)}</div>
-            <div className="frame" /><div className="frame2" /><div className="cn tl" /><div className="cn tr" /><div className="cn bl" /><div className="cn br" />
+            <div className="frame" /><div className="frame2" />
             <div className="inner">
               <div className="brand">Pan<em>&amp;</em>Partners</div>
               <div className="brand-sub">Training and Consulting</div>
