@@ -43,7 +43,7 @@ export const CERT_CSS = `
   /* ── ornament ── */
   #cert-a4 .v-ornament{ padding:14mm; }
   #cert-a4 .v-ornament .grid{ position:absolute; inset:0; pointer-events:none; overflow:hidden; display:grid; grid-template-columns:repeat(12,1fr); grid-auto-rows:20mm; align-content:start; padding:6mm 0 0 4mm; }
-  #cert-a4 .v-ornament .grid span{ font-family:var(--font-playfair),Georgia,serif; font-size:9mm; line-height:20mm; text-align:center; color:#2A2018; opacity:.1; }
+  #cert-a4 .v-ornament .grid span{ font-family:var(--font-playfair),Georgia,serif; font-size:11.5mm; line-height:20mm; text-align:center; color:#2A2018; opacity:.07; }
   #cert-a4 .v-ornament .grid span.o{ transform:translateX(50%); }
   #cert-a4 .v-ornament .frame{ position:absolute; inset:7mm; border:.75pt solid var(--gold); pointer-events:none; }
   #cert-a4 .v-ornament .frame2{ position:absolute; inset:9mm; border:.4pt solid rgba(201,138,43,.45); pointer-events:none; }
@@ -58,12 +58,12 @@ export const CERT_CSS = `
   #cert-a4 .v-ornament h1 em{ font-style:normal; }
   #cert-a4 .v-ornament .verb{ margin-top:7mm; }
   #cert-a4 .v-ornament .name{ margin-top:2mm; font-size:40pt; font-style:italic; background:linear-gradient(96deg,#D99A28 0%,#CE7A1A 55%,#C15612 100%); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; color:transparent; padding:0 2mm; }
-  #cert-a4 .v-ornament .prog{ margin-top:5mm; max-width:220mm; padding:4mm 8mm; }
+  #cert-a4 .v-ornament .prog{ margin-top:5mm; max-width:230mm; padding:4mm 8mm; font-size:22pt; white-space:pre-line; }
   #cert-a4 .v-ornament .signs{ display:flex; gap:22mm; margin-top:auto; padding-top:10mm; }
   #cert-a4 .v-ornament .sg{ width:74mm; text-align:center; }
   #cert-a4 .v-ornament .sg .l{ height:1px; background:var(--ink); opacity:.5; margin-bottom:2.5mm; }
-  #cert-a4 .v-ornament .sg .n{ font-family:var(--font-spectral),serif; font-size:17pt; }
-  #cert-a4 .v-ornament .sg .r{ font-size:10pt; color:var(--muted); margin-top:1.5mm; }
+  #cert-a4 .v-ornament .sg .n{ font-family:var(--font-spectral),serif; font-size:21pt; }
+  #cert-a4 .v-ornament .sg .r{ font-size:11pt; color:var(--muted); margin-top:1.5mm; }
   #cert-a4 .v-ornament .bottom{ display:flex; justify-content:space-between; width:100%; margin-top:6mm; font-family:var(--font-jetbrains),monospace; font-size:8pt; letter-spacing:.22em; text-transform:uppercase; color:var(--faint); }
 
 
