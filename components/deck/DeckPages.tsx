@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useLayoutEffect, useRef, useState } from "react";
 import type { Deck, DeckPage } from "@/lib/decks/types";
 
 /**
@@ -37,81 +37,110 @@ export const DECK_CSS = `
   #deck-a4 .foot .tl b{ color:var(--acc); font-weight:500; }
 
   /* типографіка */
-  #deck-a4 h1{ font-family:var(--font-spectral),Georgia,serif; font-size:30pt; font-weight:500; line-height:1.06; letter-spacing:-.005em; margin-top:7mm; }
+  #deck-a4 h1{ font-family:var(--font-spectral),Georgia,serif; font-size:calc(30pt * var(--kh,1)); font-weight:500; line-height:1.06; letter-spacing:-.005em; margin-top:7mm; }
   #deck-a4 h1 em, #deck-a4 h2 em{ color:var(--amber); font-style:italic; }
-  #deck-a4 .lead{ font-family:var(--font-spectral),serif; font-size:13.5pt; line-height:1.48; color:var(--ink); margin-top:4mm; max-width:220mm; }
+  #deck-a4 .lead{ font-family:var(--font-spectral),serif; font-size:calc(13.5pt * var(--k,1)); line-height:1.48; color:var(--ink); margin-top:4mm; max-width:220mm; }
   #deck-a4 .lead:empty{ display:none; }
   #deck-a4 h1:has(> [contenteditable]:empty + em > [contenteditable]:empty){ display:none; }
-  #deck-a4 .para{ font-size:11.5pt; line-height:1.55; color:var(--ink); margin-top:4mm; max-width:220mm; }
+  #deck-a4 .para{ font-size:calc(11.5pt * var(--k,1)); line-height:1.55; color:var(--ink); margin-top:4mm; max-width:220mm; }
   #deck-a4 .callout{ position:relative; margin-top:6mm; max-width:230mm; background:var(--band); border-radius:4px; padding:4.5mm 7mm 4.5mm 9mm;
-    font-family:var(--font-spectral),serif; font-size:13pt; line-height:1.45; }
+    font-family:var(--font-spectral),serif; font-size:calc(13pt * var(--k,1)); line-height:1.45; }
   #deck-a4 .callout::before{ content:""; position:absolute; left:0; top:0; bottom:0; width:3pt; background:var(--amber); border-radius:4px 0 0 4px; }
   #deck-a4 .callout:empty{ display:none; }
   #deck-a4 .lab{ font-family:var(--font-jetbrains),monospace; font-size:7.5pt; letter-spacing:.24em; text-transform:uppercase; color:var(--faint); display:flex; align-items:center; gap:4mm; margin-top:8mm; }
   #deck-a4 .lab::after{ content:""; flex:1; height:1px; background:var(--line); }
 
   /* bullets */
-  #deck-a4 ul.bul{ list-style:none; margin-top:5mm; display:flex; flex-direction:column; gap:2.6mm; max-width:230mm; }
-  #deck-a4 ul.bul li{ position:relative; padding-left:6mm; font-size:11.8pt; line-height:1.5; }
+  #deck-a4 ul.bul{ list-style:none; margin-top:5mm; display:flex; flex-direction:column; gap:calc(2.6mm * var(--k,1)); max-width:230mm; }
+  #deck-a4 ul.bul li{ position:relative; padding-left:6mm; font-size:calc(11.8pt * var(--k,1)); line-height:1.5; }
   #deck-a4 ul.bul li::before{ content:""; position:absolute; left:0; top:.55em; width:3.6pt; height:3.6pt; border-radius:99px; background:var(--amber); }
-  #deck-a4 ul.bul.sm li{ font-size:10.2pt; line-height:1.45; }
+  #deck-a4 ul.bul.sm li{ font-size:calc(10.2pt * var(--k,1)); line-height:1.45; }
   #deck-a4 ul.bul.sm{ gap:2mm; margin-top:3mm; }
 
   /* ілюстрація праворуч */
-  #deck-a4 .withimg{ display:grid; grid-template-columns:1fr 84mm; column-gap:12mm; align-items:start; flex:1; min-height:0; }
-  #deck-a4 .withimg .fig{ width:84mm; height:100%; max-height:150mm; display:flex; align-items:center; justify-content:center; }
-  #deck-a4 .withimg .fig img{ max-width:100%; max-height:150mm; object-fit:contain; display:block; border-radius:3px; }
+  #deck-a4 .withimg{ display:grid; grid-template-columns:1fr calc(84mm * var(--k,1)); column-gap:12mm; align-items:start; flex:1; min-height:0; }
+  #deck-a4 .withimg .fig{ width:calc(84mm * var(--k,1)); height:100%; max-height:150mm; display:flex; align-items:center; justify-content:center; }
+  #deck-a4 .withimg .fig img{ max-width:100%; max-height:150mm; box-shadow:0 10px 30px rgba(60,40,15,.14); object-fit:contain; display:block; border-radius:3px; }
   #deck-a4 .body{ min-width:0; }
+  #deck-a4 .sheet[data-sparse] .withimg{ align-items:center; }
+  #deck-a4 .sheet[data-sparse] .withimg .fig{ max-height:none; height:auto; }
+  #deck-a4 .sheet[data-sparse] .withimg .fig img{ max-height:150mm; }
+  #deck-a4 .sheet[data-sparse] .body > h1:first-child{ margin-top:0; }
   /* gallery */
   #deck-a4 .gal{ display:grid; grid-template-columns:repeat(3,1fr); gap:8mm; margin-top:7mm; }
   #deck-a4 .gal figure{ text-align:center; }
   #deck-a4 .gal img{ width:100%; height:96mm; object-fit:cover; display:block; border-radius:3px; border:.75pt solid var(--line); }
-  #deck-a4 .gal figcaption{ font-family:var(--font-spectral),serif; font-style:italic; font-size:13pt; color:var(--acc); margin-top:3mm; }
+  #deck-a4 .gal figcaption{ font-family:var(--font-spectral),serif; font-style:italic; font-size:15pt; color:var(--acc); margin-top:3mm; }
   #deck-a4 .t-section .withimg .fig img{ max-height:120mm; }
   #deck-a4 .t-closing .qr{ width:34mm; height:34mm; object-fit:contain; display:block; margin-top:6mm; border:0; padding:0; }
   /* twocol */
   #deck-a4 .cols{ display:grid; grid-template-columns:1fr 1fr; column-gap:10mm; row-gap:6mm; margin-top:6mm; }
   #deck-a4 .cols[data-n="3"]{ grid-template-columns:repeat(3,1fr); }
   #deck-a4 .cols[data-n="4"]{ grid-template-columns:repeat(4,1fr); column-gap:7mm; }
-  #deck-a4 .col h3{ font-family:var(--font-spectral),serif; font-style:italic; font-weight:500; font-size:13.5pt; color:var(--acc); line-height:1.25; padding-bottom:2mm; border-bottom:1px solid var(--line); }
+  #deck-a4 .col h3{ font-family:var(--font-spectral),serif; font-style:italic; font-weight:500; font-size:calc(13.5pt * var(--k,1)); color:var(--acc); line-height:1.25; padding-bottom:2mm; border-bottom:1px solid var(--line); }
 
   /* steps */
   #deck-a4 .steps{ margin-top:5mm; display:flex; flex-direction:column; max-width:240mm; }
-  #deck-a4 .step{ display:grid; grid-template-columns:52mm 1fr; gap:6mm; padding:3.2mm 0; border-top:1px solid var(--line); align-items:baseline; }
+  #deck-a4 .step{ display:grid; grid-template-columns:60mm 1fr; gap:6mm; padding:calc(3.2mm * var(--k,1)) 0; border-top:1px solid var(--line); align-items:baseline; }
   #deck-a4 .step:first-child{ border-top:0; }
-  #deck-a4 .step .h{ font-family:var(--font-spectral),serif; font-style:italic; font-size:13.5pt; color:var(--acc); line-height:1.3; }
-  #deck-a4 .step .t{ font-size:11.5pt; line-height:1.5; }
+  #deck-a4 .step .h{ font-family:var(--font-spectral),serif; font-style:italic; font-size:calc(13.5pt * var(--k,1)); color:var(--acc); line-height:1.3; }
+  #deck-a4 .step .t{ font-size:calc(11.5pt * var(--k,1)); line-height:1.5; }
 
   /* table */
-  #deck-a4 table{ width:100%; border-collapse:collapse; margin-top:6mm; font-size:10pt; line-height:1.42; }
+  #deck-a4 table{ width:100%; border-collapse:collapse; margin-top:6mm; font-size:calc(10pt * var(--k,1)); line-height:1.42; }
   #deck-a4 th{ text-align:left; font-family:var(--font-jetbrains),monospace; font-size:7pt; letter-spacing:.18em; text-transform:uppercase; color:var(--faint); padding:0 3mm 2.4mm 0; border-bottom:1px solid var(--ink); font-weight:500; }
-  #deck-a4 td{ vertical-align:top; padding:2.8mm 3mm 2.8mm 0; border-bottom:1px solid var(--line); }
-  #deck-a4 td:first-child{ color:var(--acc); font-family:var(--font-spectral),serif; font-style:italic; font-size:10pt; white-space:nowrap; }
+  #deck-a4 td{ vertical-align:top; padding:calc(2.8mm * var(--k,1)) 3mm calc(2.8mm * var(--k,1)) 0; border-bottom:1px solid var(--line); }
+  #deck-a4 td:first-child{ color:var(--acc); font-family:var(--font-spectral),serif; font-style:italic; font-size:calc(10.5pt * var(--k,1)); white-space:nowrap; }
   #deck-a4 td[contenteditable]:empty{ min-height:6mm; display:block; }
 
   /* cover */
-  #deck-a4 .t-cover .logos{ display:flex; align-items:center; gap:8mm; margin-top:4mm; }
-  #deck-a4 .t-cover .logos img{ height:11mm; width:auto; display:block; }
-  #deck-a4 .t-cover .logos .x{ font-family:var(--font-spectral),serif; font-style:italic; color:var(--faint); font-size:14pt; }
-  #deck-a4 .t-cover .eyebrow{ font-family:var(--font-jetbrains),monospace; font-size:8pt; letter-spacing:.26em; text-transform:uppercase; color:var(--acc); margin-top:24mm; }
-  #deck-a4 .t-cover h1{ font-size:46pt; line-height:1.0; margin-top:5mm; max-width:230mm; }
-  #deck-a4 .t-cover .sub{ font-family:var(--font-spectral),serif; font-size:17pt; line-height:1.35; color:var(--muted); margin-top:5mm; max-width:200mm; }
-  #deck-a4 .t-cover .who{ margin-top:auto; font-size:10.5pt; line-height:1.6; color:var(--ink); }
-  #deck-a4 .t-cover .who .w{ font-family:var(--font-jetbrains),monospace; font-size:7.5pt; letter-spacing:.22em; text-transform:uppercase; color:var(--faint); margin-top:1mm; }
-  #deck-a4 .t-cover .band{ position:absolute; left:0; right:0; bottom:0; height:6mm; background:linear-gradient(90deg,var(--amber),var(--gold)); }
+  #deck-a4 .t-cover .np{ position:absolute; right:16mm; top:9.5mm; height:9mm; width:auto; z-index:3; }
+  #deck-a4 .t-cover .rh .tag{ visibility:hidden; }
+  #deck-a4 .t-cover .cv{ display:grid; grid-template-columns:1fr 92mm; gap:16mm; flex:1; min-height:0; margin-top:6mm; }
+  #deck-a4 .t-cover .cv-l{ display:flex; flex-direction:column; padding-top:16mm; }
+  #deck-a4 .t-cover .eyebrow{ font-family:var(--font-jetbrains),monospace; font-size:8.5pt; letter-spacing:.28em; text-transform:uppercase; color:var(--acc); }
+  #deck-a4 .t-cover h1{ font-size:48pt; line-height:.98; margin-top:7mm; letter-spacing:-.012em; }
+  #deck-a4 .t-cover h1 em{ display:block; font-size:30pt; line-height:1.1; margin-top:5mm; letter-spacing:0; }
+  #deck-a4 .t-cover .sub{ font-family:var(--font-spectral),serif; font-size:16pt; line-height:1.4; color:var(--muted); margin-top:6mm; max-width:150mm; }
+  #deck-a4 .t-cover .sub:empty{ display:none; }
+  #deck-a4 .t-cover .who{ margin-top:auto; padding-top:8mm; font-size:11.5pt; line-height:1.6; color:var(--ink); border-top:1px solid var(--line); max-width:150mm; }
+  #deck-a4 .t-cover .who .w{ font-family:var(--font-jetbrains),monospace; font-size:7.8pt; letter-spacing:.24em; text-transform:uppercase; color:var(--faint); margin-top:1.5mm; }
+  #deck-a4 .t-cover .cv-r{ position:relative; align-self:stretch; }
+  #deck-a4 .t-cover .cv-r img{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:center 12%; filter:saturate(.85) contrast(1.02); z-index:1; }
+  #deck-a4 .t-cover .cv-r .frame{ position:absolute; top:4mm; left:4mm; right:-4mm; bottom:-4mm; border:.75pt solid var(--gold); z-index:0; }
+  #deck-a4 .t-cover .foot{ margin-top:10mm; }
+  #deck-a4 .t-cover .band{ position:absolute; left:0; right:0; bottom:0; height:5mm; background:linear-gradient(90deg,var(--amber),var(--gold)); }
 
   /* section */
+  #deck-a4 .t-section{ background:var(--band); }
+  #deck-a4 .t-section .secwrap{ display:grid; grid-template-columns:auto 1fr; column-gap:14mm; align-items:end; margin:auto 0; padding-bottom:14mm; }
+  #deck-a4 .t-section .num{ font-family:var(--font-spectral),serif; font-style:italic; font-weight:500; font-size:190pt; line-height:.78; color:var(--amber); }
   #deck-a4 .t-section .num:empty{ display:none; }
-  #deck-a4 .t-section .num{ font-family:var(--font-spectral),serif; font-style:italic; font-weight:500; font-size:120pt; line-height:.9; color:var(--amber); margin-top:auto; opacity:.9; }
-  #deck-a4 .t-section h1{ font-size:36pt; margin-top:4mm; max-width:220mm; }
-  #deck-a4 .t-section .sub{ font-family:var(--font-spectral),serif; font-size:13pt; color:var(--muted); margin-top:5mm; margin-bottom:auto; max-width:150mm; }
+  #deck-a4 .t-section .sec-t{ padding-bottom:6mm; }
+  #deck-a4 .t-section .kicker{ font-family:var(--font-jetbrains),monospace; font-size:8pt; letter-spacing:.26em; text-transform:uppercase; color:var(--faint); margin-bottom:6mm; display:flex; align-items:center; gap:4mm; }
+  #deck-a4 .t-section .kicker::after{ content:""; width:40mm; height:1px; background:var(--gold); }
+  #deck-a4 .t-section h1{ font-size:38pt; margin-top:0; max-width:190mm; line-height:1.04; }
+  #deck-a4 .t-section .sub{ font-family:var(--font-spectral),serif; font-style:italic; font-size:15pt; color:var(--muted); margin-top:5mm; max-width:170mm; }
+  #deck-a4 .t-section .sub:empty{ display:none; }
+  #deck-a4 .t-section .withimg{ align-items:center; }
+  #deck-a4 .t-section .withimg .fig img{ max-height:130mm; }
+  #deck-a4 .t-section .withimg .secwrap{ padding-bottom:0; margin:0; min-width:0; }
+  #deck-a4 .t-section .secwrap .sec-t{ min-width:0; }
+  #deck-a4 .t-section .withimg h1{ max-width:100%; font-size:32pt; }
+  #deck-a4 .t-section .withimg .num{ font-size:150pt; }
 
   /* about */
-  #deck-a4 .t-about .hero{ display:grid; grid-template-columns:1fr 150mm; gap:10mm; margin-top:4mm; align-items:start; }
+  #deck-a4 .t-about .hero{ display:grid; grid-template-columns:1fr 150mm; gap:10mm; margin-top:4mm; align-items:start; flex:1; }
+  #deck-a4 .t-about .hero.nologos{ grid-template-columns:1fr 92mm; gap:16mm; }
+  #deck-a4 .t-about ul.bul li{ font-size:14pt; }
+  #deck-a4 .t-about ul.bul{ gap:4mm; margin-top:7mm; }
   #deck-a4 .t-about h1{ margin-top:4mm; font-size:34pt; }
   #deck-a4 .t-about .portrait{ position:relative; width:52mm; }
+  #deck-a4 .t-about .nologos .portrait{ width:88mm; }
+  #deck-a4 .t-about .nologos .portrait img{ height:128mm; }
   #deck-a4 .t-about .portrait img{ display:block; width:100%; height:66mm; object-fit:cover; object-position:center 15%; position:relative; z-index:1; filter:saturate(.9); }
   #deck-a4 .t-about .portrait .frame{ position:absolute; top:3mm; left:3mm; right:-2.6mm; bottom:-2.3mm; border:.75pt solid var(--gold); }
+  #deck-a4 .t-about .note:empty{ display:none; }
   #deck-a4 .t-about .note{ margin-top:6mm; font-family:var(--font-spectral),serif; font-style:italic; font-size:15pt; color:var(--acc); }
   #deck-a4 .t-about .right{ display:grid; grid-template-columns:52mm 1fr; gap:8mm; align-items:start; }
   #deck-a4 .t-about .logos{ width:100%; max-height:66mm; object-fit:contain; object-position:left top; display:block; }
@@ -228,9 +257,37 @@ function Title({ p, set, editable, className }: { p: { title: string; titleEm: s
 
 /* ───────── pages ───────── */
 
-function Sheet({ deck, i, cls, children, editable, onRunhead }: { deck: Deck; i: number; cls?: string; children: React.ReactNode; editable: boolean; onRunhead: (v: string) => void }) {
+function textLen(p: DeckPage): number {
+  const walk = (v: unknown): number =>
+    typeof v === "string" ? v.length : Array.isArray(v) ? v.reduce((a: number, x) => a + walk(x), 0) : v && typeof v === "object" ? Object.entries(v).reduce((a, [k, x]) => (k === "id" || k === "type" || k === "image" || k === "logos" || k === "qr" || k === "src" ? a : a + walk(x)), 0) : 0;
+  return walk(p);
+}
+function density(p: DeckPage): { k: number; kh: number } {
+  if (p.type === "cover" || p.type === "section" || p.type === "closing" || p.type === "about") return { k: 1, kh: 1 };
+  let n = textLen(p);
+  if ("image" in p && p.image) n *= 1.6;
+  if (p.type === "table") n *= 1.4;
+  const k = n < 220 ? 1.5 : n < 420 ? 1.32 : n < 700 ? 1.16 : n < 1100 ? 1.05 : 1;
+  const cap = p.type === "table" ? 1.25 : 1.5;
+  return { k: Math.min(k, cap), kh: Math.min(1.2, k) };
+}
+
+function Sheet({ deck, i, cls, page, children, editable, onRunhead }: { deck: Deck; i: number; cls?: string; page: DeckPage; children: React.ReactNode; editable: boolean; onRunhead: (v: string) => void }) {
+  const d = density(page);
+  const ref = useRef<HTMLElement>(null);
+  const [k, setK] = useState(d.k);
+  // При зміні вмісту — почати з розрахункового масштабу, потім зменшувати, поки не вміститься.
+  useLayoutEffect(() => { setK(d.k); }, [d.k, page]);
+  useLayoutEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    if (el.scrollHeight > el.clientHeight + 2 && k > 0.8) {
+      const id = requestAnimationFrame(() => setK((v) => Math.round((v - 0.05) * 100) / 100));
+      return () => cancelAnimationFrame(id);
+    }
+  }, [k, page]);
   return (
-    <section className={`sheet ${cls ?? ""}`} data-page={i + 1}>
+    <section ref={ref} className={`sheet ${cls ?? ""}`} data-page={i + 1} data-sparse={k >= 1.32 ? "1" : undefined} style={{ ["--k" as any]: k, ["--kh" as any]: Math.min(1.2, k) }}>
       <div className="rh">
         <span className="wm">Pan<em>&amp;</em>Partners</span>
         <span className="fill" />
@@ -274,7 +331,7 @@ export function DeckPages({
         return (
           <div key={p.id} style={{ position: "relative" }}>
             {renderControls?.(i)}
-            <Sheet deck={deck} i={i} cls={"t-" + p.type} editable={editable} onRunhead={rh}>
+            <Sheet deck={deck} i={i} cls={"t-" + p.type} page={p} editable={editable} onRunhead={rh}>
               <PageBody p={p} set={set} editable={editable} />
             </Sheet>
           </div>
@@ -290,17 +347,21 @@ function PageBody({ p, set, editable }: { p: DeckPage; set: Patch; editable: boo
     case "cover":
       return (
         <>
-          <div className="logos">
-            <img src="/deck/novapay/pp-logo.png" alt="Pan&Partners" />
-            <span className="x">×</span>
-            <img src="/deck/novapay/novapay-logo.png" alt="NovaPay" style={{ height: "9mm" }} />
-          </div>
-          <E tag="p" className="eyebrow" value={p.eyebrow} onChange={(v) => set({ eyebrow: v })} editable={e} ph="надзаголовок" />
-          <Title p={p} set={set} editable={e} />
-          <E tag="p" className="sub" value={p.sub} onChange={(v) => set({ sub: v })} editable={e} ph="підзаголовок" />
-          <div className="who">
-            <E tag="p" value={p.who} onChange={(v) => set({ who: v })} editable={e} ph="хто проводить" />
-            <E tag="p" className="w" value={p.when} onChange={(v) => set({ when: v })} editable={e} ph="де, коли" />
+          <img className="np" src="/deck/novapay/novapay-logo.png" alt="NovaPay" />
+          <div className="cv">
+            <div className="cv-l">
+              <E tag="p" className="eyebrow" value={p.eyebrow} onChange={(v) => set({ eyebrow: v })} editable={e} ph="надзаголовок" />
+              <Title p={p} set={set} editable={e} />
+              <E tag="p" className="sub" value={p.sub} onChange={(v) => set({ sub: v })} editable={e} ph="" />
+              <div className="who">
+                <E tag="p" value={p.who} onChange={(v) => set({ who: v })} editable={e} ph="хто проводить" />
+                <E tag="p" className="w" value={p.when} onChange={(v) => set({ when: v })} editable={e} ph="де, коли" />
+              </div>
+            </div>
+            <div className="cv-r">
+              <img src="/deck/novapay/tania.jpg" alt="" />
+              <div className="frame" />
+            </div>
           </div>
           <div className="band" />
         </>
@@ -308,34 +369,46 @@ function PageBody({ p, set, editable }: { p: DeckPage; set: Patch; editable: boo
     case "about":
       return (
         <>
-          <div className="hero">
+          <div className={"hero" + (p.logos ? "" : " nologos")}>
             <div>
               <div className="lab" style={{ marginTop: "6mm" }}>Тренерка</div>
               <Title p={p} set={set} editable={e} />
               <EList className="bul" items={p.facts} onChange={(v) => set({ facts: v })} editable={e} />
-              <E tag="p" className="note" value={p.note} onChange={(v) => set({ note: v })} editable={e} ph="цифра / факт" />
+              <E tag="p" className="note" value={p.note} onChange={(v) => set({ note: v })} editable={e} ph="" />
             </div>
-            <div className="right">
+            {p.logos ? (
+              <div className="right">
+                <div className="portrait">
+                  <img src={p.image} alt="" />
+                  <div className="frame" />
+                </div>
+                <div>
+                  <div className="lab" style={{ marginTop: 0 }}>Наші клієнти</div>
+                  <img className="logos" src={p.logos} alt="" style={{ marginTop: "4mm" }} />
+                </div>
+              </div>
+            ) : (
               <div className="portrait">
                 <img src={p.image} alt="" />
                 <div className="frame" />
               </div>
-              <div>
-                <div className="lab" style={{ marginTop: 0 }}>Наші клієнти</div>
-                {p.logos ? <img className="logos" src={p.logos} alt="" style={{ marginTop: "4mm" }} /> : null}
-              </div>
-            </div>
+            )}
           </div>
         </>
       );
     case "section":
       return (
         <WithImg image={p.image}>
-          <E tag="div" className="num serif" value={p.num} onChange={(v) => set({ num: v })} editable={e} ph="01" />
-          <h1>
-            <E value={p.title} onChange={(v) => set({ title: v })} editable={e} ph="Назва розділу" />
-          </h1>
-          <E tag="p" className="sub" value={p.sub} onChange={(v) => set({ sub: v })} editable={e} ph="підзаголовок" />
+          <div className="secwrap">
+            <E tag="div" className="num serif" value={p.num} onChange={(v) => set({ num: v })} editable={e} ph="" />
+            <div className="sec-t">
+              <div className="kicker">Розділ</div>
+              <h1>
+                <E value={p.title} onChange={(v) => set({ title: v })} editable={e} ph="Назва розділу" />
+              </h1>
+              <E tag="p" className="sub" value={p.sub} onChange={(v) => set({ sub: v })} editable={e} ph="" />
+            </div>
+          </div>
         </WithImg>
       );
     case "text":
