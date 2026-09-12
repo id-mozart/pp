@@ -4,6 +4,7 @@ import { getContent, hasDb } from "@/lib/db";
 import type { Deck } from "@/lib/decks/types";
 import { NOVAPAY_DECK } from "@/lib/decks/novapay";
 import { DeckEditor } from "@/components/admin/DeckEditor";
+import { sanitizeDeck } from "@/lib/decks/sanitize";
 
 export const metadata: Metadata = {
   title: "Презентація A4 — адмін",
@@ -17,7 +18,7 @@ export default async function DeckPage({ params, searchParams }: { params: { slu
   const base = DEFAULTS[params.slug];
   if (!base) notFound();
   const saved = await getContent<Deck>(`deck:${params.slug}`);
-  const deck: Deck = saved && Array.isArray(saved.pages) && saved.pages.length ? saved : base;
+  const deck: Deck = saved && Array.isArray(saved.pages) && saved.pages.length ? sanitizeDeck(saved, params.slug) : base;
   const only = searchParams?.only ? Number(searchParams.only) : undefined;
   const initial = searchParams?.caps ? { ...deck, caps: searchParams.caps === "1" } : deck;
   return <DeckEditor initial={initial} dbReady={hasDb()} only={only} bare={searchParams?.bare === "1"} />;
