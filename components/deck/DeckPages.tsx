@@ -298,6 +298,18 @@ export const DECK_CSS = `
 
   #deck-a4 .fullimg{ flex:1; min-height:0; display:flex; align-items:center; margin-top:8mm; }
   #deck-a4 .fullimg img{ width:100%; max-height:125mm; object-fit:contain; mix-blend-mode:multiply; display:block; }
+  /* ── кнопки заміни ілюстрацій (лише в редакторі) ── */
+  #deck-a4 .imgbtn{ position:absolute; z-index:5; top:3mm; right:3mm; display:inline-flex; align-items:center; gap:1.5mm; height:8mm; padding:0 3mm; border-radius:6px; border:1px solid rgba(201,138,43,.7); background:rgba(252,248,241,.96); color:#5E4C36; font:600 8.5pt var(--font-inter),system-ui,sans-serif; cursor:pointer; opacity:0; transition:opacity .15s; box-shadow:0 4px 14px rgba(60,40,15,.18); }
+  #deck-a4 .sheet:hover .imgbtn, #deck-a4 .imgbtn:focus-visible{ opacity:1; }
+  #deck-a4 .sheet[data-measuring] .imgbtn{ display:none; }
+  #deck-a4 .imgbtn:hover{ border-color:#C4621F; color:#C4621F; }
+  #deck-a4 .imgbtn.empty{ position:static; opacity:1; margin-top:4mm; align-self:flex-start; }
+  #deck-a4 .withimg .fig, #deck-a4 .gal figure, #deck-a4 .fullimg, #deck-a4 .qp .fig, #deck-a4 .t-about .portrait, #deck-a4 .t-about .logowrap, #deck-a4 .t-cover .cv-r, #deck-a4 .t-closing .qrwrap{ position:relative; }
+  #deck-a4 .t-about .logowrap{ display:block; }
+  #deck-a4 .t-closing .qrwrap{ display:inline-block; }
+  #deck-a4 .t-closing .photo{ position:absolute; top:0; right:0; bottom:0; width:118mm; }
+  #deck-a4 .t-closing .photo img{ width:100%; height:100%; object-fit:cover; object-position:center 15%; display:block; }
+  #deck-a4 .t-closing .wrap > img{ display:none; }
   @media print{
     @page{ size:297mm 210mm; margin:0; }
     html, body{ background:#fff !important; margin:0 !important; padding:0 !important; height:auto !important; }
@@ -308,6 +320,7 @@ export const DECK_CSS = `
     #deck-a4 .sheet *{ break-inside:avoid; }
     #deck-a4 [contenteditable]:hover, #deck-a4 [contenteditable]:focus{ box-shadow:none; background:transparent; }
     #deck-a4 [contenteditable]:empty::before{ content:""; }
+    #deck-a4 .imgbtn{ display:none !important; }
   }
 `;
 
@@ -389,12 +402,12 @@ function EList({
   );
 }
 
-function WithImg({ image, children }: { image?: string; children: React.ReactNode }) {
-  if (!image) return <>{children}</>;
+function WithImg({ image, children, pick, onPick }: { image?: string; children: React.ReactNode; pick?: PickImage; onPick?: (v: string) => void }) {
+  if (!image) return <>{children}{pick && onPick ? <ImgBtn pick={pick} optional onPick={onPick} empty /> : null}</>;
   return (
     <div className="withimg">
       <div className="body">{children}</div>
-      <div className="fig"><img src={image} alt="" /></div>
+      <div className="fig"><img src={image} alt="" />{pick && onPick ? <ImgBtn pick={pick} current={image} optional onPick={onPick} /> : null}</div>
     </div>
   );
 }
@@ -449,14 +462,16 @@ function Sheet({ deck, i, cls, page, children, editable, onRunhead }: { deck: De
       const pb = el.querySelector<HTMLElement>(":scope > .pb");
       const notes = el.querySelector<HTMLElement>(".notes");
       if (notes) notes.style.display = "";
+      el.setAttribute("data-measuring", "1"); // редакторські кнопки не беруть участі у вимірюванні
       const fits = () => !(el.scrollHeight > el.clientHeight + 2 || (pb ? pb.scrollHeight > pb.clientHeight + 2 : false));
-      let v = d.k;
-      const floor = page.type === "table" ? 0.7 : 0.62;
+      let v = Math.round(d.k * (page.fs ?? 1) * (deck.fs ?? 1) * 100) / 100;
+      const floor = Math.min(page.type === "table" ? 0.7 : 0.62, v);
       const apply = () => { el.style.setProperty("--k", String(v)); el.style.setProperty("--kh", String(v >= 1.1 ? 1.1 : v < 0.95 ? 0.9 : 1)); };
       apply();
       for (let i = 0; i < 24 && !fits() && v > floor; i++) { v = Math.round((v - 0.04) * 100) / 100; apply(); }
       // поле «Нотатки» лишаємо тільки якщо на нього є хоча б 18 мм
       if (notes && notes.getBoundingClientRect().height < 98) { notes.style.display = "none"; }
+      el.removeAttribute("data-measuring");
       setK(v);
     };
     fit();
@@ -465,7 +480,7 @@ function Sheet({ deck, i, cls, page, children, editable, onRunhead }: { deck: De
     // (без beforeprint: у режимі друку метрики інші, і підбір «з'їжджає» до мінімуму)
     const t = window.setTimeout(fit, 600);
     return () => window.clearTimeout(t);
-  }, [d.k, page]);
+  }, [d.k, page, deck.fs]);
   return (
     <section ref={ref} className={`sheet ${cls ?? ""}${page.type === "section" && page.image ? " has-img" + (page.fit === "top" ? " fit-top" : "") : ""}${page.type === "section" && /^\d+-й крок/i.test(page.title) ? " is-step" : ""}`} data-page={i + 1} data-sparse={k >= 1.32 ? "1" : undefined} style={{ ["--k" as any]: k, ["--kh" as any]: Math.min(1.2, k) }}>
       <div className="rh">
@@ -486,6 +501,8 @@ function Sheet({ deck, i, cls, page, children, editable, onRunhead }: { deck: De
   );
 }
 
+export type PickImage = (current: string | undefined, optional: boolean) => Promise<string | null>;
+
 export function DeckPages({
   deck,
   editable = false,
@@ -493,6 +510,7 @@ export function DeckPages({
   onRunhead,
   renderControls,
   only,
+  pickImage,
 }: {
   deck: Deck;
   only?: number;
@@ -500,6 +518,8 @@ export function DeckPages({
   onPatch?: (index: number, patch: Record<string, unknown>) => void;
   onRunhead?: (v: string) => void;
   renderControls?: (index: number) => React.ReactNode;
+  /** Редактор: відкрити вибір зображення. Повертає новий src, "" — прибрати, null — скасовано. */
+  pickImage?: PickImage;
 }) {
   const rh = onRunhead ?? (() => {});
   return (
@@ -512,7 +532,7 @@ export function DeckPages({
           <div key={p.id} style={{ position: "relative" }}>
             {renderControls?.(i)}
             <Sheet deck={deck} i={i} cls={"t-" + p.type} page={p} editable={editable} onRunhead={rh}>
-              <PageBody p={p} set={set} editable={editable} prev={deck.pages[i - 1]} />
+              <PageBody p={p} set={set} editable={editable} prev={deck.pages[i - 1]} pick={editable ? pickImage : undefined} />
             </Sheet>
           </div>
         );
@@ -521,7 +541,23 @@ export function DeckPages({
   );
 }
 
-function PageBody({ p, set, editable, prev }: { p: DeckPage; set: Patch; editable: boolean; prev?: DeckPage }) {
+/** Кнопка «Замінити/Додати ілюстрацію» біля зображення (лише в редакторі). */
+function ImgBtn({ pick, current, optional, onPick, empty }: { pick?: PickImage; current?: string; optional: boolean; onPick: (v: string) => void; empty?: boolean }) {
+  if (!pick) return null;
+  return (
+    <button
+      type="button"
+      className={"imgbtn" + (empty ? " empty" : "")}
+      contentEditable={false}
+      title={current ? "Замінити ілюстрацію" : "Додати ілюстрацію"}
+      onClick={async (ev) => { ev.preventDefault(); ev.stopPropagation(); const v = await pick(current, optional); if (v !== null) onPick(v); }}
+    >
+      🖼 {current ? "Замінити" : "Додати ілюстрацію"}
+    </button>
+  );
+}
+
+function PageBody({ p, set, editable, prev, pick }: { p: DeckPage; set: Patch; editable: boolean; prev?: DeckPage; pick?: PickImage }) {
   const e = editable;
   // Розріджені текстові сторінки — це роздатковий матеріал: знизу поле для нотаток.
   const noImg = !("image" in p && p.image);
@@ -544,7 +580,8 @@ function PageBody({ p, set, editable, prev }: { p: DeckPage; set: Patch; editabl
             </div>
             <div className="cv-r">
               <img className="np-big" src="/deck/novapay/novapay-logo.png" alt="NovaPay" />
-              <img className="ill" src="/deck/novapay/money.png" alt="" />
+              <img className="ill" src={p.image || "/deck/novapay/money.png"} alt="" />
+              <ImgBtn pick={pick} current={p.image || "/deck/novapay/money.png"} optional onPick={(v) => set({ image: v || undefined })} />
             </div>
           </div>
           <div className="band" />
@@ -573,6 +610,7 @@ function PageBody({ p, set, editable, prev }: { p: DeckPage; set: Patch; editabl
             <div className="portrait">
               <img src={p.image} alt="" />
               <div className="frame" />
+              <ImgBtn pick={pick} current={p.image} optional={false} onPick={(v) => set({ image: v })} />
             </div>
           </div>
           <div className="bottom">
@@ -583,7 +621,10 @@ function PageBody({ p, set, editable, prev }: { p: DeckPage; set: Patch; editabl
             <div>
               <div className="lab">Географія проєктів</div>
               <E tag="p" className="note" value={p.note} onChange={(v) => set({ note: v })} editable={e} ph="" />
-              {p.logos ? <img className="logos" src={p.logos} alt="" /> : null}
+              <span className="logowrap">
+                {p.logos ? <img className="logos" src={p.logos} alt="" /> : null}
+                <ImgBtn pick={pick} current={p.logos || undefined} optional onPick={(v) => set({ logos: v })} empty={!p.logos} />
+              </span>
             </div>
           </div>
         </>
@@ -591,7 +632,7 @@ function PageBody({ p, set, editable, prev }: { p: DeckPage; set: Patch; editabl
     case "section":
       return (
         <>
-          {p.image ? <div className={"secimg" + (p.panel ? " panel" : "")}><img src={p.image} alt="" /></div> : null}
+          {p.image ? <div className={"secimg" + (p.panel ? " panel" : "")}><img src={p.image} alt="" /><ImgBtn pick={pick} current={p.image} optional onPick={(v) => set({ image: v || undefined })} /></div> : null}
           <div className="secwrap">
             <E tag="div" className="num serif" value={p.num} onChange={(v) => set({ num: v })} editable={e} ph="" />
             <div className="sec-t">
@@ -600,6 +641,7 @@ function PageBody({ p, set, editable, prev }: { p: DeckPage; set: Patch; editabl
                 <E value={p.title} onChange={(v) => set({ title: v })} editable={e} ph="Назва розділу" />
               </h1>
               <E tag="p" className="sub" value={p.sub} onChange={(v) => set({ sub: v })} editable={e} ph="" />
+              {!p.image ? <ImgBtn pick={pick} optional onPick={(v) => set({ image: v || undefined })} empty /> : null}
             </div>
           </div>
         </>
@@ -609,7 +651,7 @@ function PageBody({ p, set, editable, prev }: { p: DeckPage; set: Patch; editabl
         return (
           <div className="qp">
             <E tag="div" className="q" value={p.callout} onChange={(v) => set({ callout: v })} editable={e} ph="цитата" />
-            <div className="fig"><img src={p.image} alt="" /></div>
+            <div className="fig"><img src={p.image} alt="" /><ImgBtn pick={pick} current={p.image} optional onPick={(v) => set({ image: v || undefined })} /></div>
           </div>
         );
       }
@@ -618,12 +660,12 @@ function PageBody({ p, set, editable, prev }: { p: DeckPage; set: Patch; editabl
           <>
             <Title p={p} set={set} editable={e} />
             <E tag="p" className="lead" value={p.lead} onChange={(v) => set({ lead: v })} editable={e} ph="лід" />
-            <div className="fullimg"><img src={p.image} alt="" /></div>
+            <div className="fullimg"><img src={p.image} alt="" /><ImgBtn pick={pick} current={p.image} optional onPick={(v) => set({ image: v || undefined })} /></div>
           </>
         );
       }
       return (
-        <WithImg image={p.image}>
+        <WithImg image={p.image} pick={pick} onPick={(v) => set({ image: v || undefined })}>
           <Title p={p} set={set} editable={e} />
           <E tag="p" className="lead" value={p.lead} onChange={(v) => set({ lead: v })} editable={e} ph="лід" />
           {p.paras.map((t, k) => (
@@ -666,7 +708,7 @@ function PageBody({ p, set, editable, prev }: { p: DeckPage; set: Patch; editabl
           <EList className="bul" items={p.items} onChange={(v) => set({ items: v })} editable={e} />
         );
       return (
-        <WithImg image={p.image}>
+        <WithImg image={p.image} pick={pick} onPick={(v) => set({ image: v || undefined })}>
           <Title p={p} set={set} editable={e} />
           <E tag="p" className="lead" value={p.lead} onChange={(v) => set({ lead: v })} editable={e} ph="лід" />
           {body}
@@ -677,7 +719,7 @@ function PageBody({ p, set, editable, prev }: { p: DeckPage; set: Patch; editabl
     }
     case "twocol":
       return (
-        <WithImg image={p.image}>
+        <WithImg image={p.image} pick={pick} onPick={(v) => set({ image: v || undefined })}>
           <Title p={p} set={set} editable={e} />
           <E tag="p" className="lead" value={p.lead} onChange={(v) => set({ lead: v })} editable={e} ph="лід" />
           <div className="cols" data-n={String(Math.min(4, Math.max(2, p.cols.length)))}>
@@ -696,7 +738,7 @@ function PageBody({ p, set, editable, prev }: { p: DeckPage; set: Patch; editabl
       );
     case "steps":
       return (
-        <WithImg image={p.image}>
+        <WithImg image={p.image} pick={pick} onPick={(v) => set({ image: v || undefined })}>
           <Title p={p} set={set} editable={e} />
           <E tag="p" className="lead" value={p.lead} onChange={(v) => set({ lead: v })} editable={e} ph="лід" />
           <div className="steps" style={{ ["--lw" as any]: (() => { const m = Math.max(0, ...p.steps.map((x) => x.head.length)); return m <= 16 ? "58mm" : m <= 34 ? "80mm" : "100mm"; })() } as any}>
@@ -773,6 +815,7 @@ function PageBody({ p, set, editable, prev }: { p: DeckPage; set: Patch; editabl
             {p.images.map((im, k) => (
               <figure key={k}>
                 <img src={im.src} alt="" />
+                <ImgBtn pick={pick} current={im.src} optional={false} onPick={(v) => set({ images: p.images.map((x, j) => (j === k ? { ...x, src: v } : x)) })} />
                 <E tag="figcaption" value={im.cap} onChange={(v) => set({ images: p.images.map((x, j) => (j === k ? { ...x, cap: v } : x)) })} editable={e} ph="" />
               </figure>
             ))}
@@ -786,9 +829,12 @@ function PageBody({ p, set, editable, prev }: { p: DeckPage; set: Patch; editabl
             <Title p={p} set={set} editable={e} />
             <E tag="p" className="sub" value={p.sub} onChange={(v) => set({ sub: v })} editable={e} ph="підпис" />
             <EList className="ct" items={p.contacts} onChange={(v) => set({ contacts: v })} editable={e} />
-            {p.qr ? <img className="qr" src={p.qr} alt="" /> : null}
+            <span className="qrwrap">
+              {p.qr ? <img className="qr" src={p.qr} alt="" /> : null}
+              <ImgBtn pick={pick} current={p.qr} optional onPick={(v) => set({ qr: v || undefined })} empty={!p.qr} />
+            </span>
           </div>
-          <img src={p.image} alt="" />
+          <div className="photo"><img src={p.image} alt="" /><ImgBtn pick={pick} current={p.image} optional={false} onPick={(v) => set({ image: v })} /></div>
         </div>
       );
   }

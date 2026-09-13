@@ -8,8 +8,8 @@
  */
 export type BulletsVariant = "list" | "cards" | "bubbles";
 
-export type DeckPage =
-  | { id: string; type: "cover"; eyebrow: string; title: string; titleEm: string; sub: string; who: string; when: string }
+export type DeckPage = (
+  | { id: string; type: "cover"; eyebrow: string; title: string; titleEm: string; sub: string; who: string; when: string; image?: string }
   | { id: string; type: "about"; title: string; titleEm: string; role?: string; quote?: string; stats?: { n: string; t: string }[]; facts: string[]; note: string; image: string; logos: string }
   | { id: string; type: "section"; num: string; title: string; sub: string; image?: string; fit?: "right" | "top"; panel?: boolean }
   | { id: string; type: "text"; title: string; titleEm: string; lead: string; paras: string[]; callout: string; image?: string }
@@ -18,7 +18,8 @@ export type DeckPage =
   | { id: string; type: "steps"; title: string; titleEm: string; lead: string; steps: { head: string; text: string }[]; image?: string }
   | { id: string; type: "table"; title: string; titleEm: string; lead: string; head: string[]; rows: string[][]; callout: string }
   | { id: string; type: "gallery"; title: string; titleEm: string; lead: string; images: { src: string; cap: string }[] }
-  | { id: string; type: "closing"; title: string; titleEm: string; sub: string; contacts: string[]; image: string; qr?: string };
+  | { id: string; type: "closing"; title: string; titleEm: string; sub: string; contacts: string[]; image: string; qr?: string }
+) & { fs?: number }; // fs — ручний множник кегля сторінки (0.6…1.6), поверх автопідбору
 
 export type DeckPageType = DeckPage["type"];
 
@@ -27,6 +28,7 @@ export type Deck = {
   name: string;
   runhead: string; // напис у колонтитулі, напр. «NovaPay · Активні продажі · 2026»
   caps?: boolean; // заголовки капсом
+  fs?: number; // множник кегля для всієї деки (0.7…1.3)
   pages: DeckPage[];
 };
 

@@ -11,6 +11,7 @@ export const NOVAPAY_DECK: Deck = {
   slug: "novapay",
   name: "NovaPay · Активні продажі",
   runhead: "NovaPay · Активні продажі в B2B · 2026",
+  fs: 1.1, // базовий кегль трохи більший — де вміщається, автопідбір лишає його
   pages: [
     // 1
     { id: "s01", type: "cover", eyebrow: "Sell NovaPay", title: "Продажі в B2B —", titleEm: "від 1-го дзвінка до закриття угоди", sub: "", who: "Бізнес-тренерка Тетяна Пан", when: "Україна, 2026" },

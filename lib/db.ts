@@ -174,6 +174,13 @@ export async function insertMedia(bytes: Buffer, mime: string) {
   }, null);
 }
 
+export async function listMedia(limit = 200): Promise<{ id: string; mime: string; created_at: string }[]> {
+  return withDb(async (p) => {
+    const { rows } = await p.query(`SELECT id, mime, created_at FROM media ORDER BY created_at DESC LIMIT $1`, [limit]);
+    return rows.map((r) => ({ id: r.id as string, mime: r.mime as string, created_at: String(r.created_at) }));
+  }, []);
+}
+
 export async function getMedia(
   id: string,
 ): Promise<{ mime: string; bytes: Buffer } | null> {

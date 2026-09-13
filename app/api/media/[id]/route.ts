@@ -13,6 +13,8 @@ export async function GET(
     headers: {
       "Content-Type": m.mime,
       "Cache-Control": "public, max-age=31536000, immutable",
+      "X-Content-Type-Options": "nosniff",
+      "Content-Disposition": "inline",
     },
   });
 }

@@ -4,19 +4,28 @@ import { NOVAPAY_DECK } from "./novapay";
 export const DECK_DEFAULTS: Record<string, Deck> = { novapay: NOVAPAY_DECK };
 
 const s = (v: unknown, max = 4000) => String(v ?? "").slice(0, max);
-// старий логотип P&P більше не використовуємо — викидаємо з будь-яких збережених даних
-const img = (v: unknown) => { const u = s(v, 500); return u && !/pp-logo\.png$/.test(u) ? u : ""; };
+const fsOf = (v: unknown, lo = 0.6, hi = 1.6) => { const n = Number(v); return Number.isFinite(n) && n > 0 && Math.abs(n - 1) > 0.001 ? Math.min(hi, Math.max(lo, Math.round(n * 100) / 100)) : undefined; };
+// старий логотип P&P більше не використовуємо — викидаємо з будь-яких збережених даних.
+// Дозволені лише відносні шляхи сайту (/deck/…, /brand/…, /api/media/…) або https-адреси.
+const img = (v: unknown) => { const u = s(v, 500).trim(); return u && !/pp-logo\.png$/.test(u) && /^(\/(?!\/)[\w\-./%()?=&~,+@:]+|https:\/\/[^\s"'<>]+)$/.test(u) ? u : ""; };
 const arr = (v: unknown, max: number) => (Array.isArray(v) ? v.slice(0, max) : []);
 const strs = (v: unknown, max = 40) => arr(v, max).map((x) => s(x, 2000));
 
 function sanitizePage(p: any): DeckPage | null {
+  const page = sanitizePageInner(p);
+  if (!page) return null;
+  const fs = fsOf(p?.fs);
+  return fs ? { ...page, fs } : page;
+}
+
+function sanitizePageInner(p: any): DeckPage | null {
   if (!p || typeof p !== "object") return null;
   const id = s(p.id, 32) || Math.random().toString(36).slice(2, 10);
   switch (p.type) {
     case "cover":
-      return { id, type: "cover", eyebrow: s(p.eyebrow, 200), title: s(p.title, 300), titleEm: s(p.titleEm, 300), sub: s(p.sub, 500), who: s(p.who, 300), when: s(p.when, 200) };
+      return { id, type: "cover", eyebrow: s(p.eyebrow, 200), title: s(p.title, 300), titleEm: s(p.titleEm, 300), sub: s(p.sub, 500), who: s(p.who, 300), when: s(p.when, 200), image: img(p.image) || undefined };
     case "about":
-      return { id, type: "about", title: s(p.title, 200), titleEm: s(p.titleEm, 200), role: s(p.role, 500) || undefined, quote: s(p.quote, 800) || undefined, stats: arr(p.stats, 6).map((c: any) => ({ n: s(c?.n, 40), t: s(c?.t, 300) })), facts: strs(p.facts, 8), note: s(p.note, 800), image: img(p.image), logos: img(p.logos) };
+      return { id, type: "about", title: s(p.title, 200), titleEm: s(p.titleEm, 200), role: s(p.role, 500) || undefined, quote: s(p.quote, 800) || undefined, stats: arr(p.stats, 6).map((c: any) => ({ n: s(c?.n, 40), t: s(c?.t, 300) })), facts: strs(p.facts, 8), note: s(p.note, 800), image: img(p.image) || "/deck/novapay/tania-profile.jpg", logos: img(p.logos) };
     case "section":
       return { id, type: "section", num: s(p.num, 10), title: s(p.title, 300), sub: s(p.sub, 500), image: img(p.image) || undefined, fit: p.fit === "top" ? "top" : undefined, panel: p.panel ? true : undefined };
     case "text":
@@ -32,7 +41,7 @@ function sanitizePage(p: any): DeckPage | null {
     case "gallery":
       return { id, type: "gallery", title: s(p.title, 300), titleEm: s(p.titleEm, 300), lead: s(p.lead, 1500), images: arr(p.images, 6).map((c: any) => ({ src: img(c?.src), cap: s(c?.cap, 300) })) };
     case "closing":
-      return { id, type: "closing", title: s(p.title, 300), titleEm: s(p.titleEm, 300), sub: s(p.sub, 500), contacts: strs(p.contacts, 8), image: img(p.image), qr: img(p.qr) || undefined };
+      return { id, type: "closing", title: s(p.title, 300), titleEm: s(p.titleEm, 300), sub: s(p.sub, 500), contacts: strs(p.contacts, 8), image: img(p.image) || "/deck/novapay/tania.jpg", qr: img(p.qr) || undefined };
     default:
       return null;
   }
@@ -49,8 +58,8 @@ function upgradePage(saved: DeckPage, def: DeckPage | undefined): DeckPage {
   if (!def) return saved;
   const out: any = { ...saved };
   if (saved.type !== def.type) {
-    if (saved.type === "text" && def.type === "bullets") return { ...def, title: saved.title, titleEm: saved.titleEm, lead: saved.lead, items: saved.paras.length ? saved.paras : def.items, callout: saved.callout };
-    if (saved.type === "text" && def.type === "closing") return { ...def, title: saved.title, titleEm: saved.titleEm, contacts: saved.paras.length ? saved.paras : def.contacts };
+    if (saved.type === "text" && def.type === "bullets") return { ...def, title: saved.title, titleEm: saved.titleEm, lead: saved.lead, items: saved.paras.length ? saved.paras : def.items, callout: saved.callout, fs: saved.fs };
+    if (saved.type === "text" && def.type === "closing") return { ...def, title: saved.title, titleEm: saved.titleEm, contacts: saved.paras.length ? saved.paras : def.contacts, fs: saved.fs };
     return saved;
   }
   if (def.type === "bullets" && saved.type === "bullets") { if (!saved.variant && def.variant) out.variant = def.variant; }
@@ -72,6 +81,8 @@ export function sanitizeDeck(input: any, slug: string): Deck {
     name: s(input?.name, 200) || base?.name || slug,
     runhead: s(input?.runhead, 200) || base?.runhead || "",
     caps: !!input?.caps,
+    // множник кегля деки: явне число (навіть 1) зберігаємо; відсутнє — беремо з дефолтної деки
+    fs: (() => { const n = Number(input?.fs); return Number.isFinite(n) && n > 0 ? Math.min(1.3, Math.max(0.7, Math.round(n * 100) / 100)) : base?.fs; })(),
     pages: pages.length ? pages : base?.pages ?? [],
   };
 }

@@ -1,11 +1,16 @@
 import { NextResponse } from "next/server";
-import { insertMedia } from "@/lib/db";
+import { insertMedia, listMedia } from "@/lib/db";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 const ALLOWED = ["image/png", "image/jpeg", "image/webp", "image/avif"];
 const MAX = 6 * 1024 * 1024; // 6 MB
+
+export async function GET() {
+  const items = await listMedia(200);
+  return NextResponse.json({ ok: true, items: items.map((m) => ({ ...m, url: `/api/media/${m.id}` })) });
+}
 
 export async function POST(req: Request) {
   const form = await req.formData().catch(() => null);
