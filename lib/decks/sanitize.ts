@@ -54,28 +54,19 @@ function sanitizePageInner(p: any): DeckPage | null {
   }
 }
 
-// Ілюстрації, які прибрано з дефолтної деки під час дизайн-проходу: у збережених даних їх теж скидаємо.
-const RETIRED = /\/(kpi\.jpg|funnel\.png|target\.jpg|bant\.jpg|talk\.jpg|questions\.jpg|goals\.jpg|garfield\.jpg)$/;
-
 /**
- * Підтягує дизайн-оновлення з дефолтної деки у збережену версію (за id сторінки):
- * варіанти списків, повнокадрові фото розділів, зміну типу сторінки — тексти користувача лишаються.
+ * Підтягує лише структурні дизайн-оновлення з дефолтної деки у збережену версію (за id сторінки):
+ * зміну типу сторінки та варіант списку. ЗОБРАЖЕННЯ НЕ ЧІПАЄМО — їх обирає користувач у редакторі.
  */
 function upgradePage(saved: DeckPage, def: DeckPage | undefined): DeckPage {
   if (!def) return saved;
   const out: any = { ...saved };
   if (saved.type !== def.type) {
-    if (saved.type === "text" && def.type === "bullets") return { ...def, title: saved.title, titleEm: saved.titleEm, lead: saved.lead, items: saved.paras.length ? saved.paras : def.items, callout: saved.callout, fs: saved.fs };
+    if (saved.type === "text" && def.type === "bullets") return { ...def, title: saved.title, titleEm: saved.titleEm, lead: saved.lead, items: saved.paras.length ? saved.paras : def.items, callout: saved.callout, image: saved.image, fs: saved.fs };
     if (saved.type === "text" && def.type === "closing") return { ...def, title: saved.title, titleEm: saved.titleEm, contacts: saved.paras.length ? saved.paras : def.contacts, fs: saved.fs };
     return saved;
   }
   if (def.type === "bullets" && saved.type === "bullets") { if (!saved.variant && def.variant) out.variant = def.variant; }
-  if (def.type === "section" && saved.type === "section") {
-    const ours = !saved.image || /\/deck\/novapay\/(np-|tania|hand\.png)/.test(saved.image);
-    if (ours) { out.image = def.image; out.fit = def.fit; out.panel = def.panel; }
-  }
-  if (def.type === "closing" && saved.type === "closing") { if (!saved.image || /\/deck\/novapay\/tania/.test(saved.image)) out.image = def.image; if (def.qr && (!saved.qr || /instagram\.jpg$/.test(saved.qr))) out.qr = def.qr; }
-  if ("image" in out && typeof out.image === "string" && RETIRED.test(out.image)) { if ("image" in def && (def as any).image) out.image = (def as any).image; else delete out.image; }
   return out as DeckPage;
 }
 
