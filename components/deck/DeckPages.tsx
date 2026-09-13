@@ -383,16 +383,21 @@ function EList({
   editable: boolean;
 }) {
   const ref = useRef<HTMLUListElement>(null);
+  // Після кожного blur список перемонтовується (key), щоб нативно створені браузером <li>
+  // (Enter у contentEditable) не лишались поруч із React-рендером і не дублювались.
+  const [rev, setRev] = useState(0);
   return (
     <ul
+      key={rev}
       ref={ref}
       className={className}
       contentEditable={editable || undefined}
       suppressContentEditableWarning
       onBlur={() => {
         const lis = Array.from(ref.current?.querySelectorAll("li") ?? []);
-        const v = lis.map((li) => li.innerText.replace(/ /g, " ").trim()).filter(Boolean);
+        const v = lis.map((li) => li.innerText.replace(/\u00a0/g, " ").replace(/\u2011/g, "-").trim()).filter(Boolean);
         if (JSON.stringify(v) !== JSON.stringify(items)) onChange(v.length ? v : [""]);
+        setRev((r) => r + 1);
       }}
     >
       {items.map((it, i) => (
@@ -465,10 +470,10 @@ function Sheet({ deck, i, cls, page, children, editable, onRunhead }: { deck: De
       el.setAttribute("data-measuring", "1"); // редакторські кнопки не беруть участі у вимірюванні
       const fits = () => !(el.scrollHeight > el.clientHeight + 2 || (pb ? pb.scrollHeight > pb.clientHeight + 2 : false));
       let v = Math.round(d.k * (page.fs ?? 1) * (deck.fs ?? 1) * 100) / 100;
-      const floor = Math.min(page.type === "table" ? 0.7 : 0.62, v);
+      const floor = Math.min(page.type === "table" ? 0.7 : 0.62, v, 0.5 * (page.fs ?? 1) * (deck.fs ?? 1) + 0.12);
       const apply = () => { el.style.setProperty("--k", String(v)); el.style.setProperty("--kh", String(v >= 1.1 ? 1.1 : v < 0.95 ? 0.9 : 1)); };
       apply();
-      for (let i = 0; i < 24 && !fits() && v > floor; i++) { v = Math.round((v - 0.04) * 100) / 100; apply(); }
+      for (let i = 0; i < 80 && !fits() && v > floor; i++) { v = Math.round((v - 0.04) * 100) / 100; apply(); }
       // поле «Нотатки» лишаємо тільки якщо на нього є хоча б 18 мм
       if (notes && notes.getBoundingClientRect().height < 98) { notes.style.display = "none"; }
       el.removeAttribute("data-measuring");
