@@ -15,6 +15,7 @@ const CARDS = [
   { href: "/admin/story", title: "Студія сторіз", desc: "Генератор Instagram-каруселі" },
   { href: "/admin/profile", title: "Профайл", desc: "Друкований профайл тренера (PDF)" },
   { href: "/admin/deck/novapay", title: "Презентація · NovaPay", desc: "Редагована A4-дека тренінгу, експорт у PDF" },
+  { href: "/admin/deck/novapay2", title: "Презентація · NovaPay · копія 2", desc: "Незалежна копія деки для окремих правок" },
   { href: "/admin/certs", title: "Сертифікати", desc: "Генератор сертифікатів учасників, PDF і база" },
 ];
 
