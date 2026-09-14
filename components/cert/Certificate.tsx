@@ -67,13 +67,13 @@ export const CERT_CSS = `
   #cert-a4 .v-ornament .orn.dbl b{ width:3mm; height:3mm; }
   #cert-a4 .v-ornament .orn.dbl b::after{ content:""; position:absolute; inset:.7mm; background:var(--gold); }
   #cert-a4 .v-ornament .orn b{ position:relative; }
-  #cert-a4 .v-ornament .brand{ font-size:40pt; line-height:1; }
+  #cert-a4 .v-ornament .brand{ font-size:37.5pt; line-height:1; }
   #cert-a4 .v-ornament .brand-sub{ font-size:9pt; letter-spacing:.36em; margin-top:2.5mm; }
   #cert-a4 .v-ornament .brand-sub{ margin-top:1.5mm; }
   #cert-a4 .v-ornament .orn{ display:flex; align-items:center; gap:4mm; margin-top:7mm; color:var(--gold); }
   #cert-a4 .v-ornament .orn i{ display:block; width:36mm; height:1px; background:var(--gold); }
   #cert-a4 .v-ornament .orn b{ display:block; width:2.4mm; height:2.4mm; border:.6pt solid var(--gold); transform:rotate(45deg); }
-  #cert-a4 .v-ornament h1{ font-size:54pt; margin-top:5mm; letter-spacing:.14em; text-transform:uppercase; font-weight:500; }
+  #cert-a4 .v-ornament h1{ font-size:50.5pt; margin-top:5mm; letter-spacing:.14em; text-transform:uppercase; font-weight:500; }
   #cert-a4 .v-ornament h1 em{ font-style:normal; }
   #cert-a4 .v-ornament .verb{ margin-top:7mm; }
   #cert-a4 .v-ornament .name + .verb{ margin-top:3.5mm; }
