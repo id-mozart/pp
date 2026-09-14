@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { DeckPages, type PickImage } from "@/components/deck/DeckPages";
 import { DECK_LIBRARY } from "@/lib/decks/library";
@@ -53,7 +53,16 @@ const UI_CSS = `
   #deck-ui .pick .btn{ color:#5E4C36; border-color:rgba(140,116,82,.5); }
   #deck-ui .pick .btn.pri{ color:#241A10; }
   #deck-ui .pick .err{ color:#B3261E; font-size:13px; }
-  @media print{ #deck-ui{ background:#fff; padding:0; } #deck-ui .bar, #deck-ui .ctl, #deck-ui .pick-bg{ display:none !important; } #deck-ui .pages{ padding:0; } }
+  /* режим показу */
+  #deck-ui .present{ position:fixed; inset:0; z-index:80; background:#0f0b08; display:flex; align-items:center; justify-content:center; cursor:none; }
+  #deck-ui .present:hover{ cursor:default; }
+  #deck-ui .present .stage{ width:297mm; height:210mm; transform:scale(var(--ps,1)); transform-origin:center; flex:none; }
+  #deck-ui .present #deck-a4{ gap:0; }
+  #deck-ui .present .hud{ position:fixed; left:0; right:0; bottom:0; display:flex; justify-content:space-between; align-items:center; padding:10px 18px; font-family:var(--font-jetbrains),monospace; font-size:12px; letter-spacing:.14em; color:rgba(245,233,215,.55); opacity:0; transition:opacity .25s; }
+  #deck-ui .present:hover .hud{ opacity:1; }
+  #deck-ui .present .hud button{ border:1px solid rgba(226,166,56,.45); border-radius:8px; padding:6px 12px; background:transparent; color:#F5E9D7; cursor:pointer; font:inherit; }
+  #deck-ui .present .hud button:hover{ border-color:#E2A638; color:#E2A638; }
+  @media print{ #deck-ui{ background:#fff; padding:0; } #deck-ui .bar, #deck-ui .ctl, #deck-ui .pick-bg, #deck-ui .present{ display:none !important; } #deck-ui .pages{ padding:0; } }
 `;
 
 export function DeckEditor({ initial, dbReady, only, bare }: { initial: Deck; dbReady: boolean; only?: number; bare?: boolean }) {
@@ -98,6 +107,34 @@ export function DeckEditor({ initial, dbReady, only, bare }: { initial: Deck; db
     }) }));
   const bumpDeckFs = (dir: -1 | 1) =>
     update((d) => { const next = Math.round(Math.min(1.3, Math.max(0.7, (d.fs ?? 1) + dir * 0.05)) * 100) / 100; return { ...d, fs: next }; });
+
+  /* ── режим показу (повний екран, Space/→ далі, ←/Backspace назад, Esc вихід) ── */
+  const [present, setPresent] = useState<number | null>(null);
+  const [tick, setTick] = useState(0); // перезапуск анімації при зміні сторінки
+  const presentRef = useRef<HTMLDivElement>(null);
+  const goTo = useCallback((k: number) => { setPresent((cur) => { if (cur === null) return cur; const n = Math.min(deck.pages.length - 1, Math.max(0, k)); return n; }); setTick((t) => t + 1); }, [deck.pages.length]);
+  const startPresent = (from = 0) => {
+    (document.activeElement as HTMLElement | null)?.blur?.(); // інакше Space повторно натисне кнопку
+    setPresent(from); setTick((t) => t + 1);
+    document.documentElement.requestFullscreen?.().catch(() => {});
+    setTimeout(() => presentRef.current?.focus(), 50);
+  };
+  const stopPresent = useCallback(() => { setPresent(null); if (document.fullscreenElement) document.exitFullscreen?.().catch(() => {}); }, []);
+  useEffect(() => {
+    if (present === null) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === " " || e.code === "Space" || e.key === "Spacebar" || e.key === "ArrowRight" || e.key === "PageDown" || e.key === "Enter") { e.preventDefault(); goTo(present + 1); }
+      else if (e.key === "ArrowLeft" || e.key === "Backspace" || e.key === "PageUp") { e.preventDefault(); goTo(present - 1); }
+      else if (e.key === "Home") goTo(0);
+      else if (e.key === "End") goTo(deck.pages.length - 1);
+      else if (e.key === "Escape") stopPresent();
+    };
+    const onFs = () => { if (!document.fullscreenElement) setPresent(null); };
+    const fit = () => { const el = presentRef.current; if (!el) return; const s = Math.min(innerWidth / 1123, innerHeight / 794) * 0.98; el.style.setProperty("--ps", String(s)); };
+    fit();
+    window.addEventListener("keydown", onKey); document.addEventListener("fullscreenchange", onFs); window.addEventListener("resize", fit);
+    return () => { window.removeEventListener("keydown", onKey); document.removeEventListener("fullscreenchange", onFs); window.removeEventListener("resize", fit); };
+  }, [present, goTo, stopPresent, deck.pages.length]);
 
   /* ── вибір/завантаження зображення ── */
   const [picker, setPicker] = useState<{ current?: string; optional: boolean; resolve: (v: string | null) => void } | null>(null);
@@ -150,12 +187,13 @@ export function DeckEditor({ initial, dbReady, only, bare }: { initial: Deck; db
         <button className="btn" onClick={() => bumpDeckFs(-1)} title="Кегль усієї деки менше">A−</button>
         <span className="st" title="Множник кегля деки">×{(deck.fs ?? 1).toFixed(2)}</span>
         <button className="btn" onClick={() => bumpDeckFs(1)} title="Кегль усієї деки більше">A+</button>
+        <button className="btn" onClick={() => startPresent(0)} title="Повноекранний показ: Space / → далі, ← назад, Esc вихід">▶ Показ</button>
         <button className="btn" onClick={() => window.print()}>Завантажити PDF</button>
         <button className="btn" onClick={reset}>Скинути</button>
         <button className="btn pri" onClick={save} disabled={status === "saving"}>Зберегти</button>
         <Link href="/admin" className="btn">← Панель</Link>
         <p className="hint">
-          Клікніть на будь-який текст на сторінці й редагуйте прямо там. У списках Enter додає новий пункт. Наведіть на сторінку — біля ілюстрацій зʼявиться «Замінити»; кнопки A−/A+ біля сторінки змінюють її кегль, ＋ вставляє нову сторінку одразу після неї.
+          «▶ Показ» — повноекранний режим з анімацією: Space або → наступна сторінка, ← попередня, Esc вихід. Клікніть на будь-який текст на сторінці й редагуйте прямо там. У списках Enter додає новий пункт. Наведіть на сторінку — біля ілюстрацій зʼявиться «Замінити»; кнопки A−/A+ біля сторінки змінюють її кегль, ＋ вставляє нову сторінку одразу після неї.
           «Завантажити PDF» відкриває друк — оберіть «Зберегти як PDF», формат A4, поля «немає».
           {!dbReady && " База даних не підключена: правки не збережуться після перезавантаження."}
         </p>
@@ -170,6 +208,7 @@ export function DeckEditor({ initial, dbReady, only, bare }: { initial: Deck; db
           pickImage={bare ? undefined : pickImage}
           renderControls={bare ? undefined : (i) => (
             <div className="ctl">
+              <button title="Показ з цієї сторінки" onClick={() => startPresent(i)}>▶</button>
               <button title="Вгору" onClick={() => move(i, -1)}>↑</button>
               <button title="Вниз" onClick={() => move(i, 1)}>↓</button>
               <button title="Дублювати" onClick={() => duplicate(i)}>⧉</button>
@@ -197,6 +236,17 @@ export function DeckEditor({ initial, dbReady, only, bare }: { initial: Deck; db
         />
       </div>
       {picker && <ImagePicker current={picker.current} optional={picker.optional} onClose={closePicker} />}
+      {present !== null && (
+        <div className="present present-mode" ref={presentRef} tabIndex={-1} style={{ outline: "none" }} onClick={(e) => { if ((e.target as HTMLElement).closest(".hud")) return; goTo(present + 1); }} onContextMenu={(e) => { e.preventDefault(); goTo(present - 1); }}>
+          <div className="stage">
+            <DeckPages deck={deck} only={present + 1} editable={false} animate={tick} />
+          </div>
+          <div className="hud">
+            <span>{String(present + 1).padStart(2, "0")} / {String(deck.pages.length).padStart(2, "0")} · Space / → далі · ← назад · Esc вихід</span>
+            <span><button onClick={() => goTo(present - 1)}>←</button> <button onClick={() => goTo(present + 1)}>→</button> <button onClick={stopPresent}>✕ Вийти</button></span>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

@@ -310,6 +310,14 @@ export const DECK_CSS = `
   #deck-a4 .t-closing .photo{ position:absolute; top:0; right:0; bottom:0; width:118mm; }
   #deck-a4 .t-closing .photo img{ width:100%; height:100%; object-fit:cover; object-position:center 15%; display:block; }
   #deck-a4 .t-closing .wrap > img{ display:none; }
+  /* ── режим показу: анімація появи елементів ── */
+  @keyframes deckRise{ from{ opacity:0; transform:translateY(14px); } to{ opacity:1; transform:none; } }
+  @keyframes deckFade{ from{ opacity:0; } to{ opacity:1; } }
+  @keyframes deckPanel{ from{ opacity:0; transform:translateX(24px); } to{ opacity:1; transform:none; } }
+  .present-mode #deck-a4 .anim-item{ animation:deckRise .6s cubic-bezier(.2,.7,.2,1) both; animation-delay:calc(var(--i,0) * 90ms); }
+  .present-mode #deck-a4 .secimg.anim-item, .present-mode #deck-a4 .photo.anim-item{ animation-name:deckPanel; animation-duration:.8s; }
+  .present-mode #deck-a4 .rh.anim-item, .present-mode #deck-a4 .foot.anim-item{ animation-name:deckFade; }
+  .present-mode #deck-a4 .sheet{ box-shadow:none; }
   @media print{
     @page{ size:297mm 210mm; margin:0; }
     html, body{ background:#fff !important; margin:0 !important; padding:0 !important; height:auto !important; }
@@ -454,9 +462,23 @@ function density(p: DeckPage): { k: number; kh: number } {
   return { k: Math.min(k, cap), kh: Math.min(1.2, k) };
 }
 
-function Sheet({ deck, i, cls, page, children, editable, onRunhead }: { deck: Deck; i: number; cls?: string; page: DeckPage; children: React.ReactNode; editable: boolean; onRunhead: (v: string) => void }) {
+const ANIM_SEL = [".rh", ".secimg", ".photo", ".num", ".kicker", ".sec-t h1", ".sec-t .sub", ".cv-l > *", ".cv-r > img", ".hero .lab", ".hero h1", ".hero .role", ".hero .quote", ".stat", ".portrait", ".bottom > *",
+  ".pb > h1", ".pb > .lead", ".pb > .para", ".pb > .callout", ".body > h1", ".body > .lead", ".body > .para", ".body > .callout", ".fig", ".fullimg", ".qp > *", "ul.bul > li", ".card", ".bubble", ".col", ".step", "thead", "tbody tr", ".gal figure", ".notes", ".wrap > div > *", ".foot"].join(",");
+
+function Sheet({ deck, i, cls, page, children, editable, onRunhead, animate }: { deck: Deck; i: number; cls?: string; page: DeckPage; children: React.ReactNode; editable: boolean; onRunhead: (v: string) => void; animate?: number }) {
   const d = density(page);
   const ref = useRef<HTMLElement>(null);
+  // Режим показу: пронумерувати елементи в порядку появи й перезапустити анімацію.
+  useLayoutEffect(() => {
+    const el = ref.current;
+    if (!el || animate === undefined) return;
+    const seen = new Set<Element>();
+    const items = Array.from(el.querySelectorAll<HTMLElement>(ANIM_SEL)).filter((x) => { if (seen.has(x)) return false; seen.add(x); return true; });
+    items.forEach((x) => { x.classList.remove("anim-item"); });
+    void el.offsetWidth; // перезапуск анімації при повторному показі тієї ж сторінки
+    items.forEach((x, k) => { x.style.setProperty("--i", String(k)); x.classList.add("anim-item"); });
+    return () => { items.forEach((x) => { x.classList.remove("anim-item"); x.style.removeProperty("--i"); }); };
+  }, [animate, page]);
   const [k, setK] = useState(d.k);
   // Синхронно підбираємо масштаб: від розрахункового вниз, поки вміст не вміститься (детерміновано для друку).
   // Повторюємо після завантаження шрифтів і перед друком — метрики fallback-шрифтів інші.
@@ -516,6 +538,7 @@ export function DeckPages({
   renderControls,
   only,
   pickImage,
+  animate,
 }: {
   deck: Deck;
   only?: number;
@@ -525,6 +548,8 @@ export function DeckPages({
   renderControls?: (index: number) => React.ReactNode;
   /** Редактор: відкрити вибір зображення. Повертає новий src, "" — прибрати, null — скасовано. */
   pickImage?: PickImage;
+  /** Режим показу: елементи сторінки зʼявляються з анімацією (ключ перезапускає її). */
+  animate?: number;
 }) {
   const rh = onRunhead ?? (() => {});
   return (
@@ -536,7 +561,7 @@ export function DeckPages({
         return (
           <div key={p.id} style={{ position: "relative" }}>
             {renderControls?.(i)}
-            <Sheet deck={deck} i={i} cls={"t-" + p.type} page={p} editable={editable} onRunhead={rh}>
+            <Sheet deck={deck} i={i} cls={"t-" + p.type} page={p} editable={editable} onRunhead={rh} animate={animate}>
               <PageBody p={p} set={set} editable={editable} prev={deck.pages[i - 1]} pick={editable ? pickImage : undefined} />
             </Sheet>
           </div>
