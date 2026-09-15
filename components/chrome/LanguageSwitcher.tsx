@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import {
-  LOCALES,
+  VISIBLE_LOCALES,
   LOCALE_NAMES,
   LOCALE_SHORT,
   type Locale,
@@ -69,7 +69,7 @@ export function LanguageSwitcher({ className = "" }: { className?: string }) {
             transition={{ duration: 0.22, ease: EASE }}
             className="absolute right-0 top-[calc(100%+0.5rem)] z-[80] min-w-[10rem] overflow-hidden rounded-2xl border border-line/70 bg-canvas/95 p-1.5 shadow-2xl backdrop-blur-xl"
           >
-            {LOCALES.map((l: Locale) => {
+            {VISIBLE_LOCALES.map((l: Locale) => {
               const active = l === locale;
               return (
                 <li key={l} role="none">

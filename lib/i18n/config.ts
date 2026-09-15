@@ -7,6 +7,13 @@ export const LOCALES = ["uk", "ru", "en", "es", "uz"] as const;
 export type Locale = (typeof LOCALES)[number];
 export const DEFAULT_LOCALE: Locale = "uk";
 
+/**
+ * Мови, тимчасово прибрані з перемикача: сторінки лишаються доступними за прямим посиланням (/ru/…),
+ * але в меню не показуються і за Accept-Language не обираються автоматично.
+ */
+export const HIDDEN_LOCALES: readonly Locale[] = ["ru"];
+export const VISIBLE_LOCALES: readonly Locale[] = LOCALES.filter((l) => !HIDDEN_LOCALES.includes(l));
+
 /** Native language name shown in the switcher (no flags). */
 export const LOCALE_NAMES: Record<Locale, string> = {
   uk: "Українська",
@@ -103,7 +110,7 @@ export function matchLocale(acceptLanguage: string | null | undefined): Locale {
     .sort((a, b) => b.q - a.q);
   for (const { tag } of parts) {
     const base = tag.split("-")[0];
-    if (isLocale(base)) return base;
+    if (isLocale(base) && !HIDDEN_LOCALES.includes(base)) return base;
   }
   return DEFAULT_LOCALE;
 }
