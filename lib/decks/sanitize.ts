@@ -11,7 +11,7 @@ export const DECK_DEFAULTS: Record<string, Deck> = {
 export const DECK_COPY_FROM: Record<string, string> = { novapay2: "novapay" };
 
 const s = (v: unknown, max = 4000) => String(v ?? "").slice(0, max);
-const fsOf = (v: unknown, lo = 0.6, hi = 1.6) => { const n = Number(v); return Number.isFinite(n) && n > 0 && Math.abs(n - 1) > 0.001 ? Math.min(hi, Math.max(lo, Math.round(n * 100) / 100)) : undefined; };
+const fsOf = (v: unknown, lo = 0.5, hi = 2.4) => { const n = Number(v); return Number.isFinite(n) && n > 0 && Math.abs(n - 1) > 0.001 ? Math.min(hi, Math.max(lo, Math.round(n * 100) / 100)) : undefined; };
 // старий логотип P&P більше не використовуємо — викидаємо з будь-яких збережених даних.
 // Дозволені лише відносні шляхи сайту (/deck/…, /brand/…, /api/media/…) або https-адреси.
 // Зображення: зберігаємо як є, відкидаємо лише небезпечні схеми (javascript:, data:, vbscript:), protocol-relative «//» і старий логотип.
@@ -89,8 +89,9 @@ export function sanitizeDeck(input: any, slug: string, opts: { fallbackToDefault
     caps: !!input?.caps,
     // нотатки: явне значення зі збереженої деки; якщо поля ще немає — з дефолту цього slug
     notes: typeof input?.notes === "boolean" ? input.notes : base?.notes !== false,
+    tight: typeof input?.tight === "boolean" ? input.tight : !!base?.tight,
     // множник кегля деки: явне число (навіть 1) зберігаємо; відсутнє — беремо з дефолтної деки
-    fs: (() => { const n = Number(input?.fs); return Number.isFinite(n) && n > 0 ? Math.min(1.3, Math.max(0.7, Math.round(n * 100) / 100)) : base?.fs; })(),
+    fs: (() => { const n = Number(input?.fs); return Number.isFinite(n) && n > 0 ? Math.min(1.8, Math.max(0.6, Math.round(n * 100) / 100)) : base?.fs; })(),
     pages: pages.length ? pages : fallback ? base?.pages ?? [] : [],
   };
 }

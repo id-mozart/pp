@@ -113,12 +113,12 @@ export function DeckEditor({ initial, dbReady, only, bare, loadedAt, fromDb }: {
     update((d) => ({ ...d, pages: d.pages.map((p, k) => {
       if (k !== i) return p;
       const cur = p.fs ?? 1;
-      const next = Math.round(Math.min(1.6, Math.max(0.6, cur + dir * 0.1)) * 100) / 100;
+      const next = Math.round(Math.min(2.4, Math.max(0.5, cur + dir * 0.1)) * 100) / 100;
       const { fs: _drop, ...rest } = p;
       return (Math.abs(next - 1) < 0.001 ? rest : { ...rest, fs: next }) as DeckPage;
     }) }));
   const bumpDeckFs = (dir: -1 | 1) =>
-    update((d) => { const next = Math.round(Math.min(1.3, Math.max(0.7, (d.fs ?? 1) + dir * 0.05)) * 100) / 100; return { ...d, fs: next }; });
+    update((d) => { const next = Math.round(Math.min(1.8, Math.max(0.6, (d.fs ?? 1) + dir * 0.1)) * 100) / 100; return { ...d, fs: next }; });
 
   /* ── режим показу (повний екран, Space/→ далі, ←/Backspace назад, Esc вихід) ── */
   const [present, setPresent] = useState<number | null>(null);
@@ -205,6 +205,7 @@ export function DeckEditor({ initial, dbReady, only, bare, loadedAt, fromDb }: {
         <button className="btn" onClick={addPage}>+ сторінка</button>
         <button className={"btn" + (deck.caps ? " on" : "")} onClick={() => update((d) => ({ ...d, caps: !d.caps }))} title="Заголовки великими літерами">{deck.caps ? "Aa → АБВ" : "АБВ → Aa"}</button>
         <button className={"btn" + (deck.notes !== false ? " on" : "")} onClick={() => update((d) => ({ ...d, notes: d.notes === false ? true : false }))} title="Поле «Нотатки» на розріджених сторінках (для роздрукованої версії)">{deck.notes !== false ? "Нотатки: є" : "Нотатки: немає"}</button>
+        <button className={"btn" + (deck.tight ? " on" : "")} onClick={() => update((d) => ({ ...d, tight: !d.tight }))} title="Щільна верстка: менші відступи в таблицях і картках, тому текст на щільних сторінках більший">{deck.tight ? "Щільно: так" : "Щільно: ні"}</button>
         <button className="btn" onClick={() => bumpDeckFs(-1)} title="Кегль усієї деки менше">A−</button>
         <span className="st" title="Множник кегля деки">×{(deck.fs ?? 1).toFixed(2)}</span>
         <button className="btn" onClick={() => bumpDeckFs(1)} title="Кегль усієї деки більше">A+</button>

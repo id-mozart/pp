@@ -43,7 +43,13 @@ export default async function DeckPage({ params, searchParams }: { params: { slu
   }
   const only = searchParams?.only ? Number(searchParams.only) : undefined;
   // ?caps= лише для службового рендера (bare), щоб не потрапити у збережену деку
-  const initial = searchParams?.caps && searchParams?.bare === "1" ? { ...deck, caps: searchParams.caps === "1" } : deck;
+  const bare = searchParams?.bare === "1";
+  let initial = deck;
+  if (bare) { // службові параметри для рендерів: не потрапляють у збереження, бо bare без редагування
+    if (searchParams?.caps) initial = { ...initial, caps: searchParams.caps === "1" };
+    if ((searchParams as any)?.tight) initial = { ...initial, tight: (searchParams as any).tight === "1" };
+    if ((searchParams as any)?.fs) { const n = Number((searchParams as any).fs); if (Number.isFinite(n)) initial = { ...initial, fs: n }; }
+  }
   return <DeckEditor initial={initial} dbReady={hasDb()} only={only} bare={searchParams?.bare === "1"} loadedAt={updatedAt} fromDb={fromDb} />;
 }
 

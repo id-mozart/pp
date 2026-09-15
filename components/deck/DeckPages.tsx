@@ -318,6 +318,38 @@ export const DECK_CSS = `
   .present-mode #deck-a4 .secimg.anim-item, .present-mode #deck-a4 .photo.anim-item{ animation-name:deckPanel; animation-duration:.8s; }
   .present-mode #deck-a4 .rh.anim-item, .present-mode #deck-a4 .foot.anim-item{ animation-name:deckFade; }
   .present-mode #deck-a4 .sheet{ box-shadow:none; }
+  /* ── щільна верстка (deck.tight): менше повітря всередині таблиць і карток, вищий мінімальний кегль ── */
+  #deck-a4.tight table{ font-size:calc(11.2pt * var(--k,1)); line-height:1.3; margin-top:4mm; }
+  #deck-a4.tight th{ font-size:8.4pt; padding:0 4mm 1.8mm 0; }
+  #deck-a4.tight td{ padding:calc(1.9mm * var(--k,1)) 2.5mm calc(1.9mm * var(--k,1)) 0; }
+  #deck-a4.tight td:first-child{ font-size:calc(11.2pt * var(--k,1)); }
+  #deck-a4.tight .col{ padding:3.5mm 4.5mm 4mm; }
+  #deck-a4.tight .cols{ column-gap:6mm; row-gap:4mm; margin-top:5mm; }
+  #deck-a4.tight .cols[data-n="4"]{ column-gap:4mm; }
+  #deck-a4.tight .cols[data-n="4"] .col{ padding:3mm 3.5mm 3.5mm; }
+  #deck-a4.tight .col h3{ font-size:calc(12.5pt * var(--k,1)); padding-bottom:.5mm; min-height:0; }
+  #deck-a4.tight ul.bul.sm{ gap:1.4mm; margin-top:2mm; }
+  #deck-a4.tight ul.bul.sm li{ font-size:calc(11.6pt * var(--k,1)); line-height:1.32; padding-left:4.5mm; }
+  #deck-a4.tight ul.bul li{ line-height:1.38; }
+  #deck-a4.tight ul.bul{ gap:calc(2mm * var(--k,1)); }
+  #deck-a4.tight .card{ padding:4mm 5mm 4.5mm; min-height:0; gap:1.8mm; }
+  #deck-a4.tight .card .t{ font-size:calc(12.2pt * var(--k,1)); line-height:1.36; }
+  #deck-a4.tight .cards{ gap:4.5mm; margin-top:5mm; }
+  #deck-a4.tight .cards[data-n="7"] .card .t, #deck-a4.tight .cards[data-n="8"] .card .t{ font-size:calc(11.4pt * var(--k,1)); }
+  #deck-a4.tight .step{ padding:calc(2.6mm * var(--k,1)) 0; }
+  #deck-a4.tight .step .t{ font-size:calc(12.6pt * min(var(--k,1), 1.3)); line-height:1.38; }
+  #deck-a4.tight .step .h{ font-size:calc(13.5pt * min(var(--k,1), 1.3)); }
+  #deck-a4.tight .bubble{ padding:2.6mm 5mm 2.6mm 8mm; font-size:calc(13pt * var(--k,1)); line-height:1.32; }
+  #deck-a4.tight .bubbles{ gap:calc(2.2mm * var(--k,1)); }
+  #deck-a4.tight .para, #deck-a4.tight ul.bul li{ font-size:calc(12.8pt * var(--k,1)); }
+  #deck-a4.tight .lead{ font-size:calc(14pt * min(var(--k,1), 1.2)); }
+  #deck-a4.tight .callout{ padding:3.5mm 6mm 3.5mm 8mm; margin-top:4mm; }
+  #deck-a4.tight h1{ margin-top:5mm; }
+  #deck-a4.tight .rh .tag, #deck-a4.tight .foot .pg{ font-size:8.4pt; }
+  #deck-a4.tight .t-about .stat .t{ font-size:9.6pt; }
+  #deck-a4.tight .t-about .bottom ul.bul li{ font-size:10.2pt; line-height:1.32; }
+  #deck-a4.tight .t-about .role{ font-size:11pt; }
+  #deck-a4.tight .t-about .quote{ font-size:11.8pt; }
   @media print{
     @page{ size:297mm 210mm; margin:0; }
     html, body{ background:#fff !important; margin:0 !important; padding:0 !important; height:auto !important; }
@@ -492,7 +524,7 @@ function Sheet({ deck, i, cls, page, children, editable, onRunhead, animate }: {
       el.setAttribute("data-measuring", "1"); // редакторські кнопки не беруть участі у вимірюванні
       const fits = () => !(el.scrollHeight > el.clientHeight + 2 || (pb ? pb.scrollHeight > pb.clientHeight + 2 : false));
       let v = Math.round(d.k * (page.fs ?? 1) * (deck.fs ?? 1) * 100) / 100;
-      const floor = Math.min(page.type === "table" ? 0.7 : 0.62, v, 0.5 * (page.fs ?? 1) * (deck.fs ?? 1) + 0.12);
+      const floor = Math.min(page.type === "table" ? 0.7 : 0.62, v);
       const apply = () => { el.style.setProperty("--k", String(v)); el.style.setProperty("--kh", String(v >= 1.1 ? 1.1 : v < 0.95 ? 0.9 : 1)); };
       apply();
       for (let i = 0; i < 80 && !fits() && v > floor; i++) { v = Math.round((v - 0.04) * 100) / 100; apply(); }
@@ -553,7 +585,7 @@ export function DeckPages({
 }) {
   const rh = onRunhead ?? (() => {});
   return (
-    <div id="deck-a4" className={deck.caps ? "caps" : undefined}>
+    <div id="deck-a4" className={[deck.caps ? "caps" : "", deck.tight ? "tight" : ""].filter(Boolean).join(" ") || undefined}>
       <style dangerouslySetInnerHTML={{ __html: DECK_CSS }} />
       {deck.pages.map((p, i) => {
         if (only && only !== i + 1) return null;
