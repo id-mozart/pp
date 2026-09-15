@@ -2,10 +2,10 @@ import type { Deck, DeckPage } from "./types";
 import { NOVAPAY_DECK } from "./novapay";
 
 export const DECK_DEFAULTS: Record<string, Deck> = {
-  novapay: NOVAPAY_DECK,
+  novapay: { ...NOVAPAY_DECK, notes: false }, // екранна версія — без полів «Нотатки»
   // Друга копія деки: власний запис у базі (deck:novapay2). При першому відкритті
   // копіюється збережена версія novapay (див. DECK_COPY_FROM), далі редагується незалежно.
-  novapay2: { ...NOVAPAY_DECK, slug: "novapay2", name: "NovaPay · Активні продажі · копія 2" },
+  novapay2: { ...NOVAPAY_DECK, slug: "novapay2", name: "NovaPay · Активні продажі · копія 2", notes: true },
 };
 /** Звідки взяти вміст при першому відкритті, якщо власного збереження ще немає. */
 export const DECK_COPY_FROM: Record<string, string> = { novapay2: "novapay" };
@@ -14,7 +14,9 @@ const s = (v: unknown, max = 4000) => String(v ?? "").slice(0, max);
 const fsOf = (v: unknown, lo = 0.6, hi = 1.6) => { const n = Number(v); return Number.isFinite(n) && n > 0 && Math.abs(n - 1) > 0.001 ? Math.min(hi, Math.max(lo, Math.round(n * 100) / 100)) : undefined; };
 // старий логотип P&P більше не використовуємо — викидаємо з будь-яких збережених даних.
 // Дозволені лише відносні шляхи сайту (/deck/…, /brand/…, /api/media/…) або https-адреси.
-const img = (v: unknown) => { const u = s(v, 500).trim(); return u && !/pp-logo\.png$/.test(u) && /^(\/(?!\/)[\w\-./%()?=&~,+@:]+|https:\/\/[^\s"'<>]+)$/.test(u) ? u : ""; };
+// Зображення: зберігаємо як є, відкидаємо лише небезпечні схеми (javascript:, data:, vbscript:), protocol-relative «//» і старий логотип.
+// Жодних «розумних» підмін: невалідний URL краще показати зламаною картинкою, ніж мовчки замінити дефолтом.
+const img = (v: unknown) => { const u = s(v, 2000).trim(); if (!u || /pp-logo\.png$/.test(u) || /^\s*(javascript|data|vbscript):/i.test(u) || u.startsWith("//") || /[\s"'<>]/.test(u)) return ""; return u; };
 const arr = (v: unknown, max: number) => (Array.isArray(v) ? v.slice(0, max) : []);
 const strs = (v: unknown, max = 40) => arr(v, max).map((x) => s(x, 2000));
 
@@ -38,7 +40,7 @@ function sanitizePageInner(p: any): DeckPage | null {
     case "text":
       return { id, type: "text", title: s(p.title, 300), titleEm: s(p.titleEm, 300), lead: s(p.lead, 1500), paras: strs(p.paras, 12), callout: s(p.callout, 1000), image: img(p.image) || undefined };
     case "bullets":
-      return { id, type: "bullets", title: s(p.title, 300), titleEm: s(p.titleEm, 300), lead: s(p.lead, 1500), items: strs(p.items, 20), callout: s(p.callout, 1000), image: img(p.image) || undefined, variant: p.variant === "cards" || p.variant === "bubbles" ? p.variant : undefined };
+      return { id, type: "bullets", title: s(p.title, 300), titleEm: s(p.titleEm, 300), lead: s(p.lead, 1500), items: strs(p.items, 20), callout: s(p.callout, 1000), image: img(p.image) || undefined, variant: p.variant === "cards" || p.variant === "bubbles" || p.variant === "list" ? p.variant : undefined };
     case "twocol":
       return { id, type: "twocol", title: s(p.title, 300), titleEm: s(p.titleEm, 300), lead: s(p.lead, 1500), cols: arr(p.cols, 6).map((c: any) => ({ head: s(c?.head, 300), items: strs(c?.items, 20) })), image: img(p.image) || undefined };
     case "steps":
@@ -63,25 +65,33 @@ function upgradePage(saved: DeckPage, def: DeckPage | undefined): DeckPage {
   const out: any = { ...saved };
   if (saved.type !== def.type) {
     if (saved.type === "text" && def.type === "bullets") return { ...def, title: saved.title, titleEm: saved.titleEm, lead: saved.lead, items: saved.paras.length ? saved.paras : def.items, callout: saved.callout, image: saved.image, fs: saved.fs };
-    if (saved.type === "text" && def.type === "closing") return { ...def, title: saved.title, titleEm: saved.titleEm, contacts: saved.paras.length ? saved.paras : def.contacts, fs: saved.fs };
+    if (saved.type === "text" && def.type === "closing") return { ...def, title: saved.title, titleEm: saved.titleEm, contacts: saved.paras.length ? saved.paras : def.contacts, image: saved.image ?? def.image, fs: saved.fs };
     return saved;
   }
-  if (def.type === "bullets" && saved.type === "bullets") { if (!saved.variant && def.variant) out.variant = def.variant; }
+  // варіант списку: дефолт лише коли поле ще не заповнювалось; явне "list" — вибір користувача
+  if (def.type === "bullets" && saved.type === "bullets") { if (saved.variant === undefined && def.variant) out.variant = def.variant; }
   return out as DeckPage;
 }
 
-export function sanitizeDeck(input: any, slug: string): Deck {
+/**
+ * fallbackToDefault: лише для дек, яких у базі ще немає. Для збереженої деки порожній результат
+ * санітайзу — це помилка даних, а не привід підставити дефолт (сторінка тоді показує попередження).
+ */
+export function sanitizeDeck(input: any, slug: string, opts: { fallbackToDefault?: boolean } = {}): Deck {
   const base = DECK_DEFAULTS[slug];
   const byId = new Map<string, DeckPage>((base?.pages ?? []).map((p) => [p.id, p]));
-  const pages = (arr(input?.pages, 80).map(sanitizePage).filter(Boolean) as DeckPage[]).map((p) => upgradePage(p, byId.get(p.id)));
+  const pages = (arr(input?.pages, 200).map(sanitizePage).filter(Boolean) as DeckPage[]).map((p) => upgradePage(p, byId.get(p.id)));
+  const fallback = opts.fallbackToDefault !== false;
   return {
     slug,
-    name: s(input?.name, 200) || base?.name || slug,
-    runhead: s(input?.runhead, 200) || base?.runhead || "",
+    name: input?.name === undefined ? (base?.name || slug) : s(input.name, 200),
+    runhead: input?.runhead === undefined ? (base?.runhead || "") : s(input.runhead, 200),
     caps: !!input?.caps,
+    // нотатки: явне значення зі збереженої деки; якщо поля ще немає — з дефолту цього slug
+    notes: typeof input?.notes === "boolean" ? input.notes : base?.notes !== false,
     // множник кегля деки: явне число (навіть 1) зберігаємо; відсутнє — беремо з дефолтної деки
     fs: (() => { const n = Number(input?.fs); return Number.isFinite(n) && n > 0 ? Math.min(1.3, Math.max(0.7, Math.round(n * 100) / 100)) : base?.fs; })(),
-    pages: pages.length ? pages : base?.pages ?? [],
+    pages: pages.length ? pages : fallback ? base?.pages ?? [] : [],
   };
 }
 

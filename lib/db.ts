@@ -21,6 +21,8 @@ function pool(): Pool | null {
     _pool = new Pool({
       connectionString: process.env.DATABASE_URL,
       max: 4,
+      connectionTimeoutMillis: 5000,
+      statement_timeout: 15000,
       ssl:
         process.env.PGSSL === "require"
           ? { rejectUnauthorized: false }
@@ -67,6 +69,13 @@ async function ensureSchema(p: Pool) {
         );
         CREATE INDEX IF NOT EXISTS talk_variants_deck_idx
           ON talk_variants (deck, updated_at DESC);
+        CREATE TABLE IF NOT EXISTS content_history (
+          id          bigserial PRIMARY KEY,
+          key         text NOT NULL,
+          data        jsonb NOT NULL,
+          saved_at    timestamptz NOT NULL DEFAULT now()
+        );
+        CREATE INDEX IF NOT EXISTS content_history_key_idx ON content_history (key, saved_at DESC);
         CREATE TABLE IF NOT EXISTS certificates (
           id          uuid PRIMARY KEY,
           number      text,
@@ -147,6 +156,65 @@ export async function getContent<T = unknown>(key: string): Promise<T | null> {
     const { rows } = await p.query(`SELECT data FROM content WHERE key = $1`, [key]);
     return (rows[0]?.data as T) ?? null;
   }, null);
+}
+
+/**
+ * Суворе читання: відрізняє «рядка немає» від «база недоступна». Помилки НЕ ковтає —
+ * повертає ok:false, щоб сторінка не підмінила збережені дані дефолтом. Одна повторна спроба.
+ */
+export async function getContentStrict<T = unknown>(key: string): Promise<{ ok: true; data: T | null; updatedAt: string | null } | { ok: false; error: string }> {
+  const p = pool();
+  if (!p) return { ok: true, data: null, updatedAt: null };
+  for (let attempt = 0; attempt < 2; attempt++) {
+    try {
+      await ensureSchema(p);
+      const { rows } = await p.query(`SELECT data, updated_at FROM content WHERE key = $1`, [key]);
+      if (!rows[0]) return { ok: true, data: null, updatedAt: null };
+      return { ok: true, data: rows[0].data as T, updatedAt: new Date(rows[0].updated_at).toISOString() };
+    } catch (e: any) {
+      console.error("[db] getContentStrict", key, e?.message);
+      if (attempt === 1) return { ok: false, error: String(e?.message ?? e) };
+      await new Promise((r) => setTimeout(r, 600));
+    }
+  }
+  return { ok: false, error: "unreachable" };
+}
+
+/**
+ * Версійований запис: якщо передано expectedUpdatedAt і в базі новіша версія — конфлікт, нічого не пишемо.
+ * Попередня версія завжди зберігається в content_history (для відкату).
+ */
+export async function setContentVersioned(key: string, data: unknown, expectedUpdatedAt: string | null | undefined): Promise<{ ok: true; updatedAt: string } | { ok: false; conflict?: boolean; currentUpdatedAt?: string | null; error?: string }> {
+  const p = pool();
+  if (!p) return { ok: false, error: "no_db" };
+  let c: import("pg").PoolClient | null = null;
+  try {
+    await ensureSchema(p); // до connect(): інакше на холодному старті пул може вичерпатись
+    c = await p.connect();
+    await c.query("BEGIN");
+    await c.query(`SELECT pg_advisory_xact_lock(hashtext($1))`, [key]); // серіалізує й вставку неіснуючого рядка
+    const cur = await c.query(`SELECT data, updated_at FROM content WHERE key = $1 FOR UPDATE`, [key]);
+    const curAt: string | null = cur.rows[0] ? new Date(cur.rows[0].updated_at).toISOString() : null;
+    // expected: string — очікувана версія; null — рядка ще не повинно бути; undefined — без перевірки (лише службові виклики)
+    if (expectedUpdatedAt !== undefined && expectedUpdatedAt !== curAt) {
+      await c.query("ROLLBACK");
+      return { ok: false, conflict: true, currentUpdatedAt: curAt };
+    }
+    if (cur.rows[0]) await c.query(`INSERT INTO content_history (key, data) VALUES ($1, $2)`, [key, JSON.stringify(cur.rows[0].data)]);
+    const up = await c.query(
+      `INSERT INTO content (key, data, updated_at) VALUES ($1, $2, now())
+       ON CONFLICT (key) DO UPDATE SET data = EXCLUDED.data, updated_at = now() RETURNING updated_at`,
+      [key, JSON.stringify(data)],
+    );
+    await c.query("COMMIT");
+    return { ok: true, updatedAt: new Date(up.rows[0].updated_at).toISOString() };
+  } catch (e: any) {
+    try { await c?.query("ROLLBACK"); } catch {}
+    console.error("[db] setContentVersioned", key, e?.message);
+    return { ok: false, error: String(e?.message ?? e) };
+  } finally {
+    c?.release();
+  }
 }
 
 export async function setContent(key: string, data: unknown) {

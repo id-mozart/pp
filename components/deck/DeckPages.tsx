@@ -562,7 +562,7 @@ export function DeckPages({
           <div key={p.id} style={{ position: "relative" }}>
             {renderControls?.(i)}
             <Sheet deck={deck} i={i} cls={"t-" + p.type} page={p} editable={editable} onRunhead={rh} animate={animate}>
-              <PageBody p={p} set={set} editable={editable} prev={deck.pages[i - 1]} pick={editable ? pickImage : undefined} />
+              <PageBody p={p} set={set} editable={editable} prev={deck.pages[i - 1]} pick={editable ? pickImage : undefined} showNotes={deck.notes !== false} />
             </Sheet>
           </div>
         );
@@ -587,11 +587,11 @@ function ImgBtn({ pick, current, optional, onPick, empty }: { pick?: PickImage; 
   );
 }
 
-function PageBody({ p, set, editable, prev, pick }: { p: DeckPage; set: Patch; editable: boolean; prev?: DeckPage; pick?: PickImage }) {
+function PageBody({ p, set, editable, prev, pick, showNotes = true }: { p: DeckPage; set: Patch; editable: boolean; prev?: DeckPage; pick?: PickImage; showNotes?: boolean }) {
   const e = editable;
-  // Розріджені текстові сторінки — це роздатковий матеріал: знизу поле для нотаток.
+  // Розріджені текстові сторінки — це роздатковий матеріал: знизу поле для нотаток (вимикається на рівні деки).
   const noImg = !("image" in p && p.image);
-  const notes = noImg && ((p.type === "bullets" && p.variant !== "bubbles") || p.type === "text" || p.type === "twocol" || p.type === "steps" || p.type === "table") ? (
+  const notes = showNotes && noImg && ((p.type === "bullets" && p.variant !== "bubbles") || p.type === "text" || p.type === "twocol" || p.type === "steps" || p.type === "table") ? (
     <div className="notes"><div className="lab">Нотатки</div><div className="lines" /></div>
   ) : null;
   switch (p.type) {

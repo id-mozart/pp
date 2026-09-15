@@ -65,13 +65,25 @@ const UI_CSS = `
   @media print{ #deck-ui{ background:#fff; padding:0; } #deck-ui .bar, #deck-ui .ctl, #deck-ui .pick-bg, #deck-ui .present{ display:none !important; } #deck-ui .pages{ padding:0; } }
 `;
 
-export function DeckEditor({ initial, dbReady, only, bare }: { initial: Deck; dbReady: boolean; only?: number; bare?: boolean }) {
+export function DeckEditor({ initial, dbReady, only, bare, loadedAt, fromDb }: { initial: Deck; dbReady: boolean; only?: number; bare?: boolean; loadedAt?: string | null; fromDb?: boolean }) {
   const [deck, setDeck] = useState<Deck>(initial);
-  const [status, setStatus] = useState<Status>("idle");
+  const [status, setStatus] = useState<Status | "conflict">("idle");
+  const [baseAt, setBaseAt] = useState<string | null>(loadedAt ?? null);
+  const [errText, setErrText] = useState("");
+  const editsRef = useRef(0); // лічильник правок: правки під час збереження не мають губитись
+  const inFlightRef = useRef(false); // одне збереження за раз
+  const [saving, setSaving] = useState(false);
+  // Захист від закриття вкладки, поки правки не збережені (dirty, error, conflict, saving)
+  useEffect(() => {
+    const h = (e: BeforeUnloadEvent) => { if (status !== "idle" && status !== "saved") { e.preventDefault(); e.returnValue = ""; } };
+    window.addEventListener("beforeunload", h);
+    return () => window.removeEventListener("beforeunload", h);
+  }, [status]);
   const [addType, setAddType] = useState<DeckPageType>("bullets");
 
   function update(fn: (d: Deck) => Deck) {
     setDeck((d) => fn(d));
+    editsRef.current += 1;
     setStatus("dirty");
   }
   const patchPage = (i: number, patch: Record<string, unknown>) =>
@@ -142,31 +154,39 @@ export function DeckEditor({ initial, dbReady, only, bare }: { initial: Deck; db
   const closePicker = (v: string | null) => { picker?.resolve(v); setPicker(null); };
 
   async function save() {
+    if (inFlightRef.current) return; // попередній запит ще летить
+    if (dbReady && !fromDb && baseAt === null && !confirm("У базі ще немає збереженої версії цієї деки. Створити її з поточної (стандартної)?")) return;
+    inFlightRef.current = true; setSaving(true); setErrText("");
     setStatus("saving");
+    const snapshot = editsRef.current;
     try {
       const res = await fetch("/api/admin/deck", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(deck),
+        body: JSON.stringify({ ...deck, baseUpdatedAt: baseAt }),
       });
-      if (!res.ok) throw new Error();
-      setStatus("saved");
+      const j = await res.json().catch(() => null);
+      if (res.status === 409) { setStatus("conflict"); return; }
+      if (!res.ok || !j?.ok) {
+        const m: Record<string, string> = { no_db: "база даних не підключена", db: "база тимчасово недоступна — спробуйте за хвилину", no_base: "застаріла версія сторінки — оновіть її й повторіть", empty: "дека без сторінок не зберігається", pages_mismatch: "частина сторінок не пройшла перевірку — оновіть сторінку", too_many_pages: "забагато сторінок (понад 200)", invalid: "некоректний запит" };
+        setErrText(m[j?.error] || "невідома помилка"); setStatus("error"); return;
+      }
+      if (j.updatedAt) setBaseAt(j.updatedAt);
+      setStatus(editsRef.current === snapshot ? "saved" : "dirty");
     } catch {
-      setStatus("error");
+      setErrText("немає звʼязку з сервером"); setStatus("error");
+    } finally {
+      inFlightRef.current = false; setSaving(false);
     }
   }
-  async function reset() {
-    if (!confirm("Скинути до початкової версії? Усі правки буде втрачено.")) return;
-    const res = await fetch(`/api/admin/deck?slug=${deck.slug}`, { method: "DELETE" });
-    if (res.ok) location.reload();
-  }
 
-  const stText: Record<Status, string> = {
+  const stText: Record<Status | "conflict", string> = {
     idle: "без змін",
     dirty: "є незбережені зміни",
     saving: "зберігаю…",
     saved: "збережено",
-    error: "помилка збереження",
+    error: "не збережено",
+    conflict: "деку змінено в іншому вікні — оновіть сторінку, щоб не затерти чужі правки",
   };
 
   return (
@@ -176,7 +196,7 @@ export function DeckEditor({ initial, dbReady, only, bare }: { initial: Deck; db
         <span className="name">
           {deck.name} <em>· A4 · {deck.pages.length} стор.</em>
         </span>
-        <span className="st">{stText[status]}</span>
+        <span className="st">{stText[status]}{status === "error" && errText ? `: ${errText}` : ""}</span>
         <select value={addType} onChange={(e) => setAddType(e.target.value as DeckPageType)}>
           {(Object.keys(PAGE_TYPE_LABELS) as DeckPageType[]).map((t) => (
             <option key={t} value={t}>{PAGE_TYPE_LABELS[t]}</option>
@@ -184,13 +204,13 @@ export function DeckEditor({ initial, dbReady, only, bare }: { initial: Deck; db
         </select>
         <button className="btn" onClick={addPage}>+ сторінка</button>
         <button className={"btn" + (deck.caps ? " on" : "")} onClick={() => update((d) => ({ ...d, caps: !d.caps }))} title="Заголовки великими літерами">{deck.caps ? "Aa → АБВ" : "АБВ → Aa"}</button>
+        <button className={"btn" + (deck.notes !== false ? " on" : "")} onClick={() => update((d) => ({ ...d, notes: d.notes === false ? true : false }))} title="Поле «Нотатки» на розріджених сторінках (для роздрукованої версії)">{deck.notes !== false ? "Нотатки: є" : "Нотатки: немає"}</button>
         <button className="btn" onClick={() => bumpDeckFs(-1)} title="Кегль усієї деки менше">A−</button>
         <span className="st" title="Множник кегля деки">×{(deck.fs ?? 1).toFixed(2)}</span>
         <button className="btn" onClick={() => bumpDeckFs(1)} title="Кегль усієї деки більше">A+</button>
         <button className="btn" onClick={() => startPresent(0)} title="Повноекранний показ: Space / → далі, ← назад, Esc вихід">▶ Показ</button>
         <button className="btn" onClick={() => window.print()}>Завантажити PDF</button>
-        <button className="btn" onClick={reset}>Скинути</button>
-        <button className="btn pri" onClick={save} disabled={status === "saving"}>Зберегти</button>
+        <button className="btn pri" onClick={save} disabled={saving}>Зберегти</button>
         <Link href="/admin" className="btn">← Панель</Link>
         <p className="hint">
           «▶ Показ» — повноекранний режим з анімацією: Space або → наступна сторінка, ← попередня, Esc вихід. Клікніть на будь-який текст на сторінці й редагуйте прямо там. У списках Enter додає новий пункт. Наведіть на сторінку — біля ілюстрацій зʼявиться «Замінити»; кнопки A−/A+ біля сторінки змінюють її кегль, ＋ вставляє нову сторінку одразу після неї.
@@ -227,7 +247,7 @@ export function DeckEditor({ initial, dbReady, only, bare }: { initial: Deck; db
                 <button title="Вигляд списку: список → картки → репліки" onClick={() => {
                   const cur = (deck.pages[i] as any).variant ?? "list";
                   const next = cur === "list" ? "cards" : cur === "cards" ? "bubbles" : "list";
-                  patchPage(i, { variant: next === "list" ? undefined : next });
+                  patchPage(i, { variant: next }); // явне "list" зберігається як вибір користувача
                 }}>◫</button>
               )}
               <span className="ty">{PAGE_TYPE_LABELS[deck.pages[i].type]}</span>
