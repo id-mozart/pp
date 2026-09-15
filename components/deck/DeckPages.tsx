@@ -319,6 +319,11 @@ export const DECK_CSS = `
   .present-mode #deck-a4 .rh.anim-item, .present-mode #deck-a4 .foot.anim-item{ animation-name:deckFade; }
   .present-mode #deck-a4 .sheet{ box-shadow:none; }
   /* ── щільна верстка (deck.tight): менше повітря всередині таблиць і карток, вищий мінімальний кегль ── */
+  #deck-a4.tight .sheet{ padding:9mm 12mm 7mm; }
+  #deck-a4.tight .t-section.has-img .rh, #deck-a4.tight .t-section.has-img .foot, #deck-a4.tight .t-closing .rh, #deck-a4.tight .t-closing .foot{ margin-right:116mm; }
+  #deck-a4.tight .t-section.has-img .secwrap{ padding-right:116mm; }
+  #deck-a4.tight .t-closing .wrap{ padding-right:116mm; }
+  #deck-a4.tight .withimg{ column-gap:9mm; }
   #deck-a4.tight table{ font-size:calc(11.2pt * var(--k,1)); line-height:1.3; margin-top:4mm; }
   #deck-a4.tight th{ font-size:8.4pt; padding:0 4mm 1.8mm 0; }
   #deck-a4.tight td{ padding:calc(1.9mm * var(--k,1)) 2.5mm calc(1.9mm * var(--k,1)) 0; }
