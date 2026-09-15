@@ -320,6 +320,11 @@ export const DECK_CSS = `
   .present-mode #deck-a4 .sheet{ box-shadow:none; }
   /* ── щільна верстка (deck.tight): менше повітря всередині таблиць і карток, вищий мінімальний кегль ── */
   #deck-a4.tight .sheet{ padding:9mm 12mm 7mm; }
+  /* екранна версія без нотаток: розріджений вміст по вертикальному центру, картки трохи вищі */
+  #deck-a4.tight .sheet[data-sparse]:not(.t-table) .pb{ justify-content:safe center; padding-bottom:10mm; }
+  #deck-a4.tight .sheet[data-sparse] .card{ min-height:calc(34mm * min(var(--k,1), 1.6)); }
+  #deck-a4.tight .sheet[data-sparse] .pb > h1:first-child, #deck-a4.tight .sheet[data-sparse] .body > h1:first-child{ margin-top:0; }
+  #deck-a4.tight .sheet[data-sparse] .withimg{ align-items:center; }
   #deck-a4.tight .t-section.has-img .rh, #deck-a4.tight .t-section.has-img .foot, #deck-a4.tight .t-closing .rh, #deck-a4.tight .t-closing .foot{ margin-right:116mm; }
   #deck-a4.tight .t-section.has-img .secwrap{ padding-right:116mm; }
   #deck-a4.tight .t-closing .wrap{ padding-right:116mm; }
