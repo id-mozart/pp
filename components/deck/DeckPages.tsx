@@ -136,6 +136,9 @@ const DECK_CSS_BASE = `
   #deck-a4 .t-cover .cv-r .ill{ flex:1; min-height:0; width:100%; object-fit:contain; object-position:right bottom; display:block; margin-top:4mm; max-height:96mm; filter:drop-shadow(0 14px 26px rgba(80,40,160,.18)); }
   /* без логотипа клієнта (фото замість 3D-ілюстрації): вище, без «фіолетової» тіні */
   #deck-a4 .t-cover .cv-r:not(:has(.np-big)) .ill{ max-height:none; height:100%; object-fit:cover; object-position:50% 20%; margin-top:0; border-radius:4mm; filter:none; box-shadow:0 12px 28px rgba(60,40,15,.16); }
+  /* титул без фото: величезний амперсанд з логотипа праворуч, як фоновий елемент */
+  #deck-a4 .t-cover .cv-r.amp{ position:static; }
+  #deck-a4 .t-cover .cv-r .bigamp{ position:absolute; right:2mm; bottom:14mm; font-family:var(--font-playfair),Georgia,serif; font-weight:500; font-size:400pt; line-height:.8; color:var(--amber); opacity:.15; pointer-events:none; user-select:none; letter-spacing:0; }
   #deck-a4 .t-cover .foot{ margin-top:10mm; }
   #deck-a4 .t-cover .band{ position:absolute; left:0; right:0; bottom:0; height:5mm; background:linear-gradient(90deg,var(--amber),var(--gold)); }
 
@@ -508,7 +511,7 @@ function density(p: DeckPage): { k: number; kh: number } {
   return { k: Math.min(k, cap), kh: Math.min(1.2, k) };
 }
 
-const ANIM_SEL = [".rh", ".secimg", ".photo", ".num", ".kicker", ".sec-t h1", ".sec-t .sub", ".cv-l > *", ".cv-r > img", ".hero .lab", ".hero h1", ".hero .role", ".hero .quote", ".stat", ".portrait", ".bottom > *",
+const ANIM_SEL = [".rh", ".secimg", ".photo", ".num", ".kicker", ".sec-t h1", ".sec-t .sub", ".cv-l > *", ".cv-r > img", ".cv-r .bigamp", ".hero .lab", ".hero h1", ".hero .role", ".hero .quote", ".stat", ".portrait", ".bottom > *",
   ".pb > h1", ".pb > .lead", ".pb > .para", ".pb > .callout", ".body > h1", ".body > .lead", ".body > .para", ".body > .callout", ".fig", ".fullimg", ".qp > *", "ul.bul > li", ".card", ".bubble", ".col", ".step", "thead", "tbody tr", ".gal figure", ".notes", ".wrap > div > *", ".foot"].join(",");
 
 function Sheet({ deck, i, cls, page, children, editable, onRunhead, animate }: { deck: Deck; i: number; cls?: string; page: DeckPage; children: React.ReactNode; editable: boolean; onRunhead: (v: string) => void; animate?: number }) {
@@ -654,10 +657,11 @@ function PageBody({ p, set, editable, prev, pick, showNotes = true, logo }: { p:
                 <E tag="p" className="w" value={p.when} onChange={(v) => set({ when: v })} editable={e} ph="де, коли" />
               </div>
             </div>
-            <div className="cv-r">
-              {logo ? <img className="np-big" src={logo} alt="" /> : null}
-              {p.image || logo ? <img className="ill" src={p.image || "/deck/novapay/money.png"} alt="" /> : null}
-              <ImgBtn pick={pick} current={p.image || ""} optional onPick={(v) => set({ image: v || undefined })} />
+            <div className={"cv-r" + (p.variant === "amp" ? " amp" : "")}>
+              {p.variant === "amp" ? <span className="bigamp" aria-hidden>&amp;</span> : null}
+              {logo && p.variant !== "amp" ? <img className="np-big" src={logo} alt="" /> : null}
+              {p.variant !== "amp" && (p.image || logo) ? <img className="ill" src={p.image || "/deck/novapay/money.png"} alt="" /> : null}
+              {p.variant !== "amp" ? <ImgBtn pick={pick} current={p.image || ""} optional onPick={(v) => set({ image: v || undefined })} /> : null}
             </div>
           </div>
           <div className="band" />

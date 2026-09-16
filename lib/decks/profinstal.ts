@@ -18,7 +18,7 @@ export const PROFINSTAL_DECK: Deck = {
   logo: "", // без логотипа клієнта на титулі
   pages: [
     // 1
-    { id: "p01", type: "cover", eyebrow: "Програма воркшопу · ProfInstal", title: "Розвиток команди через керівника:", titleEm: "культура 70:20:10 у дії", sub: "", who: "Бізнес-тренерка Тетяна Пан", when: "Україна, вересень 2026", image: N + "tania-flip-bw.jpg" },
+    { id: "p01", type: "cover", eyebrow: "Програма воркшопу · ProfInstal", title: "Розвиток команди через керівника:", titleEm: "культура 70:20:10 у дії", sub: "", who: "Бізнес-тренерка Тетяна Пан", when: "Україна, вересень 2026", variant: "amp" },
     // 2 — контакти, як у деці NovaPay (збережена версія)
     { id: "p02", type: "closing", title: "НАШІ", titleEm: "контакти", sub: "https://pan-partners.agency/", contacts: ["+38 050 448 1411", "+34 621 20 93 34"], image: I + "tania-contacts.jpg", qr: N + "qr-instagram.svg" },
     // 3 — про тренера, як у деці NovaPay
