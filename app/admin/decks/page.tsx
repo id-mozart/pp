@@ -3,8 +3,7 @@ import Link from "next/link";
 import { getContentStrict, hasDb, listDecks } from "@/lib/db";
 import { DECK_DEFAULTS, sanitizeDeck } from "@/lib/decks/sanitize";
 import type { Deck } from "@/lib/decks/types";
-import { DeckThumb } from "@/components/admin/DeckThumb";
-import { DeckCardActions, NewDeckButton } from "@/components/admin/DecksManager";
+import { DecksList, type DeckItem } from "@/components/admin/DecksList";
 
 export const metadata: Metadata = {
   title: "Презентації — адмін",
@@ -126,6 +125,39 @@ const CSS = `
   #decks .dlg .err{ margin:0; font-size:13px; color:var(--d-danger); }
   #decks .dlg .row{ display:flex; gap:9px; padding:0; margin:2px 0 0; border:0; }
 
+  /* ── перемикач вигляду ───────────────────────────────── */
+  #decks .seg{ display:inline-flex; padding:3px; gap:2px; border:1px solid var(--d-line); border-radius:11px; background:rgba(255,255,255,.03); }
+  #decks .seg button{ display:inline-flex; align-items:center; gap:6px; border:0; border-radius:8px; padding:6px 11px; background:transparent;
+    font:12.5px/1.15 var(--font-inter),system-ui,sans-serif; color:var(--d-muted); cursor:pointer; white-space:nowrap; transition:background .15s, color .15s; }
+  #decks .seg button:hover{ color:var(--d-ink); }
+  #decks .seg button.on{ background:rgba(226,166,56,.14); color:var(--d-gold); }
+  #decks .seg .ic{ font-size:12px; opacity:.85; }
+
+  /* ── таблиця ─────────────────────────────────────────── */
+  #decks .tablewrap{ max-width:1180px; margin:0 auto; overflow-x:auto; background:var(--d-card); border:1px solid var(--d-line); border-radius:16px;
+    box-shadow:0 18px 40px -28px rgba(0,0,0,.9), inset 0 1px 0 rgba(255,255,255,.03); }
+  #decks .table{ width:100%; border-collapse:collapse; font-size:13.5px; }
+  #decks .table th{ text-align:left; font-family:var(--font-jetbrains),monospace; font-weight:400; font-size:10.5px; letter-spacing:.08em; text-transform:uppercase;
+    color:var(--d-faint); padding:12px 14px; border-bottom:1px solid var(--d-line); white-space:nowrap; }
+  #decks .table td{ padding:10px 14px; border-bottom:1px solid rgba(154,130,90,.12); vertical-align:middle; }
+  #decks .table tr:last-child td{ border-bottom:0; }
+  #decks .table tbody tr:hover td{ background:rgba(226,166,56,.04); }
+  #decks .table .c-th{ width:112px; padding-right:4px; }
+  #decks .table .mini{ display:block; width:96px; border-radius:6px; overflow:hidden; box-shadow:0 0 0 1px rgba(0,0,0,.4), 0 6px 14px -8px rgba(0,0,0,.9); }
+  #decks .table .mini .thumb{ border-radius:0; }
+  #decks .table .mini .thumb.ph{ aspect-ratio:297/210; }
+  #decks .table .tnm{ font-family:var(--font-spectral),serif; font-size:17px; line-height:1.25; color:var(--d-ink); text-decoration:none; display:block; }
+  #decks .table .tnm:hover{ color:var(--d-gold); }
+  #decks .table .c-name{ min-width:240px; }
+  #decks .table .c-name .slug{ margin-top:3px; }
+  #decks .table .c-num{ width:70px; text-align:center; }
+  #decks .table .c-when{ width:170px; color:var(--d-muted); white-space:nowrap; }
+  #decks .table .c-acts{ width:1%; }
+  #decks .table .row{ padding:0; border:0; margin:0; justify-content:flex-end; }
+  #decks .table .row .more{ margin-left:2px; }
+  #decks .table .menu{ bottom:auto; top:calc(100% + 8px); }
+  #decks .table tr:nth-last-child(-n+2) .menu{ top:auto; bottom:calc(100% + 8px); }
+
   #decks .note{ max-width:1180px; margin:26px auto 0; font-size:12.5px; line-height:1.6; color:var(--d-faint); }
   #decks .empty{ max-width:1180px; margin:0 auto; padding:40px 22px; text-align:center; color:var(--d-muted);
     border:1px dashed var(--d-line); border-radius:16px; font-size:14px; }
@@ -136,8 +168,9 @@ const CSS = `
     #decks .grid{ grid-template-columns:1fr; gap:16px; }
     #decks .nm{ min-height:0; }
     #decks .head{ align-items:flex-start; }
-    #decks .head .acts{ width:100%; }
+    #decks .head .acts{ width:100%; flex-wrap:wrap; }
     #decks .head .acts .btn.pri{ flex:1; }
+    #decks .table .c-when{ width:auto; }
   }
 `;
 
@@ -183,45 +216,14 @@ export default async function DecksPage() {
     ...saved.map((d) => ({ ...d, saved: true, name: d.name || DECK_DEFAULTS[d.slug]?.name || d.slug })),
     ...Object.entries(DECK_DEFAULTS).filter(([slug]) => !bySlug.has(slug)).map(([slug, d]) => ({ slug, name: d.name, pages: d.pages.length, updatedAt: "", saved: false })),
   ];
+  const list: DeckItem[] = items.map((d) => ({
+    slug: d.slug, name: d.name, pages: d.pages, saved: d.saved, when: d.saved ? fmt(d.updatedAt) : "",
+    deletable: !DECK_DEFAULTS[d.slug], deck: full.get(d.slug) ?? (!d.saved ? DECK_DEFAULTS[d.slug] : undefined),
+  }));
   return (
     <div id="decks">
       <style dangerouslySetInnerHTML={{ __html: CSS }} />
-      <div className="head">
-        <div className="ttl">
-          <h1>Презентації</h1>
-          <span className="count">{items.length}</span>
-        </div>
-        <div className="acts">
-          <NewDeckButton items={items.map((d) => ({ slug: d.slug, name: d.name }))} />
-          <Link href="/admin" className="btn back">← Панель</Link>
-        </div>
-      </div>
-      <div className="grid">
-        {items.map((d) => {
-          const deck = full.get(d.slug) ?? (!d.saved ? DECK_DEFAULTS[d.slug] : undefined);
-          return (
-            <article className="card" key={d.slug}>
-              <Link href={`/admin/deck/${d.slug}`} className="thumbwrap" aria-label={`Відкрити «${d.name}»`} title={`/admin/deck/${d.slug}`}>
-                {deck ? <DeckThumb deck={deck} /> : <div className="thumb ph">без мініатюри</div>}
-              </Link>
-              <div className="body">
-                <h2 className="nm" title={d.name}>{d.name}</h2>
-                <div className="meta">
-                  <span className="pill">{d.pages} стор.</span>
-                  {d.saved ? <span className="when">оновлено {fmt(d.updatedAt)}</span> : <span className="badge">стандартна</span>}
-                </div>
-                <div className="slug" title={`/admin/deck/${d.slug}`}>/{d.slug}</div>
-              </div>
-              <div className="row">
-                <Link href={`/admin/deck/${d.slug}`} className="btn pri sm">Відкрити</Link>
-                <Link href={`/admin/deck/${d.slug}?present=1`} className="btn sm" title="Режим показу">Показ</Link>
-                <a href={`/admin/deck/${d.slug}?pdf=1`} target="_blank" rel="noopener" className="btn sm" title="Завантажити PDF">PDF</a>
-                <DeckCardActions slug={d.slug} name={d.name} deletable={!DECK_DEFAULTS[d.slug]} />
-              </div>
-            </article>
-          );
-        })}
-      </div>
+      <DecksList items={list} />
       <p className="note">Кожне збереження лишає попередню версію в історії; стандартні деки (з шаблоном у коді) не видаляються.</p>
     </div>
   );
