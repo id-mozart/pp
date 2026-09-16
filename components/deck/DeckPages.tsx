@@ -134,7 +134,7 @@ export const DECK_CSS = `
   #deck-a4 .t-cover .cv-r .np-big{ width:96mm; height:auto; display:block; margin-top:6mm; }
   #deck-a4 .t-cover .cv-r .ill{ flex:1; min-height:0; width:100%; object-fit:contain; object-position:right bottom; display:block; margin-top:4mm; max-height:96mm; filter:drop-shadow(0 14px 26px rgba(80,40,160,.18)); }
   /* без логотипа клієнта (фото замість 3D-ілюстрації): вище, без «фіолетової» тіні */
-  #deck-a4 .t-cover .cv-r:not(:has(.np-big)) .ill{ max-height:132mm; margin-top:0; border-radius:4mm; filter:drop-shadow(0 10px 22px rgba(60,40,15,.16)); }
+  #deck-a4 .t-cover .cv-r:not(:has(.np-big)) .ill{ max-height:none; height:100%; object-fit:cover; object-position:50% 20%; margin-top:0; border-radius:4mm; filter:none; box-shadow:0 12px 28px rgba(60,40,15,.16); }
   #deck-a4 .t-cover .foot{ margin-top:10mm; }
   #deck-a4 .t-cover .band{ position:absolute; left:0; right:0; bottom:0; height:5mm; background:linear-gradient(90deg,var(--amber),var(--gold)); }
 

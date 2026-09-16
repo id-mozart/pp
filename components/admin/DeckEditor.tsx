@@ -4,7 +4,9 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { DeckPages, type PickImage } from "@/components/deck/DeckPages";
 import { DECK_LIBRARY } from "@/lib/decks/library";
-import { PAGE_TYPE_LABELS, blankPage, newId, type Deck, type DeckPage, type DeckPageType } from "@/lib/decks/types";
+import { PAGE_TYPE_LABELS, newId, type Deck, type DeckPage } from "@/lib/decks/types";
+import { TemplatePicker } from "@/components/admin/TemplatePicker";
+import { convertPage, type PageTemplate } from "@/lib/decks/templates";
 
 type Status = "idle" | "saving" | "saved" | "error" | "dirty";
 
@@ -53,6 +55,17 @@ const UI_CSS = `
   #deck-ui .pick .btn{ color:#5E4C36; border-color:rgba(140,116,82,.5); }
   #deck-ui .pick .btn.pri{ color:#241A10; }
   #deck-ui .pick .err{ color:#B3261E; font-size:13px; }
+  /* вибір шаблону сторінки */
+  #deck-ui .pick.tplpick{ width:min(1180px,100%); }
+  #deck-ui .tplhint{ margin:0 0 6px; font-size:13px; color:#7A6A54; line-height:1.5; }
+  #deck-ui .tplgrid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(210px,1fr)); gap:12px; }
+  #deck-ui .tpl{ border:2px solid transparent; border-radius:10px; background:#fff; padding:6px 6px 8px; cursor:pointer; text-align:left; display:block; width:100%; }
+  #deck-ui .tpl:hover{ border-color:#C4621F; }
+  #deck-ui .tpl.on{ border-color:#C98A2B; box-shadow:0 0 0 3px rgba(201,138,43,.18); }
+  #deck-ui .tpl .th{ display:block; position:relative; width:100%; aspect-ratio:297/210; overflow:hidden; border-radius:5px; background:#FCF8F1; box-shadow:0 1px 0 rgba(0,0,0,.06), 0 4px 12px rgba(60,40,15,.1); }
+  #deck-ui .tpl .sc{ position:absolute; left:0; top:0; width:297mm; height:210mm; transform:scale(var(--ts,.18)); transform-origin:0 0; pointer-events:none; }
+  #deck-ui .tpl .sc #deck-a4{ gap:0; } #deck-ui .tpl .sc .sheet{ box-shadow:none !important; } #deck-ui .tpl .sc .imgbtn{ display:none !important; }
+  #deck-ui .tpl .nm{ display:block; font-size:12.5px; color:#2A2018; margin-top:7px; }
   /* режим показу */
   #deck-ui .present{ position:fixed; inset:0; z-index:80; background:#0f0b08; display:flex; align-items:center; justify-content:center; cursor:none; }
   #deck-ui .present:hover{ cursor:default; }
@@ -79,7 +92,8 @@ export function DeckEditor({ initial, dbReady, only, bare, loadedAt, fromDb, pre
     window.addEventListener("beforeunload", h);
     return () => window.removeEventListener("beforeunload", h);
   }, [status]);
-  const [addType, setAddType] = useState<DeckPageType>("bullets");
+  // вибір шаблону сторінки: у кінець, після сторінки i, або перекласти сторінку i в іншу композицію
+  const [tplMode, setTplMode] = useState<{ mode: "append" } | { mode: "insert"; i: number } | { mode: "replace"; i: number } | null>(null);
 
   /* ── скасування / повтор дій ── */
   const undoRef = useRef<Deck[]>([]);
@@ -149,9 +163,13 @@ export function DeckEditor({ initial, dbReady, only, bare, loadedAt, fromDb, pre
       pages.splice(i + 1, 0, { ...d.pages[i], id: newId() } as DeckPage);
       return { ...d, pages };
     });
-  const addPage = () => update((d) => ({ ...d, pages: [...d.pages, blankPage(addType)] }));
-  const insertAfter = (i: number, type: DeckPageType) =>
-    update((d) => { const pages = [...d.pages]; pages.splice(i + 1, 0, blankPage(type)); return { ...d, pages }; });
+  const applyTemplate = (t: PageTemplate | null) => {
+    const m = tplMode; setTplMode(null);
+    if (!t || !m) return;
+    if (m.mode === "append") update((d) => ({ ...d, pages: [...d.pages, t.make()] }));
+    else if (m.mode === "insert") update((d) => { const pages = [...d.pages]; pages.splice(m.i + 1, 0, t.make()); return { ...d, pages }; });
+    else update((d) => ({ ...d, pages: d.pages.map((p, k) => (k === m.i ? convertPage(p, t) : p)) }));
+  };
   const bumpFs = (i: number, dir: -1 | 1) =>
     update((d) => ({ ...d, pages: d.pages.map((p, k) => {
       if (k !== i) return p;
@@ -296,12 +314,7 @@ export function DeckEditor({ initial, dbReady, only, bare, loadedAt, fromDb, pre
         <button className="btn" onClick={undo} disabled={!hist.undo} title="Скасувати дію (⌘Z / Ctrl+Z)">↶ {hist.undo || ""}</button>
         <button className="btn" onClick={redo} disabled={!hist.redo} title="Повторити дію (⌘⇧Z / Ctrl+Y)">↷ {hist.redo || ""}</button>
         <button className={"btn" + (autosave ? " on" : "")} onClick={toggleAutosave} disabled={!dbReady || baseAt === null} title={!dbReady || baseAt === null ? "Спочатку збережіть деку вручну" : "Автоматично зберігати через 1,5 с після кожної дії"}>{autosave ? "Автозбереження: увімк." : "Автозбереження: вимк."}</button>
-        <select value={addType} onChange={(e) => setAddType(e.target.value as DeckPageType)}>
-          {(Object.keys(PAGE_TYPE_LABELS) as DeckPageType[]).map((t) => (
-            <option key={t} value={t}>{PAGE_TYPE_LABELS[t]}</option>
-          ))}
-        </select>
-        <button className="btn" onClick={addPage}>+ сторінка</button>
+        <button className="btn" onClick={() => setTplMode({ mode: "append" })} title="Нова сторінка з набору типових композицій">＋ Сторінка…</button>
         <button className={"btn" + (deck.caps ? " on" : "")} onClick={() => update((d) => ({ ...d, caps: !d.caps }))} title="Заголовки великими літерами">{deck.caps ? "Aa → АБВ" : "АБВ → Aa"}</button>
         <button className={"btn" + (deck.notes !== false ? " on" : "")} onClick={() => update((d) => ({ ...d, notes: d.notes === false ? true : false }))} title="Поле «Нотатки» на розріджених сторінках (для роздрукованої версії)">{deck.notes !== false ? "Нотатки: є" : "Нотатки: немає"}</button>
         <button className={"btn" + (deck.tight ? " on" : "")} onClick={() => update((d) => ({ ...d, tight: !d.tight }))} title="Щільна верстка: менші відступи в таблицях і картках, тому текст на щільних сторінках більший">{deck.tight ? "Щільно: так" : "Щільно: ні"}</button>
@@ -313,7 +326,7 @@ export function DeckEditor({ initial, dbReady, only, bare, loadedAt, fromDb, pre
         <button className="btn pri" onClick={() => save()} disabled={saving}>Зберегти</button>
         <Link href="/admin/decks" className="btn" onClick={(e) => { if (status !== "idle" && status !== "saved" && !confirm("Є незбережені правки. Вийти без збереження?")) e.preventDefault(); }}>← Презентації</Link>
         <p className="hint">
-          ⌘Z / Ctrl+Z скасовує дію, ⌘⇧Z повторює. «Автозбереження» зберігає через 1,5 с після кожної дії. «▶ Показ» — повноекранний режим з анімацією: Space або → наступна сторінка, ← попередня, Esc вихід. Клікніть на будь-який текст на сторінці й редагуйте прямо там. У списках Enter додає новий пункт. Наведіть на сторінку — біля ілюстрацій зʼявиться «Замінити»; кнопки A−/A+ біля сторінки змінюють її кегль, ＋ вставляє нову сторінку одразу після неї.
+          ⌘Z / Ctrl+Z скасовує дію, ⌘⇧Z повторює. «Автозбереження» зберігає через 1,5 с після кожної дії. «▶ Показ» — повноекранний режим з анімацією: Space або → наступна сторінка, ← попередня, Esc вихід. Клікніть на будь-який текст на сторінці й редагуйте прямо там. У списках Enter додає новий пункт. Наведіть на сторінку — біля ілюстрацій зʼявиться «Замінити»; кнопки A−/A+ біля сторінки змінюють її кегль, ＋ вставляє нову сторінку одразу після неї (з вибором композиції), ▤ перекладає сторінку в іншу композицію зі збереженням текстів.
           «Завантажити PDF» відкриває друк — оберіть «Зберегти як PDF», формат A4, поля «немає».
           {!dbReady && " База даних не підключена: правки не збережуться після перезавантаження."}
         </p>
@@ -332,13 +345,8 @@ export function DeckEditor({ initial, dbReady, only, bare, loadedAt, fromDb, pre
               <button title="Вгору" onClick={() => move(i, -1)}>↑</button>
               <button title="Вниз" onClick={() => move(i, 1)}>↓</button>
               <button title="Дублювати" onClick={() => duplicate(i)}>⧉</button>
-              <span className="ins">
-                <button type="button" aria-hidden tabIndex={-1}>＋</button>
-                <select aria-label="Тип нової сторінки" value="" onChange={(e) => { if (e.target.value) insertAfter(i, e.target.value as DeckPageType); e.target.value = ""; }}>
-                  <option value="">Вставити після…</option>
-                  {(Object.keys(PAGE_TYPE_LABELS) as DeckPageType[]).map((t) => (<option key={t} value={t}>{PAGE_TYPE_LABELS[t]}</option>))}
-                </select>
-              </span>
+              <button title="Вставити сторінку після цієї (вибір композиції)" onClick={() => setTplMode({ mode: "insert", i })}>＋</button>
+              <button title="Змінити композицію цієї сторінки (тексти перенесуться)" onClick={() => setTplMode({ mode: "replace", i })}>▤</button>
               <button title="Видалити" onClick={() => remove(i)}>✕</button>
               <button title="Кегль сторінки менше" onClick={() => bumpFs(i, -1)}>A−</button>
               <span className="fs">{deck.pages[i].fs ? `×${deck.pages[i].fs!.toFixed(1)}` : "×1"}</span>
@@ -356,6 +364,7 @@ export function DeckEditor({ initial, dbReady, only, bare, loadedAt, fromDb, pre
         />
       </div>
       {picker && <ImagePicker current={picker.current} optional={picker.optional} onClose={closePicker} />}
+      {tplMode && <TemplatePicker deck={deck} mode={tplMode.mode} onClose={applyTemplate} />}
       {present !== null && (
         <div className="present present-mode" ref={presentRef} tabIndex={-1} style={{ outline: "none" }} onClick={(e) => { if ((e.target as HTMLElement).closest(".hud")) return; goTo(present + 1); }} onContextMenu={(e) => { e.preventDefault(); goTo(present - 1); }}>
           <div className="stage">
