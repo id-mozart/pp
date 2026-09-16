@@ -3,7 +3,7 @@ import type { Deck } from "./types";
 /**
  * Воркшоп для ProfInstal «Розвиток команди через керівника: культура 70:20:10 у дії» —
  * перенесено зі pptx (Profinstal_WS_09.2026) один в один: 22 слайди → 22 сторінки.
- * Тексти дослівно; ілюстрації — зі слайдів (public/deck/profinstal) та з бібліотеки деки.
+ * Тексти дослівно; ілюстрації — фото з Unsplash (u-*.jpg, див. public/deck/profinstal/CREDITS.md), зі слайдів і з бібліотеки деки.
  */
 const I = "/deck/profinstal/";
 const N = "/deck/novapay/";
@@ -40,22 +40,22 @@ export const PROFINSTAL_DECK: Deck = {
       "Сформувати у керівників ProfInstal розуміння своєї ролі в розвитку підлеглих та дати практичні інструменти, які допоможуть системно навчати співробітників у роботі через наставництво, коучинг і управління залежно від рівня готовності людини.",
     ], callout: "", image: N + "tania-chair-bw.jpg" },
     // 6
-    { id: "p06", type: "section", num: "1", title: "Лідерство та розвиток команди", sub: "", image: I + "leadership.jpg", fit: "top" },
+    { id: "p06", type: "section", num: "1", title: "Лідерство та розвиток команди", sub: "", image: I + "u-leadership.jpg", fit: "top" },
     // 7
-    { id: "p07", type: "section", num: "", title: "Які очікування та вимоги бізнесу та часу від лідера?", sub: "Обговорення в групах", image: I + "target.jpg" },
+    { id: "p07", type: "section", num: "", title: "Які очікування та вимоги бізнесу та часу від лідера?", sub: "Обговорення в групах", image: I + "u-expect.jpg" },
     // 8
-    { id: "p08", type: "steps", title: "Формула успіху", titleEm: "100%", lead: "", steps: [
-      { head: "Ціль", text: "Коли? Де? Хто? Що? Для чого?" },
-      { head: "3 сфери", text: "$ · Відносини · Здоров'я" },
-      { head: "Експерт 100%", text: "Як?" },
-      { head: "Поведінкова гнучкість", text: "Що і як робити?" },
-    ] },
+    { id: "p08", type: "bullets", title: "Формула успіху", titleEm: "100%", lead: "", items: [
+      "Ціль — Коли? Де? Хто? Що? Для чого?",
+      "3 сфери — $ · Відносини · Здоров'я",
+      "Експерт 100% — Як?",
+      "Поведінкова гнучкість — Що і як робити?",
+    ], callout: "", image: I + "u-summit.jpg" },
     // 9
     { id: "p09", type: "steps", title: "Управління", titleEm: "по цілях", lead: "Цілі пов'язані зверху вниз по вертикалі з рівня СЕО до рівня виконавців.", steps: [
       { head: "Стратегічна ціль", text: "Цілі компанії / ГД" },
       { head: "Цілі функцій", text: "Цілі керівників відділів" },
       { head: "Цілі ТМ", text: "" },
-    ] },
+    ], image: I + "u-chess.jpg" },
     // 10
     { id: "p10", type: "bullets", variant: "cards", title: "Ключові навички", titleEm: "керівника", lead: "", items: ["HARD SKILLS", "STRATEGIC SKILLS"], callout: "" },
     // 11
@@ -66,7 +66,7 @@ export const PROFINSTAL_DECK: Deck = {
       { head: "2", text: "Практичні завдання" },
       { head: "3", text: "Бізнес-симуляція" },
       { head: "+1", text: "Формування культури розвитку команди 10/20/70%" },
-    ] },
+    ], image: I + "u-workshop.jpg" },
     // 13
     { id: "p13", type: "steps", title: "Управлінський", titleEm: "цикл", lead: "У центрі циклу — ціль.", steps: [
       { head: "Постановка задач", text: "" },
@@ -75,7 +75,7 @@ export const PROFINSTAL_DECK: Deck = {
       { head: "Аналіз та планування", text: "" },
     ] },
     // 14
-    { id: "p14", type: "section", num: "2", title: "Навчання та розвиток команди: керуючі та прямі підлеглі", sub: "", image: I + "team.jpg", fit: "top" },
+    { id: "p14", type: "section", num: "2", title: "Навчання та розвиток команди: керуючі та прямі підлеглі", sub: "", image: I + "u-mentor.jpg", fit: "top" },
     // 15
     { id: "p15", type: "twocol", title: "Принцип розвитку навичок", titleEm: "70 % + 20 % + 10 %", lead: "", cols: [
       { head: "70 % · Практичний досвід", items: ["Проекти усередині підрозділу", "Тимчасове переведення в інші відділи для обміну досвідом", "Навчання колег", "Розширення зони відповідальності", "Імплементація найкращих практик інших ринків / компаній"] },
@@ -91,9 +91,9 @@ export const PROFINSTAL_DECK: Deck = {
       "Презентації — 20 хв",
       "Зворотний зв'язок спостерігача — 7 хв",
       "Розбір — 30 хв",
-    ], callout: "", image: I + "timing.jpg" },
+    ], callout: "", image: I + "u-teamgame.jpg" },
     // 18
-    { id: "p18", type: "section", num: "4", title: "Бізнес-симуляція «Операція «Нова орбіта»", sub: "Впровадження «ACT — Aqua Control Tower»", image: I + "simulation.jpg" },
+    { id: "p18", type: "section", num: "4", title: "Бізнес-симуляція «Операція «Нова орбіта»", sub: "Впровадження «ACT — Aqua Control Tower»", image: I + "u-tower.jpg" },
     // 19
     { id: "p19", type: "bullets", title: "Бізнес-симуляція «Операція «Нова орбіта»", titleEm: "загальний таймінг", lead: "", items: [
       "Вступ — 7 хв",
@@ -101,18 +101,18 @@ export const PROFINSTAL_DECK: Deck = {
       "Презентації — 10 хв",
       "Рішення — 10 хв",
       "Розбір — 30 хв",
-    ], callout: "", image: I + "timing-2.jpg" },
+    ], callout: "", image: I + "u-boardgame.jpg" },
     // 20
     { id: "p20", type: "table", title: "15 ключових функцій", titleEm: "логіста на філії", lead: "", head: ["#", "Функція", "Пріоритетність (1–10)", "Періодичність / коли"], rows: [
       ["1", "", "", ""], ["2", "", "", ""], ["3", "", "", ""], ["4", "", "", ""], ["5", "", "", ""], ["6", "", "", ""], ["7", "", "", ""], ["8", "", "", ""],
     ], callout: "" },
     // 21
-    { id: "p21", type: "section", num: "5", title: "Як відновлювати енергію", sub: "", image: N + "meditation.jpg" },
+    { id: "p21", type: "section", num: "5", title: "Як відновлювати енергію", sub: "", image: I + "u-sunrise.jpg" },
     // 22
     { id: "p22", type: "gallery", title: "Як відновлювати енергію", titleEm: "та залишатись активним", lead: "3 ключових стратегії само-збереження", images: [
-      { src: N + "matches.jpg", cap: "1 · Обмеження" },
-      { src: N + "discipline.jpg", cap: "2 · Дисципліна" },
-      { src: N + "meditation.jpg", cap: "3 · Само-відновлення" },
+      { src: I + "u-gate.jpg", cap: "1 · Обмеження" },
+      { src: I + "u-clock.jpg", cap: "2 · Дисципліна" },
+      { src: I + "u-hammock.jpg", cap: "3 · Само-відновлення" },
     ] },
   ],
 };
