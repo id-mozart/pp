@@ -2,7 +2,7 @@ import type { Deck } from "./types";
 
 /**
  * Воркшоп для ProfInstal «Розвиток команди через керівника: культура 70:20:10 у дії» —
- * перенесено зі pptx (Profinstal_WS_09.2026) один в один: 22 слайди → 22 сторінки.
+ * перенесено зі pptx (Profinstal_WS_09.2026) один в один: 22 слайди → 22 сторінки (контакти перенесено в кінець).
  * Тексти дослівно; ілюстрації — фото з Unsplash (u-*.jpg, див. public/deck/profinstal/CREDITS.md), зі слайдів і з бібліотеки деки.
  */
 const I = "/deck/profinstal/";
@@ -19,8 +19,6 @@ export const PROFINSTAL_DECK: Deck = {
   pages: [
     // 1
     { id: "p01", type: "cover", eyebrow: "Програма воркшопу", title: "Розвиток команди через керівника:", titleEm: "культура 70:20:10 у дії", sub: "", who: "Тетяна Пан\nБізнес-тренерка", when: "Україна, вересень 2026", variant: "amp", avatar: N + "tania-profile.jpg" },
-    // 2 — контакти, як у деці NovaPay (збережена версія)
-    { id: "p02", type: "closing", title: "НАШІ", titleEm: "контакти", sub: "https://pan-partners.agency/", contacts: ["+38 050 448 1411", "+34 621 20 93 34"], image: I + "tania-contacts.jpg", qr: N + "qr-instagram.svg" },
     // 3 — про тренера, як у деці NovaPay
     { id: "p03", type: "about", title: "Тетяна", titleEm: "Пан",
       role: "Бізнес-тренерка, фасилітаторка, коуч, менторка, експертка з навчання та розвитку команд і керівників, засновниця компанії «Pan&Partners»",
@@ -104,5 +102,7 @@ export const PROFINSTAL_DECK: Deck = {
       { src: N + "discipline.jpg", cap: "2 · Дисципліна" },
       { src: N + "meditation.jpg", cap: "3 · Само-відновлення" },
     ] },
+    // 23 (був 2-й) — контакти, як у деці NovaPay (збережена версія)
+    { id: "p02", type: "closing", title: "НАШІ", titleEm: "контакти", sub: "https://pan-partners.agency/", contacts: ["+38 050 448 1411", "+34 621 20 93 34"], image: I + "tania-contacts.jpg", qr: N + "qr-instagram.svg" },
   ],
 };
