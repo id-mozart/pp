@@ -29,5 +29,14 @@ export const DECK_LIBRARY: { src: string; label: string }[] = [
   { src: "/deck/novapay/tania-profile.jpg", label: "tania-profile" },
   { src: "/deck/novapay/tania.jpg", label: "tania" },
   { src: "/deck/novapay/trump.jpg", label: "trump" },
-  { src: "/deck/novapay/whoopi.jpg", label: "whoopi" }
+  { src: "/deck/novapay/whoopi.jpg", label: "whoopi" },
+  { src: "/deck/profinstal/leadership.jpg", label: "pi-leadership" },
+  { src: "/deck/profinstal/target.jpg", label: "pi-target" },
+  { src: "/deck/profinstal/team.jpg", label: "pi-team" },
+  { src: "/deck/profinstal/game.jpg", label: "pi-game" },
+  { src: "/deck/profinstal/timing.jpg", label: "pi-timing" },
+  { src: "/deck/profinstal/simulation.jpg", label: "pi-simulation" },
+  { src: "/deck/profinstal/timing-2.jpg", label: "pi-timing-2" },
+  { src: "/deck/profinstal/balance.jpg", label: "pi-balance" },
+  { src: "/deck/profinstal/goals.jpg", label: "pi-goals" },
 ];

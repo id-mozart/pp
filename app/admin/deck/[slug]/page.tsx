@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import { getContentStrict, hasDb, setContentVersioned } from "@/lib/db";
 import type { Deck } from "@/lib/decks/types";
 import { DeckEditor } from "@/components/admin/DeckEditor";
-import { DECK_COPY_FROM, DECK_DEFAULTS, sanitizeDeck } from "@/lib/decks/sanitize";
+import { DECK_COPY_FROM, DECK_DEFAULTS, isDeckSlug, sanitizeDeck } from "@/lib/decks/sanitize";
 
 export const metadata: Metadata = {
   title: "Презентація A4 — адмін",
@@ -12,8 +12,9 @@ export const metadata: Metadata = {
 export const dynamic = "force-dynamic";
 
 export default async function DeckPage({ params, searchParams }: { params: { slug: string }; searchParams?: { only?: string; bare?: string; caps?: string; present?: string; tight?: string; fs?: string } }) {
-  const base = DECK_DEFAULTS[params.slug];
-  if (!base) notFound();
+  // Дека: або з шаблоном у коді (DECK_DEFAULTS), або створена в розділі «Презентації» і живе лише в базі.
+  const base: Deck | undefined = DECK_DEFAULTS[params.slug];
+  if (!base && !isDeckSlug(params.slug)) notFound();
   const key = `deck:${params.slug}`;
   const res = await getContentStrict<Deck>(key);
   // База налаштована, але не відповіла: НІКОЛИ не показуємо дефолт замість збережених правок.
@@ -21,7 +22,7 @@ export default async function DeckPage({ params, searchParams }: { params: { slu
   let saved = res.data;
   let updatedAt = res.updatedAt;
   // Перше відкриття копії: лише коли рядка справді немає (не при помилці читання).
-  if (!saved && DECK_COPY_FROM[params.slug] && hasDb()) {
+  if (!saved && base && DECK_COPY_FROM[params.slug] && hasDb()) {
     const srcRes = await getContentStrict<Deck>(`deck:${DECK_COPY_FROM[params.slug]}`);
     if (!srcRes.ok) return <Unavailable slug={params.slug} />;
     const src = srcRes.data;
@@ -33,8 +34,9 @@ export default async function DeckPage({ params, searchParams }: { params: { slu
       else return <Unavailable slug={params.slug} />;
     }
   }
-  let deck: Deck = base;
   let fromDb = false;
+  if (!saved && !base) notFound(); // без шаблону і без запису — такої деки немає (або її видалено)
+  let deck: Deck = base ?? (saved as Deck);
   if (saved) {
     // Збережена дека НІКОЛИ не підміняється дефолтом: якщо після санітайзу сторінок не лишилось — це пошкоджені дані.
     const clean = sanitizeDeck(saved, params.slug, { fallbackToDefault: false });

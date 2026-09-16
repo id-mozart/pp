@@ -1,5 +1,6 @@
 import type { Deck, DeckPage } from "./types";
 import { NOVAPAY_DECK } from "./novapay";
+import { PROFINSTAL_DECK } from "./profinstal";
 
 export const DECK_DEFAULTS: Record<string, Deck> = {
   novapay: { ...NOVAPAY_DECK, notes: false }, // екранна версія — без полів «Нотатки»
@@ -9,7 +10,24 @@ export const DECK_DEFAULTS: Record<string, Deck> = {
   // Тестові копії поточних дек: створюються з їх збереженого стану при першому відкритті, живуть окремо.
   "novapay-test": { ...NOVAPAY_DECK, slug: "novapay-test", name: "NovaPay · тестова копія", notes: false },
   "novapay2-test": { ...NOVAPAY_DECK, slug: "novapay2-test", name: "NovaPay · копія 2 · тестова копія", notes: true },
+  profinstal: PROFINSTAL_DECK,
 };
+/** Slug деки: латиниця, цифри, дефіс; 2…60 символів. Деки без шаблону живуть лише в базі (створені з розділу «Презентації»). */
+export const isDeckSlug = (v: unknown): v is string => typeof v === "string" && /^[a-z0-9][a-z0-9-]{1,59}$/.test(v);
+const TR: Record<string, string> = { а:"a",б:"b",в:"v",г:"h",ґ:"g",д:"d",е:"e",є:"ie",ж:"zh",з:"z",и:"y",і:"i",ї:"i",й:"i",к:"k",л:"l",м:"m",н:"n",о:"o",п:"p",р:"r",с:"s",т:"t",у:"u",ф:"f",х:"kh",ц:"ts",ч:"ch",ш:"sh",щ:"shch",ю:"iu",я:"ia",ь:"",ъ:"",ы:"y",э:"e",ё:"e" };
+/** Назва → slug: транслітерація, лише [a-z0-9-]. Порожній результат — "deck". */
+export function slugify(name: string): string {
+  const out = String(name ?? "").toLowerCase().split("").map((ch) => (ch in TR ? TR[ch] : ch)).join("")
+    .normalize("NFKD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "").slice(0, 40).replace(/-+$/g, "");
+  return out.length >= 2 ? out : "deck";
+}
+/** Порожня дека для «Нова презентація»: титул + фінал, налаштування як у екранної версії. */
+export function blankDeck(slug: string, name: string): Deck {
+  return { slug, name, runhead: name, caps: false, fs: 1.1, notes: false, tight: true, logo: "", pages: [
+    { id: "c" + Math.random().toString(36).slice(2, 8), type: "cover", eyebrow: "Тренінг", title: name, titleEm: "", sub: "", who: "Бізнес-тренерка Тетяна Пан", when: "Україна, 2026" },
+    { id: "z" + Math.random().toString(36).slice(2, 8), type: "closing", title: "Наші", titleEm: "контакти", sub: "", contacts: ["+38 067 007 0710", "+38 050 448 1411", "pan-partners.agency/uk"], image: "/deck/novapay/tania-mic-2.jpg", qr: "/deck/novapay/qr-instagram.svg" },
+  ] };
+}
 /** Звідки взяти вміст при першому відкритті, якщо власного збереження ще немає. */
 export const DECK_COPY_FROM: Record<string, string> = { novapay2: "novapay", "novapay-test": "novapay", "novapay2-test": "novapay2" };
 
@@ -93,6 +111,8 @@ export function sanitizeDeck(input: any, slug: string, opts: { fallbackToDefault
     // нотатки: явне значення зі збереженої деки; якщо поля ще немає — з дефолту цього slug
     notes: typeof input?.notes === "boolean" ? input.notes : base?.notes !== false,
     tight: typeof input?.tight === "boolean" ? input.tight : !!base?.tight,
+    // логотип на титулі: явний рядок (навіть порожній) зберігаємо; відсутній — з шаблону (для NovaPay — їх логотип)
+    logo: typeof input?.logo === "string" ? img(input.logo) : base?.logo,
     // множник кегля деки: явне число (навіть 1) зберігаємо; відсутнє — беремо з дефолтної деки
     fs: (() => { const n = Number(input?.fs); return Number.isFinite(n) && n > 0 ? Math.min(1.8, Math.max(0.6, Math.round(n * 100) / 100)) : base?.fs; })(),
     pages: pages.length ? pages : fallback ? base?.pages ?? [] : [],

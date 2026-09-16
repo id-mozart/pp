@@ -133,6 +133,8 @@ export const DECK_CSS = `
   #deck-a4 .t-cover .cv-r{ position:relative; align-self:stretch; display:flex; flex-direction:column; align-items:flex-end; }
   #deck-a4 .t-cover .cv-r .np-big{ width:96mm; height:auto; display:block; margin-top:6mm; }
   #deck-a4 .t-cover .cv-r .ill{ flex:1; min-height:0; width:100%; object-fit:contain; object-position:right bottom; display:block; margin-top:4mm; max-height:96mm; filter:drop-shadow(0 14px 26px rgba(80,40,160,.18)); }
+  /* без логотипа клієнта (фото замість 3D-ілюстрації): вище, без «фіолетової» тіні */
+  #deck-a4 .t-cover .cv-r:not(:has(.np-big)) .ill{ max-height:132mm; margin-top:0; border-radius:4mm; filter:drop-shadow(0 10px 22px rgba(60,40,15,.16)); }
   #deck-a4 .t-cover .foot{ margin-top:10mm; }
   #deck-a4 .t-cover .band{ position:absolute; left:0; right:0; bottom:0; height:5mm; background:linear-gradient(90deg,var(--amber),var(--gold)); }
 
@@ -604,7 +606,7 @@ export function DeckPages({
           <div key={p.id} style={{ position: "relative" }}>
             {renderControls?.(i)}
             <Sheet deck={deck} i={i} cls={"t-" + p.type} page={p} editable={editable} onRunhead={rh} animate={animate}>
-              <PageBody p={p} set={set} editable={editable} prev={deck.pages[i - 1]} pick={editable ? pickImage : undefined} showNotes={deck.notes !== false} />
+              <PageBody p={p} set={set} editable={editable} prev={deck.pages[i - 1]} pick={editable ? pickImage : undefined} showNotes={deck.notes !== false} logo={deck.logo} />
             </Sheet>
           </div>
         );
@@ -629,7 +631,7 @@ function ImgBtn({ pick, current, optional, onPick, empty }: { pick?: PickImage; 
   );
 }
 
-function PageBody({ p, set, editable, prev, pick, showNotes = true }: { p: DeckPage; set: Patch; editable: boolean; prev?: DeckPage; pick?: PickImage; showNotes?: boolean }) {
+function PageBody({ p, set, editable, prev, pick, showNotes = true, logo }: { p: DeckPage; set: Patch; editable: boolean; prev?: DeckPage; pick?: PickImage; showNotes?: boolean; logo?: string }) {
   const e = editable;
   // Розріджені текстові сторінки — це роздатковий матеріал: знизу поле для нотаток (вимикається на рівні деки).
   const noImg = !("image" in p && p.image);
@@ -651,9 +653,9 @@ function PageBody({ p, set, editable, prev, pick, showNotes = true }: { p: DeckP
               </div>
             </div>
             <div className="cv-r">
-              <img className="np-big" src="/deck/novapay/novapay-logo.png" alt="NovaPay" />
-              <img className="ill" src={p.image || "/deck/novapay/money.png"} alt="" />
-              <ImgBtn pick={pick} current={p.image || "/deck/novapay/money.png"} optional onPick={(v) => set({ image: v || undefined })} />
+              {logo ? <img className="np-big" src={logo} alt="" /> : null}
+              {p.image || logo ? <img className="ill" src={p.image || "/deck/novapay/money.png"} alt="" /> : null}
+              <ImgBtn pick={pick} current={p.image || ""} optional onPick={(v) => set({ image: v || undefined })} />
             </div>
           </div>
           <div className="band" />

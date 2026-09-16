@@ -240,6 +240,35 @@ export async function setContentVersioned(key: string, data: unknown, expectedUp
   }
 }
 
+/**
+ * Видалення запису з архівуванням: поточна версія лягає в content_history (ключ той самий),
+ * після чого рядок content зникає. Відновлення — вставкою з історії.
+ */
+export async function deleteContentArchived(key: string): Promise<{ ok: true; existed: boolean } | { ok: false; error: string }> {
+  const p = pool();
+  if (!p) return { ok: false, error: "no_db" };
+  let c: import("pg").PoolClient | null = null;
+  try {
+    await ensureSchema(p);
+    c = await p.connect();
+    await c.query("BEGIN");
+    await c.query(`SELECT pg_advisory_xact_lock(hashtext($1))`, [key]);
+    const cur = await c.query(`SELECT data FROM content WHERE key = $1 FOR UPDATE`, [key]);
+    if (cur.rows[0]) {
+      await c.query(`INSERT INTO content_history (key, data) VALUES ($1, $2)`, [key, JSON.stringify(cur.rows[0].data)]);
+      await c.query(`DELETE FROM content WHERE key = $1`, [key]);
+    }
+    await c.query("COMMIT");
+    return { ok: true, existed: !!cur.rows[0] };
+  } catch (e: any) {
+    try { await c?.query("ROLLBACK"); } catch {}
+    console.error("[db] deleteContentArchived", key, e?.message);
+    return { ok: false, error: String(e?.message ?? e) };
+  } finally {
+    c?.release();
+  }
+}
+
 export async function setContent(key: string, data: unknown) {
   return withDb(async (p) => {
     await p.query(

@@ -4,6 +4,7 @@ import { getContentStrict, hasDb, listDecks } from "@/lib/db";
 import { DECK_DEFAULTS, sanitizeDeck } from "@/lib/decks/sanitize";
 import type { Deck } from "@/lib/decks/types";
 import { DeckThumb } from "@/components/admin/DeckThumb";
+import { DeckCardActions, NewDeckButton } from "@/components/admin/DecksManager";
 
 export const metadata: Metadata = {
   title: "Презентації — адмін",
@@ -35,6 +36,17 @@ const CSS = `
   #decks .btn:hover{ border-color:#C4621F; color:#C4621F; }
   #decks .btn.pri{ background:linear-gradient(96deg,#E8AC3C,#CE651E); color:#241A10; border-color:transparent; font-weight:600; }
   #decks .note{ max-width:1100px; margin:18px auto 0; font-size:13px; color:#7A6A54; line-height:1.5; }
+  #decks .head .acts{ display:flex; gap:10px; align-items:center; }
+  #decks button.btn{ cursor:pointer; font-family:inherit; }
+  #decks button.btn:disabled{ opacity:.55; cursor:default; }
+  #decks .btn.danger:hover{ border-color:#B33A2B; color:#B33A2B; }
+  #decks .modal{ position:fixed; inset:0; background:rgba(40,28,14,.45); display:flex; align-items:center; justify-content:center; padding:20px; z-index:50; }
+  #decks .dlg{ background:#FCF8F1; border-radius:16px; padding:24px 26px; width:min(460px,100%); box-shadow:0 20px 60px rgba(40,28,14,.3); display:flex; flex-direction:column; gap:14px; }
+  #decks .dlg h2{ font-family:var(--font-spectral),serif; font-weight:500; font-size:22px; margin:0; }
+  #decks .dlg label{ display:flex; flex-direction:column; gap:6px; font-size:12px; letter-spacing:.08em; text-transform:uppercase; color:#9C8B73; }
+  #decks .dlg input, #decks .dlg select{ font:15px/1.3 var(--font-inter),system-ui,sans-serif; padding:10px 12px; border:1px solid rgba(140,116,82,.45); border-radius:10px; background:#fff; color:#2A2018; }
+  #decks .dlg .err{ margin:0; font-size:13px; color:#B33A2B; }
+  #decks .dlg .row{ margin-top:4px; }
 `;
 
 function fmt(iso: string) {
@@ -51,8 +63,8 @@ export default async function DecksPage() {
       </div>
     );
   }
-  // лише деки, для яких є шаблон-дефолт (інакше редактор не відкриється)
-  const saved = res.items.filter((d) => DECK_DEFAULTS[d.slug]);
+  // усі збережені деки: зі шаблоном у коді або створені в цьому розділі (живуть лише в базі)
+  const saved = res.items;
   const bySlug = new Map(saved.map((d) => [d.slug, d]));
   // повні дані для мініатюр (читання суворе; при збої — без мініатюри, а не дефолт)
   const full = new Map<string, Deck>();
@@ -73,7 +85,10 @@ export default async function DecksPage() {
       <style dangerouslySetInnerHTML={{ __html: CSS }} />
       <div className="head">
         <h1>Презентації <em>· {items.length}</em></h1>
-        <Link href="/admin" className="back">← Панель</Link>
+        <div className="acts">
+          <NewDeckButton items={items.map((d) => ({ slug: d.slug, name: d.name }))} />
+          <Link href="/admin" className="back">← Панель</Link>
+        </div>
       </div>
       <div className="grid">
         {items.map((d) => (
@@ -87,11 +102,12 @@ export default async function DecksPage() {
             <div className="row">
               <Link href={`/admin/deck/${d.slug}`} className="btn pri">Відкрити редактор</Link>
               <Link href={`/admin/deck/${d.slug}?present=1`} className="btn">▶ Показ</Link>
+              <DeckCardActions slug={d.slug} name={d.name} deletable={!DECK_DEFAULTS[d.slug]} />
             </div>
           </div>
         ))}
       </div>
-      <p className="note">PDF завантажується з редактора кнопкою «Завантажити PDF». Кожне збереження зберігає попередню версію в історії, тому будь-який стан можна відновити.</p>
+      <p className="note">«Нова презентація» створює порожню деку або копію будь-якої існуючої під новою адресою; «Копіювати» — те саме з картки. Стандартні презентації (з шаблоном у коді) не видаляються. PDF завантажується з редактора кнопкою «Завантажити PDF». Кожне збереження зберігає попередню версію в історії, тому будь-який стан можна відновити.</p>
     </div>
   );
 }
