@@ -141,10 +141,10 @@ const DECK_CSS_BASE = `
   #deck-a4 .t-cover .cv-r .bigamp{ position:absolute; right:-14mm; bottom:-2mm; font-family:var(--font-playfair),Georgia,serif; font-weight:500; font-size:560pt; line-height:.8; color:var(--amber); opacity:.14; pointer-events:none; user-select:none; letter-spacing:0; }
   /* композиція титулу з амперсандом: широка колонка заголовка, більший логотип, аватар тренера */
   #deck-a4 .t-cover .cv.amp{ grid-template-columns:1fr 34mm; gap:8mm; }
-  #deck-a4 .t-cover .cv.amp .cv-l{ padding-top:14mm; }
+  #deck-a4 .t-cover .cv.amp .cv-l{ padding-top:30mm; }
   #deck-a4 .t-cover .cv.amp h1{ font-size:62pt; line-height:.96; max-width:215mm; }
   #deck-a4 .t-cover .cv.amp h1 em{ font-size:36pt; margin-top:6mm; }
-  #deck-a4 .t-cover .cv.amp .eyebrow{ font-size:9.5pt; }
+  #deck-a4 .t-cover .cv.amp .eyebrow{ font-size:12pt; letter-spacing:.3em; }
   #deck-a4 .t-cover .cv.amp .sub, #deck-a4 .t-cover .cv.amp .who{ max-width:200mm; }
   #deck-a4 .t-cover:has(.cv.amp) .rh .wm{ font-size:18.5pt; }
   /* амперсанд-титул: без службових ліній і колонтитула — лише логотип, заголовок, підпис */
@@ -152,6 +152,10 @@ const DECK_CSS_BASE = `
   #deck-a4 .t-cover:has(.cv.amp) .eyebrow{ border:0; box-shadow:none; background:none; padding:0; }
   #deck-a4 .t-cover:has(.cv.amp) .eyebrow::before, #deck-a4 .t-cover:has(.cv.amp) .eyebrow::after{ display:none; }
   #deck-a4 .t-cover:has(.cv.amp) .who{ border-top:0; padding-bottom:6mm; }
+  /* підпис під аватаром у два рядки: імʼя (перший рядок) крупніше, роль — під ним; дата — у правому нижньому куті */
+  #deck-a4 .t-cover:has(.cv.amp) .who.av .wt > p:first-child{ white-space:pre-line; font-size:12pt; line-height:1.35; color:var(--muted); }
+  #deck-a4 .t-cover:has(.cv.amp) .who.av .wt > p:first-child::first-line{ font-family:var(--font-spectral),serif; font-size:17pt; font-weight:500; color:var(--ink); }
+  #deck-a4 .t-cover:has(.cv.amp) .who .w{ position:absolute; right:16mm; bottom:14mm; margin:0; font-size:9pt; }
   #deck-a4 .t-cover:has(.cv.amp) .foot{ display:none; }
   #deck-a4 .t-cover .who.av{ display:flex; align-items:center; gap:5.5mm; }
   #deck-a4 .t-cover .who .avatar{ position:relative; flex:none; width:19mm; height:19mm; border-radius:50%; overflow:hidden; box-shadow:0 0 0 1.6pt var(--amber), 0 0 0 4pt var(--sheet); }
