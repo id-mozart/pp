@@ -23,7 +23,7 @@ export function slugify(name: string): string {
 }
 /** Порожня дека для «Нова презентація»: титул + фінал, налаштування як у екранної версії. */
 export function blankDeck(slug: string, name: string): Deck {
-  return { slug, name, runhead: name, caps: false, fs: 1.1, notes: false, tight: true, logo: "", pages: [
+  return { slug, name, runhead: name, caps: false, fs: 1.1, notes: false, tight: true, logo: "", footRunhead: true, pages: [
     { id: "c" + Math.random().toString(36).slice(2, 8), type: "cover", eyebrow: "Тренінг", title: name, titleEm: "", sub: "", who: "Бізнес-тренерка Тетяна Пан", when: "Україна, 2026" },
     { id: "z" + Math.random().toString(36).slice(2, 8), type: "closing", title: "Наші", titleEm: "контакти", sub: "", contacts: ["+38 067 007 0710", "+38 050 448 1411", "pan-partners.agency/uk"], image: "/deck/novapay/tania-mic-2.jpg", qr: "/deck/novapay/qr-instagram.svg" },
   ] };
@@ -115,6 +115,7 @@ export function sanitizeDeck(input: any, slug: string, opts: { fallbackToDefault
     tight: typeof input?.tight === "boolean" ? input.tight : !!base?.tight,
     // логотип на титулі: явний рядок (навіть порожній) зберігаємо; відсутній — з шаблону (для NovaPay — їх логотип)
     logo: typeof input?.logo === "string" ? img(input.logo) : base?.logo,
+    footRunhead: typeof input?.footRunhead === "boolean" ? input.footRunhead : !!base?.footRunhead,
     // множник кегля деки: явне число (навіть 1) зберігаємо; відсутнє — беремо з дефолтної деки
     fs: (() => { const n = Number(input?.fs); return Number.isFinite(n) && n > 0 ? Math.min(1.8, Math.max(0.6, Math.round(n * 100) / 100)) : base?.fs; })(),
     pages: pages.length ? pages : fallback ? base?.pages ?? [] : [],

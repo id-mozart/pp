@@ -16,6 +16,7 @@ export const PROFINSTAL_DECK: Deck = {
   notes: false,
   tight: true,
   logo: "", // без логотипа клієнта на титулі
+  footRunhead: true, // назва деки — у нижньому колонтитулі, зверху лише логотип
   pages: [
     // 1
     { id: "p01", type: "cover", eyebrow: "Програма воркшопу", title: "Розвиток команди через керівника:", titleEm: "культура 70:20:10 у дії", sub: "", who: "Тетяна Пан\nБізнес-тренерка", when: "Україна, вересень 2026", variant: "amp", avatar: N + "tania-profile.jpg" },

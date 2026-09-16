@@ -36,6 +36,9 @@ const DECK_CSS_BASE = `
   #deck-a4 .foot .pg{ font-family:var(--font-jetbrains),monospace; font-size:7.8pt; letter-spacing:.16em; color:var(--faint); }
   #deck-a4 .foot .tl{ font-family:var(--font-spectral),serif; font-style:italic; font-size:9.5pt; color:var(--muted); }
   #deck-a4 .foot .tl b{ color:var(--acc); font-weight:500; }
+  /* колонтитул із назвою деки знизу: назва ліворуч, лаконічний номер праворуч */
+  #deck-a4 .foot.frh .tag{ font-family:var(--font-jetbrains),monospace; font-size:7.8pt; letter-spacing:.16em; text-transform:uppercase; color:var(--faint); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  #deck-a4 .foot.frh .pg{ font-size:8.5pt; color:var(--muted); }
 
   /* типографіка */
   #deck-a4 h1{ font-family:var(--font-spectral),Georgia,serif; font-size:calc(34pt * var(--kh,1)); font-weight:500; line-height:1.06; letter-spacing:-.005em; margin-top:7mm; }
@@ -586,15 +589,19 @@ function Sheet({ deck, i, cls, page, children, editable, onRunhead, animate }: {
       <div className="rh">
         <span className="wm">Pan<em>&amp;</em>Partners</span>
         <span className="fill" />
-        <E value={deck.runhead} onChange={onRunhead} editable={editable} className="tag" ph="колонтитул" />
+        {deck.footRunhead ? null : <E value={deck.runhead} onChange={onRunhead} editable={editable} className="tag" ph="колонтитул" />}
       </div>
       <div className="pb">{children}</div>
-      <div className="foot">
-        <span className="tl">
-          <b>Тетяна Пан</b> · Pan&amp;Partners · pan-partners.agency
-        </span>
+      <div className={"foot" + (deck.footRunhead ? " frh" : "")}>
+        {deck.footRunhead ? (
+          <E value={deck.runhead} onChange={onRunhead} editable={editable} className="tag" ph="колонтитул" />
+        ) : (
+          <span className="tl">
+            <b>Тетяна Пан</b> · Pan&amp;Partners · pan-partners.agency
+          </span>
+        )}
         <span className="pg">
-          {String(i + 1).padStart(2, "0")} / {String(deck.pages.length).padStart(2, "0")}
+          {deck.footRunhead ? String(i + 1).padStart(2, "0") : `${String(i + 1).padStart(2, "0")} / ${String(deck.pages.length).padStart(2, "0")}`}
         </span>
       </div>
     </section>

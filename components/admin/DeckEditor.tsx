@@ -317,6 +317,7 @@ export function DeckEditor({ initial, dbReady, only, bare, loadedAt, fromDb, pre
         <button className="btn" onClick={() => setTplMode({ mode: "append" })} title="Нова сторінка з набору типових композицій">＋ Сторінка…</button>
         <button className={"btn" + (deck.caps ? " on" : "")} onClick={() => update((d) => ({ ...d, caps: !d.caps }))} title="Заголовки великими літерами">{deck.caps ? "Aa → АБВ" : "АБВ → Aa"}</button>
         <button className={"btn" + (deck.notes !== false ? " on" : "")} onClick={() => update((d) => ({ ...d, notes: d.notes === false ? true : false }))} title="Поле «Нотатки» на розріджених сторінках (для роздрукованої версії)">{deck.notes !== false ? "Нотатки: є" : "Нотатки: немає"}</button>
+        <button className={"btn" + (deck.footRunhead ? " on" : "")} onClick={() => update((d) => ({ ...d, footRunhead: !d.footRunhead }))} title="Назва деки в нижньому колонтитулі (зверху лише логотип), номер сторінки без «/ 22»">{deck.footRunhead ? "Колонтитул: знизу" : "Колонтитул: зверху"}</button>
         <button className={"btn" + (deck.tight ? " on" : "")} onClick={() => update((d) => ({ ...d, tight: !d.tight }))} title="Щільна верстка: менші відступи в таблицях і картках, тому текст на щільних сторінках більший">{deck.tight ? "Щільно: так" : "Щільно: ні"}</button>
         <button className="btn" onClick={() => bumpDeckFs(-1)} title="Кегль усієї деки менше">A−</button>
         <span className="st" title="Множник кегля деки">×{(deck.fs ?? 1).toFixed(2)}</span>
