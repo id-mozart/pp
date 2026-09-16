@@ -39,6 +39,9 @@ const DECK_CSS_BASE = `
   /* колонтитул із назвою деки знизу: назва ліворуч, лаконічний номер праворуч */
   #deck-a4 .foot.frh .tag{ font-family:var(--font-jetbrains),monospace; font-size:7.8pt; letter-spacing:.16em; text-transform:uppercase; color:var(--faint); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
   #deck-a4 .foot.frh .pg{ font-size:8.5pt; color:var(--muted); }
+  /* колонтитул знизу: зверху лише логотип, тож між ним і заголовком — гарантований відступ */
+  #deck-a4.frh .sheet:not(.t-cover):not(.t-section):not(.t-closing):not(.t-about) > .pb{ padding-top:9mm; }
+  #deck-a4.frh .sheet.t-about > .pb{ padding-top:2.5mm; }
 
   /* типографіка */
   #deck-a4 h1{ font-family:var(--font-spectral),Georgia,serif; font-size:calc(34pt * var(--kh,1)); font-weight:500; line-height:1.06; letter-spacing:-.005em; margin-top:7mm; }
@@ -633,7 +636,7 @@ export function DeckPages({
 }) {
   const rh = onRunhead ?? (() => {});
   return (
-    <div id="deck-a4" className={[deck.caps ? "caps" : "", deck.tight ? "tight" : ""].filter(Boolean).join(" ") || undefined}>
+    <div id="deck-a4" className={[deck.caps ? "caps" : "", deck.tight ? "tight" : "", deck.footRunhead ? "frh" : ""].filter(Boolean).join(" ") || undefined}>
       <style dangerouslySetInnerHTML={{ __html: DECK_CSS }} />
       {deck.pages.map((p, i) => {
         if (only && only !== i + 1) return null;
