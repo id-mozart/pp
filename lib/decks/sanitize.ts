@@ -6,9 +6,12 @@ export const DECK_DEFAULTS: Record<string, Deck> = {
   // Друга копія деки: власний запис у базі (deck:novapay2). При першому відкритті
   // копіюється збережена версія novapay (див. DECK_COPY_FROM), далі редагується незалежно.
   novapay2: { ...NOVAPAY_DECK, slug: "novapay2", name: "NovaPay · Активні продажі · копія 2", notes: true },
+  // Тестові копії поточних дек: створюються з їх збереженого стану при першому відкритті, живуть окремо.
+  "novapay-test": { ...NOVAPAY_DECK, slug: "novapay-test", name: "NovaPay · тестова копія", notes: false },
+  "novapay2-test": { ...NOVAPAY_DECK, slug: "novapay2-test", name: "NovaPay · копія 2 · тестова копія", notes: true },
 };
 /** Звідки взяти вміст при першому відкритті, якщо власного збереження ще немає. */
-export const DECK_COPY_FROM: Record<string, string> = { novapay2: "novapay" };
+export const DECK_COPY_FROM: Record<string, string> = { novapay2: "novapay", "novapay-test": "novapay", "novapay2-test": "novapay2" };
 
 const s = (v: unknown, max = 4000) => String(v ?? "").slice(0, max);
 const fsOf = (v: unknown, lo = 0.5, hi = 2.4) => { const n = Number(v); return Number.isFinite(n) && n > 0 && Math.abs(n - 1) > 0.001 ? Math.min(hi, Math.max(lo, Math.round(n * 100) / 100)) : undefined; };
