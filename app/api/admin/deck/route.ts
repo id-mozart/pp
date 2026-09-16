@@ -29,7 +29,7 @@ export async function POST(req: Request) {
   // Версія, з якої редагували, обовʼязкова: без неї старий бандл або сторонній скрипт міг би затерти свіжіші правки.
   if (!(typeof body.baseUpdatedAt === "string" || body.baseUpdatedAt === null)) return NextResponse.json({ ok: false, error: "no_base" }, { status: 400 });
   const expected: string | null = body.baseUpdatedAt;
-  const r = await setContentVersioned(`deck:${slug}`, clean, expected);
+  const r = await setContentVersioned(`deck:${slug}`, clean, expected, { auto: body.auto === true });
   if (!r.ok) {
     if (r.conflict) return NextResponse.json({ ok: false, error: "conflict", currentUpdatedAt: r.currentUpdatedAt }, { status: 409 });
     return NextResponse.json({ ok: false, error: r.error === "no_db" ? "no_db" : "db" }, { status: 503 });

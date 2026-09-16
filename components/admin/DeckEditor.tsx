@@ -65,7 +65,7 @@ const UI_CSS = `
   @media print{ #deck-ui{ background:#fff; padding:0; } #deck-ui .bar, #deck-ui .ctl, #deck-ui .pick-bg, #deck-ui .present{ display:none !important; } #deck-ui .pages{ padding:0; } }
 `;
 
-export function DeckEditor({ initial, dbReady, only, bare, loadedAt, fromDb }: { initial: Deck; dbReady: boolean; only?: number; bare?: boolean; loadedAt?: string | null; fromDb?: boolean }) {
+export function DeckEditor({ initial, dbReady, only, bare, loadedAt, fromDb, presentOnLoad }: { initial: Deck; dbReady: boolean; only?: number; bare?: boolean; loadedAt?: string | null; fromDb?: boolean; presentOnLoad?: boolean }) {
   const [deck, setDeck] = useState<Deck>(initial);
   const [status, setStatus] = useState<Status | "conflict">("idle");
   const [baseAt, setBaseAt] = useState<string | null>(loadedAt ?? null);
@@ -75,17 +75,60 @@ export function DeckEditor({ initial, dbReady, only, bare, loadedAt, fromDb }: {
   const [saving, setSaving] = useState(false);
   // Захист від закриття вкладки, поки правки не збережені (dirty, error, conflict, saving)
   useEffect(() => {
-    const h = (e: BeforeUnloadEvent) => { if (status !== "idle" && status !== "saved") { e.preventDefault(); e.returnValue = ""; } };
+    const h = (e: BeforeUnloadEvent) => { if (skipGuardRef.current) return; if (status !== "idle" && status !== "saved") { e.preventDefault(); e.returnValue = ""; } };
     window.addEventListener("beforeunload", h);
     return () => window.removeEventListener("beforeunload", h);
   }, [status]);
   const [addType, setAddType] = useState<DeckPageType>("bullets");
 
+  /* ── скасування / повтор дій ── */
+  const undoRef = useRef<Deck[]>([]);
+  const redoRef = useRef<Deck[]>([]);
+  const [hist, setHist] = useState({ undo: 0, redo: 0 });
+  const deckRef = useRef(deck); deckRef.current = deck;
   function update(fn: (d: Deck) => Deck) {
-    setDeck((d) => fn(d));
+    const before = deckRef.current;
+    const next = fn(before);
+    if (next === before) return; // дія нічого не змінила (межа діапазону тощо)
+    undoRef.current.push(before); if (undoRef.current.length > 100) undoRef.current.shift();
+    redoRef.current = [];
+    setHist({ undo: undoRef.current.length, redo: 0 });
+    deckRef.current = next;
+    setDeck(next);
     editsRef.current += 1;
     setStatus("dirty");
   }
+  const undo = useCallback(() => {
+    const prev = undoRef.current.pop(); if (!prev) return;
+    redoRef.current.push(deckRef.current);
+    setHist({ undo: undoRef.current.length, redo: redoRef.current.length });
+    setDeck(prev); editsRef.current += 1; setStatus("dirty");
+  }, []);
+  const redo = useCallback(() => {
+    const next = redoRef.current.pop(); if (!next) return;
+    undoRef.current.push(deckRef.current);
+    setHist({ undo: undoRef.current.length, redo: redoRef.current.length });
+    setDeck(next); editsRef.current += 1; setStatus("dirty");
+  }, []);
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      const mod = e.metaKey || e.ctrlKey;
+      if (!mod || (e.code !== "KeyZ" && e.code !== "KeyY")) return; // за фізичною клавішею — працює в будь-якій розкладці
+      if (presentIdxRef.current !== null || document.querySelector("#deck-ui .pick-bg")) return; // не в показі й не в модалці
+      // усередині редагованого тексту працює вбудоване скасування браузера
+      const ae = document.activeElement as HTMLElement | null;
+      if (ae && (ae.isContentEditable || ae.tagName === "INPUT" || ae.tagName === "TEXTAREA" || ae.tagName === "SELECT")) return;
+      e.preventDefault();
+      if (e.code === "KeyY" || e.shiftKey) redo(); else undo();
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [undo, redo]);
+
+  /* ── автозбереження (перемикач памʼятається в браузері для кожної деки) ── */
+  const [autosave, setAutosave] = useState(false);
+  useEffect(() => { try { setAutosave(localStorage.getItem("deck-autosave:" + initial.slug) === "1"); } catch {} }, [initial.slug]);
+  const toggleAutosave = () => { setAutosave((v) => { const n = !v; try { localStorage.setItem("deck-autosave:" + initial.slug, n ? "1" : "0"); } catch {} return n; }); };
   const patchPage = (i: number, patch: Record<string, unknown>) =>
     update((d) => ({ ...d, pages: d.pages.map((p, k) => (k === i ? ({ ...p, ...patch } as DeckPage) : p)) }));
   const move = (i: number, dir: -1 | 1) =>
@@ -122,6 +165,7 @@ export function DeckEditor({ initial, dbReady, only, bare, loadedAt, fromDb }: {
 
   /* ── режим показу (повний екран, Space/→ далі, ←/Backspace назад, Esc вихід) ── */
   const [present, setPresent] = useState<number | null>(null);
+  const presentIdxRef = useRef<number | null>(null); presentIdxRef.current = present;
   const [tick, setTick] = useState(0); // перезапуск анімації при зміні сторінки
   const presentRef = useRef<HTMLDivElement>(null);
   const goTo = useCallback((k: number) => { setPresent((cur) => { if (cur === null) return cur; const n = Math.min(deck.pages.length - 1, Math.max(0, k)); return n; }); setTick((t) => t + 1); }, [deck.pages.length]);
@@ -153,32 +197,61 @@ export function DeckEditor({ initial, dbReady, only, bare, loadedAt, fromDb }: {
   const pickImage: PickImage = (current, optional) => new Promise((resolve) => setPicker({ current, optional, resolve }));
   const closePicker = (v: string | null) => { picker?.resolve(v); setPicker(null); };
 
-  async function save() {
-    if (inFlightRef.current) return; // попередній запит ще летить
-    if (dbReady && !fromDb && baseAt === null && !confirm("У базі ще немає збереженої версії цієї деки. Створити її з поточної (стандартної)?")) return;
+  async function save(opts: { auto?: boolean; force?: boolean } = {}) {
+    if (inFlightRef.current) { if (opts.auto) pendingAutoRef.current = true; return; } // попередній запит ще летить
+    if (opts.auto && (!dbReady || baseAt === null)) return; // автозбереження лише для деки, що вже є в базі
+    if (!opts.auto && dbReady && !fromDb && baseAt === null && !confirm("У базі ще немає збереженої версії цієї деки. Створити її з поточної (стандартної)?")) return;
     inFlightRef.current = true; setSaving(true); setErrText("");
     setStatus("saving");
     const snapshot = editsRef.current;
     try {
+      let base = baseAt;
+      if (opts.force) {
+        // «Зберегти поверх»: беремо актуальну версію з бази як основу; попередня версія лишається в історії
+        const gr = await fetch(`/api/admin/deck?slug=${deckRef.current.slug}`);
+        if (gr.status === 401) { setErrText("сесія завершилась — увійдіть у адмінку знову"); setStatus("error"); return; }
+        const g = await gr.json().catch(() => null);
+        if (!g?.ok) throw new Error("db");
+        base = g.updatedAt ?? null;
+      }
       const res = await fetch("/api/admin/deck", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...deck, baseUpdatedAt: baseAt }),
+        body: JSON.stringify({ ...deckRef.current, baseUpdatedAt: base, auto: !!opts.auto }),
       });
       const j = await res.json().catch(() => null);
-      if (res.status === 409) { setStatus("conflict"); return; }
+      if (res.status === 409) { conflictAtRef.current = j?.currentUpdatedAt ?? null; setStatus("conflict"); autoFailRef.current = Date.now(); return; }
+      if (res.status === 401) { setErrText("сесія завершилась — увійдіть у адмінку знову"); setStatus("error"); autoFailRef.current = Date.now(); return; }
       if (!res.ok || !j?.ok) {
         const m: Record<string, string> = { no_db: "база даних не підключена", db: "база тимчасово недоступна — спробуйте за хвилину", no_base: "застаріла версія сторінки — оновіть її й повторіть", empty: "дека без сторінок не зберігається", pages_mismatch: "частина сторінок не пройшла перевірку — оновіть сторінку", too_many_pages: "забагато сторінок (понад 200)", invalid: "некоректний запит" };
-        setErrText(m[j?.error] || "невідома помилка"); setStatus("error"); return;
+        setErrText(m[j?.error] || "невідома помилка"); setStatus("error"); autoFailRef.current = Date.now(); return;
       }
       if (j.updatedAt) setBaseAt(j.updatedAt);
+      autoFailRef.current = 0;
       setStatus(editsRef.current === snapshot ? "saved" : "dirty");
     } catch {
-      setErrText("немає звʼязку з сервером"); setStatus("error");
+      setErrText("немає звʼязку з сервером"); setStatus("error"); autoFailRef.current = Date.now();
     } finally {
       inFlightRef.current = false; setSaving(false);
+      // правки, що прийшли під час збереження: зберегти ще раз
+      if (pendingAutoRef.current) { pendingAutoRef.current = false; if (editsRef.current !== snapshot) setTimeout(() => save({ auto: true }), 300); }
     }
   }
+  const autoFailRef = useRef(0);
+  const pendingAutoRef = useRef(false);
+  const conflictAtRef = useRef<string | null>(null);
+  const skipGuardRef = useRef(false);
+  // автозбереження: через 1,5 с після останньої дії; після невдачі — пауза 15 с
+  useEffect(() => {
+    if (!autosave) return;
+    if (status !== "dirty" && status !== "error") return; // після помилки — повторна спроба; конфлікт вирішує людина
+    const wait = status === "error" || (autoFailRef.current && Date.now() - autoFailRef.current < 15000) ? 15000 : 1500;
+    const t = window.setTimeout(() => { save({ auto: true }); }, wait);
+    return () => window.clearTimeout(t);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [deck, autosave, status]);
+  // показ одразу з URL (?present=1)
+  useEffect(() => { if (presentOnLoad && !bare) { setPresent(0); setTick((t) => t + 1); } }, [presentOnLoad, bare]);
 
   const stText: Record<Status | "conflict", string> = {
     idle: "без змін",
@@ -186,7 +259,7 @@ export function DeckEditor({ initial, dbReady, only, bare, loadedAt, fromDb }: {
     saving: "зберігаю…",
     saved: "збережено",
     error: "не збережено",
-    conflict: "деку змінено в іншому вікні — оновіть сторінку, щоб не затерти чужі правки",
+    conflict: "деку змінено в іншому вікні",
   };
 
   return (
@@ -197,6 +270,15 @@ export function DeckEditor({ initial, dbReady, only, bare, loadedAt, fromDb }: {
           {deck.name} <em>· A4 · {deck.pages.length} стор.</em>
         </span>
         <span className="st">{stText[status]}{status === "error" && errText ? `: ${errText}` : ""}</span>
+        {status === "conflict" && (
+          <>
+            <button className="btn" onClick={() => { if (confirm("Взяти версію з бази? Ваші незбережені правки буде втрачено.")) { skipGuardRef.current = true; location.reload(); } }}>Оновити сторінку</button>
+            <button className="btn pri" onClick={() => { const at = conflictAtRef.current ? new Date(conflictAtRef.current).toLocaleString("uk-UA", { timeZone: "Europe/Kyiv" }) : "невідомий час"; if (confirm(`У базі є версія від ${at}. Записати вашу поверх неї? Попередня версія лишиться в історії.`)) save({ force: true }); }}>Зберегти поверх</button>
+          </>
+        )}
+        <button className="btn" onClick={undo} disabled={!hist.undo} title="Скасувати дію (⌘Z / Ctrl+Z)">↶ {hist.undo || ""}</button>
+        <button className="btn" onClick={redo} disabled={!hist.redo} title="Повторити дію (⌘⇧Z / Ctrl+Y)">↷ {hist.redo || ""}</button>
+        <button className={"btn" + (autosave ? " on" : "")} onClick={toggleAutosave} disabled={!dbReady || baseAt === null} title={!dbReady || baseAt === null ? "Спочатку збережіть деку вручну" : "Автоматично зберігати через 1,5 с після кожної дії"}>{autosave ? "Автозбереження: увімк." : "Автозбереження: вимк."}</button>
         <select value={addType} onChange={(e) => setAddType(e.target.value as DeckPageType)}>
           {(Object.keys(PAGE_TYPE_LABELS) as DeckPageType[]).map((t) => (
             <option key={t} value={t}>{PAGE_TYPE_LABELS[t]}</option>
@@ -211,10 +293,10 @@ export function DeckEditor({ initial, dbReady, only, bare, loadedAt, fromDb }: {
         <button className="btn" onClick={() => bumpDeckFs(1)} title="Кегль усієї деки більше">A+</button>
         <button className="btn" onClick={() => startPresent(0)} title="Повноекранний показ: Space / → далі, ← назад, Esc вихід">▶ Показ</button>
         <button className="btn" onClick={() => window.print()}>Завантажити PDF</button>
-        <button className="btn pri" onClick={save} disabled={saving}>Зберегти</button>
-        <Link href="/admin" className="btn">← Панель</Link>
+        <button className="btn pri" onClick={() => save()} disabled={saving}>Зберегти</button>
+        <Link href="/admin/decks" className="btn" onClick={(e) => { if (status !== "idle" && status !== "saved" && !confirm("Є незбережені правки. Вийти без збереження?")) e.preventDefault(); }}>← Презентації</Link>
         <p className="hint">
-          «▶ Показ» — повноекранний режим з анімацією: Space або → наступна сторінка, ← попередня, Esc вихід. Клікніть на будь-який текст на сторінці й редагуйте прямо там. У списках Enter додає новий пункт. Наведіть на сторінку — біля ілюстрацій зʼявиться «Замінити»; кнопки A−/A+ біля сторінки змінюють її кегль, ＋ вставляє нову сторінку одразу після неї.
+          ⌘Z / Ctrl+Z скасовує дію, ⌘⇧Z повторює. «Автозбереження» зберігає через 1,5 с після кожної дії. «▶ Показ» — повноекранний режим з анімацією: Space або → наступна сторінка, ← попередня, Esc вихід. Клікніть на будь-який текст на сторінці й редагуйте прямо там. У списках Enter додає новий пункт. Наведіть на сторінку — біля ілюстрацій зʼявиться «Замінити»; кнопки A−/A+ біля сторінки змінюють її кегль, ＋ вставляє нову сторінку одразу після неї.
           «Завантажити PDF» відкриває друк — оберіть «Зберегти як PDF», формат A4, поля «немає».
           {!dbReady && " База даних не підключена: правки не збережуться після перезавантаження."}
         </p>

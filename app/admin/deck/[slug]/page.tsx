@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 };
 export const dynamic = "force-dynamic";
 
-export default async function DeckPage({ params, searchParams }: { params: { slug: string }; searchParams?: { only?: string; bare?: string; caps?: string } }) {
+export default async function DeckPage({ params, searchParams }: { params: { slug: string }; searchParams?: { only?: string; bare?: string; caps?: string; present?: string; tight?: string; fs?: string } }) {
   const base = DECK_DEFAULTS[params.slug];
   if (!base) notFound();
   const key = `deck:${params.slug}`;
@@ -50,7 +50,7 @@ export default async function DeckPage({ params, searchParams }: { params: { slu
     if ((searchParams as any)?.tight) initial = { ...initial, tight: (searchParams as any).tight === "1" };
     if ((searchParams as any)?.fs) { const n = Number((searchParams as any).fs); if (Number.isFinite(n)) initial = { ...initial, fs: n }; }
   }
-  return <DeckEditor initial={initial} dbReady={hasDb()} only={only} bare={searchParams?.bare === "1"} loadedAt={updatedAt} fromDb={fromDb} />;
+  return <DeckEditor initial={initial} dbReady={hasDb()} only={only} bare={searchParams?.bare === "1"} loadedAt={updatedAt} fromDb={fromDb} presentOnLoad={searchParams?.present === "1"} />;
 }
 
 function Corrupt({ slug }: { slug: string }) {

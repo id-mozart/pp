@@ -162,6 +162,25 @@ export async function getContent<T = unknown>(key: string): Promise<T | null> {
  * Суворе читання: відрізняє «рядка немає» від «база недоступна». Помилки НЕ ковтає —
  * повертає ok:false, щоб сторінка не підмінила збережені дані дефолтом. Одна повторна спроба.
  */
+/** Перелік збережених дек (ключі deck:*): назва, кількість сторінок, час оновлення. Без даних сторінок. */
+export async function listDecks(): Promise<{ ok: true; items: { slug: string; name: string; pages: number; updatedAt: string }[] } | { ok: false }> {
+  const p = pool();
+  if (!p) return { ok: true, items: [] };
+  try {
+    await ensureSchema(p);
+    const { rows } = await p.query(
+      `SELECT key, data->>'name' AS name,
+              CASE WHEN jsonb_typeof(data->'pages') = 'array' THEN jsonb_array_length(data->'pages') ELSE 0 END AS pages,
+              updated_at
+       FROM content WHERE key LIKE 'deck:%' ORDER BY updated_at DESC`,
+    );
+    return { ok: true, items: rows.map((r) => ({ slug: String(r.key).slice(5), name: String(r.name ?? ""), pages: Number(r.pages ?? 0), updatedAt: new Date(r.updated_at).toISOString() })) };
+  } catch (e: any) {
+    console.error("[db] listDecks", e?.message);
+    return { ok: false };
+  }
+}
+
 export async function getContentStrict<T = unknown>(key: string): Promise<{ ok: true; data: T | null; updatedAt: string | null } | { ok: false; error: string }> {
   const p = pool();
   if (!p) return { ok: true, data: null, updatedAt: null };
@@ -184,7 +203,7 @@ export async function getContentStrict<T = unknown>(key: string): Promise<{ ok: 
  * Версійований запис: якщо передано expectedUpdatedAt і в базі новіша версія — конфлікт, нічого не пишемо.
  * Попередня версія завжди зберігається в content_history (для відкату).
  */
-export async function setContentVersioned(key: string, data: unknown, expectedUpdatedAt: string | null | undefined): Promise<{ ok: true; updatedAt: string } | { ok: false; conflict?: boolean; currentUpdatedAt?: string | null; error?: string }> {
+export async function setContentVersioned(key: string, data: unknown, expectedUpdatedAt: string | null | undefined, opts: { auto?: boolean } = {}): Promise<{ ok: true; updatedAt: string } | { ok: false; conflict?: boolean; currentUpdatedAt?: string | null; error?: string }> {
   const p = pool();
   if (!p) return { ok: false, error: "no_db" };
   let c: import("pg").PoolClient | null = null;
@@ -200,7 +219,11 @@ export async function setContentVersioned(key: string, data: unknown, expectedUp
       await c.query("ROLLBACK");
       return { ok: false, conflict: true, currentUpdatedAt: curAt };
     }
-    if (cur.rows[0]) await c.query(`INSERT INTO content_history (key, data) VALUES ($1, $2)`, [key, JSON.stringify(cur.rows[0].data)]);
+    if (cur.rows[0]) {
+      // автозбереження раз на 1,5 с: не плодити знімки — лишаємо не частіше одного на 5 хв; ручні збереження — завжди
+      const skip = opts.auto && (await c.query(`SELECT 1 FROM content_history WHERE key = $1 AND saved_at > now() - interval '5 minutes' LIMIT 1`, [key])).rowCount;
+      if (!skip) await c.query(`INSERT INTO content_history (key, data) VALUES ($1, $2)`, [key, JSON.stringify(cur.rows[0].data)]);
+    }
     const up = await c.query(
       `INSERT INTO content (key, data, updated_at) VALUES ($1, $2, now())
        ON CONFLICT (key) DO UPDATE SET data = EXCLUDED.data, updated_at = now() RETURNING updated_at`,
