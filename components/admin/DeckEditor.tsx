@@ -65,7 +65,7 @@ const UI_CSS = `
   @media print{ #deck-ui{ background:#fff; padding:0; } #deck-ui .bar, #deck-ui .ctl, #deck-ui .pick-bg, #deck-ui .present{ display:none !important; } #deck-ui .pages{ padding:0; } }
 `;
 
-export function DeckEditor({ initial, dbReady, only, bare, loadedAt, fromDb, presentOnLoad }: { initial: Deck; dbReady: boolean; only?: number; bare?: boolean; loadedAt?: string | null; fromDb?: boolean; presentOnLoad?: boolean }) {
+export function DeckEditor({ initial, dbReady, only, bare, loadedAt, fromDb, presentOnLoad, pdfOnLoad }: { initial: Deck; dbReady: boolean; only?: number; bare?: boolean; loadedAt?: string | null; fromDb?: boolean; presentOnLoad?: boolean; pdfOnLoad?: boolean }) {
   const [deck, setDeck] = useState<Deck>(initial);
   const [status, setStatus] = useState<Status | "conflict">("idle");
   const [baseAt, setBaseAt] = useState<string | null>(loadedAt ?? null);
@@ -252,6 +252,23 @@ export function DeckEditor({ initial, dbReady, only, bare, loadedAt, fromDb, pre
   }, [deck, autosave, status]);
   // показ одразу з URL (?present=1)
   useEffect(() => { if (presentOnLoad && !bare) { setPresent(0); setTick((t) => t + 1); } }, [presentOnLoad, bare]);
+  // PDF: діалог друку з назвою деки як імʼям файлу (заголовок вкладки повертаємо після друку)
+  const printPdf = useCallback(() => {
+    const prev = document.title;
+    document.title = deck.name || prev;
+    const restore = () => { document.title = prev; window.removeEventListener("afterprint", restore); };
+    window.addEventListener("afterprint", restore);
+    window.print();
+  }, [deck.name]);
+  // PDF одразу з URL (?pdf=1, кнопка на картці в розділі «Презентації»): чекаємо шрифти й автопідбір кегля
+  useEffect(() => {
+    if (!pdfOnLoad || bare) return;
+    let cancelled = false;
+    const ready = (document as any).fonts?.ready ?? Promise.resolve();
+    ready.then(() => new Promise((r) => setTimeout(r, 900))).then(() => { if (!cancelled) printPdf(); });
+    return () => { cancelled = true; };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pdfOnLoad, bare]);
 
   const stText: Record<Status | "conflict", string> = {
     idle: "без змін",
@@ -292,7 +309,7 @@ export function DeckEditor({ initial, dbReady, only, bare, loadedAt, fromDb, pre
         <span className="st" title="Множник кегля деки">×{(deck.fs ?? 1).toFixed(2)}</span>
         <button className="btn" onClick={() => bumpDeckFs(1)} title="Кегль усієї деки більше">A+</button>
         <button className="btn" onClick={() => startPresent(0)} title="Повноекранний показ: Space / → далі, ← назад, Esc вихід">▶ Показ</button>
-        <button className="btn" onClick={() => window.print()}>Завантажити PDF</button>
+        <button className="btn" onClick={printPdf}>Завантажити PDF</button>
         <button className="btn pri" onClick={() => save()} disabled={saving}>Зберегти</button>
         <Link href="/admin/decks" className="btn" onClick={(e) => { if (status !== "idle" && status !== "saved" && !confirm("Є незбережені правки. Вийти без збереження?")) e.preventDefault(); }}>← Презентації</Link>
         <p className="hint">

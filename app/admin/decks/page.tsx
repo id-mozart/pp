@@ -13,44 +13,144 @@ export const metadata: Metadata = {
 export const dynamic = "force-dynamic";
 
 const CSS = `
+  /* ховаємо маркетинговий хром сайту й темний відступ під фіксованим хедером */
   body:has(#decks) header, body:has(#decks) footer, body:has(#decks) main ~ div,
-  body:has(#decks) [class*="fixed"], body:has(#decks) [class*="cookie"]{ display:none !important; }
-  body:has(#decks){ background:#E9E2D5 !important; }
-  #decks{ min-height:100vh; background:#E9E2D5; padding:28px 24px 60px; font-family:var(--font-inter),system-ui,sans-serif; color:#2A2018; }
-  #decks .thumb{ position:relative; width:100%; aspect-ratio:297/210; overflow:hidden; border-radius:10px; background:#FCF8F1; box-shadow:0 6px 20px rgba(60,40,15,.14); }
+  body:has(#decks) [data-cta-band], body:has(#decks) [class*="fixed"], body:has(#decks) [class*="cookie"]{ display:none !important; }
+  html:has(#decks){ background:#0B0A09 !important; }
+  body:has(#decks){ background:#0B0A09 !important; color-scheme:dark; }
+  body:has(#decks) #main{ padding-top:0 !important; margin-top:0 !important; }
+
+  #decks{
+    --d-bg:#0B0A09; --d-card:#141211; --d-card-hi:#1A1715; --d-line:rgba(154,130,90,.22);
+    --d-ink:#F2ECE2; --d-muted:#AFA493; --d-faint:#7B7264; --d-gold:#E2A638; --d-amber:#C4621F; --d-danger:#E08272;
+    min-height:100vh; background:
+      radial-gradient(1100px 420px at 50% -260px, rgba(196,98,31,.16), transparent 70%),
+      var(--d-bg);
+    padding:34px 28px 64px; font-family:var(--font-inter),system-ui,sans-serif; color:var(--d-ink);
+    -webkit-font-smoothing:antialiased;
+  }
+  #decks *{ box-sizing:border-box; }
+  #decks :focus-visible{ outline:2px solid var(--d-gold); outline-offset:2px; border-radius:8px; }
+
+  /* ── шапка ───────────────────────────────────────────── */
+  #decks .head{ max-width:1180px; margin:0 auto 24px; display:flex; align-items:center; justify-content:space-between; gap:16px 20px; flex-wrap:wrap; }
+  #decks .head .ttl{ display:flex; align-items:baseline; gap:12px; min-width:0; }
+  #decks h1{ font-family:var(--font-spectral),serif; font-weight:500; font-size:30px; line-height:1.1; margin:0; letter-spacing:.01em; }
+  #decks .count{ font-family:var(--font-jetbrains),monospace; font-size:11px; color:var(--d-muted);
+    border:1px solid var(--d-line); border-radius:999px; padding:3px 9px; background:rgba(255,255,255,.02); }
+  #decks .acts{ display:flex; gap:10px; align-items:center; }
+
+  /* ── кнопки ──────────────────────────────────────────── */
+  #decks .btn{ display:inline-flex; align-items:center; justify-content:center; gap:6px; white-space:nowrap;
+    border:1px solid var(--d-line); border-radius:10px; padding:8px 13px; font-size:13px; line-height:1.15;
+    color:var(--d-ink); text-decoration:none; background:rgba(255,255,255,.03); font-family:inherit; cursor:pointer;
+    transition:border-color .15s, color .15s, background .15s, transform .15s; }
+  #decks .btn:hover{ border-color:rgba(226,166,56,.5); color:var(--d-gold); background:rgba(226,166,56,.07); }
+  #decks .btn.pri{ background:linear-gradient(96deg,#E8AC3C,#CE651E); color:#231708; border-color:transparent; font-weight:600; }
+  #decks .btn.pri:hover{ color:#231708; filter:brightness(1.06); background:linear-gradient(96deg,#E8AC3C,#CE651E); }
+  #decks .btn.sm{ padding:7px 11px; font-size:12.5px; }
+  #decks .btn.ghost{ background:transparent; color:var(--d-muted); }
+  #decks .btn.danger{ color:var(--d-danger); }
+  #decks .btn.danger:hover{ border-color:rgba(224,130,114,.55); color:var(--d-danger); background:rgba(224,130,114,.1); }
+  #decks button.btn:disabled{ opacity:.5; cursor:default; }
+  #decks .btn.back{ color:var(--d-muted); background:transparent; }
+
+  /* ── сітка й картка ──────────────────────────────────── */
+  #decks .grid{ max-width:1180px; margin:0 auto; display:grid; grid-template-columns:repeat(auto-fill,minmax(304px,1fr)); gap:18px; align-items:stretch; }
+  #decks .card{ position:relative; display:flex; flex-direction:column; background:var(--d-card);
+    border:1px solid var(--d-line); border-radius:16px;
+    box-shadow:0 18px 40px -28px rgba(0,0,0,.9), inset 0 1px 0 rgba(255,255,255,.03);
+    transition:border-color .18s, box-shadow .18s, background .18s; }
+  /* без transform на :hover — інакше картка стає контейнером для position:fixed діалогів */
+  #decks .card:hover{ border-color:rgba(226,166,56,.34); background:var(--d-card-hi);
+    box-shadow:0 26px 52px -26px rgba(0,0,0,1), inset 0 1px 0 rgba(255,255,255,.05); }
+
+  /* мініатюра — герой картки, на всю ширину зверху */
+  #decks .thumbwrap{ position:relative; display:block; border-radius:15px 15px 0 0; overflow:hidden; background:#0E0C0B; }
+  #decks .thumbwrap::after{ content:""; position:absolute; inset:0; pointer-events:none; border-radius:inherit;
+    box-shadow:inset 0 0 0 1px rgba(0,0,0,.35), inset 0 -1px 0 rgba(226,166,56,.18); }
+  #decks .thumb{ position:relative; width:100%; aspect-ratio:297/210; overflow:hidden; background:#FCF8F1; }
   #decks .thumb .scale{ position:absolute; left:0; top:0; width:297mm; height:210mm; transform-origin:0 0; pointer-events:none; }
   #decks .thumb #deck-a4{ gap:0; }
   #decks .thumb .sheet{ box-shadow:none !important; }
-  #decks .grid{ grid-template-columns:repeat(auto-fill,minmax(340px,1fr)); }
-  #decks .head{ max-width:1100px; margin:0 auto 18px; display:flex; align-items:baseline; justify-content:space-between; gap:16px; }
-  #decks h1{ font-family:var(--font-spectral),serif; font-weight:500; font-size:30px; margin:0; }
-  #decks h1 em{ color:#C4621F; font-style:italic; }
-  #decks .back{ font-size:13px; color:#5E4C36; text-decoration:none; border:1px solid rgba(140,116,82,.45); border-radius:10px; padding:8px 14px; }
-  #decks .grid{ max-width:1100px; margin:0 auto; display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:16px; }
-  #decks .card{ background:#FCF8F1; border-radius:16px; padding:20px 22px 18px; box-shadow:0 10px 30px rgba(60,40,15,.12); display:flex; flex-direction:column; gap:10px; }
-  #decks .card .nm{ font-family:var(--font-spectral),serif; font-size:21px; line-height:1.2; }
-  #decks .card .meta{ font-family:var(--font-jetbrains),monospace; font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:#9C8B73; }
-  #decks .card .meta b{ color:#C4621F; font-weight:500; }
-  #decks .card .row{ display:flex; flex-wrap:wrap; gap:8px; margin-top:6px; }
-  #decks .btn{ border:1px solid rgba(140,116,82,.45); border-radius:10px; padding:8px 13px; font-size:13px; color:#2A2018; text-decoration:none; background:#fff; }
-  #decks .btn:hover{ border-color:#C4621F; color:#C4621F; }
-  #decks .btn.pri{ background:linear-gradient(96deg,#E8AC3C,#CE651E); color:#241A10; border-color:transparent; font-weight:600; }
-  #decks .note{ max-width:1100px; margin:18px auto 0; font-size:13px; color:#7A6A54; line-height:1.5; }
-  #decks .head .acts{ display:flex; gap:10px; align-items:center; }
-  #decks button.btn{ cursor:pointer; font-family:inherit; }
-  #decks button.btn:disabled{ opacity:.55; cursor:default; }
-  #decks .btn.danger:hover{ border-color:#B33A2B; color:#B33A2B; }
-  #decks .modal{ position:fixed; inset:0; background:rgba(40,28,14,.45); display:flex; align-items:center; justify-content:center; padding:20px; z-index:50; }
-  #decks .dlg{ background:#FCF8F1; border-radius:16px; padding:24px 26px; width:min(460px,100%); box-shadow:0 20px 60px rgba(40,28,14,.3); display:flex; flex-direction:column; gap:14px; }
-  #decks .dlg h2{ font-family:var(--font-spectral),serif; font-weight:500; font-size:22px; margin:0; }
-  #decks .dlg label{ display:flex; flex-direction:column; gap:6px; font-size:12px; letter-spacing:.08em; text-transform:uppercase; color:#9C8B73; }
-  #decks .dlg input, #decks .dlg select{ font:15px/1.3 var(--font-inter),system-ui,sans-serif; padding:10px 12px; border:1px solid rgba(140,116,82,.45); border-radius:10px; background:#fff; color:#2A2018; }
-  #decks .dlg .err{ margin:0; font-size:13px; color:#B33A2B; }
-  #decks .dlg .row{ margin-top:4px; }
+  #decks .thumb.ph{ display:flex; align-items:center; justify-content:center; background:#17140F;
+    font-family:var(--font-jetbrains),monospace; font-size:11px; color:var(--d-faint); }
+
+  /* тіло картки */
+  #decks .body{ flex:1; display:flex; flex-direction:column; gap:8px; padding:14px 16px 4px; min-width:0; }
+  #decks .nm{ font-family:var(--font-spectral),serif; font-size:19px; line-height:1.28; color:var(--d-ink); margin:0;
+    display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; min-height:2.56em; }
+  #decks .slug{ font-family:var(--font-jetbrains),monospace; font-size:10.5px; color:var(--d-faint);
+    white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  #decks .meta{ display:flex; flex-wrap:wrap; align-items:center; gap:6px 8px; font-size:12.5px; color:var(--d-muted); }
+  #decks .pill{ font-family:var(--font-jetbrains),monospace; font-size:11px; color:var(--d-gold);
+    border:1px solid rgba(226,166,56,.3); background:rgba(226,166,56,.08); border-radius:999px; padding:2px 8px; white-space:nowrap; }
+  #decks .badge{ font-size:11px; color:var(--d-muted); border:1px solid var(--d-line); background:rgba(255,255,255,.03);
+    border-radius:999px; padding:2px 8px; white-space:nowrap; }
+  #decks .when{ white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+
+  /* дії */
+  #decks .row{ display:flex; align-items:center; gap:7px; padding:12px 16px 14px; margin-top:auto;
+    border-top:1px solid rgba(154,130,90,.14); }
+  #decks .row .more{ margin-left:auto; }
+
+  /* меню «⋯» */
+  #decks .menuwrap{ position:relative; }
+  #decks .iconbtn{ width:32px; height:32px; padding:0; font-size:15px; line-height:1; }
+  #decks .menu{ position:absolute; right:0; bottom:calc(100% + 8px); z-index:30; min-width:190px; padding:6px;
+    background:#1C1917; border:1px solid rgba(154,130,90,.3); border-radius:12px;
+    box-shadow:0 22px 50px -18px rgba(0,0,0,.95); display:flex; flex-direction:column; gap:2px; }
+  #decks .menu button{ display:flex; align-items:center; gap:9px; width:100%; text-align:left; background:none; border:0;
+    border-radius:8px; padding:8px 10px; font:13px/1.2 var(--font-inter),system-ui,sans-serif; color:var(--d-ink); cursor:pointer; }
+  #decks .menu button:hover{ background:rgba(226,166,56,.1); color:var(--d-gold); }
+  #decks .menu button:disabled{ opacity:.5; cursor:default; }
+  #decks .menu button.danger{ color:var(--d-danger); }
+  #decks .menu button.danger:hover{ background:rgba(224,130,114,.12); color:var(--d-danger); }
+  #decks .menu .ic{ width:14px; text-align:center; opacity:.8; font-size:12px; }
+  #decks .menu .sep{ height:1px; margin:4px 2px; background:rgba(154,130,90,.2); }
+
+  /* ── модальні вікна ──────────────────────────────────── */
+  #decks .modal{ position:fixed; inset:0; z-index:60; display:flex; align-items:center; justify-content:center; padding:20px;
+    background:rgba(8,6,5,.66); backdrop-filter:blur(3px); }
+  #decks .dlg{ width:min(460px,100%); display:flex; flex-direction:column; gap:14px; padding:24px 26px;
+    background:#17140F; border:1px solid rgba(154,130,90,.3); border-radius:18px; box-shadow:0 40px 80px -30px rgba(0,0,0,1); }
+  #decks .dlg h2{ font-family:var(--font-spectral),serif; font-weight:500; font-size:22px; line-height:1.2; margin:0; color:var(--d-ink); }
+  #decks .dlg p.hint{ margin:0; font-size:13px; line-height:1.5; color:var(--d-muted); }
+  #decks .dlg p.hint code{ font-family:var(--font-jetbrains),monospace; font-size:12px; color:var(--d-gold); }
+  #decks .dlg label{ display:flex; flex-direction:column; gap:7px; font-family:var(--font-jetbrains),monospace;
+    font-size:10.5px; letter-spacing:.1em; text-transform:uppercase; color:var(--d-faint); }
+  #decks .dlg input, #decks .dlg select{ font:15px/1.3 var(--font-inter),system-ui,sans-serif; padding:10px 12px;
+    border:1px solid rgba(154,130,90,.3); border-radius:10px; background:#0F0D0B; color:var(--d-ink); }
+  #decks .dlg input::placeholder{ color:#6A6155; }
+  #decks .dlg input:focus, #decks .dlg select:focus{ outline:none; border-color:rgba(226,166,56,.6); box-shadow:0 0 0 3px rgba(226,166,56,.14); }
+  #decks .dlg .err{ margin:0; font-size:13px; color:var(--d-danger); }
+  #decks .dlg .row{ display:flex; gap:9px; padding:0; margin:2px 0 0; border:0; }
+
+  #decks .note{ max-width:1180px; margin:26px auto 0; font-size:12.5px; line-height:1.6; color:var(--d-faint); }
+  #decks .empty{ max-width:1180px; margin:0 auto; padding:40px 22px; text-align:center; color:var(--d-muted);
+    border:1px dashed var(--d-line); border-radius:16px; font-size:14px; }
+
+  @media (max-width:560px){
+    #decks{ padding:22px 16px 48px; }
+    #decks h1{ font-size:25px; }
+    #decks .grid{ grid-template-columns:1fr; gap:16px; }
+    #decks .nm{ min-height:0; }
+    #decks .head{ align-items:flex-start; }
+    #decks .head .acts{ width:100%; }
+    #decks .head .acts .btn.pri{ flex:1; }
+  }
 `;
 
+/** «16 вер., 07:06» — без великих літер і без розрідження. */
 function fmt(iso: string) {
-  try { return new Intl.DateTimeFormat("uk-UA", { dateStyle: "medium", timeStyle: "short", timeZone: "Europe/Kyiv" }).format(new Date(iso)); } catch { return iso; }
+  try {
+    const d = new Date(iso);
+    const day = new Intl.DateTimeFormat("uk-UA", { day: "numeric", month: "short", timeZone: "Europe/Kyiv" }).format(d);
+    const time = new Intl.DateTimeFormat("uk-UA", { hour: "2-digit", minute: "2-digit", hour12: false, timeZone: "Europe/Kyiv" }).format(d);
+    const year = new Intl.DateTimeFormat("uk-UA", { year: "numeric", timeZone: "Europe/Kyiv" }).format(d);
+    const now = new Intl.DateTimeFormat("uk-UA", { year: "numeric", timeZone: "Europe/Kyiv" }).format(new Date());
+    return `${day}${year === now ? "" : ` ${year}`}, ${time}`;
+  } catch { return iso; }
 }
 
 export default async function DecksPage() {
@@ -58,8 +158,11 @@ export default async function DecksPage() {
   if (!res.ok) {
     return (
       <div id="decks"><style dangerouslySetInnerHTML={{ __html: CSS }} />
-        <div className="head"><h1>Презентації</h1><Link href="/admin" className="back">← Панель</Link></div>
-        <p className="note">База даних тимчасово недоступна — список не показуємо, щоб не ввести в оману. Оновіть сторінку через хвилину.</p>
+        <div className="head">
+          <div className="ttl"><h1>Презентації</h1></div>
+          <div className="acts"><Link href="/admin" className="btn back">← Панель</Link></div>
+        </div>
+        <p className="empty">База даних тимчасово недоступна — список не показуємо, щоб не ввести в оману. Оновіть сторінку через хвилину.</p>
       </div>
     );
   }
@@ -84,30 +187,42 @@ export default async function DecksPage() {
     <div id="decks">
       <style dangerouslySetInnerHTML={{ __html: CSS }} />
       <div className="head">
-        <h1>Презентації <em>· {items.length}</em></h1>
+        <div className="ttl">
+          <h1>Презентації</h1>
+          <span className="count">{items.length}</span>
+        </div>
         <div className="acts">
           <NewDeckButton items={items.map((d) => ({ slug: d.slug, name: d.name }))} />
-          <Link href="/admin" className="back">← Панель</Link>
+          <Link href="/admin" className="btn back">← Панель</Link>
         </div>
       </div>
       <div className="grid">
-        {items.map((d) => (
-          <div className="card" key={d.slug}>
-            {(full.get(d.slug) ?? (!d.saved ? DECK_DEFAULTS[d.slug] : undefined)) ? <DeckThumb deck={(full.get(d.slug) ?? DECK_DEFAULTS[d.slug])!} /> : null}
-            <div className="nm">{d.name}</div>
-            <div className="meta">
-              <b>{d.pages} стор.</b> · A4 · {d.saved ? `оновлено ${fmt(d.updatedAt)}` : "ще не збережено (стандартна)"}
-            </div>
-            <div className="meta">/admin/deck/{d.slug}</div>
-            <div className="row">
-              <Link href={`/admin/deck/${d.slug}`} className="btn pri">Відкрити редактор</Link>
-              <Link href={`/admin/deck/${d.slug}?present=1`} className="btn">▶ Показ</Link>
-              <DeckCardActions slug={d.slug} name={d.name} deletable={!DECK_DEFAULTS[d.slug]} />
-            </div>
-          </div>
-        ))}
+        {items.map((d) => {
+          const deck = full.get(d.slug) ?? (!d.saved ? DECK_DEFAULTS[d.slug] : undefined);
+          return (
+            <article className="card" key={d.slug}>
+              <Link href={`/admin/deck/${d.slug}`} className="thumbwrap" aria-label={`Відкрити «${d.name}»`} title={`/admin/deck/${d.slug}`}>
+                {deck ? <DeckThumb deck={deck} /> : <div className="thumb ph">без мініатюри</div>}
+              </Link>
+              <div className="body">
+                <h2 className="nm" title={d.name}>{d.name}</h2>
+                <div className="meta">
+                  <span className="pill">{d.pages} стор.</span>
+                  {d.saved ? <span className="when">оновлено {fmt(d.updatedAt)}</span> : <span className="badge">стандартна</span>}
+                </div>
+                <div className="slug" title={`/admin/deck/${d.slug}`}>/{d.slug}</div>
+              </div>
+              <div className="row">
+                <Link href={`/admin/deck/${d.slug}`} className="btn pri sm">Відкрити</Link>
+                <Link href={`/admin/deck/${d.slug}?present=1`} className="btn sm" title="Режим показу">Показ</Link>
+                <a href={`/admin/deck/${d.slug}?pdf=1`} target="_blank" rel="noopener" className="btn sm" title="Завантажити PDF">PDF</a>
+                <DeckCardActions slug={d.slug} name={d.name} deletable={!DECK_DEFAULTS[d.slug]} />
+              </div>
+            </article>
+          );
+        })}
       </div>
-      <p className="note">«Нова презентація» створює порожню деку або копію будь-якої існуючої під новою адресою; «Копіювати» — те саме з картки. Стандартні презентації (з шаблоном у коді) не видаляються. PDF завантажується з редактора кнопкою «Завантажити PDF». Кожне збереження зберігає попередню версію в історії, тому будь-який стан можна відновити.</p>
+      <p className="note">Кожне збереження лишає попередню версію в історії; стандартні деки (з шаблоном у коді) не видаляються.</p>
     </div>
   );
 }

@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 type Item = { slug: string; name: string };
 
@@ -27,6 +27,16 @@ const ERR: Record<string, string> = {
 };
 const msg = (e?: string) => ERR[e || ""] || `Не вдалося (${e || "помилка"}).`;
 
+/** Esc закриває вікно (поки не триває запит). */
+function useEsc(active: boolean, onClose: () => void) {
+  useEffect(() => {
+    if (!active) return;
+    const h = (e: KeyboardEvent) => { if (e.key === "Escape") onClose(); };
+    document.addEventListener("keydown", h);
+    return () => document.removeEventListener("keydown", h);
+  }, [active, onClose]);
+}
+
 /** Кнопка «Нова презентація» з формою: назва + джерело (порожня або копія існуючої). */
 export function NewDeckButton({ items }: { items: Item[] }) {
   const router = useRouter();
@@ -35,6 +45,7 @@ export function NewDeckButton({ items }: { items: Item[] }) {
   const [from, setFrom] = useState("");
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState("");
+  useEsc(open, () => { if (!busy) setOpen(false); });
   async function submit(e: React.FormEvent) {
     e.preventDefault();
     if (busy) return;
@@ -73,43 +84,129 @@ export function NewDeckButton({ items }: { items: Item[] }) {
   );
 }
 
+type Dlg = "" | "copy" | "rename" | "delete";
+
 /** Дії на картці: копіювати, перейменувати, видалити (лише для дек без шаблону в коді). */
 export function DeckCardActions({ slug, name, deletable }: { slug: string; name: string; deletable: boolean }) {
   const router = useRouter();
+  const [menu, setMenu] = useState(false);
+  const [dlg, setDlg] = useState<Dlg>("");
+  const [val, setVal] = useState("");
   const [busy, setBusy] = useState<"" | "copy" | "rename" | "delete">("");
+  const [err, setErr] = useState("");
+  const wrap = useRef<HTMLDivElement>(null);
+
+  useEsc(menu, () => setMenu(false));
+  useEsc(!!dlg, () => { if (!busy) setDlg(""); });
+  useEffect(() => {
+    if (!menu) return;
+    const h = (e: MouseEvent) => { if (wrap.current && !wrap.current.contains(e.target as Node)) setMenu(false); };
+    document.addEventListener("mousedown", h);
+    return () => document.removeEventListener("mousedown", h);
+  }, [menu]);
+
+  function openDlg(kind: Exclude<Dlg, "">) {
+    setMenu(false); setErr("");
+    setVal(kind === "copy" ? `${name} · копія` : kind === "rename" ? name : "");
+    setDlg(kind);
+  }
+
   async function copy() {
-    const n = window.prompt("Назва копії:", `${name} · копія`);
-    if (n === null) return;
-    setBusy("copy");
+    const n = val;
+    setBusy("copy"); setErr("");
     const r = await call({ action: "copy", from: slug, name: n.trim() || `${name} · копія` });
     setBusy("");
-    if (!r.ok || !r.slug) { window.alert(msg(r.error)); return; }
+    if (!r.ok || !r.slug) { setErr(msg(r.error)); return; }
+    setDlg("");
     router.push(`/admin/deck/${r.slug}`);
   }
   async function rename() {
-    const n = window.prompt("Нова назва:", name);
-    if (n === null || !n.trim() || n.trim() === name) return;
-    setBusy("rename");
+    const n = val;
+    if (!n.trim() || n.trim() === name) { setDlg(""); return; }
+    setBusy("rename"); setErr("");
     const r = await call({ action: "rename", slug, name: n.trim() });
     setBusy("");
-    if (!r.ok) { window.alert(msg(r.error)); return; }
+    if (!r.ok) { setErr(msg(r.error)); return; }
+    setDlg("");
     router.refresh();
   }
   async function del() {
-    const c = window.prompt(`Видалити презентацію «${name}»?\nПопередня версія залишиться в історії збережень.\n\nДля підтвердження введіть її адресу: ${slug}`, "");
-    if (c === null) return;
-    if (c.trim() !== slug) { window.alert("Підтвердження не збіглося — нічого не видалено."); return; }
-    setBusy("delete");
+    const c = val;
+    if (c.trim() !== slug) { setErr("Підтвердження не збіглося — нічого не видалено."); return; }
+    setBusy("delete"); setErr("");
     const r = await call({ action: "delete", slug, confirm: c.trim() });
     setBusy("");
-    if (!r.ok) { window.alert(msg(r.error)); return; }
+    if (!r.ok) { setErr(msg(r.error)); return; }
+    setDlg("");
     router.refresh();
   }
+  function submit(e: React.FormEvent) {
+    e.preventDefault();
+    if (busy) return;
+    if (dlg === "copy") void copy();
+    else if (dlg === "rename") void rename();
+    else if (dlg === "delete") void del();
+  }
+
+  const titles: Record<Exclude<Dlg, "">, string> = {
+    copy: "Копія презентації",
+    rename: "Перейменувати презентацію",
+    delete: "Видалити презентацію",
+  };
+
   return (
-    <>
-      <button type="button" className="btn" onClick={copy} disabled={!!busy}>{busy === "copy" ? "Копіюємо…" : "⧉ Копіювати"}</button>
-      <button type="button" className="btn" onClick={rename} disabled={!!busy}>{busy === "rename" ? "…" : "✎ Назва"}</button>
-      {deletable && <button type="button" className="btn danger" onClick={del} disabled={!!busy}>{busy === "delete" ? "…" : "✕ Видалити"}</button>}
-    </>
+    <div className="menuwrap more" ref={wrap}>
+      <button
+        type="button"
+        className="btn sm iconbtn"
+        aria-haspopup="menu"
+        aria-expanded={menu}
+        aria-label="Інші дії"
+        title="Інші дії"
+        disabled={!!busy}
+        onClick={() => setMenu((v) => !v)}
+      >
+        {busy ? "…" : "⋯"}
+      </button>
+      {menu && (
+        <div className="menu" role="menu">
+          <button type="button" role="menuitem" onClick={() => openDlg("copy")}><span className="ic">⧉</span>Копіювати</button>
+          <button type="button" role="menuitem" onClick={() => openDlg("rename")}><span className="ic">✎</span>Перейменувати</button>
+          {deletable && <>
+            <div className="sep" />
+            <button type="button" role="menuitem" className="danger" onClick={() => openDlg("delete")}><span className="ic">✕</span>Видалити</button>
+          </>}
+        </div>
+      )}
+      {dlg && (
+        <div className="modal" role="dialog" aria-modal="true" aria-label={titles[dlg]} onClick={(e) => { if (e.target === e.currentTarget && !busy) setDlg(""); }}>
+          <form className="dlg" onSubmit={submit}>
+            <h2>{titles[dlg]}</h2>
+            {dlg === "delete" ? (
+              <>
+                <p className="hint">
+                  Презентацію «{name}» буде прибрано зі списку. Попередня версія залишиться в історії збережень.
+                  Для підтвердження введіть її адресу: <code>{slug}</code>
+                </p>
+                <label>Адреса презентації
+                  <input autoFocus value={val} onChange={(e) => { setVal(e.target.value); setErr(""); }} placeholder={slug} spellCheck={false} />
+                </label>
+              </>
+            ) : (
+              <label>{dlg === "copy" ? "Назва копії" : "Нова назва"}
+                <input autoFocus value={val} onChange={(e) => { setVal(e.target.value); setErr(""); }} maxLength={200} />
+              </label>
+            )}
+            {err && <p className="err" role="alert">{err}</p>}
+            <div className="row">
+              <button type="submit" className={dlg === "delete" ? "btn danger" : "btn pri"} disabled={!!busy || (dlg === "delete" && val.trim() !== slug)}>
+                {busy ? "Виконуємо…" : dlg === "copy" ? "Створити копію" : dlg === "rename" ? "Зберегти назву" : "Видалити"}
+              </button>
+              <button type="button" className="btn" onClick={() => setDlg("")} disabled={!!busy}>Скасувати</button>
+            </div>
+          </form>
+        </div>
+      )}
+    </div>
   );
 }
