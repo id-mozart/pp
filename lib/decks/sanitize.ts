@@ -53,7 +53,7 @@ function sanitizePageInner(p: any): DeckPage | null {
   const id = s(p.id, 32) || Math.random().toString(36).slice(2, 10);
   switch (p.type) {
     case "cover":
-      return { id, type: "cover", eyebrow: s(p.eyebrow, 200), title: s(p.title, 300), titleEm: s(p.titleEm, 300), sub: s(p.sub, 500), who: s(p.who, 300), when: s(p.when, 200), image: img(p.image) || undefined, variant: p.variant === "amp" ? "amp" : undefined };
+      return { id, type: "cover", eyebrow: s(p.eyebrow, 200), title: s(p.title, 300), titleEm: s(p.titleEm, 300), sub: s(p.sub, 500), who: s(p.who, 300), when: s(p.when, 200), image: img(p.image) || undefined, variant: p.variant === "amp" ? "amp" : undefined, avatar: img(p.avatar) || undefined };
     case "about":
       return { id, type: "about", title: s(p.title, 200), titleEm: s(p.titleEm, 200), role: s(p.role, 500) || undefined, quote: s(p.quote, 800) || undefined, stats: arr(p.stats, 6).map((c: any) => ({ n: s(c?.n, 40), t: s(c?.t, 300) })), facts: strs(p.facts, 8), note: s(p.note, 800), image: img(p.image) || "/deck/novapay/tania-profile.jpg", logos: img(p.logos) };
     case "section":

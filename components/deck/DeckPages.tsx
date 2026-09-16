@@ -138,7 +138,20 @@ const DECK_CSS_BASE = `
   #deck-a4 .t-cover .cv-r:not(:has(.np-big)) .ill{ max-height:none; height:100%; object-fit:cover; object-position:50% 20%; margin-top:0; border-radius:4mm; filter:none; box-shadow:0 12px 28px rgba(60,40,15,.16); }
   /* титул без фото: величезний амперсанд з логотипа праворуч, як фоновий елемент */
   #deck-a4 .t-cover .cv-r.amp{ position:static; }
-  #deck-a4 .t-cover .cv-r .bigamp{ position:absolute; right:2mm; bottom:14mm; font-family:var(--font-playfair),Georgia,serif; font-weight:500; font-size:400pt; line-height:.8; color:var(--amber); opacity:.15; pointer-events:none; user-select:none; letter-spacing:0; }
+  #deck-a4 .t-cover .cv-r .bigamp{ position:absolute; right:-14mm; bottom:-2mm; font-family:var(--font-playfair),Georgia,serif; font-weight:500; font-size:560pt; line-height:.8; color:var(--amber); opacity:.14; pointer-events:none; user-select:none; letter-spacing:0; }
+  /* композиція титулу з амперсандом: широка колонка заголовка, більший логотип, аватар тренера */
+  #deck-a4 .t-cover .cv.amp{ grid-template-columns:1fr 34mm; gap:8mm; }
+  #deck-a4 .t-cover .cv.amp .cv-l{ padding-top:14mm; }
+  #deck-a4 .t-cover .cv.amp h1{ font-size:62pt; line-height:.96; max-width:215mm; }
+  #deck-a4 .t-cover .cv.amp h1 em{ font-size:36pt; margin-top:6mm; }
+  #deck-a4 .t-cover .cv.amp .eyebrow{ font-size:9.5pt; }
+  #deck-a4 .t-cover .cv.amp .sub, #deck-a4 .t-cover .cv.amp .who{ max-width:200mm; }
+  #deck-a4 .t-cover:has(.cv.amp) .rh .wm{ font-size:18.5pt; }
+  #deck-a4 .t-cover .who.av{ display:flex; align-items:center; gap:5.5mm; }
+  #deck-a4 .t-cover .who .avatar{ position:relative; flex:none; width:19mm; height:19mm; border-radius:50%; overflow:hidden; box-shadow:0 0 0 1.6pt var(--amber), 0 0 0 4pt var(--sheet); }
+  #deck-a4 .t-cover .who .avatar img{ width:100%; height:100%; object-fit:cover; object-position:50% 18%; display:block; }
+  #deck-a4 .t-cover .who.av .wt p{ margin:0; }
+  #deck-a4 .t-cover .who.av > .wt > p:first-child{ font-size:13pt; }
   #deck-a4 .t-cover .foot{ margin-top:10mm; }
   #deck-a4 .t-cover .band{ position:absolute; left:0; right:0; bottom:0; height:5mm; background:linear-gradient(90deg,var(--amber),var(--gold)); }
 
@@ -647,14 +660,17 @@ function PageBody({ p, set, editable, prev, pick, showNotes = true, logo }: { p:
     case "cover":
       return (
         <>
-          <div className="cv">
+          <div className={"cv" + (p.variant === "amp" ? " amp" : "")}>
             <div className="cv-l">
               <E tag="p" className="eyebrow" value={p.eyebrow} onChange={(v) => set({ eyebrow: v })} editable={e} ph="надзаголовок" />
               <Title p={p} set={set} editable={e} />
               <E tag="p" className="sub" value={p.sub} onChange={(v) => set({ sub: v })} editable={e} ph="" />
-              <div className="who">
-                <E tag="p" value={p.who} onChange={(v) => set({ who: v })} editable={e} ph="хто проводить" />
-                <E tag="p" className="w" value={p.when} onChange={(v) => set({ when: v })} editable={e} ph="де, коли" />
+              <div className={"who" + (p.avatar ? " av" : "")}>
+                {p.avatar ? <span className="avatar"><img src={p.avatar} alt="" /><ImgBtn pick={pick} current={p.avatar} optional onPick={(v) => set({ avatar: v || undefined })} /></span> : null}
+                <span className="wt">
+                  <E tag="p" value={p.who} onChange={(v) => set({ who: v })} editable={e} ph="хто проводить" />
+                  <E tag="p" className="w" value={p.when} onChange={(v) => set({ when: v })} editable={e} ph="де, коли" />
+                </span>
               </div>
             </div>
             <div className={"cv-r" + (p.variant === "amp" ? " amp" : "")}>

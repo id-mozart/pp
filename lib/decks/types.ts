@@ -12,7 +12,7 @@ export type DiagramKind = "pyramid" | "skills" | "circle3" | "blocks31" | "cycle
 export const DIAGRAM_KINDS: DiagramKind[] = ["pyramid", "skills", "circle3", "blocks31", "cycle", "wedge"];
 
 export type DeckPage = (
-  | { id: string; type: "cover"; eyebrow: string; title: string; titleEm: string; sub: string; who: string; when: string; image?: string; variant?: "amp" }
+  | { id: string; type: "cover"; eyebrow: string; title: string; titleEm: string; sub: string; who: string; when: string; image?: string; variant?: "amp"; avatar?: string }
   | { id: string; type: "about"; title: string; titleEm: string; role?: string; quote?: string; stats?: { n: string; t: string }[]; facts: string[]; note: string; image: string; logos: string }
   | { id: string; type: "section"; num: string; title: string; sub: string; image?: string; fit?: "right" | "top"; panel?: boolean }
   | { id: string; type: "text"; title: string; titleEm: string; lead: string; paras: string[]; callout: string; image?: string }
