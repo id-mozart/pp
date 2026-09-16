@@ -1,6 +1,7 @@
 "use client";
 
 import { useLayoutEffect, useRef, useState } from "react";
+import { DIAGRAM_CSS, Diagram } from "@/components/deck/Diagrams";
 import type { Deck, DeckPage } from "@/lib/decks/types";
 
 /**
@@ -9,7 +10,7 @@ import type { Deck, DeckPage } from "@/lib/decks/types";
  * через onChange(pageIndex, patch). У друці (@media print) — чисті сторінки.
  */
 
-export const DECK_CSS = `
+const DECK_CSS_BASE = `
   #deck-a4{ --sheet:#FCF8F1; --band:#F4ECDC; --ink:#2A2018; --muted:#5E4C36; --faint:#9C8B73;
     --line:rgba(140,116,82,.36); --acc:#C4621F; --amber:#D2701C; --gold:#C98A2B; --np:#5E2AC4;
     display:flex; flex-direction:column; align-items:center; gap:22px;
@@ -375,6 +376,7 @@ export const DECK_CSS = `
     #deck-a4 .imgbtn{ display:none !important; }
   }
 `;
+const DECK_CSS = DECK_CSS_BASE + DIAGRAM_CSS;
 
 type Patch = (patch: Record<string, unknown>) => void;
 
@@ -809,6 +811,16 @@ function PageBody({ p, set, editable, prev, pick, showNotes = true, logo }: { p:
           </div>
           {notes}
         </WithImg>
+      );
+    case "diagram":
+      return (
+        <>
+          <Title p={p} set={set} editable={e} />
+          <E tag="p" className="lead" value={p.lead} onChange={(v) => set({ lead: v })} editable={e} ph="лід" />
+          <Diagram kind={p.kind} labels={p.labels} lists={p.lists} editable={e} uid={p.id} onLabels={(v) => set({ labels: v })} onLists={(v) => set({ lists: v })} />
+          {p.callout || e ? <E tag="div" className="callout" value={p.callout} onChange={(v) => set({ callout: v })} editable={e} ph="виноска (необовʼязково)" /> : null}
+          {notes}
+        </>
       );
     case "steps":
       return (

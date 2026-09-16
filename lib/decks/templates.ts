@@ -1,4 +1,5 @@
 import type { DeckPage, DeckPageType } from "./types";
+import { DIAGRAM_LABELS } from "@/components/deck/Diagrams";
 import { newId } from "./types";
 
 /**
@@ -53,6 +54,9 @@ export const PAGE_TEMPLATES: PageTemplate[] = [
     () => ({ type: "steps", title: "Заголовок", titleEm: "", lead: "", steps: [{ head: "Крок 1", text: "Опис" }, { head: "Крок 2", text: "Опис" }, { head: "Крок 3", text: "Опис" }], image: P + "u-chess.jpg" })),
   tpl("table", "Структура", "Таблиця", "Таблиця для заповнення",
     () => ({ type: "table", title: "Заголовок", titleEm: "", lead: "", head: ["#", "Колонка", "Колонка", "Колонка"], rows: [["1", "", "", ""], ["2", "", "", ""], ["3", "", "", ""], ["4", "", "", ""], ["5", "", "", ""]], callout: "" })),
+  // ── схеми ────────────────────────────────────────────────────────
+  ...(["pyramid", "skills", "circle3", "blocks31", "cycle", "wedge"] as const).map((k) =>
+    tpl("dg-" + k, "Схеми", DIAGRAM_LABELS[k].label, DIAGRAM_LABELS[k].hint, () => ({ type: "diagram", kind: k, title: "Заголовок", titleEm: "", lead: "", labels: [...DIAGRAM_LABELS[k].labels], lists: DIAGRAM_LABELS[k].lists?.map((l) => [...l]), callout: "" }))),
   // ── медіа ────────────────────────────────────────────────────────
   tpl("gallery-3", "Медіа", "Галерея · 3 фото", "Три фото з підписами",
     () => ({ type: "gallery", title: "Заголовок", titleEm: "", lead: "", images: [{ src: P + "u-gate.jpg", cap: "Підпис 1" }, { src: P + "u-clock.jpg", cap: "Підпис 2" }, { src: P + "u-hammock.jpg", cap: "Підпис 3" }] })),
@@ -91,6 +95,7 @@ function extract(p: DeckPage): Common {
     case "about": c.items = p.facts; break;
     case "table": c.items = p.rows.map((r) => r.filter(Boolean).join(" · ")).filter(Boolean); break;
     case "cover": c.lead = p.sub; break;
+    case "diagram": c.items = [...p.labels, ...(p.lists ?? []).flat()]; break;
   }
   c.items = c.items.filter((s) => s && s.trim());
   return c;
@@ -122,10 +127,11 @@ export function convertPage(p: DeckPage, t: PageTemplate): DeckPage {
     case "closing": if (items.length) n.contacts = items; break;
     case "about": if (items.length) n.facts = items; break;
     case "cover": if (items.length && !c.lead) n.sub = items[0]; break;
+    case "diagram": if (p.type !== "diagram" && items.length) n.labels = n.labels.map((l: string, i: number) => items[i] ?? l); break;
     case "section": break;
     case "table": break;
   }
   return n as DeckPage;
 }
 
-export const TEMPLATE_BY_TYPE: Record<DeckPageType, string> = { cover: "cover", about: "about", section: "section", text: "text", bullets: "bullets", twocol: "twocol", steps: "steps", table: "table", gallery: "gallery-3", closing: "closing" };
+export const TEMPLATE_BY_TYPE: Record<DeckPageType, string> = { cover: "cover", about: "about", section: "section", text: "text", bullets: "bullets", twocol: "twocol", steps: "steps", table: "table", gallery: "gallery-3", closing: "closing", diagram: "dg-cycle" };

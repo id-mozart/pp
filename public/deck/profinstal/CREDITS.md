@@ -13,3 +13,4 @@
 - u-clock.jpg — round black and white analog alarm clock — фото: insung yoon — https://unsplash.com/photos/w2JtIQQXoRU
 - u-leadership.jpg — Diverse team collaborating around a laptop in office — фото: Vitaly Gariev — https://unsplash.com/photos/yd_RKGH_RH4
 - u-hammock.jpg — green moss on brown tree trunk on river — фото: Lance Anderson — https://unsplash.com/photos/ZbRg3v1Jqr8
+- u-balance.jpg — shallow focus photo of balance stones — фото: Patrick Fore — https://unsplash.com/photos/JBghIzjbuLs

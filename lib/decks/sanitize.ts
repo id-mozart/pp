@@ -1,4 +1,4 @@
-import type { Deck, DeckPage } from "./types";
+import { DIAGRAM_KINDS, type Deck, type DeckPage } from "./types";
 import { NOVAPAY_DECK } from "./novapay";
 import { PROFINSTAL_DECK } from "./profinstal";
 
@@ -70,6 +70,8 @@ function sanitizePageInner(p: any): DeckPage | null {
       return { id, type: "table", title: s(p.title, 300), titleEm: s(p.titleEm, 300), lead: s(p.lead, 1500), head: strs(p.head, 8), rows: arr(p.rows, 30).map((r: any) => strs(r, 8)), callout: s(p.callout, 1000) };
     case "gallery":
       return { id, type: "gallery", title: s(p.title, 300), titleEm: s(p.titleEm, 300), lead: s(p.lead, 1500), images: arr(p.images, 6).map((c: any) => ({ src: img(c?.src), cap: s(c?.cap, 300) })) };
+    case "diagram":
+      return { id, type: "diagram", kind: DIAGRAM_KINDS.includes(p.kind) ? p.kind : "cycle", title: s(p.title, 300), titleEm: s(p.titleEm, 300), lead: s(p.lead, 1500), labels: strs(p.labels, 12).map((x) => x.slice(0, 300)), lists: Array.isArray(p.lists) ? arr(p.lists, 3).map((l: any) => strs(l, 12)) : undefined, callout: s(p.callout, 1000) };
     case "closing":
       return { id, type: "closing", title: s(p.title, 300), titleEm: s(p.titleEm, 300), sub: s(p.sub, 500), contacts: strs(p.contacts, 8), image: img(p.image) || "/deck/novapay/tania.jpg", qr: img(p.qr) || undefined };
     default:

@@ -7,6 +7,9 @@
  * `panel` — обʼєкт із прозорим фоном на фіолетовій панелі NovaPay.
  */
 export type BulletsVariant = "list" | "cards" | "bubbles";
+/** Схеми (див. components/deck/Diagrams.tsx): піраміда, навички за рівнями, коло з 3 секторів, блоки 3+1, цикл, клин 70/20/10. */
+export type DiagramKind = "pyramid" | "skills" | "circle3" | "blocks31" | "cycle" | "wedge";
+export const DIAGRAM_KINDS: DiagramKind[] = ["pyramid", "skills", "circle3", "blocks31", "cycle", "wedge"];
 
 export type DeckPage = (
   | { id: string; type: "cover"; eyebrow: string; title: string; titleEm: string; sub: string; who: string; when: string; image?: string }
@@ -19,6 +22,7 @@ export type DeckPage = (
   | { id: string; type: "table"; title: string; titleEm: string; lead: string; head: string[]; rows: string[][]; callout: string }
   | { id: string; type: "gallery"; title: string; titleEm: string; lead: string; images: { src: string; cap: string }[] }
   | { id: string; type: "closing"; title: string; titleEm: string; sub: string; contacts: string[]; image: string; qr?: string }
+  | { id: string; type: "diagram"; kind: DiagramKind; title: string; titleEm: string; lead: string; labels: string[]; lists?: string[][]; callout: string }
 ) & { fs?: number }; // fs — ручний множник кегля сторінки (0.6…1.6), поверх автопідбору
 
 export type DeckPageType = DeckPage["type"];
@@ -46,6 +50,7 @@ export const PAGE_TYPE_LABELS: Record<DeckPageType, string> = {
   table: "Таблиця",
   gallery: "Картинки",
   closing: "Фінал",
+  diagram: "Схема",
 };
 
 export function newId() {
@@ -75,5 +80,7 @@ export function blankPage(type: DeckPageType): DeckPage {
       return { id, type, title: "Заголовок", titleEm: "", lead: "", images: [{ src: "/deck/novapay/target.jpg", cap: "Підпис" }] };
     case "closing":
       return { id, type, title: "Дякую", titleEm: "за активність", sub: "", contacts: ["+38 067 007 0710", "pan-partners.agency"], image: "/deck/novapay/tania.jpg" };
+    case "diagram":
+      return { id, type, kind: "cycle", title: "Заголовок", titleEm: "", lead: "", labels: [], callout: "" };
   }
 }
