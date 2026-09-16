@@ -147,6 +147,12 @@ const DECK_CSS_BASE = `
   #deck-a4 .t-cover .cv.amp .eyebrow{ font-size:9.5pt; }
   #deck-a4 .t-cover .cv.amp .sub, #deck-a4 .t-cover .cv.amp .who{ max-width:200mm; }
   #deck-a4 .t-cover:has(.cv.amp) .rh .wm{ font-size:18.5pt; }
+  /* амперсанд-титул: без службових ліній і колонтитула — лише логотип, заголовок, підпис */
+  #deck-a4 .t-cover:has(.cv.amp) .rh .fill{ display:none; }
+  #deck-a4 .t-cover:has(.cv.amp) .eyebrow{ border:0; box-shadow:none; background:none; padding:0; }
+  #deck-a4 .t-cover:has(.cv.amp) .eyebrow::before, #deck-a4 .t-cover:has(.cv.amp) .eyebrow::after{ display:none; }
+  #deck-a4 .t-cover:has(.cv.amp) .who{ border-top:0; padding-bottom:6mm; }
+  #deck-a4 .t-cover:has(.cv.amp) .foot{ display:none; }
   #deck-a4 .t-cover .who.av{ display:flex; align-items:center; gap:5.5mm; }
   #deck-a4 .t-cover .who .avatar{ position:relative; flex:none; width:19mm; height:19mm; border-radius:50%; overflow:hidden; box-shadow:0 0 0 1.6pt var(--amber), 0 0 0 4pt var(--sheet); }
   #deck-a4 .t-cover .who .avatar img{ width:100%; height:100%; object-fit:cover; object-position:50% 18%; display:block; }
