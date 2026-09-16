@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { hasDb, listDecks } from "@/lib/db";
-import { DECK_DEFAULTS } from "@/lib/decks/sanitize";
+import { getContentStrict, hasDb, listDecks } from "@/lib/db";
+import { DECK_DEFAULTS, sanitizeDeck } from "@/lib/decks/sanitize";
+import type { Deck } from "@/lib/decks/types";
+import { DeckThumb } from "@/components/admin/DeckThumb";
 
 export const metadata: Metadata = {
   title: "Презентації — адмін",
@@ -10,7 +12,15 @@ export const metadata: Metadata = {
 export const dynamic = "force-dynamic";
 
 const CSS = `
+  body:has(#decks) header, body:has(#decks) footer, body:has(#decks) main ~ div,
+  body:has(#decks) [class*="fixed"], body:has(#decks) [class*="cookie"]{ display:none !important; }
+  body:has(#decks){ background:#E9E2D5 !important; }
   #decks{ min-height:100vh; background:#E9E2D5; padding:28px 24px 60px; font-family:var(--font-inter),system-ui,sans-serif; color:#2A2018; }
+  #decks .thumb{ position:relative; width:100%; aspect-ratio:297/210; overflow:hidden; border-radius:10px; background:#FCF8F1; box-shadow:0 6px 20px rgba(60,40,15,.14); }
+  #decks .thumb .scale{ position:absolute; left:0; top:0; width:297mm; height:210mm; transform-origin:0 0; pointer-events:none; }
+  #decks .thumb #deck-a4{ gap:0; }
+  #decks .thumb .sheet{ box-shadow:none !important; }
+  #decks .grid{ grid-template-columns:repeat(auto-fill,minmax(340px,1fr)); }
   #decks .head{ max-width:1100px; margin:0 auto 18px; display:flex; align-items:baseline; justify-content:space-between; gap:16px; }
   #decks h1{ font-family:var(--font-spectral),serif; font-weight:500; font-size:30px; margin:0; }
   #decks h1 em{ color:#C4621F; font-style:italic; }
@@ -44,6 +54,15 @@ export default async function DecksPage() {
   // лише деки, для яких є шаблон-дефолт (інакше редактор не відкриється)
   const saved = res.items.filter((d) => DECK_DEFAULTS[d.slug]);
   const bySlug = new Map(saved.map((d) => [d.slug, d]));
+  // повні дані для мініатюр (читання суворе; при збої — без мініатюри, а не дефолт)
+  const full = new Map<string, Deck>();
+  for (const d of saved) {
+    const r = await getContentStrict<Deck>(`deck:${d.slug}`);
+    if (r.ok && r.data && Array.isArray(r.data.pages) && r.data.pages.length) {
+      const clean = sanitizeDeck(r.data, d.slug, { fallbackToDefault: false });
+      if (clean.pages.length) full.set(d.slug, clean);
+    }
+  }
   // Порядок: спочатку збережені (за часом), потім дефолтні, яких у базі ще немає
   const items = [
     ...saved.map((d) => ({ ...d, saved: true, name: d.name || DECK_DEFAULTS[d.slug]?.name || d.slug })),
@@ -59,6 +78,7 @@ export default async function DecksPage() {
       <div className="grid">
         {items.map((d) => (
           <div className="card" key={d.slug}>
+            {(full.get(d.slug) ?? (!d.saved ? DECK_DEFAULTS[d.slug] : undefined)) ? <DeckThumb deck={(full.get(d.slug) ?? DECK_DEFAULTS[d.slug])!} /> : null}
             <div className="nm">{d.name}</div>
             <div className="meta">
               <b>{d.pages} стор.</b> · A4 · {d.saved ? `оновлено ${fmt(d.updatedAt)}` : "ще не збережено (стандартна)"}
