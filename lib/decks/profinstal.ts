@@ -20,6 +20,11 @@ export const PROFINSTAL_DECK: Deck = {
   pages: [
     // 1
     { id: "p01", type: "cover", eyebrow: "Програма воркшопу", title: "Розвиток команди через керівника:", titleEm: "культура 70:20:10 у дії", sub: "", who: "Тетяна Пан\nБізнес-тренерка", when: "Україна, вересень 2026", variant: "amp", avatar: N + "tania-profile.jpg" },
+    // Варіанти титулу з фото — на вибір (зайві можна видалити в редакторі)
+    { id: "c1", type: "cover", variant: "photo", eyebrow: "Програма воркшопу", title: "Розвиток команди через керівника:", titleEm: "культура 70:20:10 у дії", sub: "", who: "Тетяна Пан\nБізнес-тренерка", when: "Україна, вересень 2026", avatar: N + "tania-profile.jpg", image: N + "tania-chair-bw.jpg" },
+    { id: "c2", type: "cover", variant: "photo", eyebrow: "Програма воркшопу", title: "Розвиток команди через керівника:", titleEm: "культура 70:20:10 у дії", sub: "", who: "Тетяна Пан\nБізнес-тренерка", when: "Україна, вересень 2026", avatar: N + "tania-profile.jpg", image: N + "tania-flip-bw.jpg" },
+    { id: "c3", type: "cover", variant: "photo", eyebrow: "Програма воркшопу", title: "Розвиток команди через керівника:", titleEm: "культура 70:20:10 у дії", sub: "", who: "Тетяна Пан\nБізнес-тренерка", when: "Україна, вересень 2026", avatar: N + "tania-profile.jpg", image: I + "u-leadership.jpg" },
+    { id: "c4", type: "cover", variant: "photo", eyebrow: "Програма воркшопу", title: "Розвиток команди через керівника:", titleEm: "культура 70:20:10 у дії", sub: "", who: "Тетяна Пан\nБізнес-тренерка", when: "Україна, вересень 2026", avatar: N + "tania-profile.jpg", image: I + "u-workshop.jpg" },
     // 3 — про тренера, як у деці NovaPay
     { id: "p03", type: "about", title: "Тетяна", titleEm: "Пан",
       role: "Бізнес-тренерка, фасилітаторка, коуч, менторка, експертка з навчання та розвитку команд і керівників, засновниця компанії «Pan&Partners»",

@@ -158,6 +158,13 @@ const DECK_CSS_BASE = `
   /* ко-брендинг на титулі: «Pan&Partners × логотип клієнта» */
   #deck-a4 .t-cover .rh .cox{ font-family:var(--font-spectral),serif; font-weight:300; font-size:20pt; line-height:1; color:var(--faint); margin:0 -1mm; }
   #deck-a4 .t-cover .rh .colg{ height:15.5mm; width:auto; display:block; }
+  /* титул «фото»: та сама композиція, що й «амперсанд», але праворуч — фото на всю колонку */
+  #deck-a4 .t-cover .cv.amp.photo{ grid-template-columns:1fr 108mm; gap:12mm; }
+  #deck-a4 .t-cover .cv.amp.photo .cv-l{ padding-top:24mm; }
+  #deck-a4 .t-cover .cv.amp.photo h1{ font-size:47pt; max-width:none; }
+  #deck-a4 .t-cover .cv.amp.photo h1 em{ font-size:28pt; }
+  #deck-a4 .t-cover .cv-r.phc{ position:relative; align-self:stretch; margin:8mm 0 22mm; }
+  #deck-a4 .t-cover .cv-r.phc .phimg{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:50% 30%; border-radius:4mm; box-shadow:0 14px 34px rgba(60,40,15,.18); display:block; }
   #deck-a4 .t-cover:has(.cv.amp) .eyebrow{ border:0; box-shadow:none; background:none; padding:0; }
   #deck-a4 .t-cover:has(.cv.amp) .eyebrow::before, #deck-a4 .t-cover:has(.cv.amp) .eyebrow::after{ display:none; }
   #deck-a4 .t-cover:has(.cv.amp) .who{ border-top:0; padding-bottom:6mm; }
@@ -544,7 +551,7 @@ function density(p: DeckPage): { k: number; kh: number } {
   return { k: Math.min(k, cap), kh: Math.min(1.2, k) };
 }
 
-const ANIM_SEL = [".rh", ".secimg", ".photo", ".num", ".kicker", ".sec-t h1", ".sec-t .sub", ".cv-l > *", ".cv-r > img", ".cv-r .bigamp", ".hero .lab", ".hero h1", ".hero .role", ".hero .quote", ".stat", ".portrait", ".bottom > *",
+const ANIM_SEL = [".rh", ".secimg", ".photo", ".num", ".kicker", ".sec-t h1", ".sec-t .sub", ".cv-l > *", ".cv-r > img", ".cv-r .bigamp", ".cv-r .phimg", ".hero .lab", ".hero h1", ".hero .role", ".hero .quote", ".stat", ".portrait", ".bottom > *",
   ".pb > h1", ".pb > .lead", ".pb > .para", ".pb > .callout", ".body > h1", ".body > .lead", ".body > .para", ".body > .callout", ".fig", ".fullimg", ".qp > *", "ul.bul > li", ".card", ".bubble", ".col", ".step", "thead", "tbody tr", ".gal figure", ".notes", ".wrap > div > *", ".foot"].join(",");
 
 function Sheet({ deck, i, cls, page, children, editable, onRunhead, animate }: { deck: Deck; i: number; cls?: string; page: DeckPage; children: React.ReactNode; editable: boolean; onRunhead: (v: string) => void; animate?: number }) {
@@ -594,7 +601,7 @@ function Sheet({ deck, i, cls, page, children, editable, onRunhead, animate }: {
     <section ref={ref} className={`sheet ${cls ?? ""}${page.type === "section" && page.image ? " has-img" + (page.fit === "top" ? " fit-top" : "") : ""}${page.type === "section" && /^\d+-й крок/i.test(page.title) ? " is-step" : ""}`} data-page={i + 1} data-sparse={k >= 1.32 ? "1" : undefined} style={{ ["--k" as any]: k, ["--kh" as any]: Math.min(1.2, k) }}>
       <div className="rh">
         <span className="wm">Pan<em>&amp;</em>Partners</span>
-        {page.type === "cover" && page.variant === "amp" && deck.logo ? (<><span className="cox" aria-hidden>×</span><img className="colg" src={deck.logo} alt="" /></>) : null}
+        {page.type === "cover" && (page.variant === "amp" || page.variant === "photo") && deck.logo ? (<><span className="cox" aria-hidden>×</span><img className="colg" src={deck.logo} alt="" /></>) : null}
         <span className="fill" />
         {deck.footRunhead ? null : <E value={deck.runhead} onChange={onRunhead} editable={editable} className="tag" ph="колонтитул" />}
       </div>
@@ -685,7 +692,7 @@ function PageBody({ p, set, editable, prev, pick, showNotes = true, logo }: { p:
     case "cover":
       return (
         <>
-          <div className={"cv" + (p.variant === "amp" ? " amp" : "")}>
+          <div className={"cv" + (p.variant === "amp" ? " amp" : p.variant === "photo" ? " amp photo" : "")}>
             <div className="cv-l">
               <E tag="p" className="eyebrow" value={p.eyebrow} onChange={(v) => set({ eyebrow: v })} editable={e} ph="надзаголовок" />
               <Title p={p} set={set} editable={e} />
@@ -698,10 +705,11 @@ function PageBody({ p, set, editable, prev, pick, showNotes = true, logo }: { p:
                 </span>
               </div>
             </div>
-            <div className={"cv-r" + (p.variant === "amp" ? " amp" : "")}>
+            <div className={"cv-r" + (p.variant === "amp" ? " amp" : p.variant === "photo" ? " phc" : "")}>
               {p.variant === "amp" ? <span className="bigamp" aria-hidden>&amp;</span> : null}
-              {logo && p.variant !== "amp" ? <img className="np-big" src={logo} alt="" /> : null}
-              {p.variant !== "amp" && (p.image || logo) ? <img className="ill" src={p.image || "/deck/novapay/money.png"} alt="" /> : null}
+              {p.variant === "photo" && p.image ? <img className="phimg" src={p.image} alt="" /> : null}
+              {logo && !p.variant ? <img className="np-big" src={logo} alt="" /> : null}
+              {!p.variant && (p.image || logo) ? <img className="ill" src={p.image || "/deck/novapay/money.png"} alt="" /> : null}
               {p.variant !== "amp" ? <ImgBtn pick={pick} current={p.image || ""} optional onPick={(v) => set({ image: v || undefined })} /> : null}
             </div>
           </div>

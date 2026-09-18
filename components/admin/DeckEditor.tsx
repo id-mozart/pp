@@ -353,7 +353,7 @@ export function DeckEditor({ initial, dbReady, only, bare, loadedAt, fromDb, pre
               <span className="fs">{deck.pages[i].fs ? `×${deck.pages[i].fs!.toFixed(1)}` : "×1"}</span>
               <button title="Кегль сторінки більше" onClick={() => bumpFs(i, 1)}>A+</button>
               {deck.pages[i].type === "cover" && (
-                <button title="Титул: фото праворуч ↔ великий амперсанд" onClick={() => { const cur = (deck.pages[i] as any).variant; patchPage(i, { variant: cur === "amp" ? undefined : "amp" }); }}>◫</button>
+                <button title="Титул: звичайний → амперсанд → фото праворуч" onClick={() => { const cur = (deck.pages[i] as any).variant; patchPage(i, { variant: cur === "amp" ? "photo" : cur === "photo" ? undefined : "amp" }); }}>◫</button>
               )}
               {deck.pages[i].type === "bullets" && (
                 <button title="Вигляд списку: список → картки → репліки" onClick={() => {

@@ -21,6 +21,8 @@ export const PAGE_TEMPLATES: PageTemplate[] = [
     () => ({ type: "cover", eyebrow: "Тренінг", title: "Назва програми:", titleEm: "підзаголовок курсивом", sub: "", who: "Бізнес-тренерка Тетяна Пан", when: "Україна, 2026", image: T + "tania-flip-bw.jpg" })),
   tpl("cover-amp", "Титул і розділи", "Титул · амперсанд", "Без фото: великий амперсанд з логотипа праворуч",
     () => ({ type: "cover", eyebrow: "Тренінг", title: "Назва програми:", titleEm: "підзаголовок курсивом", sub: "", who: "Тетяна Пан\nБізнес-тренерка", when: "Україна, 2026", variant: "amp", avatar: T + "tania-profile.jpg" })),
+  tpl("cover-photo", "Титул і розділи", "Титул · фото", "Логотипи зверху, заголовок ліворуч, фото на всю праву колонку, аватар тренера",
+    () => ({ type: "cover", eyebrow: "Тренінг", title: "Назва програми:", titleEm: "підзаголовок курсивом", sub: "", who: "Тетяна Пан\nБізнес-тренерка", when: "Україна, 2026", variant: "photo", avatar: T + "tania-profile.jpg", image: T + "tania-chair-bw.jpg" })),
   tpl("section", "Титул і розділи", "Розділ", "Великий номер і назва розділу",
     () => ({ type: "section", num: "1", title: "Назва розділу", sub: "" })),
   tpl("section-right", "Титул і розділи", "Розділ + фото праворуч", "Номер, назва і повнокадрове фото праворуч",
