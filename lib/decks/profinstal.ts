@@ -15,7 +15,7 @@ export const PROFINSTAL_DECK: Deck = {
   fs: 1.2,
   notes: false,
   tight: true,
-  logo: "", // без логотипа клієнта на титулі
+  logo: I + "profinstall-logo.svg", // логотип клієнта (укр. версія з profinstall.com.ua) — на титулі після нашого, через «×»
   footRunhead: true, // назва деки — у нижньому колонтитулі, зверху лише логотип
   pages: [
     // 1

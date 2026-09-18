@@ -155,6 +155,9 @@ const DECK_CSS_BASE = `
   #deck-a4 .t-cover:has(.cv.amp) .rh .wm{ font-size:24pt; }
   /* амперсанд-титул: без службових ліній і колонтитула — лише логотип, заголовок, підпис */
   #deck-a4 .t-cover:has(.cv.amp) .rh .fill{ display:none; }
+  /* ко-брендинг на титулі: «Pan&Partners × логотип клієнта» */
+  #deck-a4 .t-cover .rh .cox{ font-family:var(--font-spectral),serif; font-weight:300; font-size:20pt; line-height:1; color:var(--faint); margin:0 -1mm; }
+  #deck-a4 .t-cover .rh .colg{ height:15.5mm; width:auto; display:block; }
   #deck-a4 .t-cover:has(.cv.amp) .eyebrow{ border:0; box-shadow:none; background:none; padding:0; }
   #deck-a4 .t-cover:has(.cv.amp) .eyebrow::before, #deck-a4 .t-cover:has(.cv.amp) .eyebrow::after{ display:none; }
   #deck-a4 .t-cover:has(.cv.amp) .who{ border-top:0; padding-bottom:6mm; }
@@ -591,6 +594,7 @@ function Sheet({ deck, i, cls, page, children, editable, onRunhead, animate }: {
     <section ref={ref} className={`sheet ${cls ?? ""}${page.type === "section" && page.image ? " has-img" + (page.fit === "top" ? " fit-top" : "") : ""}${page.type === "section" && /^\d+-й крок/i.test(page.title) ? " is-step" : ""}`} data-page={i + 1} data-sparse={k >= 1.32 ? "1" : undefined} style={{ ["--k" as any]: k, ["--kh" as any]: Math.min(1.2, k) }}>
       <div className="rh">
         <span className="wm">Pan<em>&amp;</em>Partners</span>
+        {page.type === "cover" && page.variant === "amp" && deck.logo ? (<><span className="cox" aria-hidden>×</span><img className="colg" src={deck.logo} alt="" /></>) : null}
         <span className="fill" />
         {deck.footRunhead ? null : <E value={deck.runhead} onChange={onRunhead} editable={editable} className="tag" ph="колонтитул" />}
       </div>
