@@ -152,7 +152,7 @@ const DECK_CSS_BASE = `
   #deck-a4 .t-cover .cv.amp h1 em{ font-size:36pt; margin-top:6mm; }
   #deck-a4 .t-cover .cv.amp .eyebrow{ position:absolute; right:16mm; top:13.5mm; margin:0; font-size:12pt; letter-spacing:.3em; text-align:right; }
   #deck-a4 .t-cover .cv.amp .sub, #deck-a4 .t-cover .cv.amp .who{ max-width:200mm; }
-  #deck-a4 .t-cover:has(.cv.amp) .rh .wm{ font-size:24pt; }
+  #deck-a4 .t-cover:has(.cv.amp) .rh .wm{ font-size:29pt; }
   /* амперсанд-титул: без службових ліній і колонтитула — лише логотип, заголовок, підпис */
   #deck-a4 .t-cover:has(.cv.amp) .rh .fill{ display:none; }
   /* ко-брендинг на титулі: «Pan&Partners × логотип клієнта» */
