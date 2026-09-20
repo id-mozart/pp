@@ -1,8 +1,10 @@
 "use client";
 
+import Link from "next/link";
 import { PageHero } from "@/components/sections/PageHero";
 import { ContactForm } from "@/components/sections/ContactForm";
 import { Reveal, RevealGroup, RevealItem } from "@/components/ui/Reveal";
+import { ArrowRight, Download } from "@/components/ui/icons";
 import { CARD_BG, GRAD_ACC, GRAD_GOLD, gradText } from "@/lib/ember";
 import { TEAM, TEAM_LEAD, type TeamMember } from "@/lib/team";
 
@@ -19,7 +21,7 @@ export function TeamPageBody() {
           </>
         }
         lead="Практики з досвідом у продажах, управлінні та розвитку команд. Кожен проєкт веде тренер, який працював у вашій сфері — і знає її зсередини."
-        image="/brand/profile-portrait.jpg"
+        image="/brand/tania-barcamp.jpg"
         primary={{ label: "Обговорити навчання", href: "#contact" }}
         secondary={{ label: "Познайомитись із командою", href: "#people" }}
       />
@@ -65,6 +67,14 @@ export function TeamPageBody() {
                   </li>
                 ))}
               </ul>
+              <div className="mt-9 flex flex-wrap gap-3">
+                <Link href="/team/pan" className="btn btn-primary">
+                  Профайл <ArrowRight className="h-4 w-4" />
+                </Link>
+                <a href="/profiles/tetiana-pan-uk.pdf" download className="btn btn-ghost">
+                  PDF <Download className="h-4 w-4" />
+                </a>
+              </div>
             </Reveal>
           </div>
         </div>
@@ -140,6 +150,15 @@ function MemberCard({ member }: { member: TeamMember }) {
           </li>
         ))}
       </ul>
+
+      <div className="mt-auto flex flex-wrap gap-3 pt-2">
+        <Link href={`/team/${member.slug}`} className="btn btn-primary">
+          Профайл <ArrowRight className="h-4 w-4" />
+        </Link>
+        <a href={`/profiles/${member.slug}-uk.pdf`} download className="btn btn-ghost">
+          PDF <Download className="h-4 w-4" />
+        </a>
+      </div>
     </article>
   );
 }

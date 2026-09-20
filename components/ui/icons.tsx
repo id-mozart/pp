@@ -20,6 +20,12 @@ export const ArrowRight = (p: IconProps) => (
   </svg>
 );
 
+export const Download = (p: IconProps) => (
+  <svg {...base(p)}>
+    <path d="M12 4v11m0 0 4-4m-4 4-4-4M5 19h14" />
+  </svg>
+);
+
 export const ArrowUpRight = (p: IconProps) => (
   <svg {...base(p)}>
     <path d="M7 17 17 7M8 7h9v9" />
