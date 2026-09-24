@@ -21,6 +21,7 @@ import { SiteFooter } from "@/components/chrome/SiteFooter";
 import { CtaBanner } from "@/components/chrome/CtaBanner";
 import { FloatingContacts } from "@/components/chrome/FloatingContacts";
 import { CookieConsent } from "@/components/chrome/CookieConsent";
+import { Assistant } from "@/components/chrome/Assistant";
 import {
   DEFAULT_CONCEPT,
   DEFAULT_MODE,
@@ -183,6 +184,7 @@ export default function RootLayout({
             <SiteFooter />
             <FloatingContacts />
             <CookieConsent />
+            <Assistant />
           </LocaleProvider>
         </ConceptProvider>
       </body>

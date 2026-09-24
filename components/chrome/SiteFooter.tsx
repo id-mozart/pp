@@ -1,5 +1,6 @@
 "use client";
 
+import { AssistantLink } from "@/components/chrome/Assistant";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { WhatsApp, Telegram } from "@/components/ui/icons";
@@ -97,7 +98,7 @@ export function SiteFooter() {
 
         <div className="mt-14 hairline" />
         <div className="mt-6 flex flex-col items-center justify-between gap-3 text-xs text-faint lg:flex-row">
-          <p>{footer.copyright}</p>
+          <p>{footer.copyright} <AssistantLink /></p>
           <p className="font-display text-sm italic" style={gradText(GRAD_ACC)}>
             {ui.footer.manner}
           </p>
