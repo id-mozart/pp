@@ -15,18 +15,57 @@ const UI_CSS = `
   body:has(#deck-ui) [class*="fixed"], body:has(#deck-ui) [class*="cookie"]{ display:none !important; }
   body:has(#deck-ui){ background:#E9E2D5 !important; }
   #deck-ui{ background:#E9E2D5; min-height:100vh; padding:0 0 60px; }
-  #deck-ui .bar{ position:sticky; top:0; z-index:40; display:flex; flex-wrap:wrap; align-items:center; gap:10px; padding:12px 24px;
-    background:rgba(42,32,24,.96); color:#F5E9D7; backdrop-filter:blur(8px); box-shadow:0 8px 30px rgba(0,0,0,.25); }
-  #deck-ui .bar .name{ font-family:var(--font-playfair),Georgia,serif; font-size:18px; margin-right:auto; }
-  #deck-ui .bar .name em{ color:#E2A638; font-style:normal; }
-  #deck-ui .bar .st{ font-family:var(--font-jetbrains),monospace; font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:#B8A386; margin-right:8px; }
-  #deck-ui .btn{ border:1px solid rgba(226,166,56,.45); border-radius:10px; padding:8px 14px; font-size:13px; color:#F5E9D7; background:transparent; cursor:pointer; }
+  #deck-ui .bar{ position:sticky; top:0; z-index:40; padding:0 20px; background:rgba(42,32,24,.97); color:#F5E9D7; backdrop-filter:blur(8px); box-shadow:0 8px 30px rgba(0,0,0,.25); }
+  #deck-ui .bar .row{ display:flex; align-items:center; gap:8px; min-height:50px; flex-wrap:wrap; }
+  #deck-ui .bar .row.top{ border-bottom:1px solid rgba(245,233,215,.1); }
+  #deck-ui .bar .row.alert{ background:rgba(217,83,79,.14); margin:0 -20px; padding:6px 20px; border-bottom:1px solid rgba(217,83,79,.3); font-size:13px; }
+  #deck-ui .bar .row.alert span{ margin-right:auto; }
+  #deck-ui .bar .back{ color:#B8A386; font-size:13px; text-decoration:none; padding:6px 12px 6px 0; margin-right:6px; border-right:1px solid rgba(245,233,215,.12); white-space:nowrap; }
+  #deck-ui .bar .back:hover{ color:#E2A638; }
+  #deck-ui .bar .ttl{ display:flex; flex-direction:column; min-width:0; margin-right:auto; line-height:1.25; }
+  #deck-ui .bar .name{ font-family:var(--font-playfair),Georgia,serif; font-size:17px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  #deck-ui .bar .meta{ display:flex; align-items:center; gap:7px; font-family:var(--font-jetbrains),monospace; font-size:10px; letter-spacing:.12em; text-transform:uppercase; color:#B8A386; white-space:nowrap; }
+  #deck-ui .bar .dot{ width:7px; height:7px; border-radius:50%; background:#8A7A62; flex:none; }
+  #deck-ui .bar .dot.dirty{ background:#E2A638; } #deck-ui .bar .dot.saved{ background:#7BB36A; } #deck-ui .bar .dot.error, #deck-ui .bar .dot.conflict{ background:#D9534F; }
+  #deck-ui .bar .dot.saving{ background:#E2A638; animation:deck-pulse 1s infinite; } @keyframes deck-pulse{ 50%{ opacity:.3; } }
+  #deck-ui .bar .grp{ display:flex; align-items:center; gap:6px; }
+  #deck-ui .bar .sep{ width:1px; height:22px; background:rgba(245,233,215,.14); margin:0 4px; flex:none; }
+  #deck-ui .bar .fill{ flex:1; }
+  #deck-ui .btn{ height:34px; padding:0 13px; border:1px solid rgba(245,233,215,.2); border-radius:9px; font-size:13px; color:#F5E9D7; background:rgba(255,255,255,.04); cursor:pointer; white-space:nowrap; display:inline-flex; align-items:center; gap:4px; }
   #deck-ui .btn:hover{ border-color:#E2A638; color:#E2A638; }
+  #deck-ui .btn:disabled{ opacity:.4; cursor:default; } #deck-ui .btn:disabled:hover{ border-color:rgba(245,233,215,.2); color:#F5E9D7; }
+  #deck-ui .btn.ic{ width:34px; padding:0; justify-content:center; font-size:16px; }
   #deck-ui .btn.on{ border-color:#E2A638; color:#E2A638; }
-  #deck-ui .btn.pri{ background:linear-gradient(96deg,#E8AC3C,#CE651E); color:#241A10; border-color:transparent; font-weight:600; }
+  #deck-ui .btn.busy{ border-color:#E2A638; color:#E2A638; }
+  #deck-ui .btn.pri{ background:linear-gradient(96deg,#E8AC3C,#CE651E); color:#241A10; border-color:transparent; font-weight:600; padding:0 18px; }
   #deck-ui .btn.pri:hover{ filter:brightness(1.05); color:#241A10; }
+  #deck-ui .seg{ display:inline-flex; align-items:stretch; height:34px; border:1px solid rgba(245,233,215,.2); border-radius:9px; overflow:hidden; }
+  #deck-ui .seg button{ width:36px; border:0; background:transparent; color:#F5E9D7; cursor:pointer; font-size:13px; }
+  #deck-ui .seg button:hover{ color:#E2A638; background:rgba(255,255,255,.05); }
+  #deck-ui .seg span{ display:flex; align-items:center; justify-content:center; min-width:54px; font-family:var(--font-jetbrains),monospace; font-size:11px; color:#E2A638; border-left:1px solid rgba(245,233,215,.14); border-right:1px solid rgba(245,233,215,.14); }
+  #deck-ui .sw{ display:inline-flex; align-items:center; gap:8px; font-size:13px; cursor:pointer; user-select:none; color:#F5E9D7; }
+  #deck-ui .sw.off{ opacity:.45; cursor:default; }
+  #deck-ui .sw input{ position:absolute; opacity:0; width:0; height:0; }
+  #deck-ui .sw i{ width:34px; height:20px; border-radius:10px; background:rgba(245,233,215,.18); position:relative; transition:background .15s; flex:none; }
+  #deck-ui .sw i::after{ content:""; position:absolute; top:2px; left:2px; width:16px; height:16px; border-radius:50%; background:#F5E9D7; transition:transform .15s; }
+  #deck-ui .sw input:checked + i{ background:#E2A638; } #deck-ui .sw input:checked + i::after{ transform:translateX(14px); background:#241A10; }
+  #deck-ui .sw input:focus-visible + i{ outline:2px solid #E2A638; outline-offset:2px; }
+  #deck-ui .menu{ position:relative; }
+  #deck-ui .menu .car{ font-size:9px; opacity:.7; margin-left:2px; }
+  #deck-ui .menu.open > .btn{ border-color:#E2A638; color:#E2A638; }
+  #deck-ui .dd{ position:absolute; top:calc(100% + 6px); left:0; min-width:300px; background:#FCF8F1; color:#2A2018; border-radius:12px; padding:6px; box-shadow:0 20px 50px rgba(0,0,0,.35); z-index:50; }
+  #deck-ui .dd.r{ left:auto; right:0; }
+  #deck-ui .dd .hd{ font-family:var(--font-jetbrains),monospace; font-size:10px; letter-spacing:.2em; text-transform:uppercase; color:#9C8B73; padding:8px 10px 6px; }
+  #deck-ui .mi{ display:flex; align-items:flex-start; gap:10px; width:100%; text-align:left; border:0; background:transparent; padding:9px 10px; border-radius:8px; font:inherit; font-size:13.5px; color:#2A2018; cursor:pointer; line-height:1.3; }
+  #deck-ui .mi:hover{ background:#F4ECDC; } #deck-ui .mi:disabled{ opacity:.5; cursor:default; }
+  #deck-ui .mi .lb{ flex:1; } #deck-ui .mi small{ display:block; font-size:11.5px; color:#7A6A54; margin-top:2px; }
+  #deck-ui .mi .ck{ width:16px; height:16px; margin-top:1px; border:1.5px solid #9C8B73; border-radius:4px; display:inline-flex; align-items:center; justify-content:center; font-size:11px; flex:none; }
+  #deck-ui .mi[aria-checked="true"] .ck{ background:#C4621F; border-color:#C4621F; color:#fff; }
+  #deck-ui .help .dd{ min-width:420px; padding:10px 14px 12px; font-size:13px; line-height:1.5; }
+  #deck-ui .help .dd .hd{ padding-left:0; }
+  #deck-ui .help .dd p{ margin:0 0 8px; } #deck-ui .help .dd p:last-child{ margin:0; }
+  #deck-ui .help kbd{ font-family:var(--font-jetbrains),monospace; font-size:11px; background:#F4ECDC; border:1px solid #D9CDB9; border-radius:4px; padding:1px 5px; }
   #deck-ui select{ border:1px solid rgba(226,166,56,.45); border-radius:10px; padding:8px 10px; font-size:13px; color:#F5E9D7; background:#2A2018; }
-  #deck-ui .hint{ width:100%; font-size:12px; color:#B8A386; }
   #deck-ui .pages{ padding:26px 0; }
   #deck-ui .ctl{ position:absolute; left:calc(100% + 10px); top:0; display:flex; flex-direction:column; gap:6px; z-index:5; }
   #deck-ui .ctl button{ width:34px; height:34px; border-radius:8px; border:1px solid rgba(140,116,82,.5); background:#FCF8F1; color:#5E4C36; cursor:pointer; font-size:14px; }
@@ -271,6 +310,43 @@ export function DeckEditor({ initial, dbReady, only, bare, loadedAt, fromDb, pre
   // показ одразу з URL (?present=1)
   useEffect(() => { if (presentOnLoad && !bare) { setPresent(0); setTick((t) => t + 1); } }, [presentOnLoad, bare]);
   // PDF: діалог друку з назвою деки як імʼям файлу (заголовок вкладки повертаємо після друку)
+  // PPTX: нативні слайди; схеми знімаємо з екрана (html-to-image) з DOM редактора
+  const [pptxBusy, setPptxBusy] = useState("");
+  const exportPptx = useCallback(async () => {
+    if (pptxBusy) return;
+    setPptxBusy("готую…");
+    try {
+      const [{ exportDeckPptx }, { toPng, getFontEmbedCSS }] = await Promise.all([import("@/lib/decks/pptx"), import("html-to-image")]);
+      const withTimeout = <T,>(pr: Promise<T>, ms: number): Promise<T | null> => Promise.race([pr, new Promise<null>((r) => setTimeout(() => r(null), ms))]);
+      // на свіжозавантаженій сторінці ще довантажуються ілюстрації і шрифти — перший знімок інакше не встигає
+      await withTimeout((document as any).fonts?.ready ?? Promise.resolve(), 5000);
+      await withTimeout(Promise.all(Array.from(document.images).filter((im) => !im.complete).map((im) => new Promise<void>((r) => { im.onload = im.onerror = () => r(); }))), 10000);
+      // шрифти для знімків: збираємо один раз (з таймаутом); якщо не вдалось — знімаємо без вбудованих шрифтів
+      const firstDg = document.querySelector<HTMLElement>("#deck-ui .pages .sheet .dg");
+      const fontEmbedCSS = firstDg ? (await withTimeout(getFontEmbedCSS(firstDg).catch((e) => { console.warn("[pptx] fonts", e); return null; }), 8000)) ?? undefined : undefined;
+      const snap = async (i: number, sel: string) => {
+        const sheet = document.querySelectorAll<HTMLElement>("#deck-ui .pages .sheet")[i];
+        const el = sheet?.querySelector<HTMLElement>(sel);
+        if (!el) return null;
+        const filter = (n: HTMLElement) => !(n instanceof HTMLElement && n.classList.contains("imgbtn"));
+        const attempt = (o: object, ms: number) => withTimeout(toPng(el, { pixelRatio: 2, backgroundColor: "#FCF8F1", filter, ...o } as any).catch((e) => { console.warn("[pptx] snap", i, e); return null; }), ms);
+        // друга спроба — без вбудованих шрифтів: краще схема системним шрифтом, ніж список замість схеми
+        const data = (await attempt(fontEmbedCSS ? { fontEmbedCSS } : { skipFonts: true }, 30000)) ?? (await attempt({ skipFonts: true }, 20000));
+        if (!data) console.warn("[pptx] snap failed", i, sel);
+        return data ? { data, w: el.offsetWidth, h: el.offsetHeight } : null;
+      };
+      // html-to-image чекає requestAnimationFrame після декодування картинки, а у прихованій вкладці він не настає —
+      // експорт «зависав би», якщо користувач перемкнеться на іншу вкладку. У прихованому стані підміняємо таймером.
+      const rafOrig = window.requestAnimationFrame;
+      window.requestAnimationFrame = (cb: FrameRequestCallback) => (document.hidden ? (window.setTimeout(() => cb(performance.now()), 16) as unknown as number) : rafOrig.call(window, cb));
+      try {
+        await exportDeckPptx(deck, { snap, onProgress: (i, n) => setPptxBusy(`${i} / ${n}`) });
+      } finally { window.requestAnimationFrame = rafOrig; }
+    } catch (e) {
+      console.error(e);
+      alert("Не вдалося зібрати PPTX. Спробуйте ще раз.");
+    } finally { setPptxBusy(""); }
+  }, [deck, pptxBusy]);
   const printPdf = useCallback(() => {
     const prev = document.title;
     document.title = deck.name || prev;
@@ -301,36 +377,61 @@ export function DeckEditor({ initial, dbReady, only, bare, loadedAt, fromDb, pre
     <div id="deck-ui" className={bare ? "bare" : undefined}>
       <style dangerouslySetInnerHTML={{ __html: UI_CSS }} />
       {!bare && <div className="bar">
-        <span className="name">
-          {deck.name} <em>· A4 · {deck.pages.length} стор.</em>
-        </span>
-        <span className="st">{stText[status]}{status === "error" && errText ? `: ${errText}` : ""}</span>
+        <div className="row top">
+          <Link href="/admin/decks" className="back" onClick={(e) => { if (status !== "idle" && status !== "saved" && !confirm("Є незбережені правки. Вийти без збереження?")) e.preventDefault(); }}>← Презентації</Link>
+          <div className="ttl">
+            <span className="name" title={deck.name}>{deck.name}</span>
+            <span className="meta"><i className={"dot " + status} />{stText[status]}{status === "error" && errText ? `: ${errText}` : ""} · A4 · {deck.pages.length} стор.{!dbReady && " · база не підключена"}</span>
+          </div>
+          <div className="grp">
+            <button className="btn ic" onClick={undo} disabled={!hist.undo} title={"Скасувати дію (⌘Z)" + (hist.undo ? ` · ${hist.undo}` : "")}>↶</button>
+            <button className="btn ic" onClick={redo} disabled={!hist.redo} title={"Повторити дію (⌘⇧Z)" + (hist.redo ? ` · ${hist.redo}` : "")}>↷</button>
+          </div>
+          <span className="sep" />
+          <label className={"sw" + (!dbReady || baseAt === null ? " off" : "")} title={!dbReady || baseAt === null ? "Спочатку збережіть деку вручну" : "Зберігати автоматично через 1,5 с після кожної дії"}>
+            <input type="checkbox" checked={autosave} onChange={toggleAutosave} disabled={!dbReady || baseAt === null} />
+            <i /><span>Автозбереження</span>
+          </label>
+          <button className="btn pri" onClick={() => save()} disabled={saving}>{saving ? "Зберігаю…" : "Зберегти"}</button>
+        </div>
         {status === "conflict" && (
-          <>
+          <div className="row alert">
+            <span>Цю деку змінено в іншому вікні.</span>
             <button className="btn" onClick={() => { if (confirm("Взяти версію з бази? Ваші незбережені правки буде втрачено.")) { skipGuardRef.current = true; location.reload(); } }}>Оновити сторінку</button>
             <button className="btn pri" onClick={() => { const at = conflictAtRef.current ? new Date(conflictAtRef.current).toLocaleString("uk-UA", { timeZone: "Europe/Kyiv" }) : "невідомий час"; if (confirm(`У базі є версія від ${at}. Записати вашу поверх неї? Попередня версія лишиться в історії.`)) save({ force: true }); }}>Зберегти поверх</button>
-          </>
+          </div>
         )}
-        <button className="btn" onClick={undo} disabled={!hist.undo} title="Скасувати дію (⌘Z / Ctrl+Z)">↶ {hist.undo || ""}</button>
-        <button className="btn" onClick={redo} disabled={!hist.redo} title="Повторити дію (⌘⇧Z / Ctrl+Y)">↷ {hist.redo || ""}</button>
-        <button className={"btn" + (autosave ? " on" : "")} onClick={toggleAutosave} disabled={!dbReady || baseAt === null} title={!dbReady || baseAt === null ? "Спочатку збережіть деку вручну" : "Автоматично зберігати через 1,5 с після кожної дії"}>{autosave ? "Автозбереження: увімк." : "Автозбереження: вимк."}</button>
-        <button className="btn" onClick={() => setTplMode({ mode: "append" })} title="Нова сторінка з набору типових композицій">＋ Сторінка…</button>
-        <button className={"btn" + (deck.caps ? " on" : "")} onClick={() => update((d) => ({ ...d, caps: !d.caps }))} title="Заголовки великими літерами">{deck.caps ? "Aa → АБВ" : "АБВ → Aa"}</button>
-        <button className={"btn" + (deck.notes !== false ? " on" : "")} onClick={() => update((d) => ({ ...d, notes: d.notes === false ? true : false }))} title="Поле «Нотатки» на розріджених сторінках (для роздрукованої версії)">{deck.notes !== false ? "Нотатки: є" : "Нотатки: немає"}</button>
-        <button className={"btn" + (deck.footRunhead ? " on" : "")} onClick={() => update((d) => ({ ...d, footRunhead: !d.footRunhead }))} title="Назва деки в нижньому колонтитулі (зверху лише логотип), номер сторінки без «/ 22»">{deck.footRunhead ? "Колонтитул: знизу" : "Колонтитул: зверху"}</button>
-        <button className={"btn" + (deck.tight ? " on" : "")} onClick={() => update((d) => ({ ...d, tight: !d.tight }))} title="Щільна верстка: менші відступи в таблицях і картках, тому текст на щільних сторінках більший">{deck.tight ? "Щільно: так" : "Щільно: ні"}</button>
-        <button className="btn" onClick={() => bumpDeckFs(-1)} title="Кегль усієї деки менше">A−</button>
-        <span className="st" title="Множник кегля деки">×{(deck.fs ?? 1).toFixed(2)}</span>
-        <button className="btn" onClick={() => bumpDeckFs(1)} title="Кегль усієї деки більше">A+</button>
-        <button className="btn" onClick={() => startPresent(0)} title="Повноекранний показ: Space / → далі, ← назад, Esc вихід">▶ Показ</button>
-        <button className="btn" onClick={printPdf}>Завантажити PDF</button>
-        <button className="btn pri" onClick={() => save()} disabled={saving}>Зберегти</button>
-        <Link href="/admin/decks" className="btn" onClick={(e) => { if (status !== "idle" && status !== "saved" && !confirm("Є незбережені правки. Вийти без збереження?")) e.preventDefault(); }}>← Презентації</Link>
-        <p className="hint">
-          ⌘Z / Ctrl+Z скасовує дію, ⌘⇧Z повторює. «Автозбереження» зберігає через 1,5 с після кожної дії. «▶ Показ» — повноекранний режим з анімацією: Space або → наступна сторінка, ← попередня, Esc вихід. Клікніть на будь-який текст на сторінці й редагуйте прямо там. У списках Enter додає новий пункт. Наведіть на сторінку — біля ілюстрацій зʼявиться «Замінити»; кнопки A−/A+ біля сторінки змінюють її кегль, ＋ вставляє нову сторінку одразу після неї (з вибором композиції), ▤ перекладає сторінку в іншу композицію зі збереженням текстів.
-          «Завантажити PDF» відкриває друк — оберіть «Зберегти як PDF», формат A4, поля «немає».
-          {!dbReady && " База даних не підключена: правки не збережуться після перезавантаження."}
-        </p>
+        <div className="row tools">
+          <button className="btn" onClick={() => setTplMode({ mode: "append" })} title="Нова сторінка в кінець — з набору типових композицій">＋ Сторінка</button>
+          <button className="btn" onClick={() => startPresent(0)} title="Повноекранний показ: Space / → далі, ← назад, Esc вихід">▶ Показ</button>
+          <span className="sep" />
+          <div className="seg" title="Кегль усієї деки">
+            <button onClick={() => bumpDeckFs(-1)} title="Менше">A−</button>
+            <span>×{(deck.fs ?? 1).toFixed(2)}</span>
+            <button onClick={() => bumpDeckFs(1)} title="Більше">A+</button>
+          </div>
+          <span className="sep" />
+          <Menu label="Вигляд">
+            <div className="hd">Оформлення деки</div>
+            <MenuCheck on={!!deck.caps} onClick={() => update((d) => ({ ...d, caps: !d.caps }))} hint="АБВ замість Абв у всіх заголовках">Заголовки великими літерами</MenuCheck>
+            <MenuCheck on={!!deck.tight} onClick={() => update((d) => ({ ...d, tight: !d.tight }))} hint="Менші відступи в таблицях і картках — текст на щільних сторінках більший">Щільна верстка</MenuCheck>
+            <MenuCheck on={deck.notes !== false} onClick={() => update((d) => ({ ...d, notes: d.notes === false ? true : false }))} hint="Поле для нотаток на розріджених сторінках (для роздрукованої версії)">Поле «Нотатки»</MenuCheck>
+            <MenuCheck on={!!deck.footRunhead} onClick={() => update((d) => ({ ...d, footRunhead: !d.footRunhead }))} hint="Назва деки внизу сторінки, зверху лише логотип; номер без «/ 22»">Назва деки в нижньому колонтитулі</MenuCheck>
+          </Menu>
+          <Menu label={pptxBusy ? `Завантажити · PPTX ${pptxBusy}` : "Завантажити"} busy={!!pptxBusy}>
+            <div className="hd">Експорт</div>
+            <MenuItem onClick={printPdf} hint="Відкриється друк: оберіть «Зберегти як PDF», формат A4, поля «немає»">PDF</MenuItem>
+            <MenuItem onClick={exportPptx} disabled={!!pptxBusy} hint="Слайди A4 з редагованим текстом і картинками; схеми — як зображення">{pptxBusy ? `PowerPoint · ${pptxBusy}` : "PowerPoint (PPTX)"}</MenuItem>
+          </Menu>
+          <span className="fill" />
+          <Menu label="?" cls="help" right title="Підказки">
+            <div className="hd">Як працювати</div>
+            <p>Клікніть на будь-який текст на сторінці й редагуйте прямо там. У списках <kbd>Enter</kbd> додає новий пункт.</p>
+            <p>Наведіть на сторінку: біля ілюстрацій зʼявиться «Замінити», праворуч — кнопки сторінки: <b>▶</b> показ звідси, <b>↑ ↓</b> порядок, <b>⧉</b> дублювати, <b>＋</b> вставити після, <b>▤</b> інша композиція зі збереженням текстів, <b>◫</b> варіант оформлення, <b>A− A+</b> кегль сторінки.</p>
+            <p><kbd>⌘Z</kbd> скасувати, <kbd>⌘⇧Z</kbd> повторити. У показі: <kbd>Space</kbd> / <kbd>→</kbd> далі, <kbd>←</kbd> назад, <kbd>Esc</kbd> вихід.</p>
+            <p>«Автозбереження» пише в базу через 1,5 с після кожної дії; попередні версії лишаються в історії.</p>
+          </Menu>
+        </div>
       </div>}
       <div className="pages">
         <DeckPages
@@ -382,6 +483,34 @@ export function DeckEditor({ initial, dbReady, only, bare, loadedAt, fromDb, pre
       )}
     </div>
   );
+}
+
+/* ───────── випадні меню панелі ───────── */
+
+function Menu({ label, children, cls, right, title, busy }: { label: string; children: React.ReactNode; cls?: string; right?: boolean; title?: string; busy?: boolean }) {
+  const [open, setOpen] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (!open) return;
+    const onDown = (e: MouseEvent) => { if (!ref.current?.contains(e.target as Node)) setOpen(false); };
+    const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") setOpen(false); };
+    document.addEventListener("mousedown", onDown); window.addEventListener("keydown", onKey);
+    return () => { document.removeEventListener("mousedown", onDown); window.removeEventListener("keydown", onKey); };
+  }, [open]);
+  return (
+    <div className={"menu" + (open ? " open" : "") + (cls ? " " + cls : "")} ref={ref}>
+      <button type="button" className={"btn" + (busy ? " busy" : "") + (cls === "help" ? " ic" : "")} aria-haspopup="menu" aria-expanded={open} onClick={() => setOpen((o) => !o)} title={title}>
+        {label}{cls !== "help" && <span className="car">▾</span>}
+      </button>
+      {open && <div className={"dd" + (right ? " r" : "")} role="menu" onClick={(e) => { if ((e.target as HTMLElement).closest("[data-close]")) setOpen(false); }}>{children}</div>}
+    </div>
+  );
+}
+function MenuItem({ children, hint, onClick, disabled }: { children: React.ReactNode; hint?: string; onClick: () => void; disabled?: boolean }) {
+  return <button type="button" role="menuitem" className="mi" onClick={onClick} disabled={disabled} data-close><span className="lb">{children}{hint && <small>{hint}</small>}</span></button>;
+}
+function MenuCheck({ children, hint, on, onClick }: { children: React.ReactNode; hint?: string; on: boolean; onClick: () => void }) {
+  return <button type="button" role="menuitemcheckbox" aria-checked={on} className="mi" onClick={onClick}><span className="ck">{on ? "✓" : ""}</span><span className="lb">{children}{hint && <small>{hint}</small>}</span></button>;
 }
 
 /* ───────── вибір / завантаження зображення ───────── */

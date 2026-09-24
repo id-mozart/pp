@@ -81,7 +81,7 @@ export const DIAGRAM_CSS = `
   #deck-a4 .dg.wedge .w .p2{ left:33.33%; background:var(--gold); clip-path:polygon(0 21%, 100% 42%, 100% 100%, 0 100%); }
   #deck-a4 .dg.wedge .w .p3{ left:66.66%; background:#2A2018; clip-path:polygon(0 42%, 100% 62%, 100% 100%, 0 100%); }
   #deck-a4 .dg.wedge .lb.pct{ top:0; width:33.33%; height:40%; flex-direction:column; gap:1mm; color:#FFF8EE; justify-content:flex-end; padding-bottom:3mm; }
-  #deck-a4 .dg.wedge .lb.pct b{ font-family:var(--font-spectral),serif; font-style:italic; font-weight:500; font-size:calc(18pt * var(--k,1)); line-height:1; }
+  #deck-a4 .dg.wedge .lb.pct b{ font-family:var(--font-spectral),serif; font-style:italic; font-weight:500; font-size:calc(18pt * var(--k,1)); line-height:1; white-space:nowrap; }
   #deck-a4 .dg.wedge .lb.pct > span{ font-size:calc(9.5pt * var(--k,1)); font-weight:600; }
   #deck-a4 .dg.wedge .lb.pct.q1{ left:0; } #deck-a4 .dg.wedge .lb.pct.q2{ left:33.33%; } #deck-a4 .dg.wedge .lb.pct.q3{ left:66.66%; }
   #deck-a4 .dg.wedge .lists{ position:absolute; left:0; top:41%; width:100%; height:59%; display:grid; grid-template-columns:repeat(3,1fr); gap:0 4mm; }
