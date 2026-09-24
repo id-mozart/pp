@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { Certificate } from "@/components/cert/Certificate";
-import { CERT_DEFAULT, CERT_VARIANTS, nextNumber, type Cert } from "@/lib/certs";
+import { CERT_DEFAULT, CERT_L10N, CERT_LANGS, CERT_T, CERT_VARIANTS, nextNumber, type Cert, type CertLang } from "@/lib/certs";
 
 type Saved = Cert & { id: string; updated_at?: string };
 type Status = "idle" | "dirty" | "saving" | "saved" | "error";
@@ -32,6 +32,9 @@ const CSS = `
   #cert-ui .wrap{ display:grid; grid-template-columns:380px 1fr; gap:24px; padding:24px; align-items:start; }
   #cert-ui .panel{ background:#FCF8F1; border-radius:14px; padding:18px; box-shadow:0 10px 30px rgba(60,40,15,.12); }
   #cert-ui .panel h2{ font-family:var(--font-spectral),serif; font-weight:500; font-size:20px; color:#2A2018; margin:0 0 12px; }
+  #cert-ui .langs{ display:flex; gap:6px; }
+  #cert-ui .lang{ flex:1; border:1px solid rgba(140,116,82,.45); border-radius:8px; padding:8px 6px; font-size:13px; background:#fff; color:#5E4C36; cursor:pointer; }
+  #cert-ui .lang.on{ border-color:#C4621F; color:#C4621F; font-weight:600; background:#FFF6EA; }
   #cert-ui label{ display:block; font-family:var(--font-jetbrains),monospace; font-size:10px; letter-spacing:.2em; text-transform:uppercase; color:#9C8B73; margin:12px 0 5px; }
   #cert-ui input, #cert-ui textarea, #cert-ui select{ width:100%; border:1px solid rgba(140,116,82,.4); border-radius:8px; padding:9px 11px; font:inherit; font-size:14px; color:#2A2018; background:#fff; }
   #cert-ui textarea{ min-height:74px; resize:vertical; }
@@ -58,6 +61,20 @@ export function CertEditor({ initial, saved: savedInit, dbReady }: { initial: Ce
   const [status, setStatus] = useState<Status>("idle");
 
   const set = (patch: Partial<Cert>) => { setC((x) => ({ ...x, ...patch })); setStatus("dirty"); };
+  const setLang = (lang: CertLang) => {
+    const prev = CERT_L10N[c.lang ?? "uk"], next = CERT_L10N[lang];
+    const vi = prev.verbs.indexOf(c.verb);
+    const verb = vi >= 0 ? (next.verbs[vi] ?? next.verbs[0]) : c.verb;
+    // роль: стандартну для попередньої мови переводимо на стандартну для нової; рід беремо з жіночого варіанта uk
+    // (у en/ru обидва роди пишуться однаково, тому окремо памʼятаємо, чи це тренерка)
+    const isStd = (r: string) => r === prev.roles.f || r === prev.roles.m;
+    const trainers = c.trainers.map((t) => {
+      if (!isStd(t.role)) return t;
+      const fem = t.fem ?? (t.role === prev.roles.f && prev.roles.f !== prev.roles.m);
+      return { ...t, fem, role: fem ? next.roles.f : next.roles.m };
+    });
+    set({ lang, verb, place: c.place === prev.place ? next.place : c.place, trainers });
+  };
   const setTrainer = (i: number, patch: Partial<Cert["trainers"][number]>) =>
     set({ trainers: c.trainers.map((t, k) => (k === i ? { ...t, ...patch } : t)) });
 
@@ -79,7 +96,7 @@ export function CertEditor({ initial, saved: savedInit, dbReady }: { initial: Ce
   }
   function fresh() {
     const n = nextNumber(saved.map((s) => s.number));
-    setC({ ...CERT_DEFAULT, number: n, trainers: c.trainers.length ? c.trainers : CERT_DEFAULT.trainers, year: c.year, place: c.place });
+    setC({ ...CERT_DEFAULT, number: n, lang: c.lang, verb: CERT_L10N[c.lang ?? "uk"].verbs[0], trainers: c.trainers.length ? c.trainers : CERT_DEFAULT.trainers, year: c.year, place: c.place });
     setStatus("idle");
   }
   function open(s: Saved) { setC({ ...s }); setStatus("idle"); }
@@ -93,8 +110,8 @@ export function CertEditor({ initial, saved: savedInit, dbReady }: { initial: Ce
   function printPdf() {
     // Chrome бере назву файлу PDF з document.title — підставляємо номер та ім'я.
     const prev = document.title;
-    const fname = ["Сертифікат", c.number, c.name].filter(Boolean).join(" ").replace(/[\\/:*?"<>|]+/g, " ").trim();
-    document.title = fname || "Сертифікат";
+    const fname = [CERT_T[c.lang ?? "uk"].file, c.number, c.name].filter(Boolean).join(" ").replace(/[\\/:*?"<>|]+/g, " ").trim();
+    document.title = fname || CERT_T[c.lang ?? "uk"].file;
     const restore = () => { document.title = prev; window.removeEventListener("afterprint", restore); };
     window.addEventListener("afterprint", restore);
     window.print();
@@ -125,14 +142,17 @@ export function CertEditor({ initial, saved: savedInit, dbReady }: { initial: Ce
       <div className="wrap">
         <div className="panel">
           <h2>Дані сертифіката</h2>
+          <label>Мова сертифіката</label>
+          <div className="langs">
+            {CERT_LANGS.map((l) => (
+              <button key={l.id} type="button" className={"lang" + (c.lang === l.id ? " on" : "")} onClick={() => setLang(l.id)}>{l.label}</button>
+            ))}
+          </div>
           <div className="row">
             <div><label>Номер</label><input value={c.number} onChange={(e) => set({ number: e.target.value })} /></div>
             <div><label>Дієслово</label>
               <select value={c.verb} onChange={(e) => set({ verb: e.target.value })}>
-                <option value="завершив">завершив</option>
-                <option value="завершила">завершила</option>
-                <option value="пройшов">пройшов</option>
-                <option value="пройшла">пройшла</option>
+                {(CERT_L10N[c.lang ?? "uk"].verbs.includes(c.verb) ? CERT_L10N[c.lang ?? "uk"].verbs : [c.verb, ...CERT_L10N[c.lang ?? "uk"].verbs]).map((v) => <option key={v} value={v}>{v}</option>)}
               </select>
             </div>
           </div>
@@ -157,7 +177,7 @@ export function CertEditor({ initial, saved: savedInit, dbReady }: { initial: Ce
             </div>
           ))}
           {c.trainers.length < 3 && (
-            <button className="btn" style={{ color: "#5E4C36", marginTop: 10 }} onClick={() => set({ trainers: [...c.trainers, { name: "", role: "бізнес-тренер" }] })}>+ тренер</button>
+            <button className="btn" style={{ color: "#5E4C36", marginTop: 10 }} onClick={() => set({ trainers: [...c.trainers, { name: "", role: CERT_L10N[c.lang ?? "uk"].roles.m }] })}>+ тренер</button>
           )}
           <p className="small">
             «Завантажити PDF» відкриває друк: оберіть «Зберегти як PDF», формат A4 альбомний, поля «немає».

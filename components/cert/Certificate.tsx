@@ -1,7 +1,7 @@
 "use client";
 
 import { useId } from "react";
-import type { Cert } from "@/lib/certs";
+import { CERT_T, type Cert } from "@/lib/certs";
 
 /**
  * Сертифікат A4 landscape у стилі Pan&Partners. Пʼять варіантів верстки
@@ -112,6 +112,7 @@ export function Certificate({ c }: { c: Cert }) {
   const v = "ornament";
   // Унікальний id градієнта: однакові id у прихованих мініатюрах ламають заливку при друку.
   const gid = "g" + useId().replace(/[^a-zA-Z0-9]/g, "");
+  const t = CERT_T[c.lang ?? "uk"];
   return (
     <div id="cert-a4">
       <style dangerouslySetInnerHTML={{ __html: CERT_CSS }} />
@@ -122,8 +123,8 @@ export function Certificate({ c }: { c: Cert }) {
               ? [<i key={`a${r}`} />, ...Array.from({ length: 11 }).map((_, k) => <span key={`${r}-${k}`}>&amp;</span>), <i key={`b${r}`} />]
               : Array.from({ length: 12 }).map((_, k) => <span key={`${r}-${k}`}>&amp;</span>))}</div>
             <div className="frame" /><div className="frame2" />
-            <div className="tag l">{[c.place || "Україна", c.date || c.year].filter(Boolean).join(" · ")}</div>
-            <div className="tag r">№ {c.number || "—"}</div>
+            <div className="tag l">{[c.place, c.date || c.year].filter(Boolean).join(" · ")}</div>
+            <div className="tag r">{t.number} {c.number || "—"}</div>
             <div className="qr">
               <img src="/cert/qr-site.svg" alt="QR: pan-partners.agency" />
               <div className="site">pan-partners.agency</div>
@@ -151,13 +152,13 @@ export function Certificate({ c }: { c: Cert }) {
                 </g>
                 <path d="M50 2.3 50.7 3 50 3.7 49.3 3z" fill="#C98A2B" />
               </svg>
-              <h1>Сертифікат</h1>
-              <div className="verb">засвідчує, що</div>
+              <h1>{t.title}</h1>
+              <div className="verb">{t.certifies}</div>
               <svg className="name" aria-label={c.name} role="img">
                 <defs><linearGradient id={gid} x1="0" y1="0" x2="1" y2="0"><stop offset="0" stopColor="#D99A28" /><stop offset=".55" stopColor="#CE7A1A" /><stop offset="1" stopColor="#C15612" /></linearGradient></defs>
                 <text x="50%" y="74%" textAnchor="middle" fill={`url(#${gid})`}>{c.name}</text>
               </svg>
-              <div className="verb">{c.verb} програму</div>
+              <div className="verb">{c.verb} {t.program}</div>
               <div className="prog">{c.program}</div>
               <div className="meta">{c.hours}</div>
               <div className="signs">
