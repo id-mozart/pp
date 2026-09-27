@@ -427,7 +427,7 @@ export const ADLER_DECK: Deck = {
     { id: "s61", type: "table", title: "Action", titleEm: "plan", lead: "**Что нужно сделать после нашей встречи — первые три шага?**", head: ["#", "Мероприятие / действие", "Как понять, что я достиг цели — показатели достижения цели", "Сроки / периодичность"],
       rows: [["1", "", "", ""], ["2", "", "", ""], ["3", "", "", ""]], callout: "" },
     // 62 + 1 — спасибо и контакты
-    { id: "s62", type: "closing", title: "Спасибо за активное", titleEm: "участие!", sub: "Подписывайтесь на мой Instagram: @tetiana_pan.sales",
-      contacts: ["+38 067 007 0710", "+38 050 448 1411", "pan-partners.agency/uz"], image: N + "tania.jpg", qr: N + "qr-instagram.svg" },
+    { id: "s62", type: "closing", title: "Спасибо за активное", titleEm: "участие!", sub: "Подписывайтесь на мой Instagram: @tatiana.pan.sales",
+      contacts: ["+38 067 007 0710", "+38 050 448 1411", "pan-partners.agency/uz"], image: N + "tania.jpg", qr: I + "qr-instagram-uz.svg" }, // узбекский Instagram Тани
   ],
 };

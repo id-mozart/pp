@@ -15,3 +15,4 @@
 - cover-analytics.jpg — Unsplash CielzQJR0SQ, Loui Kiær
 - cover-dairy.jpg — Unsplash SvhXD3kPSTY, Quilia
 - cover-freezer.jpg — Unsplash N6zB7z7MEvk, Eduardo Soares
+- qr-instagram-uz.svg — QR на https://www.instagram.com/tatiana.pan.sales/ (узбекский Instagram Тани)
