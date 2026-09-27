@@ -553,8 +553,8 @@ const DECK_CSS_BASE = `
   #deck-a4.big .t-table .callout{ font-size:calc(12.6pt * var(--k,1)); }
   #deck-a4.big table[data-cols="8"] td:last-child{ white-space:pre; }
   /* підібрані ширини колонок (data-opt): перший рядок задає ширини при table-layout:fixed */
-  #deck-a4.big table[data-opt] th:nth-child(1), #deck-a4.big table[data-opt] thead[style*="none"] + tbody tr:first-child > td:nth-child(1){ width:var(--w1) !important; }
-  #deck-a4.big table[data-opt][data-cols="3"] th:nth-child(2), #deck-a4.big table[data-opt][data-cols="3"] thead[style*="none"] + tbody tr:first-child > td:nth-child(2){ width:var(--w2) !important; }
+  #deck-a4.big table[data-opt] th:nth-child(1), #deck-a4.big table[data-opt] thead[style*="none"] + tbody tr:first-child > td:not(.wide):nth-child(1){ width:var(--w1) !important; }
+  #deck-a4.big table[data-opt][data-cols="3"] th:nth-child(2), #deck-a4.big table[data-opt][data-cols="3"] thead[style*="none"] + tbody tr:first-child > td:not(.wide):nth-child(2){ width:var(--w2) !important; }
   #deck-a4.big .sheet:not(.t-about):not(.t-cover):not(.t-section):not(.t-closing) .pb::after{ height:6mm; }
   /* дрібніші сторінки: трохи менше повітря над заголовком і над колонтитулом — на користь кегля */
   #deck-a4.big.frh .sheet:not(.t-cover):not(.t-section):not(.t-closing):not(.t-about) > .pb{ padding-top:6mm; }
@@ -768,6 +768,9 @@ function Sheet({ deck, i, cls, page, children, editable, onRunhead, animate }: {
       const floor = Math.min(page.type === "table" ? 0.7 : 0.62, v);
       const apply = () => { el.style.setProperty("--k", String(v)); el.style.setProperty("--kh", String(v >= 1.1 ? 1.1 : v < 0.95 ? 0.9 : 1)); };
       apply();
+      // підібрані раніше ширини колонок скидаємо: кожен підбір починається зі стандартних (детерміновано)
+      el.querySelectorAll<HTMLElement>("table[data-opt]").forEach((t) => { t.removeAttribute("data-opt"); t.style.removeProperty("--w1"); t.style.removeProperty("--w2"); });
+      apply();
       const v0 = v;
       const st = deck.big ? 0.02 : 0.04; // «великий друк»: крок дрібніший — кегль ближче до максимуму
       for (let i = 0; i < 100 && !fits() && v > floor; i++) { v = Math.round((v - st) * 100) / 100; apply(); }
@@ -775,10 +778,20 @@ function Sheet({ deck, i, cls, page, children, editable, onRunhead, animate }: {
       // але так, щоб жодне слово не вилазило за межі клітинки (слова не розриваються)
       const tb = deck.big && page.type === "table" ? el.querySelector<HTMLTableElement>("table[data-cols]:not(.ws):not([data-num]):not([data-fc])") : null;
       const nc = tb ? Number(tb.dataset.cols) : 0;
-      if (tb && (nc === 2 || nc === 3) && v < v0) {
+      const headless = !!tb && tb.querySelector<HTMLElement>("thead")?.style.display === "none";
+      const wideFirst = headless && !!tb!.querySelector("tbody tr:first-child > td.wide"); // ширини задає перший рядок — з об'єднаною клітинкою не задати
+      if (tb && (nc === 2 || nc === 3) && v < v0 && !wideFirst) {
+        const vFound = v; // кегль, знайдений зі стандартними ширинами
         const def = nc === 3 ? [19, 32] : [24];
         const setW = (w: number[]) => { tb.setAttribute("data-opt", w.join(",")); tb.style.setProperty("--w1", w[0] + "%"); if (w[1]) tb.style.setProperty("--w2", w[1] + "%"); };
-        const clean = () => !Array.from(tb.querySelectorAll<HTMLElement>("td,th")).some((c) => c.scrollWidth > c.clientWidth + 1);
+        // «чисто»: жодне слово не заходить у правий відступ клітинки (інакше колонки злипаються: «АссортиментнаяПеречень»)
+        const rng = document.createRange();
+        const clean = () => !Array.from(tb.querySelectorAll<HTMLElement>("td,th")).some((c) => {
+          if (c.scrollWidth > c.clientWidth + 1) return true;
+          const lim = c.getBoundingClientRect().right - parseFloat(getComputedStyle(c).paddingRight || "0") + 0.5;
+          rng.selectNodeContents(c);
+          return Array.from(rng.getClientRects()).some((r) => r.width > 0 && r.right > lim);
+        });
         const dist = (w: number[]) => w.reduce((a, x, j) => a + Math.abs(x - def[j]), 0);
         const cands = (nc === 3 ? [15, 17, 19, 21, 23, 25].flatMap((a) => [24, 27, 30, 32, 35, 38, 41].map((b) => [a, b])) : [16, 18, 20, 22, 24, 26, 28, 30, 33].map((a) => [a])).sort((x, y) => dist(x) - dist(y));
         setW(def); apply();
@@ -796,8 +809,14 @@ function Sheet({ deck, i, cls, page, children, editable, onRunhead, animate }: {
           // той самий кегль — беремо варіант із меншою кількістю рядків (менше переносів)
           if (best > 0) { v = best; apply(); if (fits() && clean() && tb.offsetHeight < bestH - 2) { bw = c; bestH = tb.offsetHeight; } }
         }
-        setW(bw); v = Math.max(best, floor); apply();
-        for (let i = 0; i < 80 && !fits() && v > floor; i++) { v = Math.round((v - st) * 100) / 100; apply(); }
+        if (best > 0) {
+          setW(bw); v = best; apply();
+          for (let i = 0; i < 80 && !fits() && v > floor; i++) { v = Math.round((v - st) * 100) / 100; apply(); }
+        } else {
+          // жоден варіант без розриву слів не знайшовся (довга адреса, число тощо) — лишаємо стандартні ширини і знайдений кегль
+          tb.removeAttribute("data-opt"); tb.style.removeProperty("--w1"); tb.style.removeProperty("--w2");
+          v = vFound; apply();
+        }
       }
       // поле «Нотатки» лишаємо тільки якщо на нього є хоча б 18 мм
       if (notes && notes.getBoundingClientRect().height < 98) { notes.style.display = "none"; }
@@ -934,7 +953,7 @@ function PageBody({ p, set, editable, prev, pick, showNotes = true, logo, big }:
                   <span className="pp">
                     <span className={"avatar" + (p.avatar2 ? "" : " ini")}>
                       {p.avatar2 ? <img src={p.avatar2} alt="" /> : initials(p.who2)}
-                      <ImgBtn pick={pick} current={p.avatar2} optional onPick={(v) => set({ avatar2: v || undefined })} empty={!p.avatar2} />
+                      <ImgBtn pick={pick} current={p.avatar2} optional onPick={(v) => set({ avatar2: v || undefined })} />
                     </span>
                     <span className="wt">
                       <E tag="p" value={p.who2} onChange={(v) => set({ who2: v })} editable={e} ph="другий тренер" />

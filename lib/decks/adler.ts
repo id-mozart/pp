@@ -55,7 +55,7 @@ export const ADLER_DECK: Deck = {
       "2. В продажах / управлении продажами 25+ лет",
       "3. Бизнес-тренер с 2008 года",
       "4. Коуч / ментор",
-    ], callout: "Instagram: **@tetiana_pan.sales**", image: N + "tania-profile.jpg" },
+    ], callout: "Instagram: **@tatiana.pan.sales**", image: N + "tania-profile.jpg" }, // узбекский Instagram (как на финальном слайде)
     // 3 — клиенты
     { id: "s03", type: "text", title: "Наши", titleEm: "клиенты", lead: "Более 1 500 проектов было завершено в сфере B2B и B2C:", paras: [], callout: "", image: I + "clients.png" },
     // 4 — цели тренинга

@@ -321,10 +321,10 @@ async function page(ctx: Ctx, p: DeckPage) {
       if (p.sub) s.addText(txt(p.sub), base({ x: M, y: ty + 2.7, w: colW, h: 0.8, fontFace: SERIF, fontSize: 15 * ctx.k, color: C.muted }));
       // підпис: аватар + хто/де
       const whoY = H - 1.55;
-      const person = async (who: string, av: string | undefined, y0: number, d: number) => {
+      const person = async (who: string, av: string | undefined, y0: number, d: number, second = false) => {
         let wx = M;
         if (av) { await picture(ctx, av, M, y0, d, d, "cover", true); wx = M + d + 0.2; }
-        else if (p.who2 !== undefined) { // другий тренер без фото — ініціали в колі, як на сайті
+        else if (second) { // другий тренер без фото — ініціали в колі, як на сайті
           const ini = (txt(who).split("\n")[0] || "").trim().split(/\s+/).slice(0, 2).map((w) => w[0] ?? "").join("").toUpperCase();
           s.addShape("ellipse", { x: M, y: y0, w: d, h: d, fill: { color: "F4ECDC" }, line: { color: C.amber, width: 1.2 } });
           s.addText(ini, base({ x: M, y: y0, w: d, h: d, fontFace: SERIF, fontSize: 17, color: C.acc, align: "center", valign: "middle" }));
@@ -334,7 +334,7 @@ async function page(ctx: Ctx, p: DeckPage) {
         s.addText(lines.map((l, j) => ({ text: l, options: { fontFace: j === 0 && lines.length > 1 ? SERIF : SANS, fontSize: j === 0 && lines.length > 1 ? 16 : 11.5, color: j === 0 ? C.ink : C.muted, breakLine: true } })),
           base({ x: wx, y: y0, w: 6, h: d, valign: "middle" }));
       };
-      if (p.who2 && p.who2.trim()) { await person(p.who, p.avatar, H - 2.5, 0.8); await person(p.who2, p.avatar2, H - 1.55, 0.8); }
+      if (p.who2 && p.who2.trim()) { await person(p.who, p.avatar, H - 2.5, 0.8); await person(p.who2, p.avatar2, H - 1.55, 0.8, true); }
       else await person(p.who, p.avatar, whoY - 0.15, 0.85);
       s.addText(txt(p.when).toUpperCase(), base({ x: amp ? W - M - 4 : M, y: amp ? H - 0.85 : H - 0.62, w: 4, h: 0.3, fontFace: MONO, fontSize: amp ? 10 : 7.8, color: C.faint, charSpacing: 3, align: amp ? "right" : "left", valign: "middle" }));
       if (!amp) {
@@ -534,7 +534,7 @@ async function page(ctx: Ctx, p: DeckPage) {
         : cols >= 7 ? (() => { const mx = Array.from({ length: cols - 1 }, (_, ci) => Math.max(7, ...p.rows.map((r) => (r[ci + 1] ?? "").replace(/\*\*/g, "").split("\n").reduce((a, l) => Math.max(a, l.length), 0))) + 2); const sm = mx.reduce((a, b) => a + b, 0); return [0.25, ...mx.map((v) => (0.75 * v) / sm)]; })()
         : [0.2, ...Array(cols - 1).fill(0.8 / (cols - 1))];
       // ширини, підібрані сайтом для цієї сторінки (найбільший кегль без розриву слів)
-      const cw0 = ctx.web?.w, opt = cw0 && (cols === 2 || cols === 3) && cw0.length === cols - 1 && !fcText && !numeric && !ws ? cw0.map((x) => x / 100) : null;
+      const cw0 = ctx.big ? ctx.web?.w : undefined, opt = cw0 && (cols === 2 || cols === 3) && cw0.length === cols - 1 && !fcText && !numeric && !ws ? cw0.map((x) => x / 100) : null;
       if (opt) { frac.splice(0, frac.length, ...opt, 1 - opt.reduce((a, b) => a + b, 0)); }
       const colW = frac.map((f) => f * TW);
       const availH = H - 0.95 - (y + 0.2) - (p.callout ? 1.1 : 0);

@@ -144,7 +144,7 @@ const UI_CSS = `
   #deck-ui [data-tr="fade"] > .slot.in.go{ animation-name:trFadeIn; animation-timing-function:ease; }
   #deck-ui [data-tr="fade"] > .slot.out.go{ animation-name:trFadeOut; animation-timing-function:ease; }
   #deck-ui [data-tr="push"] > .slot.in.go{ animation-name:trPushIn; } #deck-ui [data-tr="push"] > .slot.out.go{ animation-name:trPushOut; }
-  #deck-ui [data-tr="cover"] > .slot.in.go{ animation-name:trPushIn; box-shadow:-18px 0 40px rgba(0,0,0,.35); } #deck-ui [data-tr="cover"] > .slot.out.go{ animation-name:trDim; }
+  #deck-ui [data-tr="cover"] > .slot.in.go{ animation-name:trPushIn; box-shadow:calc(var(--dx,1) * -18px) 0 40px rgba(0,0,0,.35); } #deck-ui [data-tr="cover"] > .slot.out.go{ animation-name:trDim; }
   #deck-ui [data-tr="zoom"] > .slot.in.go{ animation-name:trZoomIn; animation-timing-function:cubic-bezier(.2,.7,.2,1); } #deck-ui [data-tr="zoom"] > .slot.out.go{ animation-name:trZoomOut; }
   #deck-ui [data-tr="wipe"] > .slot.in.go{ animation-name:trWipe; } #deck-ui [data-tr="wipe"] > .slot.out.go{ animation-name:trHold; }
   #deck-ui [data-tr="rise"] > .slot.in.go{ animation-name:trRiseIn; animation-timing-function:cubic-bezier(.2,.7,.2,1); } #deck-ui [data-tr="rise"] > .slot.out.go{ animation-name:trFadeOut; }
@@ -182,10 +182,10 @@ const UI_CSS = `
   #deck-ui .trbox[data-items="fade"] .slot.in .it{ animation:itFade .7s ease both; animation-delay:calc(var(--ib,0ms) + var(--i,0) * var(--is,90ms)); }
   #deck-ui .trbox[data-items="zoom"] .slot.in .it{ animation:itZoom .6s cubic-bezier(.2,.7,.2,1) both; animation-delay:calc(var(--ib,0ms) + var(--i,0) * var(--is,90ms)); }
   #deck-ui .trbox[data-items="side"] .slot.in .it{ animation:itSide .6s cubic-bezier(.2,.7,.2,1) both; animation-delay:calc(var(--ib,0ms) + var(--i,0) * var(--is,90ms)); }
-  #deck-ui .chips{ display:flex; flex-wrap:wrap; gap:5px; padding:0 2px 6px; }
-  #deck-ui .chip{ border:1px solid var(--edge); background:#fff; border-radius:999px; padding:5px 11px; font:inherit; font-size:12.5px; color:var(--ink); cursor:pointer; }
-  #deck-ui .chip:hover{ background:var(--hov); }
-  #deck-ui .chip[aria-pressed="true"]{ background:var(--acc); border-color:var(--acc); color:#fff; }
+  #deck-ui .achips{ display:flex; flex-wrap:wrap; gap:5px; padding:0 2px 6px; }
+  #deck-ui .achip{ border:1px solid var(--edge); background:#fff; border-radius:999px; padding:5px 11px; font:inherit; font-size:12.5px; color:var(--ink); cursor:pointer; }
+  #deck-ui .achip:hover{ background:var(--hov); }
+  #deck-ui .achip[aria-pressed="true"]{ background:var(--acc); border-color:var(--acc); color:#fff; }
   #deck-ui .dd.anim .mi{ padding:7px 6px; }
   #deck-ui .dd.anim .foot{ display:flex; gap:8px; padding:6px 2px 0; }
   #deck-ui .dd.anim .foot .tb{ flex:1; justify-content:center; border:1px solid var(--edge); }
@@ -308,13 +308,16 @@ export function DeckEditor({ initial, dbReady, only, bare, loadedAt, fromDb, pre
   const [leaving, setLeaving] = useState<{ idx: number; dir: 1 | -1; key: number } | null>(null);
   const [itemsDelay, setItemsDelay] = useState(0); // поява елементів починається, коли перехід майже завершився
   const leaveT = useRef<number | undefined>(undefined);
+  const leavingRef = useRef<typeof leaving>(null); leavingRef.current = leaving;
+  useEffect(() => () => window.clearTimeout(leaveT.current), []);
   const goTo = useCallback((k: number) => {
     const cur = presentIdxRef.current;
     if (cur === null) return;
     const n = Math.min(deck.pages.length - 1, Math.max(0, k));
     if (n === cur) return;
+    const busy = leavingRef.current !== null; // натиснули ще раз посеред переходу — перемикаємо одразу, без ривка
     window.clearTimeout(leaveT.current);
-    if (anim.tr !== "none") {
+    if (anim.tr !== "none" && !busy) {
       setLeaving({ idx: cur, dir: n > cur ? 1 : -1, key: Date.now() });
       leaveT.current = window.setTimeout(() => setLeaving(null), td + 80);
       setItemsDelay(Math.round(td * 0.55));
@@ -327,7 +330,7 @@ export function DeckEditor({ initial, dbReady, only, bare, loadedAt, fromDb, pre
     document.documentElement.requestFullscreen?.().catch(() => {});
     setTimeout(() => presentRef.current?.focus(), 50);
   };
-  const stopPresent = useCallback(() => { setPresent(null); if (document.fullscreenElement) document.exitFullscreen?.().catch(() => {}); }, []);
+  const stopPresent = useCallback(() => { window.clearTimeout(leaveT.current); setLeaving(null); setPresent(null); if (document.fullscreenElement) document.exitFullscreen?.().catch(() => {}); }, []);
   useEffect(() => {
     if (present === null) return;
     const onKey = (e: KeyboardEvent) => {
@@ -519,11 +522,11 @@ export function DeckEditor({ initial, dbReady, only, bare, loadedAt, fromDb, pre
         <Menu label="Анімація" icon={IC.anim} ddCls="anim" title="Переходи між слайдами і поява елементів у показі">
           <TrPreview anim={anim} />
           <div className="hd">Перехід між слайдами</div>
-          <div className="chips">{TR_OPTS.map(([v, l]) => <button key={v} type="button" className="chip" aria-pressed={anim.tr === v} onClick={() => setAnim({ tr: v })}>{l}</button>)}</div>
+          <div className="achips">{TR_OPTS.map(([v, l]) => <button key={v} type="button" className="achip" aria-pressed={anim.tr === v} onClick={() => setAnim({ tr: v })}>{l}</button>)}</div>
           <div className="hd">Швидкість переходу</div>
-          <div className="chips">{SPEED_OPTS.map(([v, l]) => <button key={v} type="button" className="chip" aria-pressed={anim.speed === v} disabled={anim.tr === "none"} onClick={() => setAnim({ speed: v })}>{l}</button>)}</div>
+          <div className="achips">{SPEED_OPTS.map(([v, l]) => <button key={v} type="button" className="achip" aria-pressed={anim.speed === v} disabled={anim.tr === "none"} onClick={() => setAnim({ speed: v })}>{l}</button>)}</div>
           <div className="hd">Поява елементів на слайді</div>
-          <div className="chips">{ITEM_OPTS.map(([v, l]) => <button key={v} type="button" className="chip" aria-pressed={anim.items === v} onClick={() => setAnim({ items: v })}>{l}</button>)}</div>
+          <div className="achips">{ITEM_OPTS.map(([v, l]) => <button key={v} type="button" className="achip" aria-pressed={anim.items === v} onClick={() => setAnim({ items: v })}>{l}</button>)}</div>
           <MenuCheck on={anim.seq} onClick={() => setAnim({ seq: !anim.seq })} hint="Заголовок, пункти, картки зʼявляються один за одним; інакше — разом">По черзі</MenuCheck>
           <MenuCheck on={anim.pptx} onClick={() => setAnim({ pptx: !anim.pptx })} hint="Той самий перехід між слайдами у файлі PowerPoint (поява елементів — лише в показі на сайті)">Переходи в PPTX</MenuCheck>
           <div className="foot"><button type="button" className="tb" data-close onClick={() => startPresent(cur)}><Ic d={IC.play} fill /> Спробувати з поточної сторінки</button></div>
