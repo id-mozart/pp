@@ -548,7 +548,13 @@ const DECK_CSS_BASE = `
   #deck-a4 .t-cover .cv.bnd .who .w{ position:absolute !important; right:0 !important; bottom:14mm !important; }
   #deck-a4.big .t-table .callout{ font-size:calc(12.6pt * var(--k,1)); }
   #deck-a4.big table[data-cols="8"] td:last-child{ white-space:pre; }
+  /* підібрані ширини колонок (data-opt): перший рядок задає ширини при table-layout:fixed */
+  #deck-a4.big table[data-opt] th:nth-child(1), #deck-a4.big table[data-opt] thead[style*="none"] + tbody tr:first-child > td:nth-child(1){ width:var(--w1) !important; }
+  #deck-a4.big table[data-opt][data-cols="3"] th:nth-child(2), #deck-a4.big table[data-opt][data-cols="3"] thead[style*="none"] + tbody tr:first-child > td:nth-child(2){ width:var(--w2) !important; }
   #deck-a4.big .sheet:not(.t-about):not(.t-cover):not(.t-section):not(.t-closing) .pb::after{ height:6mm; }
+  /* дрібніші сторінки: трохи менше повітря над заголовком і над колонтитулом — на користь кегля */
+  #deck-a4.big.frh .sheet:not(.t-cover):not(.t-section):not(.t-closing):not(.t-about) > .pb{ padding-top:6mm; }
+  #deck-a4.big .sheet:not(.t-about):not(.t-cover):not(.t-section):not(.t-closing) .pb::after{ height:5mm; }
   #deck-a4.big .t-table table{ margin-top:2.5mm; }
 `;
 const DECK_CSS = DECK_CSS_BASE + DIAGRAM_CSS;
@@ -758,7 +764,37 @@ function Sheet({ deck, i, cls, page, children, editable, onRunhead, animate }: {
       const floor = Math.min(page.type === "table" ? 0.7 : 0.62, v);
       const apply = () => { el.style.setProperty("--k", String(v)); el.style.setProperty("--kh", String(v >= 1.1 ? 1.1 : v < 0.95 ? 0.9 : 1)); };
       apply();
-      for (let i = 0; i < 80 && !fits() && v > floor; i++) { v = Math.round((v - 0.04) * 100) / 100; apply(); }
+      const v0 = v;
+      const st = deck.big ? 0.02 : 0.04; // «великий друк»: крок дрібніший — кегль ближче до максимуму
+      for (let i = 0; i < 100 && !fits() && v > floor; i++) { v = Math.round((v - st) * 100) / 100; apply(); }
+      // «великий друк», таблиці на 2–3 колонки: підбираємо ширини колонок, за яких кегль найбільший,
+      // але так, щоб жодне слово не вилазило за межі клітинки (слова не розриваються)
+      const tb = deck.big && page.type === "table" ? el.querySelector<HTMLTableElement>("table[data-cols]:not(.ws):not([data-num]):not([data-fc])") : null;
+      const nc = tb ? Number(tb.dataset.cols) : 0;
+      if (tb && (nc === 2 || nc === 3) && v < v0) {
+        const def = nc === 3 ? [19, 32] : [24];
+        const setW = (w: number[]) => { tb.setAttribute("data-opt", w.join(",")); tb.style.setProperty("--w1", w[0] + "%"); if (w[1]) tb.style.setProperty("--w2", w[1] + "%"); };
+        const clean = () => !Array.from(tb.querySelectorAll<HTMLElement>("td,th")).some((c) => c.scrollWidth > c.clientWidth + 1);
+        const dist = (w: number[]) => w.reduce((a, x, j) => a + Math.abs(x - def[j]), 0);
+        const cands = (nc === 3 ? [15, 17, 19, 21, 23, 25].flatMap((a) => [24, 27, 30, 32, 35, 38, 41].map((b) => [a, b])) : [16, 18, 20, 22, 24, 26, 28, 30, 33].map((a) => [a])).sort((x, y) => dist(x) - dist(y));
+        setW(def); apply();
+        let best = clean() ? v : 0, bw = def, bestH = tb.offsetHeight;
+        for (const c of cands) {
+          setW(c);
+          const up = Math.round((Math.max(best, floor) + st) * 100) / 100;
+          if (up <= v0 + 1e-9) {
+            v = up; apply();
+            if (fits() && clean()) {
+              while (v + st <= v0 + 1e-9) { v = Math.round((v + st) * 100) / 100; apply(); if (!fits() || !clean()) { v = Math.round((v - st) * 100) / 100; break; } }
+              apply(); best = v; bw = c; bestH = tb.offsetHeight; continue;
+            }
+          }
+          // той самий кегль — беремо варіант із меншою кількістю рядків (менше переносів)
+          if (best > 0) { v = best; apply(); if (fits() && clean() && tb.offsetHeight < bestH - 2) { bw = c; bestH = tb.offsetHeight; } }
+        }
+        setW(bw); v = Math.max(best, floor); apply();
+        for (let i = 0; i < 80 && !fits() && v > floor; i++) { v = Math.round((v - st) * 100) / 100; apply(); }
+      }
       // поле «Нотатки» лишаємо тільки якщо на нього є хоча б 18 мм
       if (notes && notes.getBoundingClientRect().height < 98) { notes.style.display = "none"; }
       el.removeAttribute("data-measuring");

@@ -387,7 +387,15 @@ export function DeckEditor({ initial, dbReady, only, bare, loadedAt, fromDb, pre
       try {
         // масштаб кегля кожної сторінки — той, що підібрав сайт (--k на аркуші)
         const scale = (i: number) => { const v = parseFloat(document.querySelectorAll<HTMLElement>("#deck-ui .pages .sheet")[i]?.style.getPropertyValue("--k") || ""); return Number.isFinite(v) ? v : undefined; };
-        await exportDeckPptx(deck, { snap, scale, onProgress: (i, n) => setPptxBusy(`${i} / ${n}`) });
+        // підібрані сайтом ширини колонок таблиці і фактичний кегль основного тексту сторінки (pt)
+        const web = (i: number) => {
+          const sh = document.querySelectorAll<HTMLElement>("#deck-ui .pages .sheet")[i];
+          const w = sh?.querySelector<HTMLElement>("table[data-opt]")?.dataset.opt;
+          const c = sh?.querySelector<HTMLElement>("table:not(.ws) td:not(:first-child):not(.wide), ul.bul li:not([data-head]):not([data-caps])");
+          const fs = c ? parseFloat(getComputedStyle(c).fontSize) * 0.75 : NaN;
+          return { w: w ? w.split(",").map(Number) : undefined, fs: Number.isFinite(fs) ? fs : undefined };
+        };
+        await exportDeckPptx(deck, { snap, scale, web, onProgress: (i, n) => setPptxBusy(`${i} / ${n}`) });
       } finally { window.requestAnimationFrame = rafOrig; }
     } catch (e) {
       console.error(e);

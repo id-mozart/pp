@@ -58,7 +58,7 @@ function runs(v: string, opts: TextProps = {}, first: TextProps = {}, last: Text
   return parts.map((x, k) => ({ text: x.t, options: { ...opts, ...(x.b ? { bold: true } : {}), ...(k === 0 ? first : {}), ...(k === parts.length - 1 ? last : {}) } }));
 }
 
-export async function exportDeckPptx(deck: Deck, opts: { snap?: Snap; scale?: (pageIndex: number) => number | undefined; onProgress?: (i: number, n: number) => void } = {}) {
+export async function exportDeckPptx(deck: Deck, opts: { snap?: Snap; scale?: (pageIndex: number) => number | undefined; web?: (pageIndex: number) => { w?: number[]; fs?: number } | undefined; onProgress?: (i: number, n: number) => void } = {}) {
   const PptxGenJS = (await import("pptxgenjs")).default;
   const pptx = new PptxGenJS();
   pptx.defineLayout({ name: "A4L", width: W, height: H });
@@ -78,7 +78,7 @@ export async function exportDeckPptx(deck: Deck, opts: { snap?: Snap; scale?: (p
     const dom = fixed ? undefined : opts.scale?.(i);
     const kp = dom && Number.isFinite(dom) ? Math.min(1.8, Math.max(0.6, dom)) : k * Math.min(1.4, Math.max(0.7, p.fs ?? 1));
     const kh = kp >= 1.1 ? 1.1 : kp < 0.95 ? 0.9 : 1; // заголовки ростуть слабше, як на сайті
-    const ctx: Ctx = { pptx, s, deck, i, total, k: kp, kh, snap: opts.snap, big: !!deck.big };
+    const ctx: Ctx = { pptx, s, deck, i, total, k: kp, kh, snap: opts.snap, big: !!deck.big, web: opts.web?.(i) };
     chrome(ctx, p);
     await page(ctx, p);
   }
@@ -95,7 +95,7 @@ export async function exportDeckPptx(deck: Deck, opts: { snap?: Snap; scale?: (p
   setTimeout(() => URL.revokeObjectURL(a.href), 30000);
 }
 
-type Ctx = { pptx: Pptx; s: Slide; deck: Deck; i: number; total: number; k: number; kh: number; snap?: Snap; big: boolean };
+type Ctx = { pptx: Pptx; s: Slide; deck: Deck; i: number; total: number; k: number; kh: number; snap?: Snap; big: boolean; web?: { w?: number[]; fs?: number } };
 
 // без автопідбору кегля: розміри вже підібрані сайтом; рамки рахуємо із запасом, щоб Keynote/PowerPoint не зменшували текст
 const base = (o: TextProps = {}): TextProps => ({ fontFace: SANS, color: C.ink, margin: 0, valign: "top", fit: "none", ...o });
@@ -225,6 +225,9 @@ function bulletList(ctx: Ctx, y: number, items: string[], wIn: number, size = 12
       : (two ? listLines(items, f, cw) / 2 * 1.1 : listLines(items, f, cw)) * f * 1.38 / 72 + items.length * (two ? 0.05 : 0.09);
     while (fs < 24 && hOf(fs * 1.04) < avail * 0.97) fs *= 1.04;
     while (fs > 9 && hOf(fs) > avail) fs *= 0.96;
+    // фактичний кегль сайту (там уміщення перевірене) — нижня межа; PowerPoint-рядки щільніші за вебові
+    const wf = ctx.web?.fs;
+    if (wf && size >= 12 && wf * 0.97 > fs) fs = Math.min(wf * 0.97, 24);
   }
   // «великий друк»: довгі списки — у дві колонки (розрив перед пунктом верхнього рівня, ближчим до середини)
   if (ctx.big && items.length >= 10 && wIn > 8) {
@@ -514,6 +517,9 @@ async function page(ctx: Ctx, p: DeckPage) {
         : cols === 3 ? [0.2, 0.34, 0.46]
         : cols >= 7 ? (() => { const mx = Array.from({ length: cols - 1 }, (_, ci) => Math.max(7, ...p.rows.map((r) => (r[ci + 1] ?? "").replace(/\*\*/g, "").split("\n").reduce((a, l) => Math.max(a, l.length), 0))) + 2); const sm = mx.reduce((a, b) => a + b, 0); return [0.25, ...mx.map((v) => (0.75 * v) / sm)]; })()
         : [0.2, ...Array(cols - 1).fill(0.8 / (cols - 1))];
+      // ширини, підібрані сайтом для цієї сторінки (найбільший кегль без розриву слів)
+      const cw0 = ctx.web?.w, opt = cw0 && (cols === 2 || cols === 3) && cw0.length === cols - 1 && !fcText && !numeric && !ws ? cw0.map((x) => x / 100) : null;
+      if (opt) { frac.splice(0, frac.length, ...opt, 1 - opt.reduce((a, b) => a + b, 0)); }
       const colW = frac.map((f) => f * TW);
       const availH = H - 0.95 - (y + 0.2) - (p.callout ? 1.1 : 0);
       const none = { type: "none" as const }, bLine = (c: string, pt: number) => [none, none, { type: "solid" as const, color: c, pt }, none];
@@ -530,6 +536,14 @@ async function page(ctx: Ctx, p: DeckPage) {
       if (ctx.big && !ws) while (fs < 16 && tot(fs * 1.04) <= availH) fs *= 1.04;
       ({ hh, rh } = heights(fs));
       for (let it = 0; it < 30 && hh + rh.reduce((a, b) => a + b, 0) > availH && fs > 8; it++) { fs *= 0.95; ({ hh, rh } = heights(fs)); }
+      // «великий друк»: сайт уже перевірив, що таблиця вміщається цим кеглем (Arial вужчий за Inter) — не дрібнішаємо,
+      // а мінімальні висоти рядків стискаємо пропорційно до вільного місця (рядок сам виросте під текст)
+      const wf = ctx.web?.fs;
+      if (ctx.big && !ws && wf && wf * 0.97 > fs) {
+        fs = wf * 0.97; ({ hh, rh } = heights(fs));
+        const sum = hh + rh.reduce((a, b) => a + b, 0);
+        if (sum > availH) { const f = Math.max(0.5, (availH - hh) / (sum - hh)); rh = rh.map((h) => h * f); }
+      }
       // робочий аркуш: порожні рядки ділять вільну висоту (до колонтитула)
       if (ws) {
         const blank = p.rows.map((r) => !isWide(r) && r.slice(1).every((c) => !c.trim()));

@@ -51,6 +51,11 @@ export const ADLER_DECK: Deck = {
     { id: "c1", type: "cover", ...COVER, variant: "photo", avatar: N + "tania-profile.jpg", image: I + "cover-shelf.jpg" },
     { id: "c2", type: "cover", ...COVER, variant: "full", image: I + "cover-aisle.jpg" },
     { id: "c3", type: "cover", ...COVER, variant: "band", image: I + "cover-tags.jpg" },
+    { id: "c4", type: "cover", ...COVER, variant: "full", image: I + "cover-gelato.jpg" },
+    { id: "c5", type: "cover", ...COVER, variant: "band", image: I + "cover-wall.jpg" },
+    { id: "c6", type: "cover", ...COVER, variant: "photo", avatar: N + "tania-profile.jpg", image: I + "cover-analytics.jpg" },
+    { id: "c7", type: "cover", ...COVER, variant: "band", image: I + "cover-dairy.jpg" },
+    { id: "c8", type: "cover", ...COVER, variant: "photo", avatar: N + "tania-profile.jpg", image: I + "cover-freezer.jpg" },
 
     // 2 — о тренере (как в источнике: 4 пункта + фото)
     { id: "s02", type: "bullets", title: "Татьяна", titleEm: "Пан", lead: "", items: [
