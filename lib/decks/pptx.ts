@@ -149,10 +149,11 @@ const zf = (ctx: Ctx, k: string) => { const v = ctx.fz?.[k]; return v && Number.
 
 function title(ctx: Ctx, y: number, t: string, em: string, wIn = W - 2 * M, size = 26) {
   const runs: { text: string; options?: TextProps }[] = [];
-  if (t) runs.push({ text: txt(t), options: { color: C.ink } });
-  if (em) runs.push({ text: (t && !/-$/.test(t.trim()) ? " " : "") + txt(em), options: { color: C.amber, italic: true } });
+  const fs0 = size * ctx.kh, zt = zf(ctx, "title"), ze = zf(ctx, "titleEm"); // заголовок і акцент — окремі поля
+  if (t) runs.push({ text: txt(t), options: { color: C.ink, fontSize: fs0 * zt } });
+  if (em) runs.push({ text: (t && !/-$/.test(t.trim()) ? " " : "") + txt(em), options: { color: C.amber, italic: true, fontSize: fs0 * ze } });
   if (!runs.length) return y;
-  const fs = size * ctx.kh * zf(ctx, "title");
+  const fs = fs0 * Math.max(t ? zt : 0, em ? ze : 0);
   const lines = Math.max(1, Math.ceil(((t + " " + em).length * fs * 0.57) / (wIn * 72)));
   const h = (lines * fs * 1.15) / 72 + 0.08;
   ctx.s.addText(runs, base({ x: M, y, w: wIn, h, fontFace: SERIF, fontSize: fs }));
@@ -289,7 +290,7 @@ async function page(ctx: Ctx, p: DeckPage) {
         await lockup(ctx, true);
         const cw = 5.8, fs = 50 * zf(ctx, "title");
         if (p.eyebrow) s.addText(txt(p.eyebrow).toUpperCase(), base({ x: M, y: 1.7, w: cw, h: 0.35, fontFace: MONO, fontSize: 10 * zf(ctx, "eyebrow"), color: "F0B450", charSpacing: 4, valign: "middle" }));
-        s.addText([{ text: txt(p.title), options: { color: C.sheet } }, ...(p.titleEm ? [{ text: "\n" + txt(p.titleEm), options: { color: "F0B450", italic: true, fontSize: fs * 0.6 } }] : [])],
+        s.addText([{ text: txt(p.title), options: { color: C.sheet } }, ...(p.titleEm ? [{ text: "\n" + txt(p.titleEm), options: { color: "F0B450", italic: true, fontSize: 50 * 0.6 * zf(ctx, "titleEm") } }] : [])],
           base({ x: M, y: 2.2, w: cw, h: 2.8, fontFace: SERIF, fontSize: fs, valign: "top" }));
         const whoLines = txt(p.who).split("\n");
         s.addShape("line", { x: M, y: H - 1.75, w: 4.2, h: 0, line: { color: "D9CDB9", width: 0.5, transparency: 40 } as any });
@@ -304,7 +305,7 @@ async function page(ctx: Ctx, p: DeckPage) {
         if (p.image) await picture(ctx, p.image, 0, by0, W, H * 0.44, "cover", false, false, [0.5, 0.78]);
         await lockup(ctx, false);
         if (p.eyebrow) s.addText(txt(p.eyebrow).toUpperCase(), base({ x: M, y: bh + 0.3, w: 6, h: 0.3, fontFace: MONO, fontSize: 10 * zf(ctx, "eyebrow"), color: C.acc, charSpacing: 4, valign: "middle" }));
-        s.addText([{ text: txt(p.title), options: { color: C.ink } }, ...(p.titleEm ? [{ text: " " + txt(p.titleEm), options: { color: C.amber, italic: true } }] : [])],
+        s.addText([{ text: txt(p.title), options: { color: C.ink } }, ...(p.titleEm ? [{ text: " " + txt(p.titleEm), options: { color: C.amber, italic: true, fontSize: 42 * zf(ctx, "titleEm") } }] : [])],
           base({ x: M, y: bh + 0.62, w: 7.2, h: 1.45, fontFace: SERIF, fontSize: 42 * zf(ctx, "title"), valign: "top" }));
         const whoLines = txt(p.who).split("\n");
         s.addText(whoLines.map((l, j) => ({ text: l, options: { fontFace: j === 0 && whoLines.length > 1 ? SERIF : SANS, fontSize: (j === 0 && whoLines.length > 1 ? 16 : 11.5) * zf(ctx, "who"), color: j === 0 ? C.ink : C.muted, breakLine: true } })),
@@ -321,7 +322,7 @@ async function page(ctx: Ctx, p: DeckPage) {
       if (p.eyebrow) s.addText(txt(p.eyebrow).toUpperCase(), base({ x: amp ? W - M - 4 : M, y: amp ? 0.42 : 1.5, w: amp ? 4 : colW, h: 0.35, fontFace: MONO, fontSize: (amp ? 10 : 8.5) * zf(ctx, "eyebrow"), color: C.acc, charSpacing: 4, align: amp ? "right" : "left", valign: "middle" }));
       const ty = amp ? 2.4 : 2.0;
       const fs = (amp ? 44 : 46) * ctx.k * zf(ctx, "title");
-      s.addText([{ text: txt(p.title), options: { color: C.ink } }, ...(p.titleEm ? [{ text: txt(p.titleEm), options: { color: C.amber, italic: true, fontSize: fs * (p.variant === "photo" ? 0.56 : 0.64), breakLine: false } }] : [])].map((r, j) => j === 1 ? { ...r, text: "\n" + r.text } : r),
+      s.addText([{ text: txt(p.title), options: { color: C.ink } }, ...(p.titleEm ? [{ text: txt(p.titleEm), options: { color: C.amber, italic: true, fontSize: (fs / zf(ctx, "title")) * (p.variant === "photo" ? 0.56 : 0.64) * zf(ctx, "titleEm"), breakLine: false } }] : [])].map((r, j) => j === 1 ? { ...r, text: "\n" + r.text } : r),
         base({ x: M, y: ty, w: colW, h: 2.6, fontFace: SERIF, fontSize: fs, valign: "top" }));
       if (p.sub) s.addText(txt(p.sub), base({ x: M, y: ty + 2.7, w: colW, h: 0.8, fontFace: SERIF, fontSize: 15 * ctx.k * zf(ctx, "sub"), color: C.muted }));
       // підпис: аватар + хто/де

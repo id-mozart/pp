@@ -721,7 +721,7 @@ function Title({ p, set, editable, className }: { p: { title: string; titleEm: s
     <h1 className={className}>
       <E fk="title" value={p.title} onChange={(v) => set({ title: v })} editable={editable} ph="Заголовок" />{/-$/.test(p.title.trim()) ? "" : " "}
       <em>
-        <E fk="title" value={p.titleEm} onChange={(v) => set({ titleEm: v })} editable={editable} ph="акцент" />
+        <E fk="titleEm" value={p.titleEm} onChange={(v) => set({ titleEm: v })} editable={editable} ph="акцент" />
       </em>
     </h1>
   );
