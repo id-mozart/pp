@@ -177,6 +177,8 @@ const UI_CSS = `
   #deck-ui .fzbar button:hover:not(:disabled){ background:rgba(240,180,80,.28); }
   #deck-ui .fzbar button:disabled{ opacity:.35; cursor:default; }
   #deck-ui .fzbar .rs{ font-weight:400; }
+  #deck-ui .fzbar .ov{ margin-left:4px; padding:3px 8px; border-radius:6px; background:#D9342B; color:#fff; font-size:11px; font-weight:600; }
+  #deck-ui .pages .sheet[data-over]{ outline:2.5px solid #D9342B; outline-offset:-2.5px; }
   /* меню «Анімація» */
   #deck-ui .dd.anim{ width:344px; padding:10px; max-height:calc(100vh - 70px); overflow:auto; }
   #deck-ui .trbox{ position:relative; height:150px; border-radius:9px; overflow:hidden; background:#241a12; margin:2px 0 4px; }
@@ -253,7 +255,7 @@ export function DeckEditor({ initial, dbReady, only, bare, loadedAt, fromDb, pre
       const mod = e.metaKey || e.ctrlKey;
       // ⌘⇧> / ⌘⇧< — розмір поля, в якому стоїть курсор (за фізичною клавішею: . і ,)
       if (mod && e.shiftKey && (e.code === "Period" || e.code === "Comma")) {
-        const ae = document.activeElement as HTMLElement | null;
+        const an = document.getSelection()?.anchorNode, ae = (an ? (an.nodeType === 1 ? an : an.parentElement) : document.activeElement) as HTMLElement | null;
         const el = ae?.closest?.<HTMLElement>("[data-fk]"), sh = el?.closest<HTMLElement>(".sheet");
         if (el && sh && el.isContentEditable) { e.preventDefault(); bumpFieldRef.current(e.code === "Period" ? 1 : -1, { i: Number(sh.dataset.page) - 1, fk: el.dataset.fk! }); }
         return;
@@ -290,8 +292,9 @@ export function DeckEditor({ initial, dbReady, only, bare, loadedAt, fromDb, pre
     }),
   })), []); // eslint-disable-line react-hooks/exhaustive-deps
   const fieldEl = (i: number, fk: string) => {
-    const ae = document.activeElement as HTMLElement | null;
-    if (ae?.dataset?.fk === fk && ae.closest(`.sheet[data-page="${i + 1}"]`)) return ae;
+    const an = document.getSelection()?.anchorNode, ae = (an ? (an.nodeType === 1 ? an : an.parentElement) : null) as HTMLElement | null;
+    const cur = ae?.closest?.<HTMLElement>("[data-fk]");
+    if (cur?.dataset.fk === fk && cur.closest(`.sheet[data-page="${i + 1}"]`)) return cur;
     return document.querySelector<HTMLElement>(`#deck-ui .pages .sheet[data-page="${i + 1}"] [data-fk="${fk}"]`);
   };
   const bumpField = useCallback((dir: -1 | 1 | 0, sel = fzSel) => {
@@ -305,19 +308,25 @@ export function DeckEditor({ initial, dbReady, only, bare, loadedAt, fromDb, pre
     if (bare) return;
     const root = document.querySelector("#deck-ui .pages");
     if (!root) return;
-    const onIn = (e: Event) => {
-      const el = (e.target as HTMLElement | null)?.closest?.<HTMLElement>("[data-fk]");
+    // поле визначаємо за курсором: у списку й таблиці це конкретний пункт/клітинка, а не весь блок
+    const pick = (node: Node | null | undefined) => {
+      const e0 = node ? (node.nodeType === 1 ? (node as HTMLElement) : node.parentElement) : null;
+      const el = e0?.closest?.<HTMLElement>("[data-fk]");
       const sh = el?.closest<HTMLElement>(".sheet");
-      if (!el || !sh || !el.isContentEditable) return;
-      setFzSel({ i: Number(sh.dataset.page) - 1, fk: el.dataset.fk! });
+      if (!el || !sh || !el.isContentEditable || !root.contains(el)) return false;
+      const next = { i: Number(sh.dataset.page) - 1, fk: el.dataset.fk! };
+      setFzSel((cur) => (cur && cur.i === next.i && cur.fk === next.fk ? cur : next));
+      return true;
     };
+    const onIn = (e: Event) => { if (!pick(document.getSelection()?.anchorNode)) pick(e.target as Node); };
+    const onSelChange = () => { const a = document.activeElement; if (a && root.contains(a)) pick(document.getSelection()?.anchorNode); };
     const onOut = (e: Event) => {
       const to = (e as FocusEvent).relatedTarget as HTMLElement | null;
       if (to && to.closest?.(".fzbar, [data-fk]")) return;
       setFzSel(null);
     };
-    root.addEventListener("focusin", onIn); root.addEventListener("focusout", onOut);
-    return () => { root.removeEventListener("focusin", onIn); root.removeEventListener("focusout", onOut); };
+    root.addEventListener("focusin", onIn); root.addEventListener("focusout", onOut); document.addEventListener("selectionchange", onSelChange);
+    return () => { root.removeEventListener("focusin", onIn); root.removeEventListener("focusout", onOut); document.removeEventListener("selectionchange", onSelChange); };
   }, [bare]);
   // позиція панелі: над полем (або під ним, якщо зверху немає місця); оновлюємо при прокрутці, зміні розміру і правках
   useLayoutEffect(() => {
@@ -544,7 +553,7 @@ export function DeckEditor({ initial, dbReady, only, bare, loadedAt, fromDb, pre
           const sh = document.querySelectorAll<HTMLElement>("#deck-ui .pages .sheet")[i];
           const w = sh?.querySelector<HTMLElement>("table[data-opt]")?.dataset.opt;
           const c = sh?.querySelector<HTMLElement>("table:not(.ws) td:not(:first-child):not(.wide), ul.bul li:not([data-head]):not([data-caps])");
-          const fs = c ? parseFloat(getComputedStyle(c).fontSize) * 0.75 : NaN;
+          const fs = c ? (c.dataset.fzb ? parseFloat(c.dataset.fzb) : parseFloat(getComputedStyle(c).fontSize)) * 0.75 : NaN; // базовий кегль, без розміру окремого поля
           return { w: w ? w.split(",").map(Number) : undefined, fs: Number.isFinite(fs) ? fs : undefined };
         };
         await exportDeckPptx(deck, { snap, scale, web, onProgress: (i, n) => setPptxBusy(`${i} / ${n}`) });
@@ -701,6 +710,7 @@ export function DeckEditor({ initial, dbReady, only, bare, loadedAt, fromDb, pre
       </div>
       {!bare && fzSel && fzPos && (() => {
         const z = deck.pages[fzSel.i]?.fz?.[fzSel.fk] ?? 1;
+        const over = !!document.querySelector(`#deck-ui .pages .sheet[data-page="${fzSel.i + 1}"][data-over]`);
         return (
           <div className="fzbar" style={{ left: fzPos.x, top: fzPos.y }} onMouseDown={(e) => e.preventDefault()} role="toolbar" aria-label="Розмір тексту поля">
             <span className="lb">Розмір поля</span>
@@ -708,6 +718,7 @@ export function DeckEditor({ initial, dbReady, only, bare, loadedAt, fromDb, pre
             <b>{Math.round(z * 100)}%</b>
             <button type="button" title="Більше (⌘⇧>)" onClick={() => bumpField(1)} disabled={z >= FZ_MAX}>A+</button>
             <button type="button" className="rs" title="Як було (100%)" onClick={() => bumpField(0)} disabled={Math.abs(z - 1) < 0.001}>↺</button>
+            {over ? <span className="ov" title="Текст виходить за межі сторінки — зменште це поле">не вміщається</span> : null}
           </div>
         );
       })()}

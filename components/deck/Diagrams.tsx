@@ -1,7 +1,7 @@
 "use client";
 
-import { useRef } from "react";
-import { useFz } from "@/components/deck/fz";
+import { useContext, useRef } from "react";
+import { FzCtx, FzSetCtx, fzAttrs, remapListFz, useFz } from "@/components/deck/fz";
 
 /**
  * Схеми для сторінок типу «diagram»: відтворені з pptx-джерел у фірмових кольорах деки.
@@ -172,11 +172,18 @@ function L({ value, onChange, editable, className, tag: Tag = "span", fk }: { va
 
 function Ul({ items, onChange, editable, fk }: { items: string[]; onChange: (v: string[]) => void; editable: boolean; fk?: string }) {
   const ref = useRef<HTMLUListElement>(null);
-  const fz = useFz(fk);
+  const fzMap = useContext(FzCtx), setFz = useContext(FzSetCtx);
   return (
-    <ul {...fz} ref={ref} contentEditable={editable || undefined} suppressContentEditableWarning
-      onBlur={() => { const v = Array.from(ref.current?.querySelectorAll("li") ?? []).map((li) => li.innerText.replace(/ /g, " ").trim()).filter(Boolean); if (JSON.stringify(v) !== JSON.stringify(items)) onChange(v.length ? v : [""]); }}>
-      {items.map((it, k) => <li key={k}>{it}</li>)}
+    <ul ref={ref} contentEditable={editable || undefined} suppressContentEditableWarning
+      onBlur={() => {
+        const v = Array.from(ref.current?.querySelectorAll("li") ?? []).map((li) => li.innerText.replace(/\u00a0/g, " ").trim()).filter(Boolean);
+        if (JSON.stringify(v) !== JSON.stringify(items)) {
+          const next = v.length ? v : [""];
+          onChange(next);
+          if (fk && setFz) { const re = remapListFz(fzMap, fk, items, next); if (re !== fzMap) setFz(re); }
+        }
+      }}>
+      {items.map((it, k) => <li key={k} {...fzAttrs(fzMap, fk ? `${fk}.${k}` : undefined)}>{it}</li>)}
     </ul>
   );
 }

@@ -204,19 +204,20 @@ async function sideImage(ctx: Ctx, image: string | undefined) {
 }
 
 /** Абзаци списку: «1. …» — без маркера, «- …» — підпункт (другий рівень), інакше помаранчева крапка. */
-function listParas(items: string[], extra: TextProps = {}) {
-  return items.flatMap((t) => {
+function listParas(items: string[], extra: TextProps = {}, zs?: number[]) {
+  return items.flatMap((t, idx) => {
     const sub = /^- /.test(t); let t0 = sub ? t.slice(2) : t;
     const head = /^\*\*[^*]+\*\*$/.test(t0.trim());
     const nm = t0.match(/^\s*(\d+)([.)])\s+/);
-    const fs0 = (extra.fontSize as number) || 14;
+    const z = zs?.[idx] ?? 1; // розмір окремого пункту (page.fz)
+    const fs0 = ((extra.fontSize as number) || 14) * z;
     let first: TextProps;
     if (nm) { // справжня нумерація: висячий відступ, перенос під текст, а не під номер
       t0 = t0.slice(nm[0].length);
       first = { bullet: { type: "number", style: nm[2] === ")" ? "arabicParenR" : "arabicPeriod", startAt: Number(nm[1]), indent: Math.round(fs0 * 1.25) } as any, ...(sub ? { indentLevel: 1 } : {}) };
     } else if (head) first = { bullet: false as const };
     else first = { bullet: { indent: Math.round(fs0 * 0.9), code: "2022", color: C.acc } as any, ...(sub ? { indentLevel: 1 } : {}) };
-    return runs(t0, { color: C.ink, ...extra }, { ...first, lineSpacingMultiple: 1.12 } as TextProps, { breakLine: true, paraSpaceAfter: sub ? 3 : 6 });
+    return runs(t0, { color: C.ink, ...extra, ...(z !== 1 ? { fontSize: fs0 } : {}) }, { ...first, lineSpacingMultiple: 1.12 } as TextProps, { breakLine: true, paraSpaceAfter: sub ? 3 : 6 });
   });
 }
 function listLines(items: string[], fs: number, wIn: number) {
@@ -237,9 +238,8 @@ function bulletList(ctx: Ctx, y: number, items: string[], wIn: number, size = 12
     // фактичний кегль сайту (там уміщення перевірене) — нижня межа; PowerPoint-рядки щільніші за вебові
     const wf = ctx.web?.fs;
     if (wf && size >= 12 && wf * 0.97 > fs) fs = Math.min(wf * 0.97, 24);
-    // поле збільшене/зменшене вручну: сайт уже перерахував кегль сторінки з урахуванням цього — беремо його і множимо
-    if (Math.abs(zf(ctx, zk) - 1) > 0.001) fs = (wf && size >= 12 ? wf * 0.97 : fs) * zf(ctx, zk);
-  } else fs *= zf(ctx, zk);
+  }
+  const zs = items.map((_, i) => zf(ctx, `${zk}.${i}`)); // розмір окремих пунктів
   // «великий друк»: довгі списки — у дві колонки (розрив перед пунктом верхнього рівня, ближчим до середини)
   if (ctx.big && items.length >= 10 && wIn > 8) {
     // розрив там, де обсяг тексту ділиться навпіл (як на сайті)
@@ -251,10 +251,10 @@ function bulletList(ctx: Ctx, y: number, items: string[], wIn: number, size = 12
     if (gh.length === 1) { // дві групи: перша (і заголовок другої) — на всю ширину, друга група — у дві колонки
       const top = items.slice(0, gh[0] + 1), rest = items.slice(gh[0] + 1);
       const h1 = (top.reduce((a, t) => a + Math.max(1, Math.ceil((t.replace(/\*\*/g, "").length * fs * 0.5) / ((wIn - (fs * 0.95) / 72 - 0.1) * 72))), 0) * fs * 1.24) / 72 + top.length * 0.07 + 0.04;
-      ctx.s.addText(listParas(top, { fontSize: fs }), base({ x: M, y: y + 0.15, w: wIn, h: h1, fontSize: fs }));
-      const half = Math.ceil(rest.length / 2), parts2 = [rest.slice(0, half), rest.slice(half)];
+      ctx.s.addText(listParas(top, { fontSize: fs }, zs.slice(0, gh[0] + 1)), base({ x: M, y: y + 0.15, w: wIn, h: h1, fontSize: fs }));
+      const half = Math.ceil(rest.length / 2), parts2 = [rest.slice(0, half), rest.slice(half)], zr2 = zs.slice(gh[0] + 1), zp2 = [zr2.slice(0, half), zr2.slice(half)];
       const h2 = Math.max(...parts2.map((it) => (listLines(it, fs, cw) * fs * 1.38) / 72 + it.length * 0.09 + 0.1));
-      parts2.forEach((it, j) => ctx.s.addText(listParas(it, { fontSize: fs }), base({ x: M + j * (cw + 0.45), y: y + 0.1 + h1, w: cw, h: h2, fontSize: fs })));
+      parts2.forEach((it, j) => ctx.s.addText(listParas(it, { fontSize: fs }, zp2[j]), base({ x: M + j * (cw + 0.45), y: y + 0.1 + h1, w: cw, h: h2, fontSize: fs })));
       return y + 0.15 + h1 + h2;
     }
     for (let j = 1; j < items.length && bestD >= 0; j++) {
@@ -263,13 +263,13 @@ function bulletList(ctx: Ctx, y: number, items: string[], wIn: number, size = 12
       const d = Math.abs(acc - tot / 2) + (/^- /.test(items[j]) && !isHead(items[j]) ? tot * 0.04 : 0);
       if (d < bestD) { bestD = d; mid = j; }
     }
-    const parts = [items.slice(0, mid), items.slice(mid)];
+    const parts = [items.slice(0, mid), items.slice(mid)], zp = [zs.slice(0, mid), zs.slice(mid)];
     const h = Math.min(H - 0.9 - y, Math.max(...parts.map((it) => (listLines(it, fs, cw) * fs * 1.45) / 72 + it.length * 0.09 + 0.1)));
-    parts.forEach((it, j) => ctx.s.addText(listParas(it, { fontSize: fs }), base({ x: M + j * (cw + 0.45), y: y + 0.15, w: cw, h, fontSize: fs })));
+    parts.forEach((it, j) => ctx.s.addText(listParas(it, { fontSize: fs }, zp[j]), base({ x: M + j * (cw + 0.45), y: y + 0.15, w: cw, h, fontSize: fs })));
     return y + 0.15 + h;
   }
   const h = Math.min(H - 0.9 - y, (listLines(items, fs, wIn) * fs * 1.45) / 72 + items.length * 0.09 + 0.1);
-  ctx.s.addText(listParas(items, { fontSize: fs }), base({ x: M, y: y + 0.15, w: wIn, h, fontSize: fs }));
+  ctx.s.addText(listParas(items, { fontSize: fs }, zs), base({ x: M, y: y + 0.15, w: wIn, h, fontSize: fs }));
   return y + 0.15 + h;
 }
 
@@ -361,8 +361,8 @@ async function page(ctx: Ctx, p: DeckPage) {
         const cw = colW / p.stats.length;
         p.stats.forEach((st, j) => {
           if (j) s.addShape("line", { x: M + j * cw, y: y + 0.05, w: 0, h: 0.95, line: { color: C.line, width: 0.5 } });
-          s.addText(txt(st.n), base({ x: M + j * cw + (j ? 0.15 : 0), y, w: cw - 0.2, h: 0.4, fontFace: SERIF, italic: true, fontSize: 18 * zf(ctx, "stats.n"), color: C.acc, valign: "middle" }));
-          s.addText(txt(st.t), base({ x: M + j * cw + (j ? 0.15 : 0), y: y + 0.42, w: cw - 0.2, h: 0.62, fontSize: 8.5 * ctx.k * zf(ctx, "stats.t"), color: C.muted }));
+          s.addText(txt(st.n), base({ x: M + j * cw + (j ? 0.15 : 0), y, w: cw - 0.2, h: 0.4, fontFace: SERIF, italic: true, fontSize: 18 * zf(ctx, `stats.${j}.n`), color: C.acc, valign: "middle" }));
+          s.addText(txt(st.t), base({ x: M + j * cw + (j ? 0.15 : 0), y: y + 0.42, w: cw - 0.2, h: 0.62, fontSize: 8.5 * ctx.k * zf(ctx, `stats.${j}.t`), color: C.muted }));
         });
         y += 1.1;
       }
@@ -417,10 +417,10 @@ async function page(ctx: Ctx, p: DeckPage) {
       let y = title(ctx, 1.0, p.title, p.titleEm, wIn);
       y = lead(ctx, y, p.lead, wIn);
       if (p.paras.length) {
-        const fs = 12 * ctx.k * zf(ctx, "paras");
+        const fs = 12 * ctx.k;
         const est = p.paras.reduce((a, t) => a + Math.max(1, Math.ceil((t.length * fs * 0.57) / (wIn * 72))), 0);
         const h = Math.min(H - 1.0 - y - (p.callout ? 1.2 : 0), (est * fs * 1.55) / 72 + p.paras.length * 0.12 + 0.1);
-        s.addText(p.paras.flatMap((t) => runs(t, {}, {}, { breakLine: true, paraSpaceAfter: 8 })), base({ x: M, y: y + 0.15, w: wIn, h, fontSize: fs }));
+        s.addText(p.paras.flatMap((t, j) => runs(t, zf(ctx, `paras.${j}`) !== 1 ? { fontSize: fs * zf(ctx, `paras.${j}`) } : {}, {}, { breakLine: true, paraSpaceAfter: 8 })), base({ x: M, y: y + 0.15, w: wIn, h, fontSize: fs }));
         y += 0.15 + h;
       }
       callout(ctx, y, p.callout, wIn);
@@ -435,7 +435,7 @@ async function page(ctx: Ctx, p: DeckPage) {
         // сітка як на сайті: 2 → 2, 4 → 2×2, до 6 → 3, далі 4 колонки; висота картки — за вмістом, мінімум 28 мм·k
         const n = items.length, cols = n <= 2 ? Math.max(1, n) : n === 4 ? 2 : n <= 6 ? 3 : 4, rows = Math.ceil(n / cols), gap = cols === 4 ? 0.18 : 0.24;
         const cw = (wIn - gap * (cols - 1)) / cols, availH = H - 0.95 - (y + 0.28) - (p.callout ? 1.1 : 0);
-        const fs = 11.5 * ctx.k * zf(ctx, "items"), nfs = 20 * ctx.k, pad = 0.24;
+        const fs = 11.5 * ctx.k, nfs = 20 * ctx.k, pad = 0.24;
         const parsed = items.map((it, j) => { const m = it.match(/^\s*(\d+)\s*[.)]\s*(.*)$/s); return { num: (m ? m[1] : String(j + 1)).padStart(2, "0"), body: m ? m[2] : it }; });
         const chOf = (body: string) => { const lines = Math.max(1, Math.ceil((body.length * fs * 0.57) / ((cw - 2 * pad) * 72))); return Math.max(1.1 * ctx.k, pad + nfs / 72 + 0.1 + (lines * fs * 1.45) / 72 + pad); };
         const ch = Math.min((availH - gap * (rows - 1)) / rows, Math.max(...parsed.map((x) => chOf(x.body))));
@@ -444,12 +444,13 @@ async function page(ctx: Ctx, p: DeckPage) {
           s.addShape("rect", { x: cx, y: cy, w: cw, h: ch, fill: { color: C.band }, line: { color: C.band } });
           s.addShape("rect", { x: cx, y: cy, w: cw, h: 0.035, fill: { color: C.amber }, line: { color: C.amber } });
           s.addText(num, base({ x: cx + pad, y: cy + pad - 0.02, w: cw - 2 * pad, h: nfs / 72 + 0.1, fontFace: SERIF, italic: true, fontSize: nfs, color: C.acc }));
-          s.addText(runs(body), base({ x: cx + pad, y: cy + pad + nfs / 72 + 0.1, w: cw - 2 * pad, h: ch - (pad + nfs / 72 + 0.1) - pad * 0.6, fontSize: fs }));
+          s.addText(runs(body), base({ x: cx + pad, y: cy + pad + nfs / 72 + 0.1, w: cw - 2 * pad, h: ch - (pad + nfs / 72 + 0.1) - pad * 0.6, fontSize: fs * zf(ctx, `items.${j}`) }));
         });
         y += 0.28 + rows * (ch + gap);
       } else if (p.variant === "bubbles" && !p.image) {
-        const fs = 12.5 * ctx.k * zf(ctx, "items");
-        items.forEach((it) => {
+        const fs0 = 12.5 * ctx.k;
+        items.forEach((it, j) => {
+          const fs = fs0 * zf(ctx, `items.${j}`);
           const lines = Math.max(1, Math.ceil((it.length * fs * 0.57) / ((wIn - 0.9) * 72)));
           const h = (lines * fs * 1.45) / 72 + 0.3;
           s.addShape("roundRect", { x: M, y: y + 0.18, w: wIn - 0.5, h, fill: { color: C.band }, line: { color: C.line, width: 0.5 }, rectRadius: 0.15 });
@@ -473,7 +474,7 @@ async function page(ctx: Ctx, p: DeckPage) {
       const wts = ctx.big && n === 2 ? (() => { const L = p.cols.map((c) => c.items.join(" ").length + c.head.length + 40); const r = Math.min(1.5, Math.max(1 / 1.5, L[0] / L[1])); return [r, 1]; })() : p.cols.map(() => 1);
       const wsum = wts.reduce((a, b) => a + b, 0), cws = wts.map((x) => ((wIn - gap * (n - 1)) * x) / wsum), cw = Math.min(...cws);
       const heads = p.cols.some((c) => c.head.trim());
-      let fs = 12.2 * ctx.k * zf(ctx, "cols.i"); const hfs = 13.5 * ctx.k * zf(ctx, "cols.h"), availH = H - 0.95 - (y + 0.25);
+      let fs = 12.2 * ctx.k; const hfs = 13.5 * ctx.k, availH = H - 0.95 - (y + 0.25);
       const hOf = (c: { head: string; items: string[] }, j: number) => {
         const w = cws[j];
         const hl = heads ? Math.max(1, Math.ceil((c.head.length * hfs * 0.6) / ((w - 2 * pad) * 72))) : 0;
@@ -488,8 +489,8 @@ async function page(ctx: Ctx, p: DeckPage) {
         const cxw = cws[j], cx = M + cws.slice(0, j).reduce((a, b) => a + b, 0) + j * gap, hh = hs[j].hh;
         s.addShape("rect", { x: cx, y: y + 0.25, w: cxw, h: ch, fill: { color: C.band }, line: { color: C.band } });
         s.addShape("rect", { x: cx, y: y + 0.25, w: cxw, h: 0.035, fill: { color: C.amber }, line: { color: C.amber } });
-        if (c.head.trim()) s.addText(txt(c.head), base({ x: cx + pad, y: y + 0.25 + pad, w: cxw - 2 * pad, h: hh, fontFace: SERIF, italic: true, fontSize: hfs, color: C.acc }));
-        s.addText(listParas(c.items, { fontSize: fs }), base({ x: cx + pad, y: y + 0.25 + pad + hh + (hh ? 0.12 : 0), w: cxw - 2 * pad, h: ch - pad - hh - 0.12 - pad * 0.6, fontSize: fs }));
+        if (c.head.trim()) s.addText(txt(c.head), base({ x: cx + pad, y: y + 0.25 + pad, w: cxw - 2 * pad, h: hh, fontFace: SERIF, italic: true, fontSize: hfs * zf(ctx, `cols.${j}.h`), color: C.acc }));
+        s.addText(listParas(c.items, { fontSize: fs }, c.items.map((_, i) => zf(ctx, `cols.${j}.i.${i}`))), base({ x: cx + pad, y: y + 0.25 + pad + hh + (hh ? 0.12 : 0), w: cxw - 2 * pad, h: ch - pad - hh - 0.12 - pad * 0.6, fontSize: fs }));
       });
       callout(ctx, y + 0.25 + ch, p.callout ?? "", wIn);
       break;
@@ -499,7 +500,7 @@ async function page(ctx: Ctx, p: DeckPage) {
       let y = title(ctx, 1.0, p.title, p.titleEm, wIn);
       y = lead(ctx, y, p.lead, wIn);
       // рядки за вмістом (не розтягуємо на сторінку), колонка заголовка 60 мм, кільце-маркер і суцільна лінія, як на сайті
-      const kk = Math.min(ctx.k, 1.18), fh = 13.5 * (ctx.big ? Math.min(ctx.k, 1.5) : kk) * zf(ctx, "steps.h"), ft = (ctx.big ? 12.6 * ctx.k : 12.2 * kk) * zf(ctx, "steps.t");
+      const kk = Math.min(ctx.k, 1.18), fh = 13.5 * (ctx.big ? Math.min(ctx.k, 1.5) : kk), ft = (ctx.big ? 12.6 * ctx.k : 12.2 * kk);
       const lw = Math.min(Math.max(1.8, (Math.max(...p.steps.map((x) => x.head.length)) * fh * 0.57) / 72 + 0.6), Math.min(4.2, wIn * 0.42)), tw = wIn - lw - 0.24;
       const rhOf = (st: { head: string; text: string }) => {
         const l1 = Math.ceil((st.head.length * fh * 0.6) / ((lw - 0.45) * 72)), l2 = Math.ceil((st.text.length * ft * 0.57) / (tw * 72));
@@ -513,8 +514,8 @@ async function page(ctx: Ctx, p: DeckPage) {
         const rh = rhs[j] * sc;
         s.addShape("ellipse", { x: M, y: sy + 0.04, w: 0.24, h: 0.24, fill: { color: C.sheet }, line: { color: C.amber, width: 1.5 } });
         s.addShape("ellipse", { x: M + 0.07, y: sy + 0.11, w: 0.1, h: 0.1, fill: { color: C.amber }, line: { color: C.amber } });
-        s.addText(txt(st.head), base({ x: M + 0.42, y: sy, w: lw - 0.42, h: rh - 0.08, fontFace: SERIF, italic: true, fontSize: fh, color: C.acc }));
-        s.addText(runs(st.text), base({ x: M + lw + 0.24, y: sy, w: tw, h: rh - 0.08, fontSize: ft }));
+        s.addText(txt(st.head), base({ x: M + 0.42, y: sy, w: lw - 0.42, h: rh - 0.08, fontFace: SERIF, italic: true, fontSize: fh * zf(ctx, `steps.${j}.h`), color: C.acc }));
+        s.addText(runs(st.text), base({ x: M + lw + 0.24, y: sy, w: tw, h: rh - 0.08, fontSize: ft * zf(ctx, `steps.${j}.t`) }));
         sy += rh;
       });
       break;
@@ -546,7 +547,7 @@ async function page(ctx: Ctx, p: DeckPage) {
       const none = { type: "none" as const }, bLine = (c: string, pt: number) => [none, none, { type: "solid" as const, color: c, pt }, none];
       const lh = 1.3, padV = 0.18;
       const cellLines = (t: string, w: number, f: number) => t.split("\n").reduce((a, l) => a + Math.max(1, Math.ceil((l.replace(/\*\*/g, "").length * f * 0.47) / (Math.max(0.3, w - 0.16) * 72))), 0);
-      let fs = (ws ? 11 : 10.5) * ctx.k, hfs = (ctx.big ? 10 : 7.5) * zf(ctx, "head");
+      let fs = (ws ? 11 : 10.5) * ctx.k, hfs = ctx.big ? 10 : 7.5;
       const heights = (f: number) => {
         const hh = (Math.max(...p.head.map((h, ci) => cellLines(h, colW[ci], hfs))) * hfs * lh) / 72 + padV;
         const rh = p.rows.map((r) => isWide(r) ? (cellLines(r[0] ?? "", TW, f) * f * lh) / 72 + padV + 0.08 : (Math.max(...Array.from({ length: cols }, (_, ci) => cellLines(r[ci] ?? "", colW[ci], f))) * f * lh) / 72 + padV);
@@ -560,12 +561,7 @@ async function page(ctx: Ctx, p: DeckPage) {
       // «великий друк»: сайт уже перевірив, що таблиця вміщається цим кеглем (Arial вужчий за Inter) — не дрібнішаємо,
       // а мінімальні висоти рядків стискаємо пропорційно до вільного місця (рядок сам виросте під текст)
       const wf = ctx.web?.fs;
-      const zr = zf(ctx, "rows");
-      if (Math.abs(zr - 1) > 0.001) { // рядки таблиці збільшені/зменшені вручну — від кегля сайту (якщо є) або від розрахованого
-        fs = (ctx.big && !ws && wf ? wf * 0.97 : fs) * zr; ({ hh, rh } = heights(fs));
-        const sum = hh + rh.reduce((a, b) => a + b, 0);
-        if (sum > availH) { const f = Math.max(0.5, (availH - hh) / (sum - hh)); rh = rh.map((h) => h * f); }
-      } else if (ctx.big && !ws && wf && wf * 0.97 > fs) {
+      if (ctx.big && !ws && wf && wf * 0.97 > fs) {
         fs = wf * 0.97; ({ hh, rh } = heights(fs));
         const sum = hh + rh.reduce((a, b) => a + b, 0);
         if (sum > availH) { const f = Math.max(0.5, (availH - hh) / (sum - hh)); rh = rh.map((h) => h * f); }
@@ -577,12 +573,12 @@ async function page(ctx: Ctx, p: DeckPage) {
         if (nb0) { const each = Math.max(0.6, (availH - used) / nb0); rh = rh.map((h, j) => (blank[j] ? each : h)); }
       }
       const head = p.head.map((h, ci) => ({ text: ctx.big ? txt(h) : txt(h).toUpperCase(), options: ctx.big
-        ? { color: C.ink, fontFace: SANS, bold: true, fontSize: hfs, valign: "bottom" as const, ...(cols >= 7 && ci > 0 ? { align: "right" as const } : {}), border: bLine(C.ink, 0.75) }
-        : { color: C.faint, fontFace: MONO, fontSize: hfs, charSpacing: 1.5, valign: "bottom" as const, border: bLine(C.ink, 0.75) } }));
+        ? { color: C.ink, fontFace: SANS, bold: true, fontSize: hfs * zf(ctx, `head.${ci}`), valign: "bottom" as const, ...(cols >= 7 && ci > 0 ? { align: "right" as const } : {}), border: bLine(C.ink, 0.75) }
+        : { color: C.faint, fontFace: MONO, fontSize: hfs * zf(ctx, `head.${ci}`), charSpacing: 1.5, valign: "bottom" as const, border: bLine(C.ink, 0.75) } }));
       const firstStyle = fcText ? {} : ctx.big ? { bold: true, color: "8E4213" } : { fontFace: SERIF, italic: true, color: C.acc };
-      const body = p.rows.map((r) => isWide(r)
-        ? [{ text: runs(r[0] ?? "") as any, options: { colspan: cols, fontSize: fs, fill: { color: C.band }, border: bLine(C.line, 0.5) } }]
-        : Array.from({ length: cols }, (_, ci) => ({ text: runs(r[ci] ?? "") as any, options: { fontSize: ci === 0 && !fcText ? (ctx.big ? fs : 11 * ctx.k) : fs, ...(ci === 0 ? firstStyle : {}), ...(cols >= 7 && ci > 0 ? { align: "right" as const } : {}), border: bLine(C.line, 0.5) } })));
+      const body = p.rows.map((r, ri) => isWide(r)
+        ? [{ text: runs(r[0] ?? "") as any, options: { colspan: cols, fontSize: fs * zf(ctx, `rows.${ri}.0`), fill: { color: C.band }, border: bLine(C.line, 0.5) } }]
+        : Array.from({ length: cols }, (_, ci) => ({ text: runs(r[ci] ?? "") as any, options: { fontSize: (ci === 0 && !fcText ? (ctx.big ? fs : 11 * ctx.k) : fs) * zf(ctx, `rows.${ri}.${ci}`), ...(ci === 0 ? firstStyle : {}), ...(cols >= 7 && ci > 0 ? { align: "right" as const } : {}), border: bLine(C.line, 0.5) } })));
       const ty = y + 0.2;
       const noHead = p.head.every((h) => !h.trim());
       if (noHead) hh = 0;
@@ -610,7 +606,7 @@ async function page(ctx: Ctx, p: DeckPage) {
       for (let j = 0; j < n; j++) {
         const g = p.images[j], gx = M + j * (cw + gap);
         await picture(ctx, g.src, gx, y + 0.25, cw, ih);
-        s.addText(txt(g.cap), base({ x: gx, y: y + 0.3 + ih, w: cw, h: 0.4, fontFace: SERIF, italic: true, fontSize: 11 * ctx.k * zf(ctx, "cap"), color: C.muted, align: "center" }));
+        s.addText(txt(g.cap), base({ x: gx, y: y + 0.3 + ih, w: cw, h: 0.4, fontFace: SERIF, italic: true, fontSize: 11 * ctx.k * zf(ctx, `cap.${j}`), color: C.muted, align: "center" }));
       }
       break;
     }

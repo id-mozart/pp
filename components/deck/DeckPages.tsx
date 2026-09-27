@@ -3,7 +3,7 @@
 import { createContext, useContext, useLayoutEffect, useRef, useState } from "react";
 import { deckT, splitBold } from "@/lib/decks/i18n";
 import { DIAGRAM_CSS, Diagram } from "@/components/deck/Diagrams";
-import { FzCtx, useFz } from "@/components/deck/fz";
+import { FzCtx, FzSetCtx, fzAttrs, remapListFz, useFz } from "@/components/deck/fz";
 import type { Deck, DeckPage } from "@/lib/decks/types";
 
 /**
@@ -173,7 +173,7 @@ const DECK_CSS_BASE = `
   #deck-a4 .t-cover:has(.cv.amp) .who{ border-top:0; padding-bottom:6mm; }
   /* підпис під аватаром у два рядки: імʼя (перший рядок) крупніше, роль — під ним; дата — у правому нижньому куті */
   #deck-a4 .t-cover:has(.cv.amp) .who.av .wt > p:first-child{ white-space:pre-line; font-size:14.5pt; line-height:1.35; color:var(--muted); }
-  #deck-a4 .t-cover:has(.cv.amp) .who.av .wt > p:first-child::first-line{ font-family:var(--font-spectral),serif; font-size:22pt; font-weight:500; color:var(--ink); }
+  #deck-a4 .t-cover:has(.cv.amp) .who.av .wt > p:first-child::first-line{ font-family:var(--font-spectral),serif; font-size:1.517em; font-weight:500; color:var(--ink); }
   #deck-a4 .t-cover:has(.cv.amp) .who .avatar{ width:24mm; height:24mm; }
   #deck-a4 .t-cover:has(.cv.amp) .who .w{ position:absolute; right:16mm; bottom:14mm; margin:0; font-size:11pt; }
   #deck-a4 .t-cover:has(.cv.amp) .foot{ display:none; }
@@ -671,10 +671,9 @@ function EList({
   // Після кожного blur список перемонтовується (key), щоб нативно створені браузером <li>
   // (Enter у contentEditable) не лишались поруч із React-рендером і не дублювались.
   const [rev, setRev] = useState(0);
-  const fz = useFz(fk);
+  const fzMap = useContext(FzCtx), setFz = useContext(FzSetCtx);
   return (
     <ul
-      {...fz}
       key={rev}
       ref={ref}
       className={className}
@@ -683,12 +682,17 @@ function EList({
       onBlur={() => {
         const lis = Array.from(ref.current?.querySelectorAll("li") ?? []);
         const v = lis.map((li) => { const t = readRich(li); return t ? (li.dataset.sub ? "- " : "") + t : ""; }).filter(Boolean);
-        if (JSON.stringify(v) !== JSON.stringify(items)) onChange(v.length ? v : [""]);
+        if (JSON.stringify(v) !== JSON.stringify(items)) {
+          const next = v.length ? v : [""];
+          onChange(next);
+          // розміри окремих пунктів ідуть за своїм текстом, коли пункти вставили чи видалили
+          if (fk && setFz) { const re = remapListFz(fzMap, fk, items, next); if (re !== fzMap) setFz(re); }
+        }
         setRev((r) => r + 1);
       }}
     >
       {items.map((it, i) => (
-        <li key={i} style={spanTo !== undefined && i <= spanTo ? { columnSpan: "all" } : breakAt === i ? { breakBefore: "column" } : undefined} data-head={/^\*\*[^*]+\*\*$/.test(it.trim()) ? "1" : undefined} data-caps={!/^- /.test(it) && /\p{Lu}{3}/u.test(it) && !/\p{Ll}/u.test(it.replace(/\*\*/g, "")) ? "1" : undefined} data-num={/^\s*\d+\s*[.)]/.test(it) ? "1" : undefined} data-sub={/^- /.test(it) ? "1" : undefined}>{rich(it.replace(/^- /, ""))}</li>
+        <li key={i} {...fzAttrs(fzMap, fk ? `${fk}.${i}` : undefined)} style={spanTo !== undefined && i <= spanTo ? { columnSpan: "all" } : breakAt === i ? { breakBefore: "column" } : undefined} data-head={/^\*\*[^*]+\*\*$/.test(it.trim()) ? "1" : undefined} data-caps={!/^- /.test(it) && /\p{Lu}{3}/u.test(it) && !/\p{Ll}/u.test(it.replace(/\*\*/g, "")) ? "1" : undefined} data-num={/^\s*\d+\s*[.)]/.test(it) ? "1" : undefined} data-sub={/^- /.test(it) ? "1" : undefined}>{rich(it.replace(/^- /, ""))}</li>
       ))}
     </ul>
   );
@@ -777,6 +781,9 @@ function Sheet({ deck, i, cls, page, children, editable, onRunhead, animate }: {
       const floor = Math.min(page.type === "table" ? 0.7 : 0.62, v);
       const apply = () => { el.style.setProperty("--k", String(v)); el.style.setProperty("--kh", String(v >= 1.1 ? 1.1 : v < 0.95 ? 0.9 : 1)); };
       apply();
+      // розміри окремих полів (page.fz) під час підбору вимкнені: кегль сторінки рахується так, ніби їх немає,
+      // тож зміна одного поля не зачіпає решту тексту сторінки
+      el.querySelectorAll<HTMLElement>("[data-fzs]").forEach((n) => { n.style.removeProperty("font-size"); n.removeAttribute("data-fzs"); n.removeAttribute("data-fzb"); });
       // підібрані раніше ширини колонок скидаємо: кожен підбір починається зі стандартних (детерміновано)
       el.querySelectorAll<HTMLElement>("table[data-opt]").forEach((t) => { t.removeAttribute("data-opt"); t.style.removeProperty("--w1"); t.style.removeProperty("--w2"); });
       apply();
@@ -827,6 +834,17 @@ function Sheet({ deck, i, cls, page, children, editable, onRunhead, animate }: {
           v = vFound; apply();
         }
       }
+      // тепер — розмір окремих полів: ЛИШЕ кегль позначеного поля (і вкладених у нього елементів) = базовий × множник.
+      // Спершу читаємо всі базові кеглі, потім записуємо (інакше вкладені успадкували б уже збільшений).
+      const plan: { n: HTMLElement; px: number; b: number }[] = [];
+      el.querySelectorAll<HTMLElement>("[data-fz]").forEach((f) => {
+        const z = Number(f.dataset.fz);
+        if (!(z > 0) || Math.abs(z - 1) < 0.001) return;
+        [f, ...Array.from(f.querySelectorAll<HTMLElement>("*"))].forEach((n) => { if (n.closest(".imgbtn")) return; const b = parseFloat(getComputedStyle(n).fontSize); if (b > 0) plan.push({ n, px: b * z, b }); });
+      });
+      plan.forEach(({ n, px, b }) => { n.style.setProperty("font-size", px.toFixed(2) + "px", "important"); n.dataset.fzs = "1"; n.dataset.fzb = String(b); });
+      // збільшене поле не вміщається — позначаємо аркуш (редактор покаже попередження), решту тексту не зменшуємо
+      if (plan.length && !fits()) el.setAttribute("data-over", "1"); else el.removeAttribute("data-over");
       // поле «Нотатки» лишаємо тільки якщо на нього є хоча б 18 мм
       if (notes && notes.getBoundingClientRect().height < 98) { notes.style.display = "none"; }
       el.removeAttribute("data-measuring");
@@ -904,9 +922,9 @@ export function DeckPages({
           <div key={p.id} style={{ position: "relative" }}>
             {renderControls?.(i)}
             <Sheet deck={deck} i={i} cls={"t-" + p.type} page={p} editable={editable} onRunhead={rh} animate={animate}>
-              <FzCtx.Provider value={p.fz}>
+              <FzCtx.Provider value={p.fz}><FzSetCtx.Provider value={(next) => set({ fz: next })}>
                 <PageBody p={p} set={set} editable={editable} prev={deck.pages[i - 1]} pick={editable ? pickImage : undefined} showNotes={deck.notes !== false} logo={deck.logo} big={deck.big} />
-              </FzCtx.Provider>
+              </FzSetCtx.Provider></FzCtx.Provider>
             </Sheet>
           </div>
         );
@@ -1005,8 +1023,8 @@ function PageBody({ p, set, editable, prev, pick, showNotes = true, logo, big }:
                 <div className="stats">
                   {p.stats.map((st, k) => (
                     <div className="stat" key={k}>
-                      <E fk="stats.n" tag="div" className="n" value={st.n} onChange={(v) => set({ stats: p.stats!.map((x, j) => (j === k ? { ...x, n: v } : x)) })} editable={e} ph="" />
-                      <E fk="stats.t" tag="div" className="t" value={st.t} onChange={(v) => set({ stats: p.stats!.map((x, j) => (j === k ? { ...x, t: v } : x)) })} editable={e} ph="" />
+                      <E fk={`stats.${k}.n`} tag="div" className="n" value={st.n} onChange={(v) => set({ stats: p.stats!.map((x, j) => (j === k ? { ...x, n: v } : x)) })} editable={e} ph="" />
+                      <E fk={`stats.${k}.t`} tag="div" className="t" value={st.t} onChange={(v) => set({ stats: p.stats!.map((x, j) => (j === k ? { ...x, t: v } : x)) })} editable={e} ph="" />
                     </div>
                   ))}
                 </div>
@@ -1074,7 +1092,7 @@ function PageBody({ p, set, editable, prev, pick, showNotes = true, logo, big }:
           <Title p={p} set={set} editable={e} />
           <E fk="lead" tag="p" className="lead" value={p.lead} onChange={(v) => set({ lead: v })} editable={e} ph="лід" />
           {p.paras.map((t, k) => (
-            <E fk="paras"
+            <E fk={`paras.${k}`}
               key={k}
               tag="p"
               className="para"
@@ -1098,7 +1116,7 @@ function PageBody({ p, set, editable, prev, pick, showNotes = true, logo, big }:
               return (
                 <div className="card" key={k}>
                   <div className="n">{(n || String(k + 1)).padStart(2, "0")}</div>
-                  <E fk="items" tag="div" className="t" value={t} onChange={(v) => set({ items: p.items.map((x, j) => (j === k ? (n ? `${n}. ${v}` : v) : x)) })} editable={e} ph="…" />
+                  <E fk={`items.${k}`} tag="div" className="t" value={t} onChange={(v) => set({ items: p.items.map((x, j) => (j === k ? (n ? `${n}. ${v}` : v) : x)) })} editable={e} ph="…" />
                 </div>
               );
             })}
@@ -1106,7 +1124,7 @@ function PageBody({ p, set, editable, prev, pick, showNotes = true, logo, big }:
         ) : p.variant === "bubbles" ? (
           <div className="bubbles">
             {p.items.map((it, k) => (
-              <E fk="items" key={k} tag="div" className="bubble" value={it} onChange={(v) => set({ items: p.items.map((x, j) => (j === k ? v : x)) })} editable={e} ph="…" />
+              <E fk={`items.${k}`} key={k} tag="div" className="bubble" value={it} onChange={(v) => set({ items: p.items.map((x, j) => (j === k ? v : x)) })} editable={e} ph="…" />
             ))}
           </div>
         ) : (
@@ -1147,9 +1165,9 @@ function PageBody({ p, set, editable, prev, pick, showNotes = true, logo, big }:
               <div className="col" key={k}>
                 {!e && p.cols.every((x) => !x.head) ? null : <h3>
                   {chipFor(c.head) ? <span className={"chip " + chipFor(c.head)} /> : null}
-                  <E fk="cols.h" value={c.head} onChange={(v) => set({ cols: p.cols.map((x, j) => (j === k ? { ...x, head: v } : x)) })} editable={e} ph="підзаголовок" />
+                  <E fk={`cols.${k}.h`} value={c.head} onChange={(v) => set({ cols: p.cols.map((x, j) => (j === k ? { ...x, head: v } : x)) })} editable={e} ph="підзаголовок" />
                 </h3>}
-                <EList fk="cols.i" className="bul sm" items={c.items} onChange={(v) => set({ cols: p.cols.map((x, j) => (j === k ? { ...x, items: v } : x)) })} editable={e} />
+                <EList fk={`cols.${k}.i`} className="bul sm" items={c.items} onChange={(v) => set({ cols: p.cols.map((x, j) => (j === k ? { ...x, items: v } : x)) })} editable={e} />
               </div>
             ))}
           </div>
@@ -1176,8 +1194,8 @@ function PageBody({ p, set, editable, prev, pick, showNotes = true, logo, big }:
             {p.steps.map((st, k) => (
               <div className="step" key={k}>
                 <span className="dot" />
-                <E fk="steps.h" tag="div" className="h" value={st.head} onChange={(v) => set({ steps: p.steps.map((x, j) => (j === k ? { ...x, head: v } : x)) })} editable={e} ph="крок" />
-                <E fk="steps.t" tag="div" className="t" value={st.text} onChange={(v) => set({ steps: p.steps.map((x, j) => (j === k ? { ...x, text: v } : x)) })} editable={e} ph="опис" />
+                <E fk={`steps.${k}.h`} tag="div" className="h" value={st.head} onChange={(v) => set({ steps: p.steps.map((x, j) => (j === k ? { ...x, head: v } : x)) })} editable={e} ph="крок" />
+                <E fk={`steps.${k}.t`} tag="div" className="t" value={st.text} onChange={(v) => set({ steps: p.steps.map((x, j) => (j === k ? { ...x, text: v } : x)) })} editable={e} ph="опис" />
               </div>
             ))}
           </div>
@@ -1205,7 +1223,7 @@ function PageBody({ p, set, editable, prev, pick, showNotes = true, logo, big }:
               <tr>
                 {p.head.map((h, k) => (
                   <th key={k}>
-                    <E fk="head" value={h} onChange={(v) => set({ head: p.head.map((x, j) => (j === k ? v : x)) })} editable={e} ph="—" />
+                    <E fk={`head.${k}`} value={h} onChange={(v) => set({ head: p.head.map((x, j) => (j === k ? v : x)) })} editable={e} ph="—" />
                   </th>
                 ))}
               </tr>
@@ -1214,15 +1232,15 @@ function PageBody({ p, set, editable, prev, pick, showNotes = true, logo, big }:
               {p.rows.map((r, ri) => (
                 <tr key={ri} data-chip={chipFor(r[0] ?? "") ?? undefined} data-filled={ws && r.slice(1).some((c) => c.trim()) ? "1" : undefined}>
                   {isWide(r) ? (
-                    <E fk="rows" tag="td" value={r[0] ?? ""} onChange={(v) => set({ rows: p.rows.map((row, j) => (j === ri ? p.head.map((__, c) => (c === 0 ? v : row[c] ?? "")) : row)) })} editable={e} ph="" className="wide" attrs={{ colSpan: p.head.length }} />
+                    <E fk={`rows.${ri}.0`} tag="td" value={r[0] ?? ""} onChange={(v) => set({ rows: p.rows.map((row, j) => (j === ri ? p.head.map((__, c) => (c === 0 ? v : row[c] ?? "")) : row)) })} editable={e} ph="" className="wide" attrs={{ colSpan: p.head.length }} />
                   ) : p.head.map((_, ci) => (
                     ci === 0 && chipFor(r[0] ?? "") ? (
                       <td key={ci}>
                         <span className={"chip " + chipFor(r[0] ?? "")} />
-                        <E fk="rows" value={r[0] ?? ""} onChange={(v) => set({ rows: p.rows.map((row, j) => (j === ri ? p.head.map((__, c) => (c === 0 ? v : row[c] ?? "")) : row)) })} editable={e} ph="" />
+                        <E fk={`rows.${ri}.0`} value={r[0] ?? ""} onChange={(v) => set({ rows: p.rows.map((row, j) => (j === ri ? p.head.map((__, c) => (c === 0 ? v : row[c] ?? "")) : row)) })} editable={e} ph="" />
                       </td>
                     ) : (
-                    <E fk="rows"
+                    <E fk={`rows.${ri}.${ci}`}
                       key={ci}
                       tag="td"
                       value={r[ci] ?? ""}
@@ -1254,7 +1272,7 @@ function PageBody({ p, set, editable, prev, pick, showNotes = true, logo, big }:
               <figure key={k}>
                 <img src={im.src} alt="" />
                 <ImgBtn pick={pick} current={im.src} optional={false} onPick={(v) => set({ images: p.images.map((x, j) => (j === k ? { ...x, src: v } : x)) })} />
-                <E fk="cap" tag="figcaption" value={im.cap} onChange={(v) => set({ images: p.images.map((x, j) => (j === k ? { ...x, cap: v } : x)) })} editable={e} ph="" />
+                <E fk={`cap.${k}`} tag="figcaption" value={im.cap} onChange={(v) => set({ images: p.images.map((x, j) => (j === k ? { ...x, cap: v } : x)) })} editable={e} ph="" />
               </figure>
             ))}
           </div>
