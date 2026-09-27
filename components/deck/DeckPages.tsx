@@ -1,6 +1,7 @@
 "use client";
 
-import { useLayoutEffect, useRef, useState } from "react";
+import { createContext, useContext, useLayoutEffect, useRef, useState } from "react";
+import { deckT, splitBold } from "@/lib/decks/i18n";
 import { DIAGRAM_CSS, Diagram } from "@/components/deck/Diagrams";
 import type { Deck, DeckPage } from "@/lib/decks/types";
 
@@ -114,17 +115,18 @@ const DECK_CSS_BASE = `
   #deck-a4 .step{ display:grid; grid-template-columns:60mm 1fr; gap:6mm; padding:calc(3.2mm * var(--k,1)) 0; border-top:1px solid var(--line); align-items:baseline; }
   #deck-a4 .step:first-child{ border-top:0; }
   #deck-a4 .step .h{ font-family:var(--font-spectral),serif; font-style:italic; font-size:calc(13.5pt * min(var(--k,1), 1.18)); color:var(--acc); line-height:1.3; }
-  #deck-a4 .step .t{ font-size:calc(12.2pt * min(var(--k,1), 1.18)); line-height:1.5; }
+  #deck-a4 .step .t{ font-size:calc(12.2pt * min(var(--k,1), 1.18)); line-height:1.5; white-space:pre-line; }
 
   /* table */
   #deck-a4 table{ width:100%; border-collapse:collapse; margin-top:6mm; font-size:calc(10.5pt * var(--k,1)); line-height:1.42; }
   #deck-a4 th{ text-align:left; vertical-align:bottom; font-family:var(--font-jetbrains),monospace; font-size:7.8pt; letter-spacing:.12em; text-transform:uppercase; color:var(--faint); padding:0 6mm 2.4mm 0; border-bottom:1px solid var(--ink); font-weight:500; }
-  #deck-a4 td{ vertical-align:top; padding:calc(2.8mm * var(--k,1)) 3mm calc(2.8mm * var(--k,1)) 0; border-bottom:1px solid var(--line); }
+  #deck-a4 td{ white-space:pre-line; vertical-align:top; padding:calc(2.8mm * var(--k,1)) 3mm calc(2.8mm * var(--k,1)) 0; border-bottom:1px solid var(--line); }
   #deck-a4 td:first-child{ color:var(--acc); font-family:var(--font-spectral),serif; font-style:italic; font-size:calc(11pt * var(--k,1)); width:17%; }
   #deck-a4 table[data-num] td:first-child{ width:6%; white-space:nowrap; }
   #deck-a4 table[data-cols="4"]:not(.ws) td:nth-child(2){ width:34%; } #deck-a4 table[data-cols="4"]:not(.ws) td:nth-child(3){ width:22%; }
   #deck-a4 table[data-num][data-cols="3"] td:nth-child(3), #deck-a4 table[data-num][data-cols="3"] th:nth-child(3){ width:42%; }
-  #deck-a4 td[contenteditable]:empty{ min-height:6mm; display:block; }
+  /* порожня клітинка в редакторі: лише мінімальна висота, без display:block — інакше таблиця розвалюється і автопідбір кегля в редакторі (а з ним PDF/PPTX) дає інший результат, ніж на показі */
+  #deck-a4 td[contenteditable]:empty{ height:6mm; }
 
   /* cover */
   #deck-a4 .t-cover .rh .tag{ visibility:hidden; }
@@ -268,7 +270,7 @@ const DECK_CSS_BASE = `
   #deck-a4 .cards[data-n="7"], #deck-a4 .cards[data-n="8"]{ grid-template-columns:repeat(4,1fr); gap:4.5mm; }
   #deck-a4 .card{ background:var(--band); border-radius:5px; padding:5.5mm 6.5mm 6mm; border-top:2.5pt solid var(--amber); min-height:calc(28mm * var(--k,1)); display:flex; flex-direction:column; gap:2.5mm; }
   #deck-a4 .card .n{ font-family:var(--font-spectral),serif; font-style:italic; font-weight:500; font-size:calc(20pt * var(--k,1)); line-height:1; color:var(--acc); }
-  #deck-a4 .card .t{ font-size:calc(11.5pt * var(--k,1)); line-height:1.45; }
+  #deck-a4 .card .t{ font-size:calc(11.5pt * var(--k,1)); line-height:1.45; white-space:pre-line; }
   #deck-a4 .cards[data-n="7"] .card .t, #deck-a4 .cards[data-n="8"] .card .t{ font-size:calc(10.5pt * var(--k,1)); }
 
   /* ── репліки (bullets variant=bubbles) ── */
@@ -418,6 +420,136 @@ const DECK_CSS_BASE = `
     #deck-a4 [contenteditable]:empty::before{ content:""; }
     #deck-a4 .imgbtn{ display:none !important; }
   }
+  /* таблиця, у якій перша колонка — повноцінний текст (не назва рядка) */
+  #deck-a4 table[data-fc="text"] td:first-child{ font-family:inherit; font-style:normal; color:var(--ink); font-size:inherit; width:auto; }
+  /* «Великий друк» (Deck.big): крупніші шапки таблиць, підписи й колонтитули — для друкованих роздаткових матеріалів */
+  #deck-a4.big th{ font-size:calc(8.2pt * min(max(var(--k,1), 1), 1.3)); letter-spacing:.08em; color:var(--muted); }
+  #deck-a4.big td:first-child{ font-size:calc(11.5pt * var(--k,1)); }
+  #deck-a4.big table[data-fc="text"] td:first-child{ font-size:inherit; }
+  #deck-a4.big .foot.frh .tag, #deck-a4.big .foot.frh .pg{ font-size:8.5pt; }
+  #deck-a4.big .t-about .facts li, #deck-a4.big .t-about .note{ font-size:calc(12pt * var(--k,1)); }
+  /* баннер-розділ (фото зверху) у щільній верстці: шапка й футер на всю ширину (правило .tight для фото праворуч їх обрізало) */
+  #deck-a4.big.tight .t-section.fit-top .rh, #deck-a4.big.tight .t-section.fit-top .foot{ margin-right:0; }
+  #deck-a4.big.tight .t-section.fit-top .secwrap{ padding-right:0; }
+  /* повнокадровий титул: фото на весь аркуш, затемнення зліва, світлий текст */
+  #deck-a4 .t-cover .cvfull{ position:absolute; inset:0; z-index:0; }
+  #deck-a4 .t-cover .cvfull img{ width:100%; height:100%; object-fit:cover; object-position:70% 30%; display:block; }
+  #deck-a4 .t-cover .cvfull::after{ content:""; position:absolute; inset:0; background:linear-gradient(90deg,rgba(24,16,9,.92) 0%,rgba(24,16,9,.82) 38%,rgba(24,16,9,.35) 62%,rgba(24,16,9,0) 80%); }
+  #deck-a4 .t-cover:has(.cvfull) .rh, #deck-a4 .t-cover .cv.full{ position:relative; z-index:1; }
+  #deck-a4 .t-cover:has(.cvfull) .rh .wm, #deck-a4 .t-cover .cv.full h1, #deck-a4 .t-cover .cv.full .who, #deck-a4 .t-cover .cv.full .who .w{ color:#FCF8F1; }
+  #deck-a4 .t-cover:has(.cvfull) .rh .wm em, #deck-a4 .t-cover .cv.full h1 em, #deck-a4 .t-cover .cv.full .eyebrow{ color:#F0B450; }
+  #deck-a4 .t-cover:has(.cvfull) .rh .fill{ background:rgba(252,248,241,.35); }
+  #deck-a4 .t-cover .cv.full{ grid-template-columns:150mm 1fr; }
+  #deck-a4 .t-cover .cv.full .who{ border-top-color:rgba(252,248,241,.35); }
+  #deck-a4 .t-cover:has(.cvfull) .band{ z-index:1; }
+
+  /* ── «Великий друк» (Deck.big): роздаткові матеріали, текст максимально крупний ── */
+  #deck-a4.big{ --faint:#6B5A45; }
+  #deck-a4.big .lead, #deck-a4.big .para, #deck-a4.big ul.bul, #deck-a4.big .steps, #deck-a4.big .bubbles{ max-width:none; }
+  #deck-a4.big .lead{ font-size:calc(12.6pt * var(--k,1)); }
+  #deck-a4.big .sheet:not(.t-cover):not(.t-section):not(.t-closing) > .pb{ justify-content:flex-start; }
+  #deck-a4.big .callout{ font-style:normal; }
+  #deck-a4.big ul.bul li[data-num]{ padding-left:1.35em; text-indent:-1.35em; }
+  #deck-a4.big ul.bul li[data-sub]{ margin-left:1.35em; }
+  #deck-a4.big th{ font-family:var(--font-inter),sans-serif; font-weight:600; font-size:calc(9.6pt * min(max(var(--k,1), 1), 1.3)); letter-spacing:.01em; text-transform:none; color:var(--ink); }
+  #deck-a4.big td:first-child{ font-family:var(--font-inter),sans-serif; font-style:normal; font-weight:600; color:#9A4A16; font-size:calc(10.5pt * var(--k,1)); }
+  #deck-a4.big table[data-fc="text"] td:first-child{ font-weight:400; color:var(--ink); font-size:inherit; }
+  #deck-a4.big td.wide{ font-weight:400 !important; color:var(--ink) !important; font-size:inherit !important; background:var(--band); padding:3mm 4mm !important; border-left:2.5pt solid var(--amber); }
+  #deck-a4.big table:not(.ws)[data-cols="3"]{ table-layout:fixed; }
+  #deck-a4.big table:not(.ws)[data-cols="3"] th:nth-child(1){ width:20%; } #deck-a4.big table:not(.ws)[data-cols="3"] th:nth-child(2){ width:34%; }
+  #deck-a4.big table:not(.ws)[data-cols="2"]:not([data-fc="text"]){ table-layout:fixed; } #deck-a4.big table:not(.ws)[data-cols="2"]:not([data-fc="text"]) th:first-child{ width:24%; }
+  #deck-a4.big table.ws td{ font-size:calc(11pt * var(--k,1)); }
+  #deck-a4.big table.ws tr[data-filled] td{ height:auto; padding-bottom:3mm; }
+  #deck-a4.big table.ws td:empty{ background-image:linear-gradient(to top,#B9AA92 .3mm,transparent .3mm); background-size:100% 10mm; }
+  #deck-a4.big .foot.frh .tag, #deck-a4.big .foot.frh .pg{ font-size:9pt; color:var(--muted); }
+  #deck-a4.big .t-section.fit-top .secimg::after{ background:linear-gradient(180deg,rgba(20,12,6,.62),rgba(20,12,6,0) 38%); }
+  #deck-a4.big .t-closing ul.ct{ font-family:var(--font-inter),sans-serif; font-size:15pt; color:var(--ink); gap:2.5mm; }
+  #deck-a4.big .t-closing .sub{ font-size:14pt; }
+  #deck-a4.big .t-cover .who .w{ color:var(--muted); }
+  #deck-a4.big ul.bul.c2{ display:block; columns:2; column-gap:12mm; }
+  #deck-a4.big ul.bul.c2 li{ break-inside:avoid; margin-bottom:calc(2.2mm * var(--k,1)); }
+  #deck-a4.big ul.bul li[data-sub]{ margin-top:calc(-1mm * var(--k,1)); }
+  #deck-a4.big ul.bul.c2 li[data-sub]{ margin-top:0; margin-bottom:calc(1.2mm * var(--k,1)); }
+  #deck-a4.big .lead, #deck-a4.big .callout{ white-space:pre-line; }
+  #deck-a4.big table[data-cols="8"] th:first-child{ width:19%; }
+  #deck-a4 .t-cover .cv.full .eyebrow{ position:static; text-align:left; margin-bottom:6mm; }
+  #deck-a4 .t-cover .cv.full .who p{ white-space:pre-line; }
+  #deck-a4.big .step .t{ font-size:calc(12.6pt * var(--k,1)); }
+  #deck-a4.big .step .h{ font-size:calc(13.5pt * min(var(--k,1), 1.5)); }
+  #deck-a4.big table:not(.ws) td{ padding-top:calc(1.9mm * var(--k,1)); padding-bottom:calc(1.9mm * var(--k,1)); }
+  #deck-a4.big table{ line-height:1.36; }
+  /* робочі аркуші у «великому друці»: висота рядків для запису не залежить від кегля — кегль не зменшується через них */
+  #deck-a4.big table.ws td{ height:var(--rowh,18mm); }
+  #deck-a4.big table.ws tr[data-filled] td{ height:auto; }
+  /* раунд 3 аудиту: типографіка друку */
+  #deck-a4.big p, #deck-a4.big li, #deck-a4.big td, #deck-a4.big .callout, #deck-a4.big .lead{ text-wrap:pretty; }
+  #deck-a4.big ul.bul li[data-num]{ padding-left:1.12em; text-indent:-1.12em; }
+  #deck-a4.big ul.bul li::before{ width:5.5pt; height:5.5pt; top:.5em; }
+  #deck-a4.big ul.bul.has-sub > li:not([data-sub]) b{ font-weight:700; }
+  #deck-a4.big .t-table .lead, #deck-a4.big .t-diagram .lead{ margin-top:2.5mm; }
+  #deck-a4.big table{ margin-top:4mm; }
+  #deck-a4.big table:not(.ws) td{ padding-top:calc(1.5mm * var(--k,1)); padding-bottom:calc(1.5mm * var(--k,1)); }
+  #deck-a4.big table[data-num][data-cols="3"]{ table-layout:fixed; }
+  #deck-a4.big table[data-num][data-cols="3"] td:nth-child(1){ width:8%; } #deck-a4.big table[data-num][data-cols="3"] td:nth-child(2){ width:50%; }
+  #deck-a4.big table[data-cols="8"] th:first-child{ width:24%; }
+  #deck-a4.big table[data-cols="8"] td:not(:first-child), #deck-a4.big table[data-cols="8"] th:not(:first-child){ text-align:right; font-variant-numeric:tabular-nums; }
+  #deck-a4.big .withimg .fig{ justify-content:flex-end; width:calc(78mm * min(var(--k,1), 1.3)); }
+  #deck-a4.big .withimg .callout{ margin-bottom:6mm; }
+  #deck-a4.big .t-closing .photo img{ object-position:30% 12%; }
+  #deck-a4.big .t-closing .qrwrap::after{ content:"Instagram"; display:block; font-family:var(--font-inter),sans-serif; font-size:10pt; color:var(--muted); margin-top:1.5mm; text-align:center; }
+  #deck-a4 .t-cover:has(.cvfull) .who .w{ position:static !important; margin-top:2.5mm !important; color:#E8DCC8 !important; font-size:10pt !important; }
+  #deck-a4 .t-cover .cv.full .who p{ font-size:13pt; }
+  #deck-a4 .t-cover:has(.cvfull) .rh .colg:not(.light){ filter:brightness(0) invert(1); }
+  #deck-a4 ul.bul li[data-head]{ padding-left:0; margin-top:calc(1.5mm * var(--k,1)); }
+  #deck-a4 ul.bul li[data-head]::before{ display:none; }
+  /* титул «фото-смуга»: фото на верхні ~52%, під ним кремове поле з назвою */
+  #deck-a4 .t-cover .cvband{ position:absolute; left:0; right:0; top:27mm; height:44%; z-index:0; overflow:hidden; }
+  #deck-a4 .t-cover .cvband img{ width:100%; height:100%; object-fit:cover; object-position:center 78%; display:block; }
+  #deck-a4 .t-cover .cvband::after{ content:none; }
+  #deck-a4 .t-cover:has(.cvband) .rh{ position:relative; z-index:1; }
+
+  #deck-a4 .t-cover .cv.bnd{ position:relative; z-index:1; grid-template-columns:1fr; padding-top:92mm; }
+  #deck-a4 .t-cover .cv.bnd .cv-l{ padding-top:0 !important; }
+  #deck-a4 .t-cover .cv.bnd .eyebrow{ position:static !important; text-align:left !important; margin:0 0 4mm !important; color:var(--acc) !important; }
+  #deck-a4 .t-cover .cv.bnd h1{ font-size:44pt; margin-top:0; }
+  #deck-a4 .t-cover .cv.bnd h1 em{ display:inline; font-size:inherit; margin:0; }
+  #deck-a4 .t-cover .cv.bnd .who{ margin-top:7mm; }
+  #deck-a4 .t-cover .cv.bnd .who p{ white-space:pre-line; font-size:13pt; }
+  #deck-a4 .t-cover .cv.bnd{ padding-top:98mm; }
+  #deck-a4 .t-cover .cv.bnd .cv-r{ display:none; }
+  /* логотип клієнта — оптично рівний нашому (висота великих літер) */
+  #deck-a4.big .t-cover .rh .colg{ height:9.5mm !important; }
+  #deck-a4.big .t-cover .rh .cox{ color:var(--muted); }
+  #deck-a4 .t-cover:has(.cvfull) .rh .cox{ color:rgba(252,248,241,.7); }
+  #deck-a4.big .t-cover:has(.cv.amp) .who .w{ margin-right:-.3em; }
+  /* біо: фото до правого поля */
+  #deck-a4.big .withimg{ grid-template-columns:1fr calc(92mm * min(var(--k,1), 1.3)); }
+  #deck-a4.big .withimg .fig{ width:100%; }
+  /* фінал: без чужого напису на фоні */
+  #deck-a4.big .t-closing .photo{ overflow:hidden; }
+  #deck-a4.big .t-closing .photo img{ object-position:50% 20%; }
+  /* таблиці: перша колонка тим самим кеглем, темніший помаранчевий */
+  #deck-a4.big td:first-child{ font-size:inherit; color:#8E4213; }
+  /* раунд 4: заголовок на одній висоті на всіх сторінках; маркери пропорційні кеглю; «×» помітний */
+  #deck-a4.big .sheet:not(.t-cover):not(.t-section):not(.t-closing) h1{ margin-top:0 !important; }
+  #deck-a4.big ul.bul li::before, #deck-a4.big ul.bul.sm li::before{ width:calc(3.4pt * var(--k,1)); height:calc(3.4pt * var(--k,1)); top:.62em; }
+  #deck-a4.big .t-cover .rh .cox{ font-size:22pt !important; font-weight:400 !important; color:var(--ink) !important; opacity:.55; margin:0 1.5mm !important; }
+  #deck-a4 .t-cover:has(.cvfull) .rh .cox{ color:#FCF8F1 !important; opacity:.8; }
+  #deck-a4.big table:not(.ws)[data-cols="3"] th:nth-child(1){ width:19%; } #deck-a4.big table:not(.ws)[data-cols="3"] th:nth-child(2){ width:32%; }
+  /* раунд 5 */
+  #deck-a4.big ul.bul li[data-caps]{ margin-top:calc(2.4mm * var(--k,1)); color:var(--ink); letter-spacing:.02em; }
+  #deck-a4.big ul.bul li[data-caps]:first-child, #deck-a4.big ul.bul li[data-caps][style*="column"]{ margin-top:0; }
+  #deck-a4.big table:not(.ws)[data-cols="3"] td{ padding-top:calc(1mm * var(--k,1)); padding-bottom:calc(1mm * var(--k,1)); line-height:1.3; }
+  #deck-a4.big table[data-cols="8"] th:first-child{ width:30% !important; }
+  #deck-a4.big table[data-cols="8"] th:first-child{ width:27%; }
+  #deck-a4.big .withimg .callout{ font-size:calc(12.6pt * var(--k,1)); }
+  #deck-a4.big td{ padding-right:3mm; hyphens:manual; }
+  #deck-a4.big td:first-child{ overflow-wrap:normal; }
+  #deck-a4 .t-cover .cv.bnd .who .w{ position:absolute !important; right:0 !important; bottom:14mm !important; }
+  #deck-a4.big .t-table .callout{ font-size:calc(12.6pt * var(--k,1)); }
+  #deck-a4.big table[data-cols="8"] td:last-child{ white-space:pre; }
+  #deck-a4.big .sheet:not(.t-about):not(.t-cover):not(.t-section):not(.t-closing) .pb::after{ height:6mm; }
+  #deck-a4.big .t-table table{ margin-top:2.5mm; }
 `;
 const DECK_CSS = DECK_CSS_BASE + DIAGRAM_CSS;
 
@@ -429,10 +561,35 @@ function typo(v: string): string {
     .replace(/(\d)-(й|го|му|ша|ші|ім|ий|ої|ому)(?!\p{L})/gu, "$1\u2011$2")
     .replace(/(\d\u2011й)\s+(крок)/gu, "$1\u00A0$2")
     .replace(/(?<=^|[\s(«])([\p{L}]{1,2})\s+(?=\S)/gu, "$1\u00A0")
-    .replace(/\s+—/g, "\u00A0—");
+    .replace(/\s+—/g, "\u00A0—")
+    .replace(/(^|[\s(«/])(\p{L}{1,6})-(?=\p{L})/gu, "$1$2\u2011")
+    .replace(/(^|\s)(\d{1,3})\s+(?=\p{L})/gu, "$1$2\u00A0");
 }
 
 /* ───────── editable primitives ───────── */
+
+/** Мова деки для службових підписів (Нотатки, Розділ, підпис у колонтитулі…). */
+const LangCtx = createContext(deckT("uk"));
+
+/** Показ тексту з **жирним**: шматки з розмітки, типографіка — в кожному. */
+function rich(v: string) {
+  const parts = splitBold(v);
+  if (parts.length === 1 && !parts[0].b) return typo(v);
+  return parts.map((x, i) => (x.b ? <b key={i}>{typo(x.t)}</b> : <span key={i}>{typo(x.t)}</span>));
+}
+/** Текст редагованого елемента назад у розмітку: <b>/<strong> (у т.ч. з ⌘B) → **…**. */
+function readRich(el: HTMLElement | null): string {
+  if (!el) return "";
+  const marks: Text[] = [];
+  el.querySelectorAll("b,strong").forEach((b) => { const a = document.createTextNode("**"), z = document.createTextNode("**"); b.prepend(a); b.append(z); marks.push(a, z); });
+  const t = el.innerText;
+  marks.forEach((m) => m.remove());
+  return t.replace(/ /g, " ").replace(/‑/g, "-")
+    .replace(/\*\*(\s*)\*\*/g, "$1")
+    .replace(/\*\*(\s+)([^*]*?)\*\*/g, "$1**$2**")
+    .replace(/\*\*([^*]*?)(\s+)\*\*/g, "**$1**$2")
+    .trim();
+}
 
 function E({
   tag: Tag = "span",
@@ -441,6 +598,7 @@ function E({
   className,
   ph,
   editable,
+  attrs,
 }: {
   tag?: keyof JSX.IntrinsicElements;
   value: string;
@@ -448,24 +606,33 @@ function E({
   className?: string;
   ph?: string;
   editable: boolean;
+  attrs?: Record<string, unknown>;
 }) {
   const ref = useRef<HTMLElement>(null);
   const T = Tag as any;
   return (
     <T
+      {...attrs}
       ref={ref}
       className={className}
       contentEditable={editable || undefined}
       suppressContentEditableWarning
       data-ph={ph || "…"}
+      key={value}
       onBlur={() => {
-        const v = (ref.current?.innerText ?? "").replace(/ /g, " ").replace(/\u2011/g, "-").trim();
+        const v = readRich(ref.current);
         if (v !== value) onChange(v);
       }}
     >
-      {typo(value)}
+      {rich(value)}
     </T>
   );
+}
+
+/** Список із двох груп («3 основных:» … / «Дополнительные…:» …): індекс заголовка другої групи — перша група йде на всю ширину, друга у дві колонки. */
+function twoGroups(items: string[]): number | undefined {
+  const gh = items.map((t, j) => (/^\*\*[^*]+:\*\*$/.test(t.trim()) ? j : -1)).filter((j) => j > 0);
+  return gh.length === 1 ? gh[0] : undefined;
 }
 
 function EList({
@@ -473,11 +640,15 @@ function EList({
   onChange,
   className,
   editable,
+  breakAt,
+  spanTo,
 }: {
   items: string[];
   onChange: (v: string[]) => void;
   className?: string;
   editable: boolean;
+  breakAt?: number;
+  spanTo?: number; // пункти 0…spanTo (включно) — на всю ширину, решта — у дві колонки
 }) {
   const ref = useRef<HTMLUListElement>(null);
   // Після кожного blur список перемонтовується (key), щоб нативно створені браузером <li>
@@ -492,13 +663,13 @@ function EList({
       suppressContentEditableWarning
       onBlur={() => {
         const lis = Array.from(ref.current?.querySelectorAll("li") ?? []);
-        const v = lis.map((li) => li.innerText.replace(/\u00a0/g, " ").replace(/\u2011/g, "-").trim()).filter(Boolean);
+        const v = lis.map((li) => { const t = readRich(li); return t ? (li.dataset.sub ? "- " : "") + t : ""; }).filter(Boolean);
         if (JSON.stringify(v) !== JSON.stringify(items)) onChange(v.length ? v : [""]);
         setRev((r) => r + 1);
       }}
     >
       {items.map((it, i) => (
-        <li key={i} data-num={/^\s*\d+\s*[.)]/.test(it) ? "1" : undefined}>{typo(it)}</li>
+        <li key={i} style={spanTo !== undefined && i <= spanTo ? { columnSpan: "all" } : breakAt === i ? { breakBefore: "column" } : undefined} data-head={/^\*\*[^*]+\*\*$/.test(it.trim()) ? "1" : undefined} data-caps={!/^- /.test(it) && /\p{Lu}{3}/u.test(it) && !/\p{Ll}/u.test(it.replace(/\*\*/g, "")) ? "1" : undefined} data-num={/^\s*\d+\s*[.)]/.test(it) ? "1" : undefined} data-sub={/^- /.test(it) ? "1" : undefined}>{rich(it.replace(/^- /, ""))}</li>
       ))}
     </ul>
   );
@@ -555,6 +726,7 @@ const ANIM_SEL = [".rh", ".secimg", ".photo", ".num", ".kicker", ".sec-t h1", ".
   ".pb > h1", ".pb > .lead", ".pb > .para", ".pb > .callout", ".body > h1", ".body > .lead", ".body > .para", ".body > .callout", ".fig", ".fullimg", ".qp > *", "ul.bul > li", ".card", ".bubble", ".col", ".step", "thead", "tbody tr", ".gal figure", ".notes", ".wrap > div > *", ".foot"].join(",");
 
 function Sheet({ deck, i, cls, page, children, editable, onRunhead, animate }: { deck: Deck; i: number; cls?: string; page: DeckPage; children: React.ReactNode; editable: boolean; onRunhead: (v: string) => void; animate?: number }) {
+  const t = useContext(LangCtx);
   const d = density(page);
   const ref = useRef<HTMLElement>(null);
   // Режим показу: пронумерувати елементи в порядку появи й перезапустити анімацію.
@@ -580,7 +752,9 @@ function Sheet({ deck, i, cls, page, children, editable, onRunhead, animate }: {
       if (notes) notes.style.display = "";
       el.setAttribute("data-measuring", "1"); // редакторські кнопки не беруть участі у вимірюванні
       const fits = () => !(el.scrollHeight > el.clientHeight + 2 || (pb ? pb.scrollHeight > pb.clientHeight + 2 : false));
-      let v = Math.round(d.k * (page.fs ?? 1) * (deck.fs ?? 1) * 100) / 100;
+      // «великий друк» (Deck.big): стартуємо з максимуму і зменшуємо, поки вміщається, — текст максимально крупний
+      const fixedType = page.type === "cover" || page.type === "section" || page.type === "closing" || page.type === "about";
+      let v = deck.big && !fixedType ? Math.round(1.9 * (page.fs ?? 1) * 100) / 100 : Math.round(d.k * (page.fs ?? 1) * (deck.fs ?? 1) * 100) / 100;
       const floor = Math.min(page.type === "table" ? 0.7 : 0.62, v);
       const apply = () => { el.style.setProperty("--k", String(v)); el.style.setProperty("--kh", String(v >= 1.1 ? 1.1 : v < 0.95 ? 0.9 : 1)); };
       apply();
@@ -596,12 +770,12 @@ function Sheet({ deck, i, cls, page, children, editable, onRunhead, animate }: {
     // (без beforeprint: у режимі друку метрики інші, і підбір «з'їжджає» до мінімуму)
     const t = window.setTimeout(fit, 600);
     return () => window.clearTimeout(t);
-  }, [d.k, page, deck.fs]);
+  }, [d.k, page, deck.fs, deck.big]);
   return (
     <section ref={ref} className={`sheet ${cls ?? ""}${page.type === "section" && page.image ? " has-img" + (page.fit === "top" ? " fit-top" : "") : ""}${page.type === "section" && /^\d+-й крок/i.test(page.title) ? " is-step" : ""}`} data-page={i + 1} data-sparse={k >= 1.32 ? "1" : undefined} style={{ ["--k" as any]: k, ["--kh" as any]: Math.min(1.2, k) }}>
       <div className="rh">
         <span className="wm">Pan<em>&amp;</em>Partners</span>
-        {page.type === "cover" && (page.variant === "amp" || page.variant === "photo") && deck.logo ? (<><span className="cox" aria-hidden>×</span><img className="colg" src={deck.logo} alt="" /></>) : null}
+        {page.type === "cover" && (page.variant === "amp" || page.variant === "photo" || page.variant === "full" || page.variant === "band") && deck.logo ? (<><span className="cox" aria-hidden>×</span><img className={"colg" + (page.variant === "full" && deck.logoLight ? " light" : "")} src={page.variant === "full" && deck.logoLight ? deck.logoLight : deck.logo} alt="" /></>) : null}
         <span className="fill" />
         {deck.footRunhead ? null : <E value={deck.runhead} onChange={onRunhead} editable={editable} className="tag" ph="колонтитул" />}
       </div>
@@ -611,7 +785,7 @@ function Sheet({ deck, i, cls, page, children, editable, onRunhead, animate }: {
           <E value={deck.runhead} onChange={onRunhead} editable={editable} className="tag" ph="колонтитул" />
         ) : (
           <span className="tl">
-            <b>Тетяна Пан</b> · Pan&amp;Partners · pan-partners.agency
+            <b>{t.trainer}</b> · Pan&amp;Partners · pan-partners.agency
           </span>
         )}
         <span className="pg">
@@ -647,7 +821,8 @@ export function DeckPages({
 }) {
   const rh = onRunhead ?? (() => {});
   return (
-    <div id="deck-a4" className={[deck.caps ? "caps" : "", deck.tight ? "tight" : "", deck.footRunhead ? "frh" : ""].filter(Boolean).join(" ") || undefined}>
+    <LangCtx.Provider value={deckT(deck.lang)}>
+    <div id="deck-a4" className={[deck.caps ? "caps" : "", deck.tight ? "tight" : "", deck.footRunhead ? "frh" : "", deck.big ? "big" : ""].filter(Boolean).join(" ") || undefined}>
       <style dangerouslySetInnerHTML={{ __html: DECK_CSS }} />
       {deck.pages.map((p, i) => {
         if (only && only !== i + 1) return null;
@@ -656,12 +831,13 @@ export function DeckPages({
           <div key={p.id} style={{ position: "relative" }}>
             {renderControls?.(i)}
             <Sheet deck={deck} i={i} cls={"t-" + p.type} page={p} editable={editable} onRunhead={rh} animate={animate}>
-              <PageBody p={p} set={set} editable={editable} prev={deck.pages[i - 1]} pick={editable ? pickImage : undefined} showNotes={deck.notes !== false} logo={deck.logo} />
+              <PageBody p={p} set={set} editable={editable} prev={deck.pages[i - 1]} pick={editable ? pickImage : undefined} showNotes={deck.notes !== false} logo={deck.logo} big={deck.big} />
             </Sheet>
           </div>
         );
       })}
     </div>
+    </LangCtx.Provider>
   );
 }
 
@@ -681,18 +857,21 @@ function ImgBtn({ pick, current, optional, onPick, empty }: { pick?: PickImage; 
   );
 }
 
-function PageBody({ p, set, editable, prev, pick, showNotes = true, logo }: { p: DeckPage; set: Patch; editable: boolean; prev?: DeckPage; pick?: PickImage; showNotes?: boolean; logo?: string }) {
+function PageBody({ p, set, editable, prev, pick, showNotes = true, logo, big }: { p: DeckPage; set: Patch; editable: boolean; prev?: DeckPage; pick?: PickImage; showNotes?: boolean; logo?: string; big?: boolean }) {
+  const t = useContext(LangCtx);
   const e = editable;
   // Розріджені текстові сторінки — це роздатковий матеріал: знизу поле для нотаток (вимикається на рівні деки).
   const noImg = !("image" in p && p.image);
   const notes = showNotes && noImg && ((p.type === "bullets" && p.variant !== "bubbles") || p.type === "text" || p.type === "twocol" || p.type === "steps" || p.type === "table") ? (
-    <div className="notes"><div className="lab">Нотатки</div><div className="lines" /></div>
+    <div className="notes"><div className="lab">{t.notes}</div><div className="lines" /></div>
   ) : null;
   switch (p.type) {
     case "cover":
       return (
         <>
-          <div className={"cv" + (p.variant === "amp" ? " amp" : p.variant === "photo" ? " amp photo" : "")}>
+          {p.variant === "band" && p.image ? <div className="cvband"><img src={p.image} alt="" /><ImgBtn pick={pick} current={p.image} optional onPick={(v) => set({ image: v || undefined })} /></div> : null}
+          {p.variant === "full" && p.image ? <div className="cvfull"><img src={p.image} alt="" /><ImgBtn pick={pick} current={p.image} optional onPick={(v) => set({ image: v || undefined })} /></div> : null}
+          <div className={"cv" + (p.variant === "amp" ? " amp" : p.variant === "photo" ? " amp photo" : p.variant === "full" ? " amp full" : p.variant === "band" ? " amp bnd" : "")}>
             <div className="cv-l">
               <E tag="p" className="eyebrow" value={p.eyebrow} onChange={(v) => set({ eyebrow: v })} editable={e} ph="надзаголовок" />
               <Title p={p} set={set} editable={e} />
@@ -705,12 +884,12 @@ function PageBody({ p, set, editable, prev, pick, showNotes = true, logo }: { p:
                 </span>
               </div>
             </div>
-            <div className={"cv-r" + (p.variant === "amp" ? " amp" : p.variant === "photo" ? " phc" : "")}>
+            <div className={"cv-r" + (p.variant === "amp" ? " amp" : p.variant === "photo" ? " phc" : p.variant === "full" ? " fl" : "")}>
               {p.variant === "amp" ? <span className="bigamp" aria-hidden>&amp;</span> : null}
               {p.variant === "photo" && p.image ? <img className="phimg" src={p.image} alt="" /> : null}
               {logo && !p.variant ? <img className="np-big" src={logo} alt="" /> : null}
               {!p.variant && (p.image || logo) ? <img className="ill" src={p.image || "/deck/novapay/money.png"} alt="" /> : null}
-              {p.variant !== "amp" ? <ImgBtn pick={pick} current={p.image || ""} optional onPick={(v) => set({ image: v || undefined })} /> : null}
+              {p.variant !== "amp" && p.variant !== "full" && p.variant !== "band" ? <ImgBtn pick={pick} current={p.image || ""} optional onPick={(v) => set({ image: v || undefined })} /> : null}
             </div>
           </div>
           <div className="band" />
@@ -721,7 +900,7 @@ function PageBody({ p, set, editable, prev, pick, showNotes = true, logo }: { p:
         <>
           <div className="hero">
             <div>
-              <div className="lab" style={{ marginTop: "4mm" }}>Тренерка</div>
+              <div className="lab" style={{ marginTop: "4mm" }}>{t.trainerLab}</div>
               <Title p={p} set={set} editable={e} />
               <E tag="p" className="role" value={p.role ?? ""} onChange={(v) => set({ role: v })} editable={e} ph="" />
               <E tag="div" className="quote" value={p.quote ?? ""} onChange={(v) => set({ quote: v })} editable={e} ph="" />
@@ -744,11 +923,11 @@ function PageBody({ p, set, editable, prev, pick, showNotes = true, logo }: { p:
           </div>
           <div className="bottom">
             <div>
-              <div className="lab">Моя спеціалізація</div>
+              <div className="lab">{t.spec}</div>
               <EList className="bul" items={p.facts} onChange={(v) => set({ facts: v })} editable={e} />
             </div>
             <div>
-              <div className="lab">Географія проєктів</div>
+              <div className="lab">{t.geo}</div>
               <E tag="p" className="note" value={p.note} onChange={(v) => set({ note: v })} editable={e} ph="" />
               <span className="logowrap">
                 {p.logos ? <img className="logos" src={p.logos} alt="" /> : null}
@@ -765,7 +944,7 @@ function PageBody({ p, set, editable, prev, pick, showNotes = true, logo }: { p:
           <div className="secwrap">
             <E tag="div" className="num serif" value={p.num} onChange={(v) => set({ num: v })} editable={e} ph="" />
             <div className="sec-t">
-              <div className="kicker">{/^\d+-й крок/i.test(p.title) ? "Крок" : "Розділ"}</div>
+              {big ? null : <div className="kicker">{/^\d+-й крок/i.test(p.title) ? t.step : t.section}</div>}
               <h1>
                 <E value={p.title} onChange={(v) => set({ title: v })} editable={e} ph="Назва розділу" />
               </h1>
@@ -834,7 +1013,22 @@ function PageBody({ p, set, editable, prev, pick, showNotes = true, logo }: { p:
             ))}
           </div>
         ) : (
-          <EList className="bul" items={p.items} onChange={(v) => set({ items: v })} editable={e} />
+          <EList className={"bul" + (big && !p.image && p.items.length >= 10 ? " c2" : "") + (p.items.some((t) => /^- /.test(t)) ? " has-sub" : "")} items={p.items} onChange={(v) => set({ items: v })} editable={e}
+            breakAt={big && !p.image && p.items.length >= 10 ? (() => {
+              // розрив колонки там, де обсяг тексту ділиться навпіл; не одразу після заголовка групи і не всередині підпунктів, якщо є кращий варіант
+              if (twoGroups(p.items) !== undefined) return undefined; // див. spanTo
+              const L = p.items.map((t) => t.replace(/\*\*/g, "").length + 40), tot = L.reduce((a, b) => a + b, 0);
+              const isHead = (t: string) => /^\*\*[^*]+:\*\*$/.test(t.trim()) || (!/^- /.test(t) && p.items.some((x) => /^- /.test(x)));
+              let best = Math.ceil(p.items.length / 2), bestD = Infinity, acc = 0;
+              for (let j = 1; j < p.items.length; j++) {
+                acc += L[j - 1];
+                if (isHead(p.items[j - 1])) continue;
+                const d = Math.abs(acc - tot / 2) + (/^- /.test(p.items[j]) && !isHead(p.items[j]) ? tot * 0.04 : 0);
+                if (d < bestD) { bestD = d; best = j; }
+              }
+              return best;
+            })() : undefined}
+            spanTo={big && !p.image && p.items.length >= 10 ? twoGroups(p.items) : undefined} />
         );
       return (
         <WithImg image={p.image} pick={pick} onPick={(v) => set({ image: v || undefined })}>
@@ -851,17 +1045,18 @@ function PageBody({ p, set, editable, prev, pick, showNotes = true, logo }: { p:
         <WithImg image={p.image} pick={pick} onPick={(v) => set({ image: v || undefined })}>
           <Title p={p} set={set} editable={e} />
           <E tag="p" className="lead" value={p.lead} onChange={(v) => set({ lead: v })} editable={e} ph="лід" />
-          <div className="cols" data-n={String(Math.min(4, Math.max(2, p.cols.length)))}>
+          <div className="cols" data-n={String(Math.min(4, Math.max(2, p.cols.length)))} style={big && p.cols.length === 2 ? (() => { const L = p.cols.map((c) => c.items.join(" ").length + c.head.length + 40); const r = Math.min(1.5, Math.max(1 / 1.5, L[0] / L[1])); return { gridTemplateColumns: `${r.toFixed(2)}fr 1fr` }; })() : undefined}>
             {p.cols.map((c, k) => (
               <div className="col" key={k}>
-                <h3>
+                {!e && p.cols.every((x) => !x.head) ? null : <h3>
                   {chipFor(c.head) ? <span className={"chip " + chipFor(c.head)} /> : null}
                   <E value={c.head} onChange={(v) => set({ cols: p.cols.map((x, j) => (j === k ? { ...x, head: v } : x)) })} editable={e} ph="підзаголовок" />
-                </h3>
+                </h3>}
                 <EList className="bul sm" items={c.items} onChange={(v) => set({ cols: p.cols.map((x, j) => (j === k ? { ...x, items: v } : x)) })} editable={e} />
               </div>
             ))}
           </div>
+          {p.callout ? <E tag="div" className="callout" value={p.callout} onChange={(v) => set({ callout: v })} editable={e} ph="" /> : null}
           {notes}
         </WithImg>
       );
@@ -870,7 +1065,7 @@ function PageBody({ p, set, editable, prev, pick, showNotes = true, logo }: { p:
         <>
           <Title p={p} set={set} editable={e} />
           <E tag="p" className="lead" value={p.lead} onChange={(v) => set({ lead: v })} editable={e} ph="лід" />
-          <Diagram kind={p.kind} labels={p.labels} lists={p.lists} editable={e} uid={p.id} onLabels={(v) => set({ labels: v })} onLists={(v) => set({ lists: v })} />
+          <Diagram kind={p.kind} labels={p.labels} lists={p.lists} hi={p.hi} v2={big} editable={e} uid={p.id} onLabels={(v) => set({ labels: v })} onLists={(v) => set({ lists: v })} />
           {p.callout || e ? <E tag="div" className="callout" value={p.callout} onChange={(v) => set({ callout: v })} editable={e} ph="виноска (необовʼязково)" /> : null}
           {notes}
         </>
@@ -880,7 +1075,7 @@ function PageBody({ p, set, editable, prev, pick, showNotes = true, logo }: { p:
         <WithImg image={p.image} pick={pick} onPick={(v) => set({ image: v || undefined })}>
           <Title p={p} set={set} editable={e} />
           <E tag="p" className="lead" value={p.lead} onChange={(v) => set({ lead: v })} editable={e} ph="лід" />
-          <div className="steps" style={{ ["--lw" as any]: (() => { const m = Math.max(0, ...p.steps.map((x) => x.head.length)); return m <= 16 ? "58mm" : m <= 34 ? "80mm" : "100mm"; })() } as any}>
+          <div className="steps" style={{ ["--lw" as any]: (() => { const m = Math.max(0, ...p.steps.map((x) => x.head.length)); return big && m <= 2 ? "14mm" : big && m <= 8 ? "28mm" : m <= 16 ? "58mm" : m <= 34 ? "80mm" : "100mm"; })() } as any}>
             {p.steps.map((st, k) => (
               <div className="step" key={k}>
                 <span className="dot" />
@@ -893,18 +1088,23 @@ function PageBody({ p, set, editable, prev, pick, showNotes = true, logo }: { p:
         </WithImg>
       );
     case "table": {
-      const cells = p.rows.flatMap((r) => r.slice(1));
+      const isWide = (r: string[]) => (r[0] ?? "").length > 60 && r.slice(1).every((c) => !c.trim()) && p.head.length > 1;
+      const cells = p.rows.filter((r) => !isWide(r)).flatMap((r) => r.slice(1));
       const emptyRatio = cells.length ? cells.filter((c) => !c.trim()).length / cells.length : 0;
-      const ws = emptyRatio >= 0.4;
+      // робочий аркуш: багато порожніх клітинок; у «великому друці» — також якщо є хоча б один повністю порожній рядок для запису
+      const ws = emptyRatio >= 0.4 || (!!big && p.rows.some((r) => !isWide(r) && r.slice(1).every((c) => !c.trim())));
       const hl = prev && prev.type === "gallery" ? chipFor(prev.lead) : null;
       const numbered = p.head[0] === "#" || p.rows.every((r) => /^\d+\.?$/.test((r[0] ?? "").trim()));
-      const rowh = ws ? `${Math.max(11, Math.min(38, Math.floor(118 / Math.max(1, p.rows.length))))}mm` : undefined;
+      const fcText = !numbered && p.rows.length > 0 && p.rows.reduce((a, r) => a + (r[0] ?? "").length, 0) / p.rows.length > 45;
+      // висота порожніх рядків для запису: «великий друк» — ділимо вільну висоту лише між порожніми рядками
+      const blankRows = p.rows.filter((r) => !isWide(r) && r.slice(1).every((c) => !c.trim())).length;
+      const rowh = ws ? (big ? `${Math.max(14, Math.min(40, Math.floor((p.lead ? 104 : 116) / Math.max(1, blankRows) - (p.rows.length - blankRows) * 12 / Math.max(1, blankRows))))}mm` : `${Math.max(11, Math.min(38, Math.floor(118 / Math.max(1, p.rows.length))))}mm`) : undefined;
       return (
         <>
           <Title p={p} set={set} editable={e} />
           <E tag="p" className="lead" value={p.lead} onChange={(v) => set({ lead: v })} editable={e} ph="лід" />
-          <table className={ws ? `ws c${p.head.length}` : undefined} data-hl={hl ?? undefined} data-num={numbered ? "1" : undefined} data-cols={String(p.head.length)} style={rowh ? ({ ["--rowh" as any]: rowh } as any) : undefined}>
-            <thead>
+          <table className={ws ? `ws c${p.head.length}` : undefined} data-hl={hl ?? undefined} data-num={numbered ? "1" : undefined} data-fc={fcText ? "text" : undefined} data-cols={String(p.head.length)} style={rowh ? ({ ["--rowh" as any]: rowh } as any) : undefined}>
+            <thead style={!e && p.head.every((h) => !h.trim()) ? { display: "none" } : undefined}>
               <tr>
                 {p.head.map((h, k) => (
                   <th key={k}>
@@ -915,8 +1115,10 @@ function PageBody({ p, set, editable, prev, pick, showNotes = true, logo }: { p:
             </thead>
             <tbody>
               {p.rows.map((r, ri) => (
-                <tr key={ri} data-chip={chipFor(r[0] ?? "") ?? undefined}>
-                  {p.head.map((_, ci) => (
+                <tr key={ri} data-chip={chipFor(r[0] ?? "") ?? undefined} data-filled={ws && r.slice(1).some((c) => c.trim()) ? "1" : undefined}>
+                  {isWide(r) ? (
+                    <E tag="td" value={r[0] ?? ""} onChange={(v) => set({ rows: p.rows.map((row, j) => (j === ri ? p.head.map((__, c) => (c === 0 ? v : row[c] ?? "")) : row)) })} editable={e} ph="" className="wide" attrs={{ colSpan: p.head.length }} />
+                  ) : p.head.map((_, ci) => (
                     ci === 0 && chipFor(r[0] ?? "") ? (
                       <td key={ci}>
                         <span className={"chip " + chipFor(r[0] ?? "")} />

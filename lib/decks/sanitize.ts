@@ -1,6 +1,7 @@
 import { DIAGRAM_KINDS, type Deck, type DeckPage } from "./types";
 import { NOVAPAY_DECK } from "./novapay";
 import { PROFINSTAL_DECK } from "./profinstal";
+import { ADLER_DECK } from "./adler";
 
 export const DECK_DEFAULTS: Record<string, Deck> = {
   novapay: { ...NOVAPAY_DECK, notes: false }, // екранна версія — без полів «Нотатки»
@@ -11,6 +12,7 @@ export const DECK_DEFAULTS: Record<string, Deck> = {
   "novapay-test": { ...NOVAPAY_DECK, slug: "novapay-test", name: "NovaPay · тестова копія", notes: false },
   "novapay2-test": { ...NOVAPAY_DECK, slug: "novapay2-test", name: "NovaPay · копія 2 · тестова копія", notes: true },
   profinstal: PROFINSTAL_DECK,
+  adler: ADLER_DECK,
 };
 /** Slug деки: латиниця, цифри, дефіс; 2…60 символів. Деки без шаблону живуть лише в базі (створені з розділу «Презентації»). */
 export const isDeckSlug = (v: unknown): v is string => typeof v === "string" && /^[a-z0-9][a-z0-9-]{1,59}$/.test(v);
@@ -53,7 +55,7 @@ function sanitizePageInner(p: any): DeckPage | null {
   const id = s(p.id, 32) || Math.random().toString(36).slice(2, 10);
   switch (p.type) {
     case "cover":
-      return { id, type: "cover", eyebrow: s(p.eyebrow, 200), title: s(p.title, 300), titleEm: s(p.titleEm, 300), sub: s(p.sub, 500), who: s(p.who, 300), when: s(p.when, 200), image: img(p.image) || undefined, variant: p.variant === "amp" || p.variant === "photo" ? p.variant : undefined, avatar: img(p.avatar) || undefined };
+      return { id, type: "cover", eyebrow: s(p.eyebrow, 200), title: s(p.title, 300), titleEm: s(p.titleEm, 300), sub: s(p.sub, 500), who: s(p.who, 300), when: s(p.when, 200), image: img(p.image) || undefined, variant: p.variant === "amp" || p.variant === "photo" || p.variant === "full" || p.variant === "band" ? p.variant : undefined, avatar: img(p.avatar) || undefined };
     case "about":
       return { id, type: "about", title: s(p.title, 200), titleEm: s(p.titleEm, 200), role: s(p.role, 500) || undefined, quote: s(p.quote, 800) || undefined, stats: arr(p.stats, 6).map((c: any) => ({ n: s(c?.n, 40), t: s(c?.t, 300) })), facts: strs(p.facts, 8), note: s(p.note, 800), image: img(p.image) || "/deck/novapay/tania-profile.jpg", logos: img(p.logos) };
     case "section":
@@ -63,7 +65,7 @@ function sanitizePageInner(p: any): DeckPage | null {
     case "bullets":
       return { id, type: "bullets", title: s(p.title, 300), titleEm: s(p.titleEm, 300), lead: s(p.lead, 1500), items: strs(p.items, 20), callout: s(p.callout, 1000), image: img(p.image) || undefined, variant: p.variant === "cards" || p.variant === "bubbles" || p.variant === "list" ? p.variant : undefined };
     case "twocol":
-      return { id, type: "twocol", title: s(p.title, 300), titleEm: s(p.titleEm, 300), lead: s(p.lead, 1500), cols: arr(p.cols, 6).map((c: any) => ({ head: s(c?.head, 300), items: strs(c?.items, 20) })), image: img(p.image) || undefined };
+      return { id, type: "twocol", title: s(p.title, 300), titleEm: s(p.titleEm, 300), lead: s(p.lead, 1500), cols: arr(p.cols, 6).map((c: any) => ({ head: s(c?.head, 300), items: strs(c?.items, 20) })), image: img(p.image) || undefined, callout: s(p.callout, 1000) || undefined };
     case "steps":
       return { id, type: "steps", title: s(p.title, 300), titleEm: s(p.titleEm, 300), lead: s(p.lead, 1500), steps: arr(p.steps, 12).map((c: any) => ({ head: s(c?.head, 300), text: s(c?.text, 1500) })), image: img(p.image) || undefined };
     case "table":
@@ -71,7 +73,7 @@ function sanitizePageInner(p: any): DeckPage | null {
     case "gallery":
       return { id, type: "gallery", title: s(p.title, 300), titleEm: s(p.titleEm, 300), lead: s(p.lead, 1500), images: arr(p.images, 6).map((c: any) => ({ src: img(c?.src), cap: s(c?.cap, 300) })) };
     case "diagram":
-      return { id, type: "diagram", kind: DIAGRAM_KINDS.includes(p.kind) ? p.kind : "cycle", title: s(p.title, 300), titleEm: s(p.titleEm, 300), lead: s(p.lead, 1500), labels: strs(p.labels, 12).map((x) => x.slice(0, 300)), lists: Array.isArray(p.lists) ? arr(p.lists, 3).map((l: any) => strs(l, 12)) : undefined, callout: s(p.callout, 1000) };
+      return { id, type: "diagram", kind: DIAGRAM_KINDS.includes(p.kind) ? p.kind : "cycle", title: s(p.title, 300), titleEm: s(p.titleEm, 300), lead: s(p.lead, 1500), labels: strs(p.labels, 24).map((x) => x.slice(0, 300)), lists: Array.isArray(p.lists) ? arr(p.lists, 6).map((l: any) => strs(l, 12)) : undefined, callout: s(p.callout, 1000), hi: Number.isInteger(p.hi) && p.hi > 0 && p.hi < 10 ? p.hi : undefined };
     case "closing":
       return { id, type: "closing", title: s(p.title, 300), titleEm: s(p.titleEm, 300), sub: s(p.sub, 500), contacts: strs(p.contacts, 8), image: img(p.image) || "/deck/novapay/tania.jpg", qr: img(p.qr) || undefined };
     default:
@@ -115,7 +117,10 @@ export function sanitizeDeck(input: any, slug: string, opts: { fallbackToDefault
     tight: typeof input?.tight === "boolean" ? input.tight : !!base?.tight,
     // логотип на титулі: явний рядок (навіть порожній) зберігаємо; відсутній — з шаблону (для NovaPay — їх логотип)
     logo: typeof input?.logo === "string" ? img(input.logo) : base?.logo,
+    logoLight: typeof input?.logoLight === "string" ? img(input.logoLight) || undefined : base?.logoLight,
     footRunhead: typeof input?.footRunhead === "boolean" ? input.footRunhead : !!base?.footRunhead,
+    lang: input?.lang === "ru" || input?.lang === "uk" ? input.lang : base?.lang,
+    big: typeof input?.big === "boolean" ? input.big : base?.big,
     // множник кегля деки: явне число (навіть 1) зберігаємо; відсутнє — беремо з дефолтної деки
     fs: (() => { const n = Number(input?.fs); return Number.isFinite(n) && n > 0 ? Math.min(1.8, Math.max(0.6, Math.round(n * 100) / 100)) : base?.fs; })(),
     pages: pages.length ? pages : fallback ? base?.pages ?? [] : [],

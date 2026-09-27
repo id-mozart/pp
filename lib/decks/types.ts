@@ -8,21 +8,21 @@
  */
 export type BulletsVariant = "list" | "cards" | "bubbles";
 /** Схеми (див. components/deck/Diagrams.tsx): піраміда, навички за рівнями, коло з 3 секторів, блоки 3+1, цикл, клин 70/20/10. */
-export type DiagramKind = "pyramid" | "skills" | "circle3" | "blocks31" | "cycle" | "wedge";
-export const DIAGRAM_KINDS: DiagramKind[] = ["pyramid", "skills", "circle3", "blocks31", "cycle", "wedge"];
+export type DiagramKind = "pyramid" | "skills" | "circle3" | "blocks31" | "cycle" | "wedge" | "catman" | "pita" | "tiers" | "est";
+export const DIAGRAM_KINDS: DiagramKind[] = ["pyramid", "skills", "circle3", "blocks31", "cycle", "wedge", "catman", "pita", "tiers", "est"];
 
 export type DeckPage = (
-  | { id: string; type: "cover"; eyebrow: string; title: string; titleEm: string; sub: string; who: string; when: string; image?: string; variant?: "amp" | "photo"; avatar?: string }
+  | { id: string; type: "cover"; eyebrow: string; title: string; titleEm: string; sub: string; who: string; when: string; image?: string; variant?: "amp" | "photo" | "full" | "band"; avatar?: string }
   | { id: string; type: "about"; title: string; titleEm: string; role?: string; quote?: string; stats?: { n: string; t: string }[]; facts: string[]; note: string; image: string; logos: string }
   | { id: string; type: "section"; num: string; title: string; sub: string; image?: string; fit?: "right" | "top"; panel?: boolean }
   | { id: string; type: "text"; title: string; titleEm: string; lead: string; paras: string[]; callout: string; image?: string }
   | { id: string; type: "bullets"; title: string; titleEm: string; lead: string; items: string[]; callout: string; image?: string; variant?: BulletsVariant }
-  | { id: string; type: "twocol"; title: string; titleEm: string; lead: string; cols: { head: string; items: string[] }[]; image?: string }
+  | { id: string; type: "twocol"; title: string; titleEm: string; lead: string; cols: { head: string; items: string[] }[]; image?: string; callout?: string }
   | { id: string; type: "steps"; title: string; titleEm: string; lead: string; steps: { head: string; text: string }[]; image?: string }
   | { id: string; type: "table"; title: string; titleEm: string; lead: string; head: string[]; rows: string[][]; callout: string }
   | { id: string; type: "gallery"; title: string; titleEm: string; lead: string; images: { src: string; cap: string }[] }
   | { id: string; type: "closing"; title: string; titleEm: string; sub: string; contacts: string[]; image: string; qr?: string }
-  | { id: string; type: "diagram"; kind: DiagramKind; title: string; titleEm: string; lead: string; labels: string[]; lists?: string[][]; callout: string }
+  | { id: string; type: "diagram"; kind: DiagramKind; title: string; titleEm: string; lead: string; labels: string[]; lists?: string[][]; callout: string; hi?: number }
 ) & { fs?: number }; // fs — ручний множник кегля сторінки (0.6…1.6), поверх автопідбору
 
 export type DeckPageType = DeckPage["type"];
@@ -35,7 +35,10 @@ export type Deck = {
   fs?: number; // множник кегля для всієї деки (0.7…1.3)
   notes?: boolean; // поле «Нотатки» на розріджених сторінках (false — екранна версія без нотаток)
   tight?: boolean; // щільна верстка: менші відступи в таблицях/картках, більший мінімальний кегль
+  logoLight?: string; // світла версія логотипа клієнта — для титулу з фото на весь аркуш (інакше logo, висвітлений фільтром)
   logo?: string; // логотип клієнта на титулі (шлях до картинки); "" — без логотипа
+  big?: boolean; // «великий друк»: крупніші шапки таблиць і службові підписи (для друку)
+  lang?: "uk" | "ru"; // мова службових підписів на аркушах (Нотатки, Розділ, підпис у колонтитулі); типово uk
   footRunhead?: boolean; // колонтитул із назвою деки знизу (замість підпису «Тетяна Пан · …»), номер сторінки лаконічний; зверху — лише логотип
   pages: DeckPage[];
 };

@@ -73,14 +73,14 @@ const UI_CSS = `
   #deck-ui .rail-h{ padding:14px 16px 8px; font-family:var(--font-jetbrains),monospace; font-size:9.5px; letter-spacing:.2em; text-transform:uppercase; color:var(--fnt); }
   #deck-ui .rail-h b{ font-weight:500; color:var(--mut); margin-left:4px; }
   #deck-ui .rail-list{ flex:1; overflow:auto; padding:0 8px 8px; }
-  #deck-ui .pg{ display:flex; gap:10px; align-items:flex-start; width:100%; text-align:left; border:0; background:transparent; border-radius:9px; padding:7px 8px; cursor:pointer; color:var(--ink); font:inherit; }
-  #deck-ui .pg:hover{ background:var(--hov); }
-  #deck-ui .pg.on{ background:#fff; box-shadow:0 1px 0 rgba(255,255,255,.8) inset, 0 4px 14px rgba(60,40,15,.08); }
-  #deck-ui .pg .pn{ font-family:var(--font-jetbrains),monospace; font-size:10px; color:var(--fnt); padding-top:3px; flex:none; width:18px; }
-  #deck-ui .pg.on .pn{ color:var(--acc); }
-  #deck-ui .pg .pt{ min-width:0; display:flex; flex-direction:column; gap:1px; }
-  #deck-ui .pg .pt b{ font-weight:500; font-size:12.5px; line-height:1.3; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
-  #deck-ui .pg .pt small{ font-size:10.5px; color:var(--fnt); }
+  #deck-ui .rail .rpg{ display:flex; gap:10px; align-items:flex-start; width:100%; text-align:left; border:0; background:transparent; border-radius:9px; padding:7px 8px; cursor:pointer; color:var(--ink); font:inherit; }
+  #deck-ui .rail .rpg:hover{ background:var(--hov); }
+  #deck-ui .rail .rpg.on{ background:#fff; box-shadow:0 1px 0 rgba(255,255,255,.8) inset, 0 4px 14px rgba(60,40,15,.08); }
+  #deck-ui .rail .rpg .pn{ font-family:var(--font-jetbrains),monospace; font-size:10px; color:var(--fnt); padding-top:3px; flex:none; width:18px; }
+  #deck-ui .rail .rpg.on .pn{ color:var(--acc); }
+  #deck-ui .rail .rpg .pt{ min-width:0; display:flex; flex-direction:column; gap:1px; }
+  #deck-ui .rail .rpg .pt b{ font-weight:500; font-size:12.5px; line-height:1.3; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
+  #deck-ui .rail .rpg .pt small{ font-size:10.5px; color:var(--fnt); }
   #deck-ui .rail-add{ margin:8px; height:36px; display:flex; align-items:center; justify-content:center; gap:6px; border:1px dashed #C9BBA3; border-radius:9px; background:transparent; color:var(--mut); font:inherit; font-size:13px; cursor:pointer; }
   #deck-ui .rail-add:hover{ border-color:var(--acc); color:var(--acc); background:#fff; }
   #deck-ui .pages{ flex:1; min-width:0; padding:28px 70px 80px 24px; overflow-x:auto; }
@@ -350,7 +350,7 @@ export function DeckEditor({ initial, dbReady, only, bare, loadedAt, fromDb, pre
     return () => io.disconnect();
   }, [deck.pages.length, bare]);
   // навігатор прокручується до поточної сторінки
-  useEffect(() => { document.querySelector<HTMLElement>("#deck-ui .rail .pg.on")?.scrollIntoView({ block: "nearest" }); }, [cur]);
+  useEffect(() => { document.querySelector<HTMLElement>("#deck-ui .rail .rpg.on")?.scrollIntoView({ block: "nearest" }); }, [cur]);
   const goPage = useCallback((i: number) => { document.querySelectorAll<HTMLElement>("#deck-ui .pages .sheet")[i]?.scrollIntoView({ behavior: "smooth", block: "start" }); }, []);
   const exportPptx = useCallback(async () => {
     if (pptxBusy) return;
@@ -369,11 +369,16 @@ export function DeckEditor({ initial, dbReady, only, bare, loadedAt, fromDb, pre
         const el = sheet?.querySelector<HTMLElement>(sel);
         if (!el) return null;
         const filter = (n: HTMLElement) => !(n instanceof HTMLElement && n.classList.contains("imgbtn"));
-        const attempt = (o: object, ms: number) => withTimeout(toPng(el, { pixelRatio: 2, backgroundColor: "#FCF8F1", filter, ...o } as any).catch((e) => { console.warn("[pptx] snap", i, e); return null; }), ms);
+        // межі з урахуванням підписів, що виходять за контейнер схеми, + поле 16 px — щоб нічого не обрізалось
+        const r0 = el.getBoundingClientRect(); let right = r0.right, bottom = r0.bottom, left = r0.left, top = r0.top;
+        el.querySelectorAll<HTMLElement>("*").forEach((c) => { const b = c.getBoundingClientRect(); if (b.width && b.height) { right = Math.max(right, b.right); bottom = Math.max(bottom, b.bottom); left = Math.min(left, b.left); top = Math.min(top, b.top); } });
+        const PAD = 16, ox = Math.ceil(r0.left - left) + PAD, oy = Math.ceil(r0.top - top) + PAD;
+        const cw = Math.ceil(right - left) + 2 * PAD, chh = Math.ceil(bottom - top) + 2 * PAD;
+        const attempt = (o: object, ms: number) => withTimeout(toPng(el, { pixelRatio: 2, backgroundColor: "#FCF8F1", filter, width: cw, height: chh, style: { margin: "0", transform: `translate(${ox}px, ${oy}px)`, width: `${el.offsetWidth}px`, height: `${el.offsetHeight}px` }, ...o } as any).catch((e) => { console.warn("[pptx] snap", i, e); return null; }), ms);
         // друга спроба — без вбудованих шрифтів: краще схема системним шрифтом, ніж список замість схеми
         const data = (await attempt(fontEmbedCSS ? { fontEmbedCSS } : { skipFonts: true }, 30000)) ?? (await attempt({ skipFonts: true }, 20000));
         if (!data) console.warn("[pptx] snap failed", i, sel);
-        return data ? { data, w: el.offsetWidth, h: el.offsetHeight } : null;
+        return data ? { data, w: cw, h: chh } : null;
       };
       // html-to-image чекає requestAnimationFrame після декодування картинки, а у прихованій вкладці він не настає —
       // експорт «зависав би», якщо користувач перемкнеться на іншу вкладку. У прихованому стані підміняємо таймером.
@@ -473,7 +478,7 @@ export function DeckEditor({ initial, dbReady, only, bare, loadedAt, fromDb, pre
         <div className="rail-h">Сторінки <b>{deck.pages.length}</b></div>
         <div className="rail-list">
           {deck.pages.map((pg, i) => (
-            <button key={pg.id} type="button" className={"pg" + (cur === i ? " on" : "")} onClick={() => goPage(i)} title={PAGE_TYPE_LABELS[pg.type]}>
+            <button key={pg.id} type="button" className={"rpg" + (cur === i ? " on" : "")} onClick={() => goPage(i)} title={PAGE_TYPE_LABELS[pg.type]}>
               <span className="pn">{String(i + 1).padStart(2, "0")}</span>
               <span className="pt"><b>{pageTitle(pg)}</b><small>{PAGE_TYPE_LABELS[pg.type]}</small></span>
             </button>
@@ -501,7 +506,7 @@ export function DeckEditor({ initial, dbReady, only, bare, loadedAt, fromDb, pre
               <button title="Вставити сторінку після цієї (вибір композиції)" onClick={() => setTplMode({ mode: "insert", i })}><Ic d={IC.plus} /></button>
               <button title="Змінити композицію цієї сторінки (тексти перенесуться)" onClick={() => setTplMode({ mode: "replace", i })}><Ic d={IC.layout} /></button>
               {deck.pages[i].type === "cover" && (
-                <button title="Титул: звичайний → амперсанд → фото праворуч" onClick={() => { const c = (deck.pages[i] as any).variant; patchPage(i, { variant: c === "amp" ? "photo" : c === "photo" ? undefined : "amp" }); }}><Ic d={IC.variant} /></button>
+                <button title="Титул: звичайний → амперсанд → фото праворуч → фото на весь аркуш → фото-смуга зверху" onClick={() => { const c = (deck.pages[i] as any).variant; patchPage(i, { variant: c === "amp" ? "photo" : c === "photo" ? "full" : c === "full" ? "band" : c === "band" ? undefined : "amp" }); }}><Ic d={IC.variant} /></button>
               )}
               {deck.pages[i].type === "bullets" && (
                 <button title="Вигляд списку: список → картки → репліки" onClick={() => {
