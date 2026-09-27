@@ -47,7 +47,7 @@ export const ADLER_DECK: Deck = {
   footRunhead: true,
   pages: [
     // ── Титули: основний і варіанти на вибір (зайві можна видалити в редакторі) ──
-    { id: "c6", type: "cover", ...COVER, variant: "photo", avatar: N + "tania-profile.jpg", image: I + "cover-analytics.jpg", who2: "Екатерина Попова\nБизнес-тренер" }, // выбран клиентом; второй тренер — фото добавить
+    { id: "c6", type: "cover", ...COVER, variant: "photo", avatar: N + "tania-profile.jpg", image: I + "cover-analytics.jpg", who2: "Екатерина Попова\nБизнес-тренер", avatar2: I + "popova.jpg" }, // выбран клиентом; второй тренер
 
     // 2 — о тренере (как в источнике: 4 пункта + фото)
     { id: "s02", type: "bullets", title: "Татьяна", titleEm: "Пан", lead: "", items: [

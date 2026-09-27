@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef } from "react";
+import { useFz } from "@/components/deck/fz";
 
 /**
  * Схеми для сторінок типу «diagram»: відтворені з pptx-джерел у фірмових кольорах деки.
@@ -159,19 +160,21 @@ export const DIAGRAM_CSS = `
   #deck-a4 .dg.wedge .lists li::marker{ color:var(--amber); }
 `;
 
-function L({ value, onChange, editable, className, tag: Tag = "span" }: { value: string; onChange: (v: string) => void; editable: boolean; className?: string; tag?: "span" | "b" }) {
+function L({ value, onChange, editable, className, tag: Tag = "span", fk }: { value: string; onChange: (v: string) => void; editable: boolean; className?: string; tag?: "span" | "b"; fk?: string }) {
   const ref = useRef<HTMLElement>(null);
   const T = Tag as any;
+  const fz = useFz(fk);
   return (
-    <T ref={ref} className={className} contentEditable={editable || undefined} suppressContentEditableWarning data-ph="…"
+    <T {...fz} ref={ref} className={className} contentEditable={editable || undefined} suppressContentEditableWarning data-ph="…"
       onBlur={() => { const v = (ref.current?.innerText ?? "").replace(/\u00a0/g, " ").replace(/\u2011/g, "-").trim(); if (v !== value) onChange(v); }}>{value.replace(/(бизнес|бізнес|EST)-/g, "$1\u2011")}</T>
   );
 }
 
-function Ul({ items, onChange, editable }: { items: string[]; onChange: (v: string[]) => void; editable: boolean }) {
+function Ul({ items, onChange, editable, fk }: { items: string[]; onChange: (v: string[]) => void; editable: boolean; fk?: string }) {
   const ref = useRef<HTMLUListElement>(null);
+  const fz = useFz(fk);
   return (
-    <ul ref={ref} contentEditable={editable || undefined} suppressContentEditableWarning
+    <ul {...fz} ref={ref} contentEditable={editable || undefined} suppressContentEditableWarning
       onBlur={() => { const v = Array.from(ref.current?.querySelectorAll("li") ?? []).map((li) => li.innerText.replace(/ /g, " ").trim()).filter(Boolean); if (JSON.stringify(v) !== JSON.stringify(items)) onChange(v.length ? v : [""]); }}>
       {items.map((it, k) => <li key={k}>{it}</li>)}
     </ul>
@@ -194,9 +197,9 @@ export function Diagram({ kind, labels, lists, hi, v2, editable, onLabels, onLis
     case "pyramid":
       return (
         <div className={"dg " + kind}>
-          <div className="lb box l1"><span><L tag="b" value={lb(0)} onChange={setL(0)} editable={e} /><L value={lb(1)} onChange={setL(1)} editable={e} /></span></div>
-          <div className="lb box l2"><span><L value={lb(2)} onChange={setL(2)} editable={e} /></span></div>
-          <div className="lb box l3"><span><L value={lb(3)} onChange={setL(3)} editable={e} /></span></div>
+          <div className="lb box l1"><span><L fk={"lb." + (0)} tag="b" value={lb(0)} onChange={setL(0)} editable={e} /><L fk={"lb." + (1)} value={lb(1)} onChange={setL(1)} editable={e} /></span></div>
+          <div className="lb box l2"><span><L fk={"lb." + (2)} value={lb(2)} onChange={setL(2)} editable={e} /></span></div>
+          <div className="lb box l3"><span><L fk={"lb." + (3)} value={lb(3)} onChange={setL(3)} editable={e} /></span></div>
           <div className="py"><i className="b1" /><i className="b2" /><i className="b3" />
             {v2 ? (
               <svg className="org" viewBox="0 0 100 100" preserveAspectRatio="none">
@@ -224,15 +227,15 @@ export function Diagram({ kind, labels, lists, hi, v2, editable, onLabels, onLis
     case "skills":
       return (
         <div className={"dg " + kind}>
-          <div className="lb box dark lv r1"><span><L value={lb(0)} onChange={setL(0)} editable={e} /></span></div>
-          <div className="lb box dark lv r2"><span><L value={lb(1)} onChange={setL(1)} editable={e} /></span></div>
-          <div className="lb box dark lv r3"><span><L value={lb(2)} onChange={setL(2)} editable={e} /></span></div>
+          <div className="lb box dark lv r1"><span><L fk={"lb." + (0)} value={lb(0)} onChange={setL(0)} editable={e} /></span></div>
+          <div className="lb box dark lv r2"><span><L fk={"lb." + (1)} value={lb(1)} onChange={setL(1)} editable={e} /></span></div>
+          <div className="lb box dark lv r3"><span><L fk={"lb." + (2)} value={lb(2)} onChange={setL(2)} editable={e} /></span></div>
           <div className="area"><i className="hard" /><i className="strat" /></div>
-          <div className="lb hard"><span><L value={lb(3)} onChange={setL(3)} editable={e} /></span></div>
-          <div className="lb hardsub"><span><L value={lb(4)} onChange={setL(4)} editable={e} /></span></div>
-          <div className="lb soft"><span><L value={lb(5)} onChange={setL(5)} editable={e} /></span></div>
-          <div className="lb strat"><span><L value={lb(6)} onChange={setL(6)} editable={e} /></span></div>
-          <div className="lb stratsub"><span><L value={lb(7)} onChange={setL(7)} editable={e} /></span></div>
+          <div className="lb hard"><span><L fk={"lb." + (3)} value={lb(3)} onChange={setL(3)} editable={e} /></span></div>
+          <div className="lb hardsub"><span><L fk={"lb." + (4)} value={lb(4)} onChange={setL(4)} editable={e} /></span></div>
+          <div className="lb soft"><span><L fk={"lb." + (5)} value={lb(5)} onChange={setL(5)} editable={e} /></span></div>
+          <div className="lb strat"><span><L fk={"lb." + (6)} value={lb(6)} onChange={setL(6)} editable={e} /></span></div>
+          <div className="lb stratsub"><span><L fk={"lb." + (7)} value={lb(7)} onChange={setL(7)} editable={e} /></span></div>
         </div>
       );
     case "circle3":
@@ -242,22 +245,22 @@ export function Diagram({ kind, labels, lists, hi, v2, editable, onLabels, onLis
           <svg viewBox="0 0 100 42.5" preserveAspectRatio="none">
             <Arrow id={uid + "r1"} d="M 43.5 3.4 A 19 19 0 0 1 68.7 17.9" /><Arrow id={uid + "r2"} d="M 68.7 24.6 A 19 19 0 0 1 43.5 39.1" /><Arrow id={uid + "r3"} d="M 37.8 35.8 A 19 19 0 0 1 37.8 6.7" />
           </svg>
-          <div className="lb s3"><span><L value={lb(0)} onChange={setL(0)} editable={e} /></span></div>
-          <div className="lb s1"><span><L value={lb(1)} onChange={setL(1)} editable={e} /></span></div>
-          <div className="lb s2"><span><L value={lb(2)} onChange={setL(2)} editable={e} /></span></div>
+          <div className="lb s3"><span><L fk={"lb." + (0)} value={lb(0)} onChange={setL(0)} editable={e} /></span></div>
+          <div className="lb s1"><span><L fk={"lb." + (1)} value={lb(1)} onChange={setL(1)} editable={e} /></span></div>
+          <div className="lb s2"><span><L fk={"lb." + (2)} value={lb(2)} onChange={setL(2)} editable={e} /></span></div>
         </div>
       );
     case "blocks31":
       return (
         <div className={"dg " + kind}>
-          <div className="lb badge"><span><L value={lb(0)} onChange={setL(0)} editable={e} /></span></div>
-          <div className="lb box bk k1"><span><L value={lb(1)} onChange={setL(1)} editable={e} /></span></div>
-          <div className="lb box bk k2"><span><L value={lb(2)} onChange={setL(2)} editable={e} /></span></div>
-          <div className="lb box bk k3"><span><L value={lb(3)} onChange={setL(3)} editable={e} /></span></div>
+          <div className="lb badge"><span><L fk={"lb." + (0)} value={lb(0)} onChange={setL(0)} editable={e} /></span></div>
+          <div className="lb box bk k1"><span><L fk={"lb." + (1)} value={lb(1)} onChange={setL(1)} editable={e} /></span></div>
+          <div className="lb box bk k2"><span><L fk={"lb." + (2)} value={lb(2)} onChange={setL(2)} editable={e} /></span></div>
+          <div className="lb box bk k3"><span><L fk={"lb." + (3)} value={lb(3)} onChange={setL(3)} editable={e} /></span></div>
           <svg viewBox="0 0 100 42.5" preserveAspectRatio="none">
             <Arrow id={uid + "b1"} d="M31 17 L42.5 5" /><Arrow id={uid + "b2"} d="M31 17 L42.5 15.5" /><Arrow id={uid + "b3"} d="M31 17 L42.5 26" /><Arrow id={uid + "b4"} d="M70 31.5 L70 33.5" />
           </svg>
-          <div className="lb box acc bar"><span><L value={lb(4)} onChange={setL(4)} editable={e} /></span></div>
+          <div className="lb box acc bar"><span><L fk={"lb." + (4)} value={lb(4)} onChange={setL(4)} editable={e} /></span></div>
         </div>
       );
     case "cycle":
@@ -267,19 +270,19 @@ export function Diagram({ kind, labels, lists, hi, v2, editable, onLabels, onLis
             <Arrow id={uid + "c1"} d="M 62 6 A 32 22 0 0 1 80 17" /><Arrow id={uid + "c2"} d="M 82 30 A 32 22 0 0 1 62 40.5" /><Arrow id={uid + "c3"} d="M 38 40.5 A 32 22 0 0 1 20 30" /><Arrow id={uid + "c4"} d="M 18 17 A 32 22 0 0 1 38 6" />
             <Arrow id={uid + "c5"} d="M 12 12 L 12 18" />
           </svg>
-          <div className="lb box acc goal"><span><L value={lb(5)} onChange={setL(5)} editable={e} /></span></div>
-          <div className="lb box c c1"><span><L value={lb(0)} onChange={setL(0)} editable={e} /></span></div>
-          <div className="lb box c c2"><span><L value={lb(1)} onChange={setL(1)} editable={e} /></span></div>
-          <div className="lb box c c3"><span><L value={lb(2)} onChange={setL(2)} editable={e} /></span></div>
-          <div className="lb box c c4"><span><L value={lb(3)} onChange={setL(3)} editable={e} /></span></div>
-          <div className="lb box mid"><span><L value={lb(4)} onChange={setL(4)} editable={e} /></span></div>
+          <div className="lb box acc goal"><span><L fk={"lb." + (5)} value={lb(5)} onChange={setL(5)} editable={e} /></span></div>
+          <div className="lb box c c1"><span><L fk={"lb." + (0)} value={lb(0)} onChange={setL(0)} editable={e} /></span></div>
+          <div className="lb box c c2"><span><L fk={"lb." + (1)} value={lb(1)} onChange={setL(1)} editable={e} /></span></div>
+          <div className="lb box c c3"><span><L fk={"lb." + (2)} value={lb(2)} onChange={setL(2)} editable={e} /></span></div>
+          <div className="lb box c c4"><span><L fk={"lb." + (3)} value={lb(3)} onChange={setL(3)} editable={e} /></span></div>
+          <div className="lb box mid"><span><L fk={"lb." + (4)} value={lb(4)} onChange={setL(4)} editable={e} /></span></div>
         </div>
       );
     case "catman": {
       const nd = (i: number, cls: string) => (
         <div className={"nd " + cls + (hi === i ? " on" : "")}>
           <span className="no">{i}</span>
-          <span><L tag="b" className="tt" value={lb(2 + (i - 1) * 2)} onChange={setL(2 + (i - 1) * 2)} editable={e} /><L className="ds" value={lb(3 + (i - 1) * 2)} onChange={setL(3 + (i - 1) * 2)} editable={e} /></span>
+          <span><L fk={"lb." + (2 + (i - 1) * 2)} tag="b" className="tt" value={lb(2 + (i - 1) * 2)} onChange={setL(2 + (i - 1) * 2)} editable={e} /><L fk={"lb." + (3 + (i - 1) * 2)} className="ds" value={lb(3 + (i - 1) * 2)} onChange={setL(3 + (i - 1) * 2)} editable={e} /></span>
         </div>
       );
       return (
@@ -289,13 +292,13 @@ export function Diagram({ kind, labels, lists, hi, v2, editable, onLabels, onLis
               <line key={k} x1={x1} y1={y1} x2={x2} y2={y2} stroke="#D9CDB9" strokeWidth="1.2" vectorEffect="non-scaling-stroke" />
             ))}
           </svg>
-          <div className="core"><L className="k" value={lb(0)} onChange={setL(0)} editable={e} /><L className="v" value={lb(1)} onChange={setL(1)} editable={e} /></div>
+          <div className="core"><L fk={"lb." + (0)} className="k" value={lb(0)} onChange={setL(0)} editable={e} /><L fk={"lb." + (1)} className="v" value={lb(1)} onChange={setL(1)} editable={e} /></div>
           {nd(1, "n1")}{nd(2, "n2")}{nd(3, "n3")}{nd(5, "n5")}
           <div className={"nd n4" + (hi === 4 ? " on" : "")}>
-            <div className="hd"><span className="no">4</span><L tag="b" className="tt" value={lb(8)} onChange={setL(8)} editable={e} /></div>
+            <div className="hd"><span className="no">4</span><L fk={"lb." + (8)} tag="b" className="tt" value={lb(8)} onChange={setL(8)} editable={e} /></div>
             <div className="subs">
               {[0, 1, 2, 3].map((k) => (
-                <div className="sb" key={k}><L tag="b" value={lb(12 + k * 2)} onChange={setL(12 + k * 2)} editable={e} /><L value={lb(13 + k * 2)} onChange={setL(13 + k * 2)} editable={e} /></div>
+                <div className="sb" key={k}><L fk={"lb." + (12 + k * 2)} tag="b" value={lb(12 + k * 2)} onChange={setL(12 + k * 2)} editable={e} /><L fk={"lb." + (13 + k * 2)} value={lb(13 + k * 2)} onChange={setL(13 + k * 2)} editable={e} /></div>
               ))}
             </div>
           </div>
@@ -309,11 +312,11 @@ export function Diagram({ kind, labels, lists, hi, v2, editable, onLabels, onLis
           {L4.map((l, k) => [<div key={"l" + k} className={"let" + (hi === k + 1 ? " on" : "")}>{l}</div>, <div key={"s" + k} />])}
           <div className="let">&nbsp;</div>
           {L4.map((_, k) => [
-            <div key={"b" + k} className={"bx" + (hi === k + 1 ? " on" : "")}><L value={lb(k)} onChange={setL(k)} editable={e} /></div>,
+            <div key={"b" + k} className={"bx" + (hi === k + 1 ? " on" : "")}><L fk={"lb." + (k)} value={lb(k)} onChange={setL(k)} editable={e} /></div>,
             <div key={"o" + k} className="op">{k < 3 ? "×" : "="}</div>,
           ])}
-          <div className="bx res"><L value={lb(4)} onChange={setL(4)} editable={e} /></div>
-          {L4.map((_, k) => [<div key={"e" + k} className="en"><L value={lb(5 + k)} onChange={setL(5 + k)} editable={e} /></div>, <div key={"t" + k} />])}
+          <div className="bx res"><L fk={"lb." + (4)} value={lb(4)} onChange={setL(4)} editable={e} /></div>
+          {L4.map((_, k) => [<div key={"e" + k} className="en"><L fk={"lb." + (5 + k)} value={lb(5 + k)} onChange={setL(5 + k)} editable={e} /></div>, <div key={"t" + k} />])}
           <div className="en">&nbsp;</div>
         </div>
       );
@@ -328,15 +331,15 @@ export function Diagram({ kind, labels, lists, hi, v2, editable, onLabels, onLis
           {ls.map((row, r) => {
             const last = r === n - 1;
             const label =
-              r === 0 ? <div key="t0" className="tl main" style={{ gridRow: "1" }}><L value={lb(0)} onChange={setL(0)} editable={e} /></div>
-              : r === 1 ? <div key="t1" className="tl" style={{ gridRow: "2" }}><L value={lb(1)} onChange={setL(1)} editable={e} /></div>
-              : r === 2 ? <div key="t2" className="tl span" style={{ gridRow: `3 / span ${mid}` }}><L value={lb(2)} onChange={setL(2)} editable={e} /></div>
-              : last ? <div key="t3" className="tl" style={{ gridRow: String(n) }}><L value={lb(3)} onChange={setL(3)} editable={e} /></div>
+              r === 0 ? <div key="t0" className="tl main" style={{ gridRow: "1" }}><L fk={"lb." + (0)} value={lb(0)} onChange={setL(0)} editable={e} /></div>
+              : r === 1 ? <div key="t1" className="tl" style={{ gridRow: "2" }}><L fk={"lb." + (1)} value={lb(1)} onChange={setL(1)} editable={e} /></div>
+              : r === 2 ? <div key="t2" className="tl span" style={{ gridRow: `3 / span ${mid}` }}><L fk={"lb." + (2)} value={lb(2)} onChange={setL(2)} editable={e} /></div>
+              : last ? <div key="t3" className="tl" style={{ gridRow: String(n) }}><L fk={"lb." + (3)} value={lb(3)} onChange={setL(3)} editable={e} /></div>
               : null;
             return [
               label,
               <div key={"r" + r} className={"row r" + (last ? 4 : Math.min(r, 3))} style={{ width: last ? "100%" : widths[Math.min(r, 3)], gridColumn: "2", gridRow: String(r + 1) }}>
-                {row.map((c, k) => <span key={k}><L value={c} onChange={setCell(r, k)} editable={e} /></span>)}
+                {row.map((c, k) => <span key={k}><L fk={`c.${r}.${k}`} value={c} onChange={setCell(r, k)} editable={e} /></span>)}
               </div>,
             ];
           })}
@@ -362,11 +365,11 @@ export function Diagram({ kind, labels, lists, hi, v2, editable, onLabels, onLis
               <span key={k + "t" + j} className="tick" style={vert ? { left: `calc(${x}% + 5.5mm)`, top: `${y}%` } : { left: `${x}%`, top: `calc(${y}% - 3.4mm)` }}>{[0, 5, 10][j]}</span>,
             ];
           }))}
-          <div className="hub"><L value={lb(12)} onChange={setL(12)} editable={e} /></div>
+          <div className="hub"><L fk={"lb." + (12)} value={lb(12)} onChange={setL(12)} editable={e} /></div>
           {cards.map(([x, y], k) => (
             <div key={k} className={"ax a" + k} style={{ left: `${x}%`, top: `${y}%` }}>
-              <L tag="b" value={lb(k * 2)} onChange={setL(k * 2)} editable={e} />
-              <L value={lb(k * 2 + 1)} onChange={setL(k * 2 + 1)} editable={e} />
+              <L fk={"lb." + (k * 2)} tag="b" value={lb(k * 2)} onChange={setL(k * 2)} editable={e} />
+              <L fk={"lb." + (k * 2 + 1)} value={lb(k * 2 + 1)} onChange={setL(k * 2 + 1)} editable={e} />
             </div>
           ))}
         </div>
@@ -378,11 +381,11 @@ export function Diagram({ kind, labels, lists, hi, v2, editable, onLabels, onLis
       return (
         <div className={"dg " + kind}>
           <div className="w"><i className="p1" /><i className="p2" /><i className="p3" /></div>
-          <div className="lb pct q1"><L tag="b" value={lb(0)} onChange={setL(0)} editable={e} /><span><L value={lb(1)} onChange={setL(1)} editable={e} /></span></div>
-          <div className="lb pct q2"><L tag="b" value={lb(2)} onChange={setL(2)} editable={e} /><span><L value={lb(3)} onChange={setL(3)} editable={e} /></span></div>
-          <div className="lb pct q3"><L tag="b" value={lb(4)} onChange={setL(4)} editable={e} /><span><L value={lb(5)} onChange={setL(5)} editable={e} /></span></div>
+          <div className="lb pct q1"><L fk={"lb." + (0)} tag="b" value={lb(0)} onChange={setL(0)} editable={e} /><span><L fk={"lb." + (1)} value={lb(1)} onChange={setL(1)} editable={e} /></span></div>
+          <div className="lb pct q2"><L fk={"lb." + (2)} tag="b" value={lb(2)} onChange={setL(2)} editable={e} /><span><L fk={"lb." + (3)} value={lb(3)} onChange={setL(3)} editable={e} /></span></div>
+          <div className="lb pct q3"><L fk={"lb." + (4)} tag="b" value={lb(4)} onChange={setL(4)} editable={e} /><span><L fk={"lb." + (5)} value={lb(5)} onChange={setL(5)} editable={e} /></span></div>
           <div className="lists">
-            <Ul items={ls[0] ?? []} onChange={setList(0)} editable={e} /><Ul items={ls[1] ?? []} onChange={setList(1)} editable={e} /><Ul items={ls[2] ?? []} onChange={setList(2)} editable={e} />
+            <Ul fk="ls.0" items={ls[0] ?? []} onChange={setList(0)} editable={e} /><Ul fk="ls.1" items={ls[1] ?? []} onChange={setList(1)} editable={e} /><Ul fk="ls.2" items={ls[2] ?? []} onChange={setList(2)} editable={e} />
           </div>
         </div>
       );

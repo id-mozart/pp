@@ -3,6 +3,7 @@
 import { createContext, useContext, useLayoutEffect, useRef, useState } from "react";
 import { deckT, splitBold } from "@/lib/decks/i18n";
 import { DIAGRAM_CSS, Diagram } from "@/components/deck/Diagrams";
+import { FzCtx, useFz } from "@/components/deck/fz";
 import type { Deck, DeckPage } from "@/lib/decks/types";
 
 /**
@@ -609,6 +610,7 @@ function E({
   ph,
   editable,
   attrs,
+  fk,
 }: {
   tag?: keyof JSX.IntrinsicElements;
   value: string;
@@ -617,12 +619,15 @@ function E({
   ph?: string;
   editable: boolean;
   attrs?: Record<string, unknown>;
+  fk?: string; // ключ поля для індивідуального розміру (page.fz)
 }) {
   const ref = useRef<HTMLElement>(null);
   const T = Tag as any;
+  const fz = useFz(fk);
   return (
     <T
       {...attrs}
+      {...fz}
       ref={ref}
       className={className}
       contentEditable={editable || undefined}
@@ -652,7 +657,9 @@ function EList({
   editable,
   breakAt,
   spanTo,
+  fk,
 }: {
+  fk?: string;
   items: string[];
   onChange: (v: string[]) => void;
   className?: string;
@@ -664,8 +671,10 @@ function EList({
   // Після кожного blur список перемонтовується (key), щоб нативно створені браузером <li>
   // (Enter у contentEditable) не лишались поруч із React-рендером і не дублювались.
   const [rev, setRev] = useState(0);
+  const fz = useFz(fk);
   return (
     <ul
+      {...fz}
       key={rev}
       ref={ref}
       className={className}
@@ -706,9 +715,9 @@ function chipFor(text: string): string | null {
 function Title({ p, set, editable, className }: { p: { title: string; titleEm: string }; set: Patch; editable: boolean; className?: string }) {
   return (
     <h1 className={className}>
-      <E value={p.title} onChange={(v) => set({ title: v })} editable={editable} ph="Заголовок" />{/-$/.test(p.title.trim()) ? "" : " "}
+      <E fk="title" value={p.title} onChange={(v) => set({ title: v })} editable={editable} ph="Заголовок" />{/-$/.test(p.title.trim()) ? "" : " "}
       <em>
-        <E value={p.titleEm} onChange={(v) => set({ titleEm: v })} editable={editable} ph="акцент" />
+        <E fk="title" value={p.titleEm} onChange={(v) => set({ titleEm: v })} editable={editable} ph="акцент" />
       </em>
     </h1>
   );
@@ -895,7 +904,9 @@ export function DeckPages({
           <div key={p.id} style={{ position: "relative" }}>
             {renderControls?.(i)}
             <Sheet deck={deck} i={i} cls={"t-" + p.type} page={p} editable={editable} onRunhead={rh} animate={animate}>
-              <PageBody p={p} set={set} editable={editable} prev={deck.pages[i - 1]} pick={editable ? pickImage : undefined} showNotes={deck.notes !== false} logo={deck.logo} big={deck.big} />
+              <FzCtx.Provider value={p.fz}>
+                <PageBody p={p} set={set} editable={editable} prev={deck.pages[i - 1]} pick={editable ? pickImage : undefined} showNotes={deck.notes !== false} logo={deck.logo} big={deck.big} />
+              </FzCtx.Provider>
             </Sheet>
           </div>
         );
@@ -937,26 +948,26 @@ function PageBody({ p, set, editable, prev, pick, showNotes = true, logo, big }:
           {p.variant === "full" && p.image ? <div className="cvfull"><img src={p.image} alt="" /><ImgBtn pick={pick} current={p.image} optional onPick={(v) => set({ image: v || undefined })} /></div> : null}
           <div className={"cv" + (p.variant === "amp" ? " amp" : p.variant === "photo" ? " amp photo" : p.variant === "full" ? " amp full" : p.variant === "band" ? " amp bnd" : "")}>
             <div className="cv-l">
-              <E tag="p" className="eyebrow" value={p.eyebrow} onChange={(v) => set({ eyebrow: v })} editable={e} ph="надзаголовок" />
+              <E fk="eyebrow" tag="p" className="eyebrow" value={p.eyebrow} onChange={(v) => set({ eyebrow: v })} editable={e} ph="надзаголовок" />
               <Title p={p} set={set} editable={e} />
-              <E tag="p" className="sub" value={p.sub} onChange={(v) => set({ sub: v })} editable={e} ph="" />
+              <E fk="sub" tag="p" className="sub" value={p.sub} onChange={(v) => set({ sub: v })} editable={e} ph="" />
               {p.who2 !== undefined && (e || p.who2.trim()) ? (
                 // два тренери: кожен — фото (або ініціали, поки фото немає) + імʼя і роль, один під одним
                 <div className="who av two">
                   <span className="pp">
                     {p.avatar ? <span className="avatar"><img src={p.avatar} alt="" /><ImgBtn pick={pick} current={p.avatar} optional onPick={(v) => set({ avatar: v || undefined })} /></span> : null}
                     <span className="wt">
-                      <E tag="p" value={p.who} onChange={(v) => set({ who: v })} editable={e} ph="хто проводить" />
-                      <E tag="p" className="w" value={p.when} onChange={(v) => set({ when: v })} editable={e} ph="де, коли" />
+                      <E fk="who" tag="p" value={p.who} onChange={(v) => set({ who: v })} editable={e} ph="хто проводить" />
+                      <E fk="when" tag="p" className="w" value={p.when} onChange={(v) => set({ when: v })} editable={e} ph="де, коли" />
                     </span>
                   </span>
                   <span className="pp">
                     <span className={"avatar" + (p.avatar2 ? "" : " ini")}>
                       {p.avatar2 ? <img src={p.avatar2} alt="" /> : initials(p.who2)}
-                      <ImgBtn pick={pick} current={p.avatar2} optional onPick={(v) => set({ avatar2: v || undefined })} />
+                      <ImgBtn pick={pick} current={p.avatar2} optional onPick={(v) => set({ avatar2: v || "" })} />
                     </span>
                     <span className="wt">
-                      <E tag="p" value={p.who2} onChange={(v) => set({ who2: v })} editable={e} ph="другий тренер" />
+                      <E fk="who2" tag="p" value={p.who2} onChange={(v) => set({ who2: v })} editable={e} ph="другий тренер" />
                     </span>
                   </span>
                 </div>
@@ -964,8 +975,8 @@ function PageBody({ p, set, editable, prev, pick, showNotes = true, logo, big }:
               <div className={"who" + (p.avatar ? " av" : "")}>
                 {p.avatar ? <span className="avatar"><img src={p.avatar} alt="" /><ImgBtn pick={pick} current={p.avatar} optional onPick={(v) => set({ avatar: v || undefined })} /></span> : null}
                 <span className="wt">
-                  <E tag="p" value={p.who} onChange={(v) => set({ who: v })} editable={e} ph="хто проводить" />
-                  <E tag="p" className="w" value={p.when} onChange={(v) => set({ when: v })} editable={e} ph="де, коли" />
+                  <E fk="who" tag="p" value={p.who} onChange={(v) => set({ who: v })} editable={e} ph="хто проводить" />
+                  <E fk="when" tag="p" className="w" value={p.when} onChange={(v) => set({ when: v })} editable={e} ph="де, коли" />
                 </span>
               </div>
               )}
@@ -988,14 +999,14 @@ function PageBody({ p, set, editable, prev, pick, showNotes = true, logo, big }:
             <div>
               <div className="lab" style={{ marginTop: "4mm" }}>{t.trainerLab}</div>
               <Title p={p} set={set} editable={e} />
-              <E tag="p" className="role" value={p.role ?? ""} onChange={(v) => set({ role: v })} editable={e} ph="" />
-              <E tag="div" className="quote" value={p.quote ?? ""} onChange={(v) => set({ quote: v })} editable={e} ph="" />
+              <E fk="role" tag="p" className="role" value={p.role ?? ""} onChange={(v) => set({ role: v })} editable={e} ph="" />
+              <E fk="quote" tag="div" className="quote" value={p.quote ?? ""} onChange={(v) => set({ quote: v })} editable={e} ph="" />
               {p.stats && p.stats.length ? (
                 <div className="stats">
                   {p.stats.map((st, k) => (
                     <div className="stat" key={k}>
-                      <E tag="div" className="n" value={st.n} onChange={(v) => set({ stats: p.stats!.map((x, j) => (j === k ? { ...x, n: v } : x)) })} editable={e} ph="" />
-                      <E tag="div" className="t" value={st.t} onChange={(v) => set({ stats: p.stats!.map((x, j) => (j === k ? { ...x, t: v } : x)) })} editable={e} ph="" />
+                      <E fk="stats.n" tag="div" className="n" value={st.n} onChange={(v) => set({ stats: p.stats!.map((x, j) => (j === k ? { ...x, n: v } : x)) })} editable={e} ph="" />
+                      <E fk="stats.t" tag="div" className="t" value={st.t} onChange={(v) => set({ stats: p.stats!.map((x, j) => (j === k ? { ...x, t: v } : x)) })} editable={e} ph="" />
                     </div>
                   ))}
                 </div>
@@ -1010,11 +1021,11 @@ function PageBody({ p, set, editable, prev, pick, showNotes = true, logo, big }:
           <div className="bottom">
             <div>
               <div className="lab">{t.spec}</div>
-              <EList className="bul" items={p.facts} onChange={(v) => set({ facts: v })} editable={e} />
+              <EList fk="facts" className="bul" items={p.facts} onChange={(v) => set({ facts: v })} editable={e} />
             </div>
             <div>
               <div className="lab">{t.geo}</div>
-              <E tag="p" className="note" value={p.note} onChange={(v) => set({ note: v })} editable={e} ph="" />
+              <E fk="note" tag="p" className="note" value={p.note} onChange={(v) => set({ note: v })} editable={e} ph="" />
               <span className="logowrap">
                 {p.logos ? <img className="logos" src={p.logos} alt="" /> : null}
                 <ImgBtn pick={pick} current={p.logos || undefined} optional onPick={(v) => set({ logos: v })} empty={!p.logos} />
@@ -1028,13 +1039,13 @@ function PageBody({ p, set, editable, prev, pick, showNotes = true, logo, big }:
         <>
           {p.image ? <div className={"secimg" + (p.panel ? " panel" : "")}><img src={p.image} alt="" /><ImgBtn pick={pick} current={p.image} optional onPick={(v) => set({ image: v || undefined })} /></div> : null}
           <div className="secwrap">
-            <E tag="div" className="num serif" value={p.num} onChange={(v) => set({ num: v })} editable={e} ph="" />
+            <E fk="num" tag="div" className="num serif" value={p.num} onChange={(v) => set({ num: v })} editable={e} ph="" />
             <div className="sec-t">
               {big ? null : <div className="kicker">{/^\d+-й крок/i.test(p.title) ? t.step : t.section}</div>}
               <h1>
-                <E value={p.title} onChange={(v) => set({ title: v })} editable={e} ph="Назва розділу" />
+                <E fk="title" value={p.title} onChange={(v) => set({ title: v })} editable={e} ph="Назва розділу" />
               </h1>
-              <E tag="p" className="sub" value={p.sub} onChange={(v) => set({ sub: v })} editable={e} ph="" />
+              <E fk="sub" tag="p" className="sub" value={p.sub} onChange={(v) => set({ sub: v })} editable={e} ph="" />
               {!p.image ? <ImgBtn pick={pick} optional onPick={(v) => set({ image: v || undefined })} empty /> : null}
             </div>
           </div>
@@ -1044,7 +1055,7 @@ function PageBody({ p, set, editable, prev, pick, showNotes = true, logo, big }:
       if (!p.title && !p.titleEm && !p.lead && !p.paras.length && p.image) {
         return (
           <div className="qp">
-            <E tag="div" className="q" value={p.callout} onChange={(v) => set({ callout: v })} editable={e} ph="цитата" />
+            <E fk="callout" tag="div" className="q" value={p.callout} onChange={(v) => set({ callout: v })} editable={e} ph="цитата" />
             <div className="fig"><img src={p.image} alt="" /><ImgBtn pick={pick} current={p.image} optional onPick={(v) => set({ image: v || undefined })} /></div>
           </div>
         );
@@ -1053,7 +1064,7 @@ function PageBody({ p, set, editable, prev, pick, showNotes = true, logo, big }:
         return (
           <>
             <Title p={p} set={set} editable={e} />
-            <E tag="p" className="lead" value={p.lead} onChange={(v) => set({ lead: v })} editable={e} ph="лід" />
+            <E fk="lead" tag="p" className="lead" value={p.lead} onChange={(v) => set({ lead: v })} editable={e} ph="лід" />
             <div className="fullimg"><img src={p.image} alt="" /><ImgBtn pick={pick} current={p.image} optional onPick={(v) => set({ image: v || undefined })} /></div>
           </>
         );
@@ -1061,9 +1072,9 @@ function PageBody({ p, set, editable, prev, pick, showNotes = true, logo, big }:
       return (
         <WithImg image={p.image} pick={pick} onPick={(v) => set({ image: v || undefined })}>
           <Title p={p} set={set} editable={e} />
-          <E tag="p" className="lead" value={p.lead} onChange={(v) => set({ lead: v })} editable={e} ph="лід" />
+          <E fk="lead" tag="p" className="lead" value={p.lead} onChange={(v) => set({ lead: v })} editable={e} ph="лід" />
           {p.paras.map((t, k) => (
-            <E
+            <E fk="paras"
               key={k}
               tag="p"
               className="para"
@@ -1073,7 +1084,7 @@ function PageBody({ p, set, editable, prev, pick, showNotes = true, logo, big }:
               ph="абзац"
             />
           ))}
-          <E tag="div" className="callout" value={p.callout} onChange={(v) => set({ callout: v })} editable={e} ph="" />
+          <E fk="callout" tag="div" className="callout" value={p.callout} onChange={(v) => set({ callout: v })} editable={e} ph="" />
           {notes}
         </WithImg>
       );
@@ -1087,7 +1098,7 @@ function PageBody({ p, set, editable, prev, pick, showNotes = true, logo, big }:
               return (
                 <div className="card" key={k}>
                   <div className="n">{(n || String(k + 1)).padStart(2, "0")}</div>
-                  <E tag="div" className="t" value={t} onChange={(v) => set({ items: p.items.map((x, j) => (j === k ? (n ? `${n}. ${v}` : v) : x)) })} editable={e} ph="…" />
+                  <E fk="items" tag="div" className="t" value={t} onChange={(v) => set({ items: p.items.map((x, j) => (j === k ? (n ? `${n}. ${v}` : v) : x)) })} editable={e} ph="…" />
                 </div>
               );
             })}
@@ -1095,11 +1106,11 @@ function PageBody({ p, set, editable, prev, pick, showNotes = true, logo, big }:
         ) : p.variant === "bubbles" ? (
           <div className="bubbles">
             {p.items.map((it, k) => (
-              <E key={k} tag="div" className="bubble" value={it} onChange={(v) => set({ items: p.items.map((x, j) => (j === k ? v : x)) })} editable={e} ph="…" />
+              <E fk="items" key={k} tag="div" className="bubble" value={it} onChange={(v) => set({ items: p.items.map((x, j) => (j === k ? v : x)) })} editable={e} ph="…" />
             ))}
           </div>
         ) : (
-          <EList className={"bul" + (big && !p.image && p.items.length >= 10 ? " c2" : "") + (p.items.some((t) => /^- /.test(t)) ? " has-sub" : "")} items={p.items} onChange={(v) => set({ items: v })} editable={e}
+          <EList fk="items" className={"bul" + (big && !p.image && p.items.length >= 10 ? " c2" : "") + (p.items.some((t) => /^- /.test(t)) ? " has-sub" : "")} items={p.items} onChange={(v) => set({ items: v })} editable={e}
             breakAt={big && !p.image && p.items.length >= 10 ? (() => {
               // розрив колонки там, де обсяг тексту ділиться навпіл; не одразу після заголовка групи і не всередині підпунктів, якщо є кращий варіант
               if (twoGroups(p.items) !== undefined) return undefined; // див. spanTo
@@ -1119,9 +1130,9 @@ function PageBody({ p, set, editable, prev, pick, showNotes = true, logo, big }:
       return (
         <WithImg image={p.image} pick={pick} onPick={(v) => set({ image: v || undefined })}>
           <Title p={p} set={set} editable={e} />
-          <E tag="p" className="lead" value={p.lead} onChange={(v) => set({ lead: v })} editable={e} ph="лід" />
+          <E fk="lead" tag="p" className="lead" value={p.lead} onChange={(v) => set({ lead: v })} editable={e} ph="лід" />
           {body}
-          <E tag="div" className="callout" value={p.callout} onChange={(v) => set({ callout: v })} editable={e} ph="" />
+          <E fk="callout" tag="div" className="callout" value={p.callout} onChange={(v) => set({ callout: v })} editable={e} ph="" />
           {notes}
         </WithImg>
       );
@@ -1130,19 +1141,19 @@ function PageBody({ p, set, editable, prev, pick, showNotes = true, logo, big }:
       return (
         <WithImg image={p.image} pick={pick} onPick={(v) => set({ image: v || undefined })}>
           <Title p={p} set={set} editable={e} />
-          <E tag="p" className="lead" value={p.lead} onChange={(v) => set({ lead: v })} editable={e} ph="лід" />
+          <E fk="lead" tag="p" className="lead" value={p.lead} onChange={(v) => set({ lead: v })} editable={e} ph="лід" />
           <div className="cols" data-n={String(Math.min(4, Math.max(2, p.cols.length)))} style={big && p.cols.length === 2 ? (() => { const L = p.cols.map((c) => c.items.join(" ").length + c.head.length + 40); const r = Math.min(1.5, Math.max(1 / 1.5, L[0] / L[1])); return { gridTemplateColumns: `${r.toFixed(2)}fr 1fr` }; })() : undefined}>
             {p.cols.map((c, k) => (
               <div className="col" key={k}>
                 {!e && p.cols.every((x) => !x.head) ? null : <h3>
                   {chipFor(c.head) ? <span className={"chip " + chipFor(c.head)} /> : null}
-                  <E value={c.head} onChange={(v) => set({ cols: p.cols.map((x, j) => (j === k ? { ...x, head: v } : x)) })} editable={e} ph="підзаголовок" />
+                  <E fk="cols.h" value={c.head} onChange={(v) => set({ cols: p.cols.map((x, j) => (j === k ? { ...x, head: v } : x)) })} editable={e} ph="підзаголовок" />
                 </h3>}
-                <EList className="bul sm" items={c.items} onChange={(v) => set({ cols: p.cols.map((x, j) => (j === k ? { ...x, items: v } : x)) })} editable={e} />
+                <EList fk="cols.i" className="bul sm" items={c.items} onChange={(v) => set({ cols: p.cols.map((x, j) => (j === k ? { ...x, items: v } : x)) })} editable={e} />
               </div>
             ))}
           </div>
-          {p.callout ? <E tag="div" className="callout" value={p.callout} onChange={(v) => set({ callout: v })} editable={e} ph="" /> : null}
+          {p.callout ? <E fk="callout" tag="div" className="callout" value={p.callout} onChange={(v) => set({ callout: v })} editable={e} ph="" /> : null}
           {notes}
         </WithImg>
       );
@@ -1150,9 +1161,9 @@ function PageBody({ p, set, editable, prev, pick, showNotes = true, logo, big }:
       return (
         <>
           <Title p={p} set={set} editable={e} />
-          <E tag="p" className="lead" value={p.lead} onChange={(v) => set({ lead: v })} editable={e} ph="лід" />
+          <E fk="lead" tag="p" className="lead" value={p.lead} onChange={(v) => set({ lead: v })} editable={e} ph="лід" />
           <Diagram kind={p.kind} labels={p.labels} lists={p.lists} hi={p.hi} v2={big} editable={e} uid={p.id} onLabels={(v) => set({ labels: v })} onLists={(v) => set({ lists: v })} />
-          {p.callout || e ? <E tag="div" className="callout" value={p.callout} onChange={(v) => set({ callout: v })} editable={e} ph="виноска (необовʼязково)" /> : null}
+          {p.callout || e ? <E fk="callout" tag="div" className="callout" value={p.callout} onChange={(v) => set({ callout: v })} editable={e} ph="виноска (необовʼязково)" /> : null}
           {notes}
         </>
       );
@@ -1160,13 +1171,13 @@ function PageBody({ p, set, editable, prev, pick, showNotes = true, logo, big }:
       return (
         <WithImg image={p.image} pick={pick} onPick={(v) => set({ image: v || undefined })}>
           <Title p={p} set={set} editable={e} />
-          <E tag="p" className="lead" value={p.lead} onChange={(v) => set({ lead: v })} editable={e} ph="лід" />
+          <E fk="lead" tag="p" className="lead" value={p.lead} onChange={(v) => set({ lead: v })} editable={e} ph="лід" />
           <div className="steps" style={{ ["--lw" as any]: (() => { const m = Math.max(0, ...p.steps.map((x) => x.head.length)); return big && m <= 2 ? "14mm" : big && m <= 8 ? "28mm" : m <= 16 ? "58mm" : m <= 34 ? "80mm" : "100mm"; })() } as any}>
             {p.steps.map((st, k) => (
               <div className="step" key={k}>
                 <span className="dot" />
-                <E tag="div" className="h" value={st.head} onChange={(v) => set({ steps: p.steps.map((x, j) => (j === k ? { ...x, head: v } : x)) })} editable={e} ph="крок" />
-                <E tag="div" className="t" value={st.text} onChange={(v) => set({ steps: p.steps.map((x, j) => (j === k ? { ...x, text: v } : x)) })} editable={e} ph="опис" />
+                <E fk="steps.h" tag="div" className="h" value={st.head} onChange={(v) => set({ steps: p.steps.map((x, j) => (j === k ? { ...x, head: v } : x)) })} editable={e} ph="крок" />
+                <E fk="steps.t" tag="div" className="t" value={st.text} onChange={(v) => set({ steps: p.steps.map((x, j) => (j === k ? { ...x, text: v } : x)) })} editable={e} ph="опис" />
               </div>
             ))}
           </div>
@@ -1188,13 +1199,13 @@ function PageBody({ p, set, editable, prev, pick, showNotes = true, logo, big }:
       return (
         <>
           <Title p={p} set={set} editable={e} />
-          <E tag="p" className="lead" value={p.lead} onChange={(v) => set({ lead: v })} editable={e} ph="лід" />
+          <E fk="lead" tag="p" className="lead" value={p.lead} onChange={(v) => set({ lead: v })} editable={e} ph="лід" />
           <table className={ws ? `ws c${p.head.length}` : undefined} data-hl={hl ?? undefined} data-num={numbered ? "1" : undefined} data-fc={fcText ? "text" : undefined} data-cols={String(p.head.length)} style={rowh ? ({ ["--rowh" as any]: rowh } as any) : undefined}>
             <thead style={!e && p.head.every((h) => !h.trim()) ? { display: "none" } : undefined}>
               <tr>
                 {p.head.map((h, k) => (
                   <th key={k}>
-                    <E value={h} onChange={(v) => set({ head: p.head.map((x, j) => (j === k ? v : x)) })} editable={e} ph="—" />
+                    <E fk="head" value={h} onChange={(v) => set({ head: p.head.map((x, j) => (j === k ? v : x)) })} editable={e} ph="—" />
                   </th>
                 ))}
               </tr>
@@ -1203,15 +1214,15 @@ function PageBody({ p, set, editable, prev, pick, showNotes = true, logo, big }:
               {p.rows.map((r, ri) => (
                 <tr key={ri} data-chip={chipFor(r[0] ?? "") ?? undefined} data-filled={ws && r.slice(1).some((c) => c.trim()) ? "1" : undefined}>
                   {isWide(r) ? (
-                    <E tag="td" value={r[0] ?? ""} onChange={(v) => set({ rows: p.rows.map((row, j) => (j === ri ? p.head.map((__, c) => (c === 0 ? v : row[c] ?? "")) : row)) })} editable={e} ph="" className="wide" attrs={{ colSpan: p.head.length }} />
+                    <E fk="rows" tag="td" value={r[0] ?? ""} onChange={(v) => set({ rows: p.rows.map((row, j) => (j === ri ? p.head.map((__, c) => (c === 0 ? v : row[c] ?? "")) : row)) })} editable={e} ph="" className="wide" attrs={{ colSpan: p.head.length }} />
                   ) : p.head.map((_, ci) => (
                     ci === 0 && chipFor(r[0] ?? "") ? (
                       <td key={ci}>
                         <span className={"chip " + chipFor(r[0] ?? "")} />
-                        <E value={r[0] ?? ""} onChange={(v) => set({ rows: p.rows.map((row, j) => (j === ri ? p.head.map((__, c) => (c === 0 ? v : row[c] ?? "")) : row)) })} editable={e} ph="" />
+                        <E fk="rows" value={r[0] ?? ""} onChange={(v) => set({ rows: p.rows.map((row, j) => (j === ri ? p.head.map((__, c) => (c === 0 ? v : row[c] ?? "")) : row)) })} editable={e} ph="" />
                       </td>
                     ) : (
-                    <E
+                    <E fk="rows"
                       key={ci}
                       tag="td"
                       value={r[ci] ?? ""}
@@ -1225,7 +1236,7 @@ function PageBody({ p, set, editable, prev, pick, showNotes = true, logo, big }:
               ))}
             </tbody>
           </table>
-          <E tag="div" className="callout" value={p.callout} onChange={(v) => set({ callout: v })} editable={e} ph="" />
+          <E fk="callout" tag="div" className="callout" value={p.callout} onChange={(v) => set({ callout: v })} editable={e} ph="" />
           {ws ? null : notes}
         </>
       );
@@ -1236,14 +1247,14 @@ function PageBody({ p, set, editable, prev, pick, showNotes = true, logo, big }:
           <Title p={p} set={set} editable={e} />
           <p className="lead" style={{ display: p.lead ? undefined : "none" }}>
             {chipFor(p.lead) ? <span className={"chip " + chipFor(p.lead)} /> : null}
-            <E value={p.lead} onChange={(v) => set({ lead: v })} editable={e} ph="лід" />
+            <E fk="lead" value={p.lead} onChange={(v) => set({ lead: v })} editable={e} ph="лід" />
           </p>
           <div className="gal" data-chip={chipFor(p.lead) ?? undefined}>
             {p.images.map((im, k) => (
               <figure key={k}>
                 <img src={im.src} alt="" />
                 <ImgBtn pick={pick} current={im.src} optional={false} onPick={(v) => set({ images: p.images.map((x, j) => (j === k ? { ...x, src: v } : x)) })} />
-                <E tag="figcaption" value={im.cap} onChange={(v) => set({ images: p.images.map((x, j) => (j === k ? { ...x, cap: v } : x)) })} editable={e} ph="" />
+                <E fk="cap" tag="figcaption" value={im.cap} onChange={(v) => set({ images: p.images.map((x, j) => (j === k ? { ...x, cap: v } : x)) })} editable={e} ph="" />
               </figure>
             ))}
           </div>
@@ -1254,7 +1265,7 @@ function PageBody({ p, set, editable, prev, pick, showNotes = true, logo, big }:
         <div className="wrap">
           <div>
             <Title p={p} set={set} editable={e} />
-            <E tag="p" className="sub" value={p.sub} onChange={(v) => set({ sub: v })} editable={e} ph="підпис" />
+            <E fk="sub" tag="p" className="sub" value={p.sub} onChange={(v) => set({ sub: v })} editable={e} ph="підпис" />
             <EList className="ct" items={p.contacts} onChange={(v) => set({ contacts: v })} editable={e} />
             <span className="qrwrap">
               {p.qr ? <img className="qr" src={p.qr} alt="" /> : null}

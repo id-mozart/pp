@@ -1,8 +1,9 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { DeckPages, type PickImage } from "@/components/deck/DeckPages";
+import { FZ_MAX, FZ_MIN } from "@/components/deck/fz";
 import { DECK_LIBRARY } from "@/lib/decks/library";
 import { DECK_ANIM_DEFAULT, DECK_SPEED_MS, PAGE_TYPE_LABELS, newId, type Deck, type DeckAnim, type DeckItemAnim, type DeckPage, type DeckSpeed, type DeckTransition } from "@/lib/decks/types";
 import { TemplatePicker } from "@/components/admin/TemplatePicker";
@@ -168,6 +169,14 @@ const UI_CSS = `
   #deck-ui .present-mode[data-items="fade"] #deck-a4 .anim-item{ animation-name:itFade; animation-duration:.7s; }
   #deck-ui .present-mode[data-items="zoom"] #deck-a4 .anim-item{ animation-name:itZoom; animation-duration:.6s; }
   #deck-ui .present-mode[data-items="side"] #deck-a4 .anim-item{ animation-name:itSide; animation-duration:.6s; }
+  /* розмір окремого поля: плаваюча панель над полем, що редагується */
+  #deck-ui .fzbar{ position:fixed; z-index:70; display:flex; align-items:center; gap:4px; padding:4px 5px 4px 10px; background:#2A2018; color:#F5E9D7; border-radius:10px; box-shadow:0 10px 30px rgba(40,25,10,.3); font-size:12px; user-select:none; }
+  #deck-ui .fzbar .lb{ font-family:var(--font-jetbrains),monospace; font-size:9.5px; letter-spacing:.16em; text-transform:uppercase; color:rgba(245,233,215,.6); margin-right:4px; }
+  #deck-ui .fzbar b{ min-width:44px; text-align:center; font-family:var(--font-jetbrains),monospace; font-weight:500; color:#F0B450; }
+  #deck-ui .fzbar button{ border:0; background:rgba(245,233,215,.1); color:#F5E9D7; border-radius:7px; padding:5px 9px; font:inherit; font-weight:600; cursor:pointer; }
+  #deck-ui .fzbar button:hover:not(:disabled){ background:rgba(240,180,80,.28); }
+  #deck-ui .fzbar button:disabled{ opacity:.35; cursor:default; }
+  #deck-ui .fzbar .rs{ font-weight:400; }
   /* меню «Анімація» */
   #deck-ui .dd.anim{ width:344px; padding:10px; max-height:calc(100vh - 70px); overflow:auto; }
   #deck-ui .trbox{ position:relative; height:150px; border-radius:9px; overflow:hidden; background:#241a12; margin:2px 0 4px; }
@@ -214,6 +223,7 @@ export function DeckEditor({ initial, dbReady, only, bare, loadedAt, fromDb, pre
   const redoRef = useRef<Deck[]>([]);
   const [hist, setHist] = useState({ undo: 0, redo: 0 });
   const deckRef = useRef(deck); deckRef.current = deck;
+  const bumpFieldRef = useRef<(dir: -1 | 1 | 0, sel?: { i: number; fk: string } | null) => void>(() => {});
   function update(fn: (d: Deck) => Deck) {
     const before = deckRef.current;
     const next = fn(before);
@@ -241,6 +251,13 @@ export function DeckEditor({ initial, dbReady, only, bare, loadedAt, fromDb, pre
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       const mod = e.metaKey || e.ctrlKey;
+      // ⌘⇧> / ⌘⇧< — розмір поля, в якому стоїть курсор (за фізичною клавішею: . і ,)
+      if (mod && e.shiftKey && (e.code === "Period" || e.code === "Comma")) {
+        const ae = document.activeElement as HTMLElement | null;
+        const el = ae?.closest?.<HTMLElement>("[data-fk]"), sh = el?.closest<HTMLElement>(".sheet");
+        if (el && sh && el.isContentEditable) { e.preventDefault(); bumpFieldRef.current(e.code === "Period" ? 1 : -1, { i: Number(sh.dataset.page) - 1, fk: el.dataset.fk! }); }
+        return;
+      }
       if (!mod || (e.code !== "KeyZ" && e.code !== "KeyY")) return; // за фізичною клавішею — працює в будь-якій розкладці
       if (presentIdxRef.current !== null || document.querySelector("#deck-ui .pick-bg")) return; // не в показі й не в модалці
       // усередині редагованого тексту працює вбудоване скасування браузера
@@ -259,6 +276,65 @@ export function DeckEditor({ initial, dbReady, only, bare, loadedAt, fromDb, pre
   const toggleAutosave = () => { setAutosave((v) => { const n = !v; try { localStorage.setItem("deck-autosave:" + initial.slug, n ? "1" : "0"); } catch {} return n; }); };
   const patchPage = (i: number, patch: Record<string, unknown>) =>
     update((d) => ({ ...d, pages: d.pages.map((p, k) => (k === i ? ({ ...p, ...patch } as DeckPage) : p)) }));
+  /* ── розмір окремого текстового поля (page.fz): панель над полем, що редагується; ⌘⇧> / ⌘⇧< ── */
+  const [fzSel, setFzSel] = useState<{ i: number; fk: string } | null>(null);
+  const [fzPos, setFzPos] = useState<{ x: number; y: number } | null>(null);
+  const setFieldSize = useCallback((i: number, fk: string, v: number) => update((d) => ({
+    ...d,
+    pages: d.pages.map((p, k) => {
+      if (k !== i) return p;
+      const fz = { ...(p.fz ?? {}) };
+      if (Math.abs(v - 1) < 0.001) delete fz[fk]; else fz[fk] = v;
+      const { fz: _old, ...rest } = p;
+      return (Object.keys(fz).length ? { ...rest, fz } : rest) as DeckPage;
+    }),
+  })), []); // eslint-disable-line react-hooks/exhaustive-deps
+  const fieldEl = (i: number, fk: string) => {
+    const ae = document.activeElement as HTMLElement | null;
+    if (ae?.dataset?.fk === fk && ae.closest(`.sheet[data-page="${i + 1}"]`)) return ae;
+    return document.querySelector<HTMLElement>(`#deck-ui .pages .sheet[data-page="${i + 1}"] [data-fk="${fk}"]`);
+  };
+  const bumpField = useCallback((dir: -1 | 1 | 0, sel = fzSel) => {
+    if (!sel) return;
+    const z = deckRef.current.pages[sel.i]?.fz?.[sel.fk] ?? 1;
+    const next = dir === 0 ? 1 : Math.round(Math.min(FZ_MAX, Math.max(FZ_MIN, z + dir * 0.1)) * 10) / 10;
+    if (next !== z) setFieldSize(sel.i, sel.fk, next);
+  }, [fzSel, setFieldSize]);
+  bumpFieldRef.current = bumpField;
+  useEffect(() => {
+    if (bare) return;
+    const root = document.querySelector("#deck-ui .pages");
+    if (!root) return;
+    const onIn = (e: Event) => {
+      const el = (e.target as HTMLElement | null)?.closest?.<HTMLElement>("[data-fk]");
+      const sh = el?.closest<HTMLElement>(".sheet");
+      if (!el || !sh || !el.isContentEditable) return;
+      setFzSel({ i: Number(sh.dataset.page) - 1, fk: el.dataset.fk! });
+    };
+    const onOut = (e: Event) => {
+      const to = (e as FocusEvent).relatedTarget as HTMLElement | null;
+      if (to && to.closest?.(".fzbar, [data-fk]")) return;
+      setFzSel(null);
+    };
+    root.addEventListener("focusin", onIn); root.addEventListener("focusout", onOut);
+    return () => { root.removeEventListener("focusin", onIn); root.removeEventListener("focusout", onOut); };
+  }, [bare]);
+  // позиція панелі: над полем (або під ним, якщо зверху немає місця); оновлюємо при прокрутці, зміні розміру і правках
+  useLayoutEffect(() => {
+    if (!fzSel) { setFzPos(null); return; }
+    const place = () => {
+      const el = fieldEl(fzSel.i, fzSel.fk);
+      if (!el) { setFzPos(null); return; }
+      const r = el.getBoundingClientRect();
+      const y = r.top - 44 < 64 ? r.bottom + 8 : r.top - 44;
+      setFzPos({ x: Math.max(8, Math.min(innerWidth - 260, r.left)), y });
+    };
+    place();
+    const pages = document.querySelector("#deck-ui .pages");
+    pages?.addEventListener("scroll", place, { passive: true }); window.addEventListener("resize", place);
+    const t = window.setTimeout(place, 120); // після автопідбору кегля сторінки
+    return () => { pages?.removeEventListener("scroll", place); window.removeEventListener("resize", place); window.clearTimeout(t); };
+  }, [fzSel, deck]); // eslint-disable-line react-hooks/exhaustive-deps
   const move = (i: number, dir: -1 | 1) =>
     update((d) => {
       const j = i + dir;
@@ -553,6 +629,7 @@ export function DeckEditor({ initial, dbReady, only, bare, loadedAt, fromDb, pre
           <p>Клікніть на будь-який текст на сторінці й редагуйте прямо там. У списках <kbd>Enter</kbd> додає новий пункт.</p>
           <p>Наведіть на сторінку — праворуч зʼявляться дії сторінки: показ звідси, порядок, дублювати, вставити після, інша композиція зі збереженням текстів, варіант оформлення, кегль сторінки, видалити. Біля ілюстрацій — «Замінити».</p>
           <p><kbd>⌘Z</kbd> скасувати, <kbd>⌘⇧Z</kbd> повторити. У показі: <kbd>Space</kbd> / <kbd>→</kbd> далі, <kbd>←</kbd> назад, <kbd>Esc</kbd> вихід.</p>
+          <p>Розмір окремого поля: клікніть у текст — над ним зʼявиться панель «Розмір поля» (A− / A+ / ↺), або <kbd>⌘⇧&gt;</kbd> / <kbd>⌘⇧&lt;</kbd>. Решта тексту сторінки підлаштується, щоб усе вмістилося.</p>
           <p>«Анімація» — перехід між слайдами, швидкість і поява елементів у показі; налаштування зберігаються для кожної деки окремо, переходи йдуть і в PPTX.</p>
           <p>«Автозбереження» пише в базу через 1,5 с після кожної дії; попередні версії лишаються в історії.</p>
         </Menu>
@@ -622,6 +699,18 @@ export function DeckEditor({ initial, dbReady, only, bare, loadedAt, fromDb, pre
         />
       </div>
       </div>
+      {!bare && fzSel && fzPos && (() => {
+        const z = deck.pages[fzSel.i]?.fz?.[fzSel.fk] ?? 1;
+        return (
+          <div className="fzbar" style={{ left: fzPos.x, top: fzPos.y }} onMouseDown={(e) => e.preventDefault()} role="toolbar" aria-label="Розмір тексту поля">
+            <span className="lb">Розмір поля</span>
+            <button type="button" title="Менше (⌘⇧<)" onClick={() => bumpField(-1)} disabled={z <= FZ_MIN}>A−</button>
+            <b>{Math.round(z * 100)}%</b>
+            <button type="button" title="Більше (⌘⇧>)" onClick={() => bumpField(1)} disabled={z >= FZ_MAX}>A+</button>
+            <button type="button" className="rs" title="Як було (100%)" onClick={() => bumpField(0)} disabled={Math.abs(z - 1) < 0.001}>↺</button>
+          </div>
+        );
+      })()}
       {picker && <ImagePicker current={picker.current} optional={picker.optional} onClose={closePicker} />}
       {tplMode && <TemplatePicker deck={deck} mode={tplMode.mode} onClose={applyTemplate} />}
       {present !== null && (

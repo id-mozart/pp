@@ -23,7 +23,7 @@ export type DeckPage = (
   | { id: string; type: "gallery"; title: string; titleEm: string; lead: string; images: { src: string; cap: string }[] }
   | { id: string; type: "closing"; title: string; titleEm: string; sub: string; contacts: string[]; image: string; qr?: string }
   | { id: string; type: "diagram"; kind: DiagramKind; title: string; titleEm: string; lead: string; labels: string[]; lists?: string[][]; callout: string; hi?: number }
-) & { fs?: number }; // fs — ручний множник кегля сторінки (0.6…1.6), поверх автопідбору
+) & { fs?: number; fz?: Record<string, number> }; // fs — ручний множник кегля сторінки (0.6…1.6), поверх автопідбору; fz — розмір окремих полів (ключ поля → множник)
 
 export type DeckPageType = DeckPage["type"];
 
