@@ -1,4 +1,4 @@
-import { DIAGRAM_KINDS, type Deck, type DeckPage } from "./types";
+import { DIAGRAM_KINDS, DECK_ANIM_DEFAULT, DECK_ITEM_ANIMS, DECK_SPEEDS, DECK_TRANSITIONS, type Deck, type DeckPage } from "./types";
 import { NOVAPAY_DECK } from "./novapay";
 import { PROFINSTAL_DECK } from "./profinstal";
 import { ADLER_DECK } from "./adler";
@@ -55,7 +55,7 @@ function sanitizePageInner(p: any): DeckPage | null {
   const id = s(p.id, 32) || Math.random().toString(36).slice(2, 10);
   switch (p.type) {
     case "cover":
-      return { id, type: "cover", eyebrow: s(p.eyebrow, 200), title: s(p.title, 300), titleEm: s(p.titleEm, 300), sub: s(p.sub, 500), who: s(p.who, 300), when: s(p.when, 200), image: img(p.image) || undefined, variant: p.variant === "amp" || p.variant === "photo" || p.variant === "full" || p.variant === "band" ? p.variant : undefined, avatar: img(p.avatar) || undefined };
+      return { id, type: "cover", eyebrow: s(p.eyebrow, 200), title: s(p.title, 300), titleEm: s(p.titleEm, 300), sub: s(p.sub, 500), who: s(p.who, 300), when: s(p.when, 200), image: img(p.image) || undefined, variant: p.variant === "amp" || p.variant === "photo" || p.variant === "full" || p.variant === "band" ? p.variant : undefined, avatar: img(p.avatar) || undefined, who2: typeof p.who2 === "string" ? s(p.who2, 300) : undefined, avatar2: img(p.avatar2) || undefined };
     case "about":
       return { id, type: "about", title: s(p.title, 200), titleEm: s(p.titleEm, 200), role: s(p.role, 500) || undefined, quote: s(p.quote, 800) || undefined, stats: arr(p.stats, 6).map((c: any) => ({ n: s(c?.n, 40), t: s(c?.t, 300) })), facts: strs(p.facts, 8), note: s(p.note, 800), image: img(p.image) || "/deck/novapay/tania-profile.jpg", logos: img(p.logos) };
     case "section":
@@ -119,6 +119,18 @@ export function sanitizeDeck(input: any, slug: string, opts: { fallbackToDefault
     logo: typeof input?.logo === "string" ? img(input.logo) : base?.logo,
     logoLight: typeof input?.logoLight === "string" ? img(input.logoLight) || undefined : base?.logoLight,
     footRunhead: typeof input?.footRunhead === "boolean" ? input.footRunhead : !!base?.footRunhead,
+    anim: (() => {
+      const a = input?.anim ?? base?.anim;
+      if (!a || typeof a !== "object") return undefined;
+      const pick = <T extends string>(v: unknown, list: readonly T[], d: T): T => (list as readonly string[]).includes(v as string) ? (v as T) : d;
+      return {
+        tr: pick(a.tr, DECK_TRANSITIONS, DECK_ANIM_DEFAULT.tr),
+        speed: pick(a.speed, DECK_SPEEDS, DECK_ANIM_DEFAULT.speed),
+        items: pick(a.items, DECK_ITEM_ANIMS, DECK_ANIM_DEFAULT.items),
+        seq: typeof a.seq === "boolean" ? a.seq : DECK_ANIM_DEFAULT.seq,
+        pptx: typeof a.pptx === "boolean" ? a.pptx : DECK_ANIM_DEFAULT.pptx,
+      };
+    })(),
     lang: input?.lang === "ru" || input?.lang === "uk" ? input.lang : base?.lang,
     big: typeof input?.big === "boolean" ? input.big : base?.big,
     // множник кегля деки: явне число (навіть 1) зберігаємо; відсутнє — беремо з дефолтної деки

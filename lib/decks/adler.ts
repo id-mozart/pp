@@ -47,15 +47,7 @@ export const ADLER_DECK: Deck = {
   footRunhead: true,
   pages: [
     // ── Титули: основний і варіанти на вибір (зайві можна видалити в редакторі) ──
-    { id: "c0", type: "cover", ...COVER, variant: "amp", avatar: N + "tania-profile.jpg" },
-    { id: "c1", type: "cover", ...COVER, variant: "photo", avatar: N + "tania-profile.jpg", image: I + "cover-shelf.jpg" },
-    { id: "c2", type: "cover", ...COVER, variant: "full", image: I + "cover-aisle.jpg" },
-    { id: "c3", type: "cover", ...COVER, variant: "band", image: I + "cover-tags.jpg" },
-    { id: "c4", type: "cover", ...COVER, variant: "full", image: I + "cover-gelato.jpg" },
-    { id: "c5", type: "cover", ...COVER, variant: "band", image: I + "cover-wall.jpg" },
-    { id: "c6", type: "cover", ...COVER, variant: "photo", avatar: N + "tania-profile.jpg", image: I + "cover-analytics.jpg" },
-    { id: "c7", type: "cover", ...COVER, variant: "band", image: I + "cover-dairy.jpg" },
-    { id: "c8", type: "cover", ...COVER, variant: "photo", avatar: N + "tania-profile.jpg", image: I + "cover-freezer.jpg" },
+    { id: "c6", type: "cover", ...COVER, variant: "photo", avatar: N + "tania-profile.jpg", image: I + "cover-analytics.jpg", who2: "Екатерина Попова\nБизнес-тренер" }, // выбран клиентом; второй тренер — фото добавить
 
     // 2 — о тренере (как в источнике: 4 пункта + фото)
     { id: "s02", type: "bullets", title: "Татьяна", titleEm: "Пан", lead: "", items: [
@@ -436,6 +428,6 @@ export const ADLER_DECK: Deck = {
       rows: [["1", "", "", ""], ["2", "", "", ""], ["3", "", "", ""]], callout: "" },
     // 62 + 1 — спасибо и контакты
     { id: "s62", type: "closing", title: "Спасибо за активное", titleEm: "участие!", sub: "Подписывайтесь на мой Instagram: @tetiana_pan.sales",
-      contacts: ["+38 067 007 0710", "+38 050 448 1411", "pan-partners.agency"], image: N + "tania.jpg", qr: N + "qr-instagram.svg" },
+      contacts: ["+38 067 007 0710", "+38 050 448 1411", "pan-partners.agency/uz"], image: N + "tania.jpg", qr: N + "qr-instagram.svg" },
   ],
 };

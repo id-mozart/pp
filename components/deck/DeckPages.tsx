@@ -180,6 +180,10 @@ const DECK_CSS_BASE = `
   #deck-a4 .t-cover .who .avatar{ position:relative; flex:none; width:19mm; height:19mm; border-radius:50%; overflow:hidden; box-shadow:0 0 0 1.6pt var(--amber), 0 0 0 4pt var(--sheet); }
   #deck-a4 .t-cover .who .avatar img{ width:100%; height:100%; object-fit:cover; object-position:50% 18%; display:block; }
   #deck-a4 .t-cover .who.av .wt p{ margin:0; }
+  #deck-a4 .t-cover .who.two{ flex-direction:column; align-items:flex-start; gap:4.5mm; }
+  #deck-a4 .t-cover .who.two .pp{ display:flex; align-items:center; gap:5.5mm; }
+  #deck-a4 .t-cover:has(.cv.amp) .who.two .avatar{ width:21mm; height:21mm; }
+  #deck-a4 .t-cover .who .avatar.ini{ display:flex; align-items:center; justify-content:center; background:var(--band); font-family:var(--font-spectral),serif; font-size:17pt; font-weight:500; color:var(--acc); letter-spacing:.02em; }
   #deck-a4 .t-cover .who.av > .wt > p:first-child{ font-size:13pt; }
   #deck-a4 .t-cover .foot{ margin-top:10mm; }
   #deck-a4 .t-cover .band{ position:absolute; left:0; right:0; bottom:0; height:5mm; background:linear-gradient(90deg,var(--amber),var(--gold)); }
@@ -832,6 +836,11 @@ function Sheet({ deck, i, cls, page, children, editable, onRunhead, animate }: {
   );
 }
 
+/** Ініціали з першого рядка «Імʼя Прізвище» — заглушка аватара, поки фото не додано. */
+function initials(who: string) {
+  return (who.split("\n")[0] || "").trim().split(/\s+/).slice(0, 2).map((w) => w[0] ?? "").join("").toUpperCase();
+}
+
 export type PickImage = (current: string | undefined, optional: boolean) => Promise<string | null>;
 
 export function DeckPages({
@@ -912,6 +921,27 @@ function PageBody({ p, set, editable, prev, pick, showNotes = true, logo, big }:
               <E tag="p" className="eyebrow" value={p.eyebrow} onChange={(v) => set({ eyebrow: v })} editable={e} ph="надзаголовок" />
               <Title p={p} set={set} editable={e} />
               <E tag="p" className="sub" value={p.sub} onChange={(v) => set({ sub: v })} editable={e} ph="" />
+              {p.who2 !== undefined && (e || p.who2.trim()) ? (
+                // два тренери: кожен — фото (або ініціали, поки фото немає) + імʼя і роль, один під одним
+                <div className="who av two">
+                  <span className="pp">
+                    {p.avatar ? <span className="avatar"><img src={p.avatar} alt="" /><ImgBtn pick={pick} current={p.avatar} optional onPick={(v) => set({ avatar: v || undefined })} /></span> : null}
+                    <span className="wt">
+                      <E tag="p" value={p.who} onChange={(v) => set({ who: v })} editable={e} ph="хто проводить" />
+                      <E tag="p" className="w" value={p.when} onChange={(v) => set({ when: v })} editable={e} ph="де, коли" />
+                    </span>
+                  </span>
+                  <span className="pp">
+                    <span className={"avatar" + (p.avatar2 ? "" : " ini")}>
+                      {p.avatar2 ? <img src={p.avatar2} alt="" /> : initials(p.who2)}
+                      <ImgBtn pick={pick} current={p.avatar2} optional onPick={(v) => set({ avatar2: v || undefined })} empty={!p.avatar2} />
+                    </span>
+                    <span className="wt">
+                      <E tag="p" value={p.who2} onChange={(v) => set({ who2: v })} editable={e} ph="другий тренер" />
+                    </span>
+                  </span>
+                </div>
+              ) : (
               <div className={"who" + (p.avatar ? " av" : "")}>
                 {p.avatar ? <span className="avatar"><img src={p.avatar} alt="" /><ImgBtn pick={pick} current={p.avatar} optional onPick={(v) => set({ avatar: v || undefined })} /></span> : null}
                 <span className="wt">
@@ -919,6 +949,7 @@ function PageBody({ p, set, editable, prev, pick, showNotes = true, logo, big }:
                   <E tag="p" className="w" value={p.when} onChange={(v) => set({ when: v })} editable={e} ph="де, коли" />
                 </span>
               </div>
+              )}
             </div>
             <div className={"cv-r" + (p.variant === "amp" ? " amp" : p.variant === "photo" ? " phc" : p.variant === "full" ? " fl" : "")}>
               {p.variant === "amp" ? <span className="bigamp" aria-hidden>&amp;</span> : null}

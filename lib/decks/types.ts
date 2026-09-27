@@ -12,7 +12,7 @@ export type DiagramKind = "pyramid" | "skills" | "circle3" | "blocks31" | "cycle
 export const DIAGRAM_KINDS: DiagramKind[] = ["pyramid", "skills", "circle3", "blocks31", "cycle", "wedge", "catman", "pita", "tiers", "est"];
 
 export type DeckPage = (
-  | { id: string; type: "cover"; eyebrow: string; title: string; titleEm: string; sub: string; who: string; when: string; image?: string; variant?: "amp" | "photo" | "full" | "band"; avatar?: string }
+  | { id: string; type: "cover"; eyebrow: string; title: string; titleEm: string; sub: string; who: string; when: string; image?: string; variant?: "amp" | "photo" | "full" | "band"; avatar?: string; who2?: string; avatar2?: string } // who2/avatar2 — другий тренер на титулі
   | { id: string; type: "about"; title: string; titleEm: string; role?: string; quote?: string; stats?: { n: string; t: string }[]; facts: string[]; note: string; image: string; logos: string }
   | { id: string; type: "section"; num: string; title: string; sub: string; image?: string; fit?: "right" | "top"; panel?: boolean }
   | { id: string; type: "text"; title: string; titleEm: string; lead: string; paras: string[]; callout: string; image?: string }
@@ -27,6 +27,23 @@ export type DeckPage = (
 
 export type DeckPageType = DeckPage["type"];
 
+/** Анімації режиму показу (налаштовуються для кожної деки). */
+export const DECK_TRANSITIONS = ["none", "fade", "push", "cover", "zoom", "wipe", "rise"] as const;
+export const DECK_ITEM_ANIMS = ["none", "rise", "fade", "zoom", "side"] as const;
+export const DECK_SPEEDS = ["fast", "normal", "slow"] as const;
+export type DeckTransition = (typeof DECK_TRANSITIONS)[number];
+export type DeckItemAnim = (typeof DECK_ITEM_ANIMS)[number];
+export type DeckSpeed = (typeof DECK_SPEEDS)[number];
+export type DeckAnim = {
+  tr: DeckTransition; // перехід між слайдами
+  speed: DeckSpeed; // тривалість переходу
+  items: DeckItemAnim; // поява елементів на слайді
+  seq: boolean; // елементи зʼявляються по черзі (інакше — разом)
+  pptx: boolean; // записати перехід у PowerPoint-файл
+};
+export const DECK_ANIM_DEFAULT: DeckAnim = { tr: "none", speed: "normal", items: "rise", seq: true, pptx: true };
+export const DECK_SPEED_MS: Record<DeckSpeed, number> = { fast: 350, normal: 600, slow: 950 };
+
 export type Deck = {
   slug: string;
   name: string;
@@ -40,6 +57,7 @@ export type Deck = {
   big?: boolean; // «великий друк»: крупніші шапки таблиць і службові підписи (для друку)
   lang?: "uk" | "ru"; // мова службових підписів на аркушах (Нотатки, Розділ, підпис у колонтитулі); типово uk
   footRunhead?: boolean; // колонтитул із назвою деки знизу (замість підпису «Тетяна Пан · …»), номер сторінки лаконічний; зверху — лише логотип
+  anim?: DeckAnim; // анімації показу: перехід між слайдами, поява елементів, переходи в PPTX
   pages: DeckPage[];
 };
 

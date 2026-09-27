@@ -4,7 +4,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { DeckPages, type PickImage } from "@/components/deck/DeckPages";
 import { DECK_LIBRARY } from "@/lib/decks/library";
-import { PAGE_TYPE_LABELS, newId, type Deck, type DeckPage } from "@/lib/decks/types";
+import { DECK_ANIM_DEFAULT, DECK_SPEED_MS, PAGE_TYPE_LABELS, newId, type Deck, type DeckAnim, type DeckItemAnim, type DeckPage, type DeckSpeed, type DeckTransition } from "@/lib/decks/types";
 import { TemplatePicker } from "@/components/admin/TemplatePicker";
 import { convertPage, type PageTemplate } from "@/lib/decks/templates";
 
@@ -136,6 +136,59 @@ const UI_CSS = `
   #deck-ui .present:hover .hud{ opacity:1; }
   #deck-ui .present .hud button{ border:1px solid rgba(226,166,56,.45); border-radius:8px; padding:6px 12px; background:transparent; color:#F5E9D7; cursor:pointer; font:inherit; }
   #deck-ui .present .hud button:hover{ border-color:#E2A638; color:#E2A638; }
+  /* переходи між слайдами (показ і мініпрев'ю в меню «Анімація»): два шари — той, що йде, і той, що приходить */
+  #deck-ui .present .stage{ position:relative; overflow:hidden; }
+  #deck-ui [data-tr] > .slot{ position:absolute; inset:0; }
+  #deck-ui [data-tr] > .slot.in{ z-index:2; } #deck-ui [data-tr] > .slot.out{ z-index:1; pointer-events:none; }
+  #deck-ui [data-tr] > .slot.go{ animation-duration:var(--td,600ms); animation-fill-mode:both; animation-timing-function:cubic-bezier(.65,0,.35,1); }
+  #deck-ui [data-tr="fade"] > .slot.in.go{ animation-name:trFadeIn; animation-timing-function:ease; }
+  #deck-ui [data-tr="fade"] > .slot.out.go{ animation-name:trFadeOut; animation-timing-function:ease; }
+  #deck-ui [data-tr="push"] > .slot.in.go{ animation-name:trPushIn; } #deck-ui [data-tr="push"] > .slot.out.go{ animation-name:trPushOut; }
+  #deck-ui [data-tr="cover"] > .slot.in.go{ animation-name:trPushIn; box-shadow:-18px 0 40px rgba(0,0,0,.35); } #deck-ui [data-tr="cover"] > .slot.out.go{ animation-name:trDim; }
+  #deck-ui [data-tr="zoom"] > .slot.in.go{ animation-name:trZoomIn; animation-timing-function:cubic-bezier(.2,.7,.2,1); } #deck-ui [data-tr="zoom"] > .slot.out.go{ animation-name:trZoomOut; }
+  #deck-ui [data-tr="wipe"] > .slot.in.go{ animation-name:trWipe; } #deck-ui [data-tr="wipe"] > .slot.out.go{ animation-name:trHold; }
+  #deck-ui [data-tr="rise"] > .slot.in.go{ animation-name:trRiseIn; animation-timing-function:cubic-bezier(.2,.7,.2,1); } #deck-ui [data-tr="rise"] > .slot.out.go{ animation-name:trFadeOut; }
+  @keyframes trFadeIn{ from{ opacity:0; } to{ opacity:1; } }
+  @keyframes trFadeOut{ from{ opacity:1; } to{ opacity:0; } }
+  @keyframes trPushIn{ from{ transform:translateX(calc(var(--dx,1) * 100%)); } to{ transform:none; } }
+  @keyframes trPushOut{ from{ transform:none; } to{ transform:translateX(calc(var(--dx,1) * -100%)); } }
+  @keyframes trDim{ from{ filter:brightness(1); } to{ filter:brightness(.55); } }
+  @keyframes trZoomIn{ from{ opacity:0; transform:scale(1.07); } to{ opacity:1; transform:none; } }
+  @keyframes trZoomOut{ from{ opacity:1; transform:none; } to{ opacity:0; transform:scale(.94); } }
+  @keyframes trWipe{ from{ clip-path:inset(0 calc(50% + var(--dx,1) * 50%) 0 calc(50% - var(--dx,1) * 50%)); } to{ clip-path:inset(0 0 0 0); } }
+  @keyframes trHold{ from{ opacity:1; } to{ opacity:1; } }
+  @keyframes trRiseIn{ from{ opacity:0; transform:translateY(7%); } to{ opacity:1; transform:none; } }
+  /* поява елементів: варіанти (базовий «підйом» — у стилях аркуша) */
+  @keyframes itFade{ from{ opacity:0; } to{ opacity:1; } }
+  @keyframes itZoom{ from{ opacity:0; transform:scale(.93); } to{ opacity:1; transform:none; } }
+  @keyframes itSide{ from{ opacity:0; transform:translateX(-26px); } to{ opacity:1; transform:none; } }
+  @keyframes itRise{ from{ opacity:0; transform:translateY(14px); } to{ opacity:1; transform:none; } }
+  #deck-ui .present-mode #deck-a4 .anim-item{ animation-delay:calc(var(--ib,0ms) + var(--i,0) * var(--is,90ms)); }
+  #deck-ui .present-mode[data-items="none"] #deck-a4 .anim-item{ animation:none !important; }
+  #deck-ui .present-mode[data-items="fade"] #deck-a4 .anim-item{ animation-name:itFade; animation-duration:.7s; }
+  #deck-ui .present-mode[data-items="zoom"] #deck-a4 .anim-item{ animation-name:itZoom; animation-duration:.6s; }
+  #deck-ui .present-mode[data-items="side"] #deck-a4 .anim-item{ animation-name:itSide; animation-duration:.6s; }
+  /* меню «Анімація» */
+  #deck-ui .dd.anim{ width:344px; padding:10px; max-height:calc(100vh - 70px); overflow:auto; }
+  #deck-ui .trbox{ position:relative; height:150px; border-radius:9px; overflow:hidden; background:#241a12; margin:2px 0 4px; }
+  #deck-ui .trbox > .slot{ border-radius:0; }
+  #deck-ui .trbox .mini{ position:absolute; inset:14px 26px; border-radius:4px; background:#FCF8F1; padding:12px 14px; box-shadow:0 6px 18px rgba(0,0,0,.35); overflow:hidden; }
+  #deck-ui .trbox .mini.b{ background:#F4ECDF; }
+  #deck-ui .trbox .mini .t{ height:9px; width:46%; border-radius:3px; background:#2A2018; margin-bottom:10px; }
+  #deck-ui .trbox .mini.b .t{ background:#C4621F; width:58%; }
+  #deck-ui .trbox .mini .l{ height:6px; border-radius:3px; background:#D6C7B0; margin-top:7px; }
+  #deck-ui .trbox .mini .n{ position:absolute; right:10px; bottom:6px; font:600 10px/1 var(--font-jetbrains),monospace; color:#A89478; }
+  #deck-ui .trbox[data-items="rise"] .slot.in .it{ animation:itRise .55s cubic-bezier(.2,.7,.2,1) both; animation-delay:calc(var(--ib,0ms) + var(--i,0) * var(--is,90ms)); }
+  #deck-ui .trbox[data-items="fade"] .slot.in .it{ animation:itFade .7s ease both; animation-delay:calc(var(--ib,0ms) + var(--i,0) * var(--is,90ms)); }
+  #deck-ui .trbox[data-items="zoom"] .slot.in .it{ animation:itZoom .6s cubic-bezier(.2,.7,.2,1) both; animation-delay:calc(var(--ib,0ms) + var(--i,0) * var(--is,90ms)); }
+  #deck-ui .trbox[data-items="side"] .slot.in .it{ animation:itSide .6s cubic-bezier(.2,.7,.2,1) both; animation-delay:calc(var(--ib,0ms) + var(--i,0) * var(--is,90ms)); }
+  #deck-ui .chips{ display:flex; flex-wrap:wrap; gap:5px; padding:0 2px 6px; }
+  #deck-ui .chip{ border:1px solid var(--edge); background:#fff; border-radius:999px; padding:5px 11px; font:inherit; font-size:12.5px; color:var(--ink); cursor:pointer; }
+  #deck-ui .chip:hover{ background:var(--hov); }
+  #deck-ui .chip[aria-pressed="true"]{ background:var(--acc); border-color:var(--acc); color:#fff; }
+  #deck-ui .dd.anim .mi{ padding:7px 6px; }
+  #deck-ui .dd.anim .foot{ display:flex; gap:8px; padding:6px 2px 0; }
+  #deck-ui .dd.anim .foot .tb{ flex:1; justify-content:center; border:1px solid var(--edge); }
   @media print{ #deck-ui{ background:#fff; padding:0; } #deck-ui .top, #deck-ui .rail, #deck-ui .alert, #deck-ui .ctl, #deck-ui .pick-bg, #deck-ui .present{ display:none !important; } #deck-ui .pages{ padding:0; overflow:visible; } }
 `;
 
@@ -247,10 +300,30 @@ export function DeckEditor({ initial, dbReady, only, bare, loadedAt, fromDb, pre
   const presentIdxRef = useRef<number | null>(null); presentIdxRef.current = present;
   const [tick, setTick] = useState(0); // перезапуск анімації при зміні сторінки
   const presentRef = useRef<HTMLDivElement>(null);
-  const goTo = useCallback((k: number) => { setPresent((cur) => { if (cur === null) return cur; const n = Math.min(deck.pages.length - 1, Math.max(0, k)); return n; }); setTick((t) => t + 1); }, [deck.pages.length]);
+  // анімації показу — налаштування деки (меню «Анімація»)
+  const anim: DeckAnim = { ...DECK_ANIM_DEFAULT, ...(deck.anim ?? {}) };
+  const td = DECK_SPEED_MS[anim.speed];
+  const setAnim = (patch: Partial<DeckAnim>) => update((d) => ({ ...d, anim: { ...DECK_ANIM_DEFAULT, ...(d.anim ?? {}), ...patch } }));
+  // перехід: попередній слайд лишається шаром під новим, поки йде анімація
+  const [leaving, setLeaving] = useState<{ idx: number; dir: 1 | -1; key: number } | null>(null);
+  const [itemsDelay, setItemsDelay] = useState(0); // поява елементів починається, коли перехід майже завершився
+  const leaveT = useRef<number | undefined>(undefined);
+  const goTo = useCallback((k: number) => {
+    const cur = presentIdxRef.current;
+    if (cur === null) return;
+    const n = Math.min(deck.pages.length - 1, Math.max(0, k));
+    if (n === cur) return;
+    window.clearTimeout(leaveT.current);
+    if (anim.tr !== "none") {
+      setLeaving({ idx: cur, dir: n > cur ? 1 : -1, key: Date.now() });
+      leaveT.current = window.setTimeout(() => setLeaving(null), td + 80);
+      setItemsDelay(Math.round(td * 0.55));
+    } else { setLeaving(null); setItemsDelay(0); }
+    setPresent(n); setTick((t) => t + 1);
+  }, [deck.pages.length, anim.tr, td]);
   const startPresent = (from = 0) => {
     (document.activeElement as HTMLElement | null)?.blur?.(); // інакше Space повторно натисне кнопку
-    setPresent(from); setTick((t) => t + 1);
+    setLeaving(null); setItemsDelay(0); setPresent(from); setTick((t) => t + 1);
     document.documentElement.requestFullscreen?.().catch(() => {});
     setTimeout(() => presentRef.current?.focus(), 50);
   };
@@ -443,6 +516,18 @@ export function DeckEditor({ initial, dbReady, only, bare, loadedAt, fromDb, pre
         </div>
         <span className="sep" />
         <button className="tb" onClick={() => startPresent(cur)} title="Повноекранний показ з поточної сторінки: Space / → далі, ← назад, Esc вихід"><Ic d={IC.play} fill /> Показ</button>
+        <Menu label="Анімація" icon={IC.anim} ddCls="anim" title="Переходи між слайдами і поява елементів у показі">
+          <TrPreview anim={anim} />
+          <div className="hd">Перехід між слайдами</div>
+          <div className="chips">{TR_OPTS.map(([v, l]) => <button key={v} type="button" className="chip" aria-pressed={anim.tr === v} onClick={() => setAnim({ tr: v })}>{l}</button>)}</div>
+          <div className="hd">Швидкість переходу</div>
+          <div className="chips">{SPEED_OPTS.map(([v, l]) => <button key={v} type="button" className="chip" aria-pressed={anim.speed === v} disabled={anim.tr === "none"} onClick={() => setAnim({ speed: v })}>{l}</button>)}</div>
+          <div className="hd">Поява елементів на слайді</div>
+          <div className="chips">{ITEM_OPTS.map(([v, l]) => <button key={v} type="button" className="chip" aria-pressed={anim.items === v} onClick={() => setAnim({ items: v })}>{l}</button>)}</div>
+          <MenuCheck on={anim.seq} onClick={() => setAnim({ seq: !anim.seq })} hint="Заголовок, пункти, картки зʼявляються один за одним; інакше — разом">По черзі</MenuCheck>
+          <MenuCheck on={anim.pptx} onClick={() => setAnim({ pptx: !anim.pptx })} hint="Той самий перехід між слайдами у файлі PowerPoint (поява елементів — лише в показі на сайті)">Переходи в PPTX</MenuCheck>
+          <div className="foot"><button type="button" className="tb" data-close onClick={() => startPresent(cur)}><Ic d={IC.play} fill /> Спробувати з поточної сторінки</button></div>
+        </Menu>
         <Menu label="Вигляд" icon={IC.sliders}>
           <div className="hd">Кегль деки</div>
           <div className="row-fs">
@@ -465,6 +550,7 @@ export function DeckEditor({ initial, dbReady, only, bare, loadedAt, fromDb, pre
           <p>Клікніть на будь-який текст на сторінці й редагуйте прямо там. У списках <kbd>Enter</kbd> додає новий пункт.</p>
           <p>Наведіть на сторінку — праворуч зʼявляться дії сторінки: показ звідси, порядок, дублювати, вставити після, інша композиція зі збереженням текстів, варіант оформлення, кегль сторінки, видалити. Біля ілюстрацій — «Замінити».</p>
           <p><kbd>⌘Z</kbd> скасувати, <kbd>⌘⇧Z</kbd> повторити. У показі: <kbd>Space</kbd> / <kbd>→</kbd> далі, <kbd>←</kbd> назад, <kbd>Esc</kbd> вихід.</p>
+          <p>«Анімація» — перехід між слайдами, швидкість і поява елементів у показі; налаштування зберігаються для кожної деки окремо, переходи йдуть і в PPTX.</p>
           <p>«Автозбереження» пише в базу через 1,5 с після кожної дії; попередні версії лишаються в історії.</p>
         </Menu>
         <span className="sep" />
@@ -536,9 +622,16 @@ export function DeckEditor({ initial, dbReady, only, bare, loadedAt, fromDb, pre
       {picker && <ImagePicker current={picker.current} optional={picker.optional} onClose={closePicker} />}
       {tplMode && <TemplatePicker deck={deck} mode={tplMode.mode} onClose={applyTemplate} />}
       {present !== null && (
-        <div className="present present-mode" ref={presentRef} tabIndex={-1} style={{ outline: "none" }} onClick={(e) => { if ((e.target as HTMLElement).closest(".hud")) return; goTo(present + 1); }} onContextMenu={(e) => { e.preventDefault(); goTo(present - 1); }}>
-          <div className="stage">
-            <DeckPages deck={deck} only={present + 1} editable={false} animate={tick} />
+        <div className="present present-mode" ref={presentRef} tabIndex={-1} data-items={anim.items} style={{ outline: "none", ["--td" as any]: `${td}ms`, ["--is" as any]: anim.seq ? "90ms" : "0ms", ["--ib" as any]: `${itemsDelay}ms` }} onClick={(e) => { if ((e.target as HTMLElement).closest(".hud")) return; goTo(present + 1); }} onContextMenu={(e) => { e.preventDefault(); goTo(present - 1); }}>
+          <div className="stage" data-tr={anim.tr}>
+            {leaving && (
+              <div className="slot out go" key={"o" + leaving.key} style={{ ["--dx" as any]: leaving.dir }}>
+                <DeckPages deck={deck} only={leaving.idx + 1} editable={false} />
+              </div>
+            )}
+            <div className={"slot in" + (leaving ? " go" : "")} key={"i" + tick} style={{ ["--dx" as any]: leaving?.dir ?? 1 }}>
+              <DeckPages deck={deck} only={present + 1} editable={false} animate={tick} />
+            </div>
           </div>
           <div className="hud">
             <span>{String(present + 1).padStart(2, "0")} / {String(deck.pages.length).padStart(2, "0")} · Space / → далі · ← назад · Esc вихід</span>
@@ -557,6 +650,7 @@ const IC = {
   undo: "M9 14L4 9l5-5M4 9h10a6 6 0 0 1 0 12h-3",
   redo: "M15 14l5-5-5-5M20 9H10a6 6 0 0 0 0 12h3",
   play: "M7 4l13 8-13 8z",
+  anim: "M4 17c3-8 7-10 16-10M14 3l6 4-6 4M4 21h4",
   download: "M12 3v12M7 10l5 5 5-5M4 20h16",
   sliders: "M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3M1 14h6M9 8h6M17 16h6",
   help: "M12 17h.01M9.4 9.4a2.6 2.6 0 1 1 3.7 2.4c-.7.4-1.1 1-1.1 1.7",
@@ -585,7 +679,36 @@ function pageTitle(p: DeckPage): string {
 
 /* ───────── випадні меню панелі ───────── */
 
-function Menu({ label, children, cls, right, title, busy, icon }: { label: string; children: React.ReactNode; cls?: string; right?: boolean; title?: string; busy?: boolean; icon?: string }) {
+const TR_OPTS: [DeckTransition, string][] = [["none", "Без переходу"], ["fade", "Розчинення"], ["push", "Зсув"], ["cover", "Накладання"], ["zoom", "Наближення"], ["wipe", "Шторка"], ["rise", "Підйом"]];
+const SPEED_OPTS: [DeckSpeed, string][] = [["fast", "Швидко"], ["normal", "Звичайно"], ["slow", "Повільно"]];
+const ITEM_OPTS: [DeckItemAnim, string][] = [["none", "Одразу"], ["rise", "Підйом"], ["fade", "Проявлення"], ["zoom", "Збільшення"], ["side", "Збоку"]];
+
+/** Мініпрев'ю в меню «Анімація»: два умовні слайди по черзі з вибраним переходом і появою елементів. */
+function TrPreview({ anim }: { anim: DeckAnim }) {
+  const td = DECK_SPEED_MS[anim.speed];
+  const [n, setN] = useState(0);
+  useEffect(() => {
+    setN((x) => x + 1); // зміна налаштувань — одразу показати
+    const t = window.setInterval(() => setN((x) => x + 1), td + 1500);
+    return () => window.clearInterval(t);
+  }, [td, anim.tr, anim.items, anim.seq]);
+  const go = anim.tr !== "none" && n > 0;
+  const page = (k: number, items: boolean) => (
+    <div className={"mini" + (k ? " b" : "")}>
+      <div className={"t" + (items ? " it" : "")} style={{ ["--i" as any]: 0 }} />
+      {[92, 78, 86, 60].map((w, j) => <div key={j} className={"l" + (items ? " it" : "")} style={{ width: `${w}%`, ["--i" as any]: j + 1 }} />)}
+      <span className="n">{k ? "02" : "01"}</span>
+    </div>
+  );
+  return (
+    <div className="trbox" data-tr={anim.tr} data-items={anim.items} aria-hidden style={{ ["--td" as any]: `${td}ms`, ["--is" as any]: anim.seq ? "90ms" : "0ms", ["--ib" as any]: go ? `${Math.round(td * 0.55)}ms` : "0ms" }}>
+      {go && <div className="slot out go" key={"o" + n}>{page((n + 1) % 2, false)}</div>}
+      <div className={"slot in" + (go ? " go" : "")} key={"i" + n}>{page(n % 2, true)}</div>
+    </div>
+  );
+}
+
+function Menu({ label, children, cls, right, title, busy, icon, ddCls }: { label: string; children: React.ReactNode; cls?: string; right?: boolean; title?: string; busy?: boolean; icon?: string; ddCls?: string }) {
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
   useEffect(() => {
@@ -600,7 +723,7 @@ function Menu({ label, children, cls, right, title, busy, icon }: { label: strin
       <button type="button" className={(cls === "help" ? "ib" : "tb") + (busy ? " busy" : "")} aria-haspopup="menu" aria-expanded={open} onClick={() => setOpen((o) => !o)} title={title}>
         {icon && <Ic d={icon} />}{label}{cls !== "help" && <span className="car"><Ic d={IC.chevron} size={12} /></span>}
       </button>
-      {open && <div className={"dd" + (right ? " r" : "")} role="menu" onClick={(e) => { if ((e.target as HTMLElement).closest("[data-close]")) setOpen(false); }}>{children}</div>}
+      {open && <div className={"dd" + (right ? " r" : "") + (ddCls ? " " + ddCls : "")} role="menu" onClick={(e) => { if ((e.target as HTMLElement).closest("[data-close]")) setOpen(false); }}>{children}</div>}
     </div>
   );
 }

@@ -86,9 +86,15 @@ export async function exportDeckPptx(deck: Deck, opts: { snap?: Snap; scale?: (p
   const out = (await pptx.write({ outputType: "arraybuffer" })) as ArrayBuffer;
   const JSZip = (await import("jszip")).default;
   const zip = await JSZip.loadAsync(out);
+  const an = deck.anim;
+  const trEl: Record<string, string> = { fade: "<p:fade/>", push: '<p:push dir="l"/>', cover: '<p:cover dir="l"/>', zoom: '<p:zoom dir="in"/>', wipe: '<p:wipe dir="r"/>', rise: '<p:cover dir="u"/>' };
+  const trXml = an && an.pptx && an.tr !== "none" && trEl[an.tr] ? `<p:transition spd="${an.speed === "fast" ? "fast" : an.speed === "slow" ? "slow" : "med"}">${trEl[an.tr]}</p:transition>` : "";
   await Promise.all(Object.keys(zip.files).filter((f) => /^ppt\/slides\/slide\d+\.xml$/.test(f)).map(async (f) => {
     const x = await zip.file(f)!.async("string");
-    zip.file(f, x.replace(/<a:buSzPct val="100000"\/><a:buChar char="&#x2022;"\/>/g, '<a:buClr><a:srgbClr val="C4621F"/></a:buClr><a:buSzPct val="120000"/><a:buChar char="&#x2022;"/>'));
+    let y = x.replace(/<a:buSzPct val="100000"\/><a:buChar char="&#x2022;"\/>/g, '<a:buClr><a:srgbClr val="C4621F"/></a:buClr><a:buSzPct val="120000"/><a:buChar char="&#x2022;"/>');
+    // перехід між слайдами (налаштування деки «Анімація» → «Переходи в PPTX»); після clrMapOvr, як вимагає схема
+    if (trXml && !y.includes("<p:transition")) y = y.includes("</p:clrMapOvr>") ? y.replace("</p:clrMapOvr>", "</p:clrMapOvr>" + trXml) : y.replace("</p:sld>", trXml + "</p:sld>");
+    zip.file(f, y);
   }));
   const blob = await zip.generateAsync({ type: "blob", mimeType: "application/vnd.openxmlformats-officedocument.presentationml.presentation" });
   const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = `${safe}.pptx`; document.body.appendChild(a); a.click(); a.remove();
@@ -315,11 +321,21 @@ async function page(ctx: Ctx, p: DeckPage) {
       if (p.sub) s.addText(txt(p.sub), base({ x: M, y: ty + 2.7, w: colW, h: 0.8, fontFace: SERIF, fontSize: 15 * ctx.k, color: C.muted }));
       // підпис: аватар + хто/де
       const whoY = H - 1.55;
-      let wx = M;
-      if (p.avatar) { await picture(ctx, p.avatar, M, whoY - 0.15, 0.85, 0.85, "cover", true); wx = M + 1.05; }
-      const whoLines = txt(p.who).split("\n");
-      s.addText(whoLines.map((l, j) => ({ text: l, options: { fontFace: j === 0 && whoLines.length > 1 ? SERIF : SANS, fontSize: j === 0 && whoLines.length > 1 ? 16 : 11.5, color: j === 0 ? C.ink : C.muted, breakLine: true } })),
-        base({ x: wx, y: whoY - 0.15, w: 6, h: 0.9, valign: "middle" }));
+      const person = async (who: string, av: string | undefined, y0: number, d: number) => {
+        let wx = M;
+        if (av) { await picture(ctx, av, M, y0, d, d, "cover", true); wx = M + d + 0.2; }
+        else if (p.who2 !== undefined) { // другий тренер без фото — ініціали в колі, як на сайті
+          const ini = (txt(who).split("\n")[0] || "").trim().split(/\s+/).slice(0, 2).map((w) => w[0] ?? "").join("").toUpperCase();
+          s.addShape("ellipse", { x: M, y: y0, w: d, h: d, fill: { color: "F4ECDC" }, line: { color: C.amber, width: 1.2 } });
+          s.addText(ini, base({ x: M, y: y0, w: d, h: d, fontFace: SERIF, fontSize: 17, color: C.acc, align: "center", valign: "middle" }));
+          wx = M + d + 0.2;
+        }
+        const lines = txt(who).split("\n");
+        s.addText(lines.map((l, j) => ({ text: l, options: { fontFace: j === 0 && lines.length > 1 ? SERIF : SANS, fontSize: j === 0 && lines.length > 1 ? 16 : 11.5, color: j === 0 ? C.ink : C.muted, breakLine: true } })),
+          base({ x: wx, y: y0, w: 6, h: d, valign: "middle" }));
+      };
+      if (p.who2 && p.who2.trim()) { await person(p.who, p.avatar, H - 2.5, 0.8); await person(p.who2, p.avatar2, H - 1.55, 0.8); }
+      else await person(p.who, p.avatar, whoY - 0.15, 0.85);
       s.addText(txt(p.when).toUpperCase(), base({ x: amp ? W - M - 4 : M, y: amp ? H - 0.85 : H - 0.62, w: 4, h: 0.3, fontFace: MONO, fontSize: amp ? 10 : 7.8, color: C.faint, charSpacing: 3, align: amp ? "right" : "left", valign: "middle" }));
       if (!amp) {
         if (deck.logo) await picture(ctx, deck.logo, W - M - 3.6, 1.1, 3.6, 1.1, "contain");
