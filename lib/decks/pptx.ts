@@ -3,7 +3,7 @@
  * з редагованим текстом, фігурами, таблицями й картинками у фірмових кольорах.
  * Схеми (тип diagram) PowerPoint нативно не відтворить — їх знімаємо з екрана як PNG.
  */
-import type { Deck, DeckPage } from "./types";
+import { numericCols, type Deck, type DeckPage } from "./types";
 import { deckT, splitBold } from "./i18n";
 
 type Pptx = import("pptxgenjs").default;
@@ -76,7 +76,7 @@ export async function exportDeckPptx(deck: Deck, opts: { snap?: Snap; scale?: (p
     // титул, розділ, «про тренера» і фінал на сайті мають фіксований кегль (density k=1), тож підібраний --k там не беремо
     const fixed = p.type === "cover" || p.type === "section" || p.type === "closing" || p.type === "about";
     const dom = fixed ? undefined : opts.scale?.(i);
-    const kp = dom && Number.isFinite(dom) ? Math.min(1.8, Math.max(0.6, dom)) : k * Math.min(1.4, Math.max(0.7, p.fs ?? 1));
+    const kp = dom && Number.isFinite(dom) ? Math.min(deck.big ? 2.4 : 1.8, Math.max(0.6, dom)) : k * Math.min(1.4, Math.max(0.7, p.fs ?? 1));
     const kh = kp >= 1.1 ? 1.1 : kp < 0.95 ? 0.9 : 1; // заголовки ростуть слабше, як на сайті
     const ctx: Ctx = { pptx, s, deck, i, total, k: kp, kh, snap: opts.snap, big: !!deck.big, web: opts.web?.(i), fz: p.fz };
     chrome(ctx, p);
@@ -177,7 +177,7 @@ function callout(ctx: Ctx, y: number, text: string, wIn = W - 2 * M) {
   y = Math.min(y, H - 0.78 - 0.2 - h); // не заходити на колонтитул
   ctx.s.addShape("rect", { x: M, y: y + 0.2, w: wIn, h, fill: { color: C.band }, line: { color: C.band } });
   ctx.s.addShape("rect", { x: M, y: y + 0.2, w: 0.05, h, fill: { color: C.amber }, line: { color: C.amber } });
-  ctx.s.addText(runs(text), base({ x: M + 0.25, y: y + 0.2, w: wIn - 0.4, h, fontFace: SERIF, italic: !ctx.big, fontSize: fs, valign: "middle" }));
+  ctx.s.addText(runs(text, {}, { lineSpacingMultiple: ctx.big ? 1.25 : 1 } as TextProps), base({ x: M + 0.25, y: y + 0.2, w: wIn - 0.4, h, fontFace: SERIF, italic: !ctx.big, fontSize: fs, valign: "middle" }));
   return y + 0.2 + h;
 }
 
@@ -331,7 +331,8 @@ async function page(ctx: Ctx, p: DeckPage) {
       const fs = (amp ? 44 : 46) * ctx.k * zf(ctx, "title");
       s.addText([{ text: txt(p.title), options: { color: C.ink } }, ...(p.titleEm ? [{ text: txt(p.titleEm), options: { color: C.amber, italic: true, fontSize: (fs / zf(ctx, "title")) * (p.variant === "photo" ? 0.56 : 0.64) * zf(ctx, "titleEm"), breakLine: false } }] : [])].map((r, j) => j === 1 ? { ...r, text: "\n" + r.text } : r),
         base({ x: M, y: ty, w: colW, h: 2.6, fontFace: SERIF, fontSize: fs, valign: "top" }));
-      if (p.sub) s.addText(txt(p.sub), base({ x: M, y: ty + 2.7, w: colW, h: 0.8, fontFace: SERIF, fontSize: 15 * ctx.k * zf(ctx, "sub"), color: C.muted }));
+      const tH0 = (fs * 1.12 + (p.titleEm ? fs * (p.variant === "photo" ? 0.56 : 0.64) * 1.15 : 0)) / 72 + 0.15; // фактична висота заголовка
+      if (p.sub) s.addText(txt(p.sub), base({ x: M, y: ty + tH0, w: p.variant === "photo" ? colW : W - 2 * M - 1.5, h: 0.8, fontFace: SERIF, fontSize: 15 * ctx.k * zf(ctx, "sub"), color: C.muted }));
       // підпис: аватар + хто/де
       const whoY = H - 1.55;
       const person = async (who: string, av: string | undefined, y0: number, d: number, second = false) => {
@@ -394,7 +395,7 @@ async function page(ctx: Ctx, p: DeckPage) {
       }
       const tw = hasImg && !top ? W - 2 * M - 4.7 : W - 2 * M;
       // композиція як на сайті: цифра ліворуч, праворуч надрядок «РОЗДІЛ» з рискою, заголовок і підзаголовок; блок по центру вільної площі
-      const numW = p.num ? 0.85 * String(p.num).length + 0.6 : 0, tx = M + numW + (numW ? 0.35 : 0), tcw = tw - numW - (numW ? 0.35 : 0);
+      const numW = p.num ? 0.7 * String(p.num).length + 0.4 : 0, tx = M + numW + (numW ? 0.35 : 0), tcw = tw - numW - (numW ? 0.35 : 0);
       const caps = p.title === p.title.toUpperCase(), cf = caps ? 0.7 : 0.57; // великі літери ширші
       const longest = Math.max(1, ...p.title.split(/\s+/).map((w) => w.length));
       const tfs = Math.min(30 * ctx.kh * zf(ctx, "title"), (tcw * 72 * 0.96) / (longest * cf)); // жодне слово не розривається
@@ -545,7 +546,7 @@ async function page(ctx: Ctx, p: DeckPage) {
       const normal = p.rows.filter((r) => !isWide(r));
       const fcText = !!p.plain || (!numeric && normal.length > 0 && normal.reduce((a, r) => a + (r[0] ?? "").length, 0) / normal.length > 45);
       const empt = normal.flatMap((r) => r.slice(1)).filter((c) => !c.trim()).length / Math.max(1, normal.length * (cols - 1));
-      const ws = empt >= 0.4 || (ctx.big && normal.some((r) => r.slice(1).every((c) => !c.trim())));
+      const ws = !p.cw && (empt >= 0.4 || (ctx.big && normal.some((r) => r.slice(1).every((c) => !c.trim()))));
       // ширини колонок — як на сайті
       const frac: number[] =
         p.cw && p.cw.length === cols && !ws ? p.cw.map((x) => x / p.cw!.reduce((a, b) => a + b, 0))
@@ -589,13 +590,14 @@ async function page(ctx: Ctx, p: DeckPage) {
         const used = hh + rh.reduce((a, b, j) => a + (blank[j] ? 0 : b), 0), nb0 = blank.filter(Boolean).length;
         if (nb0) { const each = Math.max(0.6, (availH - used) / nb0); rh = rh.map((h, j) => (blank[j] ? each : h)); }
       }
+      const numC = p.cw && !ws ? numericCols(p.rows, cols) : []; // числові колонки — праворуч
       const head = p.head.map((h, ci) => ({ text: ctx.big ? txt(h) : txt(h).toUpperCase(), options: ctx.big
-        ? { color: C.ink, fontFace: SANS, bold: true, fontSize: hfs * zf(ctx, `head.${ci}`), valign: "bottom" as const, ...(cols >= 7 && ci > 0 ? { align: "right" as const } : {}), border: bLine(C.ink, 0.75) }
+        ? { color: C.ink, fontFace: SANS, bold: true, fontSize: hfs * zf(ctx, `head.${ci}`), valign: "bottom" as const, ...(cols >= 7 && ci > 0 || numC[ci] ? { align: "right" as const } : {}), border: bLine(C.ink, 0.75) }
         : { color: C.faint, fontFace: MONO, fontSize: hfs * zf(ctx, `head.${ci}`), charSpacing: 1.5, valign: "bottom" as const, border: bLine(C.ink, 0.75) } }));
       const firstStyle = fcText ? {} : ctx.big ? { bold: true, color: "8E4213" } : { fontFace: SERIF, italic: true, color: C.acc };
       const body = p.rows.map((r, ri) => isWide(r)
         ? [{ text: runs(r[0] ?? "") as any, options: { colspan: cols, fontSize: fs * zf(ctx, `rows.${ri}.0`), fill: { color: C.band }, border: bLine(C.line, 0.5) } }]
-        : Array.from({ length: cols }, (_, ci) => ({ text: runs(r[ci] ?? "") as any, options: { fontSize: (ci === 0 && !fcText ? (ctx.big ? fs : 11 * ctx.k) : fs) * zf(ctx, `rows.${ri}.${ci}`), ...(ci === 0 ? firstStyle : {}), ...(cols >= 7 && ci > 0 ? { align: "right" as const } : {}), border: bLine(C.line, 0.5) } })));
+        : Array.from({ length: cols }, (_, ci) => ({ text: runs(r[ci] ?? "") as any, options: { fontSize: (ci === 0 && !fcText ? (ctx.big ? fs : 11 * ctx.k) : fs) * zf(ctx, `rows.${ri}.${ci}`), ...(ci === 0 ? firstStyle : {}), ...((cols >= 7 && ci > 0) || numC[ci] ? { align: "right" as const } : {}), border: bLine(C.line, 0.5) } })));
       const ty = y + 0.2;
       const noHead = p.head.every((h) => !h.trim());
       if (noHead) hh = 0;

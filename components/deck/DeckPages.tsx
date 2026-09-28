@@ -4,7 +4,7 @@ import { createContext, useContext, useLayoutEffect, useRef, useState } from "re
 import { deckT, splitBold } from "@/lib/decks/i18n";
 import { DIAGRAM_CSS, Diagram } from "@/components/deck/Diagrams";
 import { FzCtx, FzSetCtx, fzAttrs, remapListFz, useFz } from "@/components/deck/fz";
-import type { Deck, DeckPage } from "@/lib/decks/types";
+import { numericCols, type Deck, type DeckPage } from "@/lib/decks/types";
 
 /**
  * Рендер A4-сторінок деки у «кремовому» стилі Pan&Partners (той самий, що
@@ -560,6 +560,7 @@ const DECK_CSS_BASE = `
   #deck-a4.big table.cw.dense td{ padding-top:calc(.55mm * var(--k,1)) !important; padding-bottom:calc(.55mm * var(--k,1)) !important; }
   #deck-a4.big table.cw.dense th{ padding-top:0; padding-bottom:1mm; }
   #deck-a4.big table.cw th{ font-size:calc(11pt * min(max(var(--k,1), 1), 1.4)); }
+  #deck-a4 table.cw .n{ text-align:right; font-variant-numeric:tabular-nums; padding-right:calc(2.5mm + .6em) !important; }
   #deck-a4.big table.cw[data-cols="6"] th, #deck-a4.big table.cw[data-cols="7"] th, #deck-a4.big table.cw[data-cols="8"] th{ font-size:calc(9pt * min(max(var(--k,1), 1), 1.4)); }
   /* рядки без підпису (частки, %) — світліші: читаються як продовження рядка вище */
   #deck-a4.big table.cw tr:has(> td:first-child:empty) td{ color:var(--muted); }
@@ -790,7 +791,8 @@ function Sheet({ deck, i, cls, page, children, editable, onRunhead, animate }: {
       const notes = el.querySelector<HTMLElement>(".notes");
       if (notes) notes.style.display = "";
       el.setAttribute("data-measuring", "1"); // редакторські кнопки не беруть участі у вимірюванні
-      const fits = () => !(el.scrollHeight > el.clientHeight + 2 || (pb ? pb.scrollHeight > pb.clientHeight + 2 : false) || Array.from(el.querySelectorAll<HTMLElement>(".dg.chain .crow")).some((r) => r.scrollWidth > r.clientWidth + 1) || Array.from(el.querySelectorAll<HTMLElement>(".dg.chain .cb, .dg.map4 .q")).some((c) => { const cs = getComputedStyle(c), inner = c.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight) + 1; return c.scrollWidth > c.clientWidth + 1 || Array.from(c.children).some((ch) => (ch as HTMLElement).offsetWidth > inner); })); // + слова, що вилазять із блоків схеми
+      const fits = () => !(el.scrollHeight > el.clientHeight + 2 || (pb ? pb.scrollHeight > pb.clientHeight + 2 : false) || Array.from(el.querySelectorAll<HTMLElement>("table.cw td, table.cw th")).some((c) => { const cs = getComputedStyle(c), r = c.getBoundingClientRect(), lo = r.left + parseFloat(cs.paddingLeft) - 0.5, hi = r.right - parseFloat(cs.paddingRight) + 0.5; const rg = document.createRange(); rg.selectNodeContents(c); return Array.from(rg.getClientRects()).some((x) => x.width > 0 && (x.right > hi || x.left < lo)); }) // числа/слова не вилазять за відступи клітинки
+        || Array.from(el.querySelectorAll<HTMLElement>(".dg.chain .crow")).some((r) => r.scrollWidth > r.clientWidth + 1) || Array.from(el.querySelectorAll<HTMLElement>(".dg.chain .cb, .dg.map4 .q")).some((c) => { const cs = getComputedStyle(c), inner = c.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight) + 1; return c.scrollWidth > c.clientWidth + 1 || Array.from(c.children).some((ch) => (ch as HTMLElement).offsetWidth > inner); })); // + слова, що вилазять із блоків схеми
       // «великий друк» (Deck.big): стартуємо з максимуму і зменшуємо, поки вміщається, — текст максимально крупний
       const fixedType = page.type === "cover" || page.type === "section" || page.type === "closing" || page.type === "about";
       let v = deck.big && !fixedType ? Math.round(1.9 * (page.fs ?? 1) * 100) / 100 : Math.round(d.k * (page.fs ?? 1) * (deck.fs ?? 1) * 100) / 100;
@@ -1223,12 +1225,13 @@ function PageBody({ p, set, editable, prev, pick, showNotes = true, logo, big }:
       const cells = p.rows.filter((r) => !isWide(r)).flatMap((r) => r.slice(1));
       const emptyRatio = cells.length ? cells.filter((c) => !c.trim()).length / cells.length : 0;
       // робочий аркуш: багато порожніх клітинок; у «великому друці» — також якщо є хоча б один повністю порожній рядок для запису
-      const ws = emptyRatio >= 0.4 || (!!big && p.rows.some((r) => !isWide(r) && r.slice(1).every((c) => !c.trim())));
+      const ws = !p.cw && (emptyRatio >= 0.4 || (!!big && p.rows.some((r) => !isWide(r) && r.slice(1).every((c) => !c.trim())))); // із заданими ширинами — завжди таблиця даних
       const hl = prev && prev.type === "gallery" ? chipFor(prev.lead) : null;
       const numbered = p.head[0] === "#" || p.rows.every((r) => /^\d+\.?$/.test((r[0] ?? "").trim()));
       const fcText = !!p.plain || (!numbered && p.rows.length > 0 && p.rows.reduce((a, r) => a + (r[0] ?? "").length, 0) / p.rows.length > 45);
       // висота порожніх рядків для запису: «великий друк» — ділимо вільну висоту лише між порожніми рядками
       const blankRows = p.rows.filter((r) => !isWide(r) && r.slice(1).every((c) => !c.trim())).length;
+      const numC = p.cw && !ws ? numericCols(p.rows, p.head.length) : []; // числа праворуч (лише таблиці із заданими ширинами)
       const rowh = ws ? (big ? `${Math.max(14, Math.min(40, Math.floor((p.lead ? 104 : 116) / Math.max(1, blankRows) - (p.rows.length - blankRows) * 12 / Math.max(1, blankRows))))}mm` : `${Math.max(11, Math.min(38, Math.floor(118 / Math.max(1, p.rows.length))))}mm`) : undefined;
       return (
         <>
@@ -1239,7 +1242,7 @@ function PageBody({ p, set, editable, prev, pick, showNotes = true, logo, big }:
             <thead style={!e && p.head.every((h) => !h.trim()) ? { display: "none" } : undefined}>
               <tr>
                 {p.head.map((h, k) => (
-                  <th key={k}>
+                  <th key={k} className={numC[k] ? "n" : undefined}>
                     <E fk={`head.${k}`} value={h} onChange={(v) => set({ head: p.head.map((x, j) => (j === k ? v : x)) })} editable={e} ph="—" />
                   </th>
                 ))}
@@ -1260,6 +1263,7 @@ function PageBody({ p, set, editable, prev, pick, showNotes = true, logo, big }:
                     <E fk={`rows.${ri}.${ci}`}
                       key={ci}
                       tag="td"
+                      className={numC[ci] ? "n" : undefined}
                       value={r[ci] ?? ""}
                       onChange={(v) => set({ rows: p.rows.map((row, j) => (j === ri ? p.head.map((__, c) => (c === ci ? v : row[c] ?? "")) : row)) })}
                       editable={e}

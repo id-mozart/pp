@@ -27,6 +27,16 @@ export type DeckPage = (
 
 export type DeckPageType = DeckPage["type"];
 
+/** Числова колонка таблиці (≥80% непорожніх клітинок — числа/відсотки/calc/TBD): вирівнюємо праворуч. */
+const NUM_CELL = /^[\s*]*([+−\-–]?[\d\u00a0 ,.]+%?|calc|TBD|\d+k)[\s*]*$/i;
+export function numericCols(rows: string[][], cols: number): boolean[] {
+  return Array.from({ length: cols }, (_, c) => {
+    if (c === 0) return false;
+    const v = rows.map((r) => (r[c] ?? "").trim()).filter(Boolean);
+    return v.length > 0 && v.filter((x) => NUM_CELL.test(x)).length / v.length >= 0.8;
+  });
+}
+
 /** Анімації режиму показу (налаштовуються для кожної деки). */
 export const DECK_TRANSITIONS = ["none", "fade", "push", "cover", "zoom", "wipe", "rise"] as const;
 export const DECK_ITEM_ANIMS = ["none", "rise", "fade", "zoom", "side"] as const;
