@@ -501,7 +501,7 @@ const DECK_CSS_BASE = `
   #deck-a4.big .withimg .fig{ justify-content:flex-end; width:calc(78mm * min(var(--k,1), 1.3)); }
   #deck-a4.big .withimg .callout{ margin-bottom:6mm; }
   #deck-a4.big .t-closing .photo img{ object-position:30% 12%; }
-  #deck-a4.big .t-closing .qrwrap::after{ content:"Instagram"; display:block; font-family:var(--font-inter),sans-serif; font-size:10pt; color:var(--muted); margin-top:1.5mm; text-align:center; }
+  #deck-a4.big .t-closing .qrwrap:has(img.qr)::after{ content:"Instagram"; display:block; font-family:var(--font-inter),sans-serif; font-size:10pt; color:var(--muted); margin-top:1.5mm; text-align:center; }
   #deck-a4 .t-cover:has(.cvfull) .who .w{ position:static !important; margin-top:2.5mm !important; color:#E8DCC8 !important; font-size:10pt !important; }
   #deck-a4 .t-cover .cv.full .who p{ font-size:13pt; }
   #deck-a4 .t-cover:has(.cvfull) .rh .colg:not(.light){ filter:brightness(0) invert(1); }
@@ -553,6 +553,22 @@ const DECK_CSS_BASE = `
   #deck-a4 .t-cover .cv.bnd .who .w{ position:absolute !important; right:0 !important; bottom:14mm !important; }
   #deck-a4.big .t-table .callout{ font-size:calc(12.6pt * var(--k,1)); }
   #deck-a4.big table[data-cols="8"] td:last-child{ white-space:pre; }
+  /* ширини колонок задані в деці (cw): фіксована розкладка за colgroup, стандартні ширини th/td не діють */
+  #deck-a4 table.cw{ table-layout:fixed; } #deck-a4 table.cw th, #deck-a4 table.cw td{ width:auto !important; }
+  /* довгі таблиці з заданими ширинами (≥10 рядків): мінімальні відступи — кегль більший */
+  #deck-a4.big table.cw.dense{ line-height:1.2; margin-top:2.5mm; }
+  #deck-a4.big table.cw.dense td{ padding-top:calc(.55mm * var(--k,1)) !important; padding-bottom:calc(.55mm * var(--k,1)) !important; }
+  #deck-a4.big table.cw.dense th{ padding-top:0; padding-bottom:1mm; }
+  #deck-a4.big table.cw th{ font-size:calc(11pt * min(max(var(--k,1), 1), 1.4)); }
+  #deck-a4.big table.cw[data-cols="6"] th, #deck-a4.big table.cw[data-cols="7"] th, #deck-a4.big table.cw[data-cols="8"] th{ font-size:calc(9pt * min(max(var(--k,1), 1), 1.4)); }
+  /* рядки без підпису (частки, %) — світліші: читаються як продовження рядка вище */
+  #deck-a4.big table.cw tr:has(> td:first-child:empty) td{ color:var(--muted); }
+  #deck-a4.big table.cw:not(.dense) tr:has(> td:first-child:empty) td{ font-size:.92em; }
+  /* титули з підзаголовком: темний — світлий підзаголовок; смуга — нижча фото, щоб підпис тренера вміщався */
+  #deck-a4 .t-cover .cv.full .sub{ color:rgba(252,248,241,.78); }
+  #deck-a4 .t-cover:has(.cv.bnd .sub:not(:empty)) .cvband{ height:36%; }
+  #deck-a4 .t-cover .cv.bnd:has(.sub:not(:empty)){ padding-top:84mm; }
+  #deck-a4 .t-cover .cv.bnd .sub{ margin-top:3mm; }
   /* підібрані ширини колонок (data-opt): перший рядок задає ширини при table-layout:fixed */
   #deck-a4.big table[data-opt] th:nth-child(1), #deck-a4.big table[data-opt] thead[style*="none"] + tbody tr:first-child > td:not(.wide):nth-child(1){ width:var(--w1) !important; }
   #deck-a4.big table[data-opt][data-cols="3"] th:nth-child(2), #deck-a4.big table[data-opt][data-cols="3"] thead[style*="none"] + tbody tr:first-child > td:not(.wide):nth-child(2){ width:var(--w2) !important; }
@@ -774,7 +790,7 @@ function Sheet({ deck, i, cls, page, children, editable, onRunhead, animate }: {
       const notes = el.querySelector<HTMLElement>(".notes");
       if (notes) notes.style.display = "";
       el.setAttribute("data-measuring", "1"); // редакторські кнопки не беруть участі у вимірюванні
-      const fits = () => !(el.scrollHeight > el.clientHeight + 2 || (pb ? pb.scrollHeight > pb.clientHeight + 2 : false));
+      const fits = () => !(el.scrollHeight > el.clientHeight + 2 || (pb ? pb.scrollHeight > pb.clientHeight + 2 : false) || Array.from(el.querySelectorAll<HTMLElement>(".dg.chain .crow")).some((r) => r.scrollWidth > r.clientWidth + 1) || Array.from(el.querySelectorAll<HTMLElement>(".dg.chain .cb, .dg.map4 .q")).some((c) => { const cs = getComputedStyle(c), inner = c.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight) + 1; return c.scrollWidth > c.clientWidth + 1 || Array.from(c.children).some((ch) => (ch as HTMLElement).offsetWidth > inner); })); // + слова, що вилазять із блоків схеми
       // «великий друк» (Deck.big): стартуємо з максимуму і зменшуємо, поки вміщається, — текст максимально крупний
       const fixedType = page.type === "cover" || page.type === "section" || page.type === "closing" || page.type === "about";
       let v = deck.big && !fixedType ? Math.round(1.9 * (page.fs ?? 1) * 100) / 100 : Math.round(d.k * (page.fs ?? 1) * (deck.fs ?? 1) * 100) / 100;
@@ -792,7 +808,7 @@ function Sheet({ deck, i, cls, page, children, editable, onRunhead, animate }: {
       for (let i = 0; i < 100 && !fits() && v > floor; i++) { v = Math.round((v - st) * 100) / 100; apply(); }
       // «великий друк», таблиці на 2–3 колонки: підбираємо ширини колонок, за яких кегль найбільший,
       // але так, щоб жодне слово не вилазило за межі клітинки (слова не розриваються)
-      const tb = deck.big && page.type === "table" ? el.querySelector<HTMLTableElement>("table[data-cols]:not(.ws):not([data-num]):not([data-fc])") : null;
+      const tb = deck.big && page.type === "table" ? el.querySelector<HTMLTableElement>("table[data-cols]:not(.ws):not(.cw):not([data-num]):not([data-fc])") : null;
       const nc = tb ? Number(tb.dataset.cols) : 0;
       const headless = !!tb && tb.querySelector<HTMLElement>("thead")?.style.display === "none";
       const wideFirst = headless && !!tb!.querySelector("tbody tr:first-child > td.wide"); // ширини задає перший рядок — з об'єднаною клітинкою не задати
@@ -1210,7 +1226,7 @@ function PageBody({ p, set, editable, prev, pick, showNotes = true, logo, big }:
       const ws = emptyRatio >= 0.4 || (!!big && p.rows.some((r) => !isWide(r) && r.slice(1).every((c) => !c.trim())));
       const hl = prev && prev.type === "gallery" ? chipFor(prev.lead) : null;
       const numbered = p.head[0] === "#" || p.rows.every((r) => /^\d+\.?$/.test((r[0] ?? "").trim()));
-      const fcText = !numbered && p.rows.length > 0 && p.rows.reduce((a, r) => a + (r[0] ?? "").length, 0) / p.rows.length > 45;
+      const fcText = !!p.plain || (!numbered && p.rows.length > 0 && p.rows.reduce((a, r) => a + (r[0] ?? "").length, 0) / p.rows.length > 45);
       // висота порожніх рядків для запису: «великий друк» — ділимо вільну висоту лише між порожніми рядками
       const blankRows = p.rows.filter((r) => !isWide(r) && r.slice(1).every((c) => !c.trim())).length;
       const rowh = ws ? (big ? `${Math.max(14, Math.min(40, Math.floor((p.lead ? 104 : 116) / Math.max(1, blankRows) - (p.rows.length - blankRows) * 12 / Math.max(1, blankRows))))}mm` : `${Math.max(11, Math.min(38, Math.floor(118 / Math.max(1, p.rows.length))))}mm`) : undefined;
@@ -1218,7 +1234,8 @@ function PageBody({ p, set, editable, prev, pick, showNotes = true, logo, big }:
         <>
           <Title p={p} set={set} editable={e} />
           <E fk="lead" tag="p" className="lead" value={p.lead} onChange={(v) => set({ lead: v })} editable={e} ph="лід" />
-          <table className={ws ? `ws c${p.head.length}` : undefined} data-hl={hl ?? undefined} data-num={numbered ? "1" : undefined} data-fc={fcText ? "text" : undefined} data-cols={String(p.head.length)} style={rowh ? ({ ["--rowh" as any]: rowh } as any) : undefined}>
+          <table className={ws ? `ws c${p.head.length}` : p.cw && p.cw.length === p.head.length ? "cw" + (p.rows.length >= 10 ? " dense" : "") : undefined} data-hl={hl ?? undefined} data-num={numbered ? "1" : undefined} data-fc={fcText ? "text" : undefined} data-cols={String(p.head.length)} style={rowh ? ({ ["--rowh" as any]: rowh } as any) : undefined}>
+            {p.cw && p.cw.length === p.head.length && !ws ? <colgroup>{p.cw.map((w, k) => <col key={k} style={{ width: w + "%" }} />)}</colgroup> : null}
             <thead style={!e && p.head.every((h) => !h.trim()) ? { display: "none" } : undefined}>
               <tr>
                 {p.head.map((h, k) => (
@@ -1284,7 +1301,7 @@ function PageBody({ p, set, editable, prev, pick, showNotes = true, logo, big }:
           <div>
             <Title p={p} set={set} editable={e} />
             <E fk="sub" tag="p" className="sub" value={p.sub} onChange={(v) => set({ sub: v })} editable={e} ph="підпис" />
-            <EList className="ct" items={p.contacts} onChange={(v) => set({ contacts: v })} editable={e} />
+            <EList fk="contacts" className="ct" items={p.contacts} onChange={(v) => set({ contacts: v })} editable={e} />
             <span className="qrwrap">
               {p.qr ? <img className="qr" src={p.qr} alt="" /> : null}
               <ImgBtn pick={pick} current={p.qr} optional onPick={(v) => set({ qr: v || undefined })} empty={!p.qr} />

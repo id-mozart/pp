@@ -8,7 +8,7 @@ import { FzCtx, FzSetCtx, fzAttrs, remapListFz, useFz } from "@/components/deck/
  * Геометрія — CSS (clip-path, conic-gradient) + невеликі SVG-стрілки; підписи — HTML,
  * тому в редакторі вони редагуються прямо на схемі (contentEditable).
  */
-export type DiagramKind = "pyramid" | "skills" | "circle3" | "blocks31" | "cycle" | "wedge" | "catman" | "pita" | "tiers" | "est";
+export type DiagramKind = "pyramid" | "skills" | "circle3" | "blocks31" | "cycle" | "wedge" | "catman" | "pita" | "tiers" | "est" | "chain" | "map4" | "ccc";
 
 export const DIAGRAM_LABELS: Record<DiagramKind, { label: string; hint: string; labels: string[]; lists?: string[][] }> = {
   pyramid: { label: "Піраміда цілей", hint: "Три рівні: підписи ліворуч, піраміда праворуч", labels: ["Стратегічна ціль", "Цілі компанії / ГД", "Цілі функцій / керівників відділів", "Цілі ТМ"] },
@@ -30,6 +30,9 @@ export const DIAGRAM_LABELS: Record<DiagramKind, { label: string; hint: string; 
   ] },
   est: { label: "Модель EST (радар 0–5–10)", hint: "6 осей від центру зі шкалою 0 / 5 / 10 для оцінки мережі", labels: ["The Cheap EST", "Самий дешевий", "The Big(g) EST", "Самий різноманітний", "The Hot(t) EST", "Самий гарячий", "The Quick EST", "Самий швидкий", "The (most) ExperiEST", "Самий експертний", "The Easy EST", "Самий простий", "THE EST-MODEL"] },
   pita: { label: "Формула PITA", hint: "P × I × T × A = валовий дохід; поточний множник підсвічується", labels: ["Люди", "Охоплення (%)", "Розмір угоди", "Середній виторг з одиниці товару", "Валовий дохід", "People", "Incidence", "Transaction size", "Average profit"] },
+  chain: { label: "Ланцюжок блоків", hint: "Рядки блоків зі стрілками (заголовок + значення); підпис рядка — під ним. «*» на початку заголовка — виділений блок, «!» на початку підпису — акцентний колір", labels: [], lists: [["", "Base", "10 000", "Invoice", "−300", "*NET", "9 700"]] },
+  map4: { label: "Карта: центр + 4 блоки", hint: "Центральний блок і чотири блоки по кутах (заголовок + текст)", labels: ["ЗАПРОС\nКЛИЕНТА", "ПРИБЫЛЬ", "Прибыль → Маржа", "ИНВЕСТИЦИИ В КЛИЕНТА", "Скидки → Net Sales", "РЕШЕНИЕ", "Break-even → Promo → ROI", "ДЕНЬГИ", "AR → DSO → CCC"] },
+  ccc: { label: "Цикл обігу грошей (CCC)", hint: "Смуги в днях: запаси, дебіторка, кредиторка; CCC = запаси + дебіторка − кредиторка. Числа днів — у першому списку", labels: ["Запасы, 47 дней", "Дебиторская задолженность, 68 дней", "Кредиторская задолженность, 76 дней", "CCC, 39 дней", "Отсрочка платежа", "Дни, когда компании приходится привлекать финансирование", "Дни от поступления сырья на завод до отгрузки готовой продукции клиенту", "Дни от покупки готовой продукции клиентом до получения оплаты", "Дни"], lists: [["47", "68", "76"]] },
   tiers: { label: "Ступінчаста піраміда", hint: "Рівні потреб: підписи ліворуч, клітинки рівнів праворуч; нижній рівень — сірий", labels: ["Головна потреба", "Вторинні потреби", "Унікальні драйвери", "Особисті потреби"], lists: [["Зростання прибутку"], ["Продажі", "Валова маржа", "Оборот запасів"], ["Трафік", "Нові покупці", "Частота покупок", "Середній чек"], ["Дані й підтримка постачальника", "Стабільні постачання", "Матриця під формат"], ["Виконання KPI", "Визнання результату", "Довірчі відносини"]] },
   wedge: { label: "70 / 20 / 10", hint: "Спадний клин із трьома частками і списками під ними", labels: ["70 %", "Практичний досвід", "20 %", "Зворотний зв'язок та навчання на робочому місці", "10 %", "Навчання"], lists: [["Проекти усередині підрозділу", "Навчання колег"], ["Наставництво", "Коучинг"], ["Внутрішні тренінги", "Книги"]] },
 };
@@ -132,6 +135,43 @@ export const DIAGRAM_CSS = `
   #deck-a4 .dg.pita.has-hi .bx:not(.on):not(.res){ background:transparent; border:1px solid var(--line); border-top:2.5pt solid var(--line); }
   #deck-a4 .dg.pita.has-hi .let:not(.on){ color:var(--muted); }
   #deck-a4 .dg.pita .bx.on{ background:var(--amber); color:#FFF8EE; box-shadow:0 3mm 8mm rgba(196,98,31,.25); }
+  /* chain: рядки блоків зі стрілками */
+  #deck-a4 .dg.chain{ display:flex; flex-direction:column; gap:calc(3.2mm * min(var(--k,1), 1.5)); --dgf:calc(11.5pt * var(--k,1)); }
+  #deck-a4 .dg.chain .crow{ display:flex; align-items:stretch; gap:0; }
+  #deck-a4 .dg.chain .cb{ flex:1 1 0; min-width:0; background:var(--band); border-top:2.5pt solid var(--amber); border-radius:4px; padding:2.6mm calc(3mm + 1.5mm * min(var(--k,1), 1.5)); min-width:min-content; /* довге слово розширює свій блок, а не зменшує всю сторінку */ display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; gap:.8mm; }
+  #deck-a4 .dg.chain .cb b{ font-weight:700; line-height:1.18; white-space:pre-line; }
+  #deck-a4 .dg.chain .cb span{ font-family:var(--font-spectral),serif; font-weight:600; font-size:1.3em; line-height:1.1; color:var(--acc); white-space:pre-line; font-variant-numeric:tabular-nums; }
+  #deck-a4 .dg.chain .cb span:empty, #deck-a4 .dg.chain .cb b:empty{ display:none; }
+  #deck-a4 .dg.chain .cb.hot{ background:#2A2018; border-top-color:var(--gold); color:#FCF8F1; }
+  #deck-a4 .dg.chain .cb.hot span{ color:#F0B450; }
+  #deck-a4 .dg.chain .ar{ flex:none; align-self:center; width:calc(8mm * min(var(--k,1), 1.3)); text-align:center; color:var(--amber); font-family:var(--font-spectral),serif; font-weight:600; font-size:1.7em; line-height:1; }
+  #deck-a4 .dg.chain .cb:has(> span:empty){ min-height:calc(2.36em + 5.2mm); } /* плитки без значення — однакова висота рядків */
+  #deck-a4 .dg.chain .crow.tiles{ gap:calc(4mm * min(var(--k,1), 1.4)); }
+  #deck-a4 .dg.chain .crow.tiles .cb{ padding:4mm 3mm; }
+  #deck-a4 .dg.chain .cap{ white-space:pre-line; text-align:center; font-weight:600; margin-top:calc(-1mm * min(var(--k,1), 1.5)); }
+  #deck-a4 .dg.chain .cap.acc{ color:var(--acc); }
+  #deck-a4 .dg.chain .note{ white-space:pre-line; text-align:center; font-size:1.15em; font-weight:600; }
+  #deck-a4 .dg.chain .note.acc{ color:var(--acc); }
+  /* map4: центр + 4 блоки */
+  #deck-a4 .dg.map4{ display:grid; grid-template-columns:1fr 0.72fr 1fr; grid-template-rows:auto auto; gap:calc(6mm * min(var(--k,1), 1.3)) calc(7mm * min(var(--k,1), 1.3)); align-items:stretch; --dgf:calc(11.5pt * var(--k,1)); }
+  #deck-a4 .dg.map4 .q{ position:relative; z-index:1; background:var(--band); border-top:2.5pt solid var(--amber); border-radius:4px; padding:3mm 4mm; display:flex; flex-direction:column; justify-content:center; text-align:center; gap:1.4mm; }
+  #deck-a4 .dg.map4 .q b{ font-weight:700; letter-spacing:.02em; }
+  #deck-a4 .dg.map4 .q span{ white-space:pre-line; line-height:1.3; }
+  #deck-a4 .dg.map4 .ctr{ grid-column:2; grid-row:1 / span 2; align-self:center; position:relative; z-index:1; background:#2A2018; color:#FCF8F1; border-radius:6px; padding:5mm 3mm; text-align:center; font-weight:700; letter-spacing:.03em; white-space:pre-line; font-size:1.1em; }
+  /* ccc: смуги в днях (сітка з колонками, пропорційними дням) */
+  #deck-a4 .dg.ccc{ --dgf:calc(10.5pt * var(--k,1)); display:flex; flex-direction:column; gap:1.4mm; margin-top:4mm; }
+  #deck-a4 .dg.ccc .band, #deck-a4 .dg.ccc .caps{ display:grid; column-gap:1.2mm; }
+  #deck-a4 .dg.ccc .bar{ min-height:calc(11mm * min(var(--k,1), 1.4)); display:flex; align-items:center; justify-content:center; text-align:center; font-weight:700; border-radius:3px; padding:1mm 2mm; line-height:1.15; }
+  #deck-a4 .dg.ccc .cp span{ display:block; width:100%; }
+  #deck-a4 .dg.chain .ar svg{ position:static; display:block; width:100%; height:auto; overflow:visible; }
+  #deck-a4 .dg.ccc .cp{ text-align:center; font-size:.92em; line-height:1.22; color:var(--muted); padding:0 1.5mm; display:flex; justify-content:center; }
+  #deck-a4 .dg.ccc .caps.hi .cp{ align-items:flex-end; }
+  #deck-a4 .dg.ccc .caps.hi .cp span{ border-bottom:1.2pt solid var(--line); padding-bottom:1mm; }
+  #deck-a4 .dg.ccc .caps.lo .cp span{ border-top:1.2pt solid var(--line); padding-top:1mm; }
+  #deck-a4 .dg.ccc .axis{ position:relative; height:calc(6mm * min(var(--k,1), 1.4)); border-top:1pt solid var(--ink); margin-top:2mm; }
+  #deck-a4 .dg.ccc .axis i{ position:absolute; top:0; height:1.6mm; border-left:1pt solid var(--ink); }
+  #deck-a4 .dg.ccc .axis em{ position:absolute; top:2mm; transform:translateX(-50%); font-style:normal; font-size:.85em; color:var(--muted); font-variant-numeric:tabular-nums; }
+  #deck-a4 .dg.ccc .unit{ text-align:right; font-size:.85em; color:var(--muted); letter-spacing:.06em; }
   /* tiers: ступінчаста піраміда */
   #deck-a4 .dg.tiers{ display:grid; grid-template-columns:23% 1fr; column-gap:5mm; row-gap:1.8mm; --dgf:calc(11pt * min(var(--k,1), 1.4)); }
   #deck-a4 .dg.tiers .tl{ display:flex; align-items:center; font-family:var(--font-spectral),serif; font-style:italic; font-weight:500; color:var(--acc); font-size:calc(12.5pt * min(var(--k,1), 1.3)); line-height:1.2; border-right:1.5pt solid var(--line); padding-right:4mm; }
@@ -379,6 +419,84 @@ export function Diagram({ kind, labels, lists, hi, v2, editable, onLabels, onLis
               <L fk={"lb." + (k * 2 + 1)} value={lb(k * 2 + 1)} onChange={setL(k * 2 + 1)} editable={e} />
             </div>
           ))}
+        </div>
+      );
+    }
+    case "chain": {
+      const ls = lists && lists.length ? lists : def.lists ?? [];
+      const setCell = (r: number, c: number) => (v: string) => { const n = ls.map((x) => [...x]); n[r][c] = v; onLists?.(n); };
+      return (
+        <div className={"dg " + kind}>
+          {ls.map((row, r) => {
+            const cap = row[0] ?? "", boxes: [number, number][] = [];
+            for (let k = 1; k < row.length; k += 2) boxes.push([k, k + 1]);
+            const tiles = cap === "~"; // «~» — плитки без стрілок і без підпису
+            const capEl = cap && !tiles ? <div key={"c" + r} className={(boxes.length ? "cap" : "note") + (cap.startsWith("!") ? " acc" : "")}><L fk={`c.${r}.0`} value={cap.replace(/^!/, "")} onChange={(v) => setCell(r, 0)((cap.startsWith("!") ? "!" : "") + v)} editable={e} /></div> : null;
+            if (!boxes.length) return capEl;
+            return [
+              <div key={"r" + r} className={"crow" + (tiles ? " tiles" : "")}>
+                {boxes.map(([h, v], j) => {
+                  const hot = (row[h] ?? "").startsWith("*");
+                  return [
+                    j && !tiles ? <span key={"a" + j} className="ar" aria-hidden><svg viewBox="0 0 24 12" width="100%" height="1em"><path d="M1 6 H20 M14 1.5 L21 6 L14 10.5" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" /></svg></span> : null,
+                    <div key={"b" + j} className={"cb" + (hot ? " hot" : "")}>
+                      <L fk={`c.${r}.${h}`} tag="b" value={(row[h] ?? "").replace(/^\*/, "")} onChange={(x) => setCell(r, h)((hot ? "*" : "") + x)} editable={e} />
+                      <L fk={`c.${r}.${v}`} value={row[v] ?? ""} onChange={setCell(r, v)} editable={e} />
+                    </div>,
+                  ];
+                })}
+              </div>,
+              capEl,
+            ];
+          })}
+        </div>
+      );
+    }
+    case "map4": {
+      return (
+        <div className={"dg " + kind}>
+          {[[1, 1, 1], [3, 1, 3], [1, 2, 5], [3, 2, 7]].map(([col, row, i]) => (
+            <div key={i} className="q" style={{ gridColumn: String(col), gridRow: String(row) }}>
+              <L fk={"lb." + i} tag="b" value={lb(i)} onChange={setL(i)} editable={e} />
+              <L fk={"lb." + (i + 1)} value={lb(i + 1)} onChange={setL(i + 1)} editable={e} />
+            </div>
+          ))}
+          <div className="ctr"><L fk="lb.0" value={lb(0)} onChange={setL(0)} editable={e} /></div>
+          <svg viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden>
+            {[[30, 22], [70, 22], [30, 78], [70, 78]].map(([x, y], k) => <line key={k} x1="50" y1="50" x2={x} y2={y} stroke="#C4621F" strokeWidth="1.3" vectorEffect="non-scaling-stroke" />)}
+          </svg>
+        </div>
+      );
+    }
+    case "ccc": {
+      const nums = (lists && lists[0]) || def.lists![0];
+      const inv = Number(nums[0]) || 0, ar = Number(nums[1]) || 0, ap = Number(nums[2]) || 0;
+      const end = inv + ar, max = Math.max(10, Math.ceil(Math.max(end, ap) / 10) * 10 + 5);
+      const pct = (d: number) => `${(d / max) * 100}%`;
+      const cols = (a: number, b: number) => ({ gridTemplateColumns: `${a}fr ${Math.max(0, b - a)}fr ${Math.max(0, max - b)}fr` });
+      const ticks: number[] = []; for (let t = 0; t <= max; t += 10) ticks.push(t);
+      return (
+        <div className={"dg " + kind}>
+          <div className="caps hi" style={cols(ap, end)}>
+            <div className="cp"><span><L fk="lb.4" value={lb(4)} onChange={setL(4)} editable={e} /></span></div>
+            <div className="cp"><span><L fk="lb.5" value={lb(5)} onChange={setL(5)} editable={e} /></span></div>
+          </div>
+          <div className="band" style={cols(ap, end)}>
+            <div className="bar" style={{ background: "#6F655B", color: "#FFF8EE" }}><L fk="lb.2" value={lb(2)} onChange={setL(2)} editable={e} /></div>
+            <div className="bar" style={{ background: "#C4621F", color: "#FFF8EE" }}><L fk="lb.3" value={lb(3)} onChange={setL(3)} editable={e} /></div>
+          </div>
+          <div className="band" style={cols(inv, end)}>
+            <div className="bar" style={{ background: "#E2A638", color: "#2A2018" }}><L fk="lb.0" value={lb(0)} onChange={setL(0)} editable={e} /></div>
+            <div className="bar" style={{ background: "#8E4213", color: "#FFF8EE" }}><L fk="lb.1" value={lb(1)} onChange={setL(1)} editable={e} /></div>
+          </div>
+          <div className="caps lo" style={cols(inv, end)}>
+            <div className="cp"><span><L fk="lb.6" value={lb(6)} onChange={setL(6)} editable={e} /></span></div>
+            <div className="cp"><span><L fk="lb.7" value={lb(7)} onChange={setL(7)} editable={e} /></span></div>
+          </div>
+          <div className="axis">
+            {ticks.map((t) => [<i key={"i" + t} style={{ left: pct(t) }} />, <em key={"e" + t} style={{ left: pct(t) }}>{t}</em>])}
+          </div>
+          <div className="unit"><L fk="lb.8" value={lb(8)} onChange={setL(8)} editable={e} /></div>
         </div>
       );
     }

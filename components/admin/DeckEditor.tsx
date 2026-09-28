@@ -535,7 +535,7 @@ export function DeckEditor({ initial, dbReady, only, bare, loadedAt, fromDb, pre
         el.querySelectorAll<HTMLElement>("*").forEach((c) => { const b = c.getBoundingClientRect(); if (b.width && b.height) { right = Math.max(right, b.right); bottom = Math.max(bottom, b.bottom); left = Math.min(left, b.left); top = Math.min(top, b.top); } });
         const PAD = 16, ox = Math.ceil(r0.left - left) + PAD, oy = Math.ceil(r0.top - top) + PAD;
         const cw = Math.ceil(right - left) + 2 * PAD, chh = Math.ceil(bottom - top) + 2 * PAD;
-        const attempt = (o: object, ms: number) => withTimeout(toPng(el, { pixelRatio: 2, backgroundColor: "#FCF8F1", filter, width: cw, height: chh, style: { margin: "0", transform: `translate(${ox}px, ${oy}px)`, width: `${el.offsetWidth}px`, height: `${el.offsetHeight}px` }, ...o } as any).catch((e) => { console.warn("[pptx] snap", i, e); return null; }), ms);
+        const attempt = (o: object, ms: number) => withTimeout(toPng(el, { pixelRatio: 3, backgroundColor: "#FCF8F1", filter, width: cw, height: chh, style: { margin: "0", transform: `translate(${ox}px, ${oy}px)`, width: `${el.offsetWidth}px`, height: `${el.offsetHeight}px` }, ...o } as any).catch((e) => { console.warn("[pptx] snap", i, e); return null; }), ms);
         // друга спроба — без вбудованих шрифтів: краще схема системним шрифтом, ніж список замість схеми
         const data = (await attempt(fontEmbedCSS ? { fontEmbedCSS } : { skipFonts: true }, 30000)) ?? (await attempt({ skipFonts: true }, 20000));
         if (!data) console.warn("[pptx] snap failed", i, sel);

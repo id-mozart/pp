@@ -16,3 +16,11 @@
 - cover-dairy.jpg — Unsplash SvhXD3kPSTY, Quilia
 - cover-freezer.jpg — Unsplash N6zB7z7MEvk, Eduardo Soares
 - qr-instagram-uz.svg — QR на https://www.instagram.com/tatiana.pan.sales/ (узбекский Instagram Тани)
+- fin-cover-charts.jpg — Unsplash 9PwLeZA-RGc, Jakub Żerdzicki
+- fin-cover-coins.jpg — Unsplash MEE_C_8fLvU, Anthony Aird
+- fin-cover-desk.jpg — Unsplash 8wLZi9OhsWU, Jakub Żerdzicki
+- fin-s1-growth.jpg — Unsplash AT77Q0Njnt0, Isaac Smith
+- fin-s2-handshake.jpg — Unsplash n95VMLxqM2I, Cytonn Photography
+- fin-s3-calc.jpg — Unsplash Vs6ip7fsld8, Aaron Lefler
+- fin-s4-coins.jpg — Unsplash HrFCxo0Go5Y, Allison Saeng
+- fin-s5-grid.jpg — Unsplash mcSDtbWXUZU, Lukas Blazek
