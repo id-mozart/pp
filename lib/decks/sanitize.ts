@@ -148,7 +148,7 @@ export function sanitizeDeck(input: any, slug: string, opts: { fallbackToDefault
         pptx: typeof a.pptx === "boolean" ? a.pptx : DECK_ANIM_DEFAULT.pptx,
       };
     })(),
-    lang: input?.lang === "ru" || input?.lang === "uk" ? input.lang : base?.lang,
+    lang: input?.lang === "ru" || input?.lang === "uk" || input?.lang === "en" ? input.lang : base?.lang,
     big: typeof input?.big === "boolean" ? input.big : base?.big,
     // множник кегля деки: явне число (навіть 1) зберігаємо; відсутнє — беремо з дефолтної деки
     fs: (() => { const n = Number(input?.fs); return Number.isFinite(n) && n > 0 ? Math.min(1.8, Math.max(0.6, Math.round(n * 100) / 100)) : base?.fs; })(),

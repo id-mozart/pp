@@ -1,7 +1,7 @@
 "use client";
 
 import { createContext, useContext, useLayoutEffect, useRef, useState } from "react";
-import { deckT, splitBold } from "@/lib/decks/i18n";
+import { deckT, splitBold, isStepTitle } from "@/lib/decks/i18n";
 import { DIAGRAM_CSS, Diagram } from "@/components/deck/Diagrams";
 import { FzCtx, FzSetCtx, fzAttrs, remapListFz, useFz } from "@/components/deck/fz";
 import { numericCols, type Deck, type DeckPage } from "@/lib/decks/types";
@@ -876,7 +876,7 @@ function Sheet({ deck, i, cls, page, children, editable, onRunhead, animate }: {
     return () => window.clearTimeout(t);
   }, [d.k, page, deck.fs, deck.big]);
   return (
-    <section ref={ref} className={`sheet ${cls ?? ""}${page.type === "section" && page.image ? " has-img" + (page.fit === "top" ? " fit-top" : "") : ""}${page.type === "section" && /^\d+-й крок/i.test(page.title) ? " is-step" : ""}`} data-page={i + 1} data-sparse={k >= 1.32 ? "1" : undefined} style={{ ["--k" as any]: k, ["--kh" as any]: Math.min(1.2, k) }}>
+    <section ref={ref} className={`sheet ${cls ?? ""}${page.type === "section" && page.image ? " has-img" + (page.fit === "top" ? " fit-top" : "") : ""}${page.type === "section" && isStepTitle(page.title) ? " is-step" : ""}`} data-page={i + 1} data-sparse={k >= 1.32 ? "1" : undefined} style={{ ["--k" as any]: k, ["--kh" as any]: Math.min(1.2, k) }}>
       <div className="rh">
         <span className="wm">Pan<em>&amp;</em>Partners</span>
         {page.type === "cover" && (page.variant === "amp" || page.variant === "photo" || page.variant === "full" || page.variant === "band") && deck.logo ? (<><span className="cox" aria-hidden>×</span><img className={"colg" + (page.variant === "full" && deck.logoLight ? " light" : "")} src={page.variant === "full" && deck.logoLight ? deck.logoLight : deck.logo} alt="" /></>) : null}
@@ -1077,7 +1077,7 @@ function PageBody({ p, set, editable, prev, pick, showNotes = true, logo, big }:
           <div className="secwrap">
             <E fk="num" tag="div" className="num serif" value={p.num} onChange={(v) => set({ num: v })} editable={e} ph="" />
             <div className="sec-t">
-              {big ? null : <div className="kicker">{/^\d+-й крок/i.test(p.title) ? t.step : t.section}</div>}
+              {big ? null : <div className="kicker">{isStepTitle(p.title) ? t.step : t.section}</div>}
               <h1>
                 <E fk="title" value={p.title} onChange={(v) => set({ title: v })} editable={e} ph="Назва розділу" />
               </h1>
