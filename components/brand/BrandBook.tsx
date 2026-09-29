@@ -108,6 +108,9 @@ const DOWNLOADS = [
 ];
 
 /** QR-коди: SVG — для друку, PNG 2000 px — для презентацій і соцмереж. Файли — public/brand/qr, генерує scripts/brand_qr.py. */
+/** Версія файлів QR: збільшуйте після перегенерації, щоб браузери не показували старі з кешу. */
+const QR_V = "2";
+
 const QRS = [
   { file: "qr-site", title: "Сайт", label: "pan-partners.agency", url: "https://pan-partners.agency/" },
   { file: "qr-site-uz", title: "Сайт · узбецька версія", label: "pan-partners.agency/uz", url: "https://pan-partners.agency/uz" },
@@ -324,7 +327,7 @@ export function BrandBook() {
                     aria-label={`${q.title}: ${q.label}`}
                   >
                     {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src={`/brand/qr/${q.file}.svg`} alt={`QR-код: ${q.label}`} className="aspect-square w-full" />
+                    <img src={`/brand/qr/${q.file}.svg?v=${QR_V}`} alt={`QR-код: ${q.label}`} className="aspect-square w-full" />
                   </a>
                   <figcaption className="flex flex-1 flex-col px-3 pb-2 pt-3">
                     <span className="text-[0.92rem] leading-snug text-ink">{q.title}</span>
@@ -333,7 +336,7 @@ export function BrandBook() {
                       {(["svg", "png"] as const).map((ext) => (
                         <a
                           key={ext}
-                          href={`/brand/qr/${q.file}.${ext}`}
+                          href={`/brand/qr/${q.file}.${ext}?v=${QR_V}`}
                           download={`${q.file}.${ext}`}
                           className="inline-flex items-center gap-1.5 text-faint transition-colors hover:text-gold"
                         >
@@ -355,7 +358,7 @@ export function BrandBook() {
               не перефарбовуйте й не кладіть на темний фон без білої підкладки.
               Мінімальний розмір у друці — 2,5 × 2,5 см.{" "}
               <a
-                href="/brand/qr/pan-partners-qr.zip"
+                href={`/brand/qr/pan-partners-qr.zip?v=${QR_V}`}
                 download="pan-partners-qr.zip"
                 className="text-ink underline decoration-gold/50 underline-offset-4 transition-colors hover:text-gold"
               >
