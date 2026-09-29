@@ -19,6 +19,7 @@ const SANS = "Arial"; // за шириною ближчий до Inter на са
 const MONO = "Consolas";
 
 const mm = (v: number) => v / 25.4;
+const QR_S = 38 / 25.4; // сторона QR-коду на сторінці-списку, як на сайті (38 мм)
 
 /** Знімок DOM-елемента у data-URL (для схем). Викликач передає функцію, щоб lib не залежала від DOM. */
 export type Snap = (pageIndex: number, selector: string) => Promise<{ data: string; w: number; h: number } | null>;
@@ -169,16 +170,18 @@ function lead(ctx: Ctx, y: number, text: string, wIn = W - 2 * M) {
   return y + 0.12 + h;
 }
 
-function callout(ctx: Ctx, y: number, text: string, wIn = W - 2 * M) {
+/** Виноска; x0 / minH — для рядка з QR-кодом (виноска праворуч від коду, по центру його висоти). */
+function callout(ctx: Ctx, y: number, text: string, wIn = W - 2 * M, x0 = M, minH = 0) {
   if (!text) return y;
   const fs = (ctx.big ? Math.min(13 * ctx.k, 21) : 13 * ctx.k) * zf(ctx, "callout");
   const lines = text.split("\n").reduce((a, l) => a + Math.max(1, Math.ceil((l.length * fs * 0.57) / ((wIn - 0.5) * 72))), 0);
-  const h = (lines * fs * 1.45) / 72 + 0.3;
-  y = Math.min(y, H - 0.78 - 0.2 - h); // не заходити на колонтитул
-  ctx.s.addShape("rect", { x: M, y: y + 0.2, w: wIn, h, fill: { color: C.band }, line: { color: C.band } });
-  ctx.s.addShape("rect", { x: M, y: y + 0.2, w: 0.05, h, fill: { color: C.amber }, line: { color: C.amber } });
-  ctx.s.addText(runs(text, {}, { lineSpacingMultiple: ctx.big ? 1.25 : 1 } as TextProps), base({ x: M + 0.25, y: y + 0.2, w: wIn - 0.4, h, fontFace: SERIF, italic: !ctx.big, fontSize: fs, valign: "middle" }));
-  return y + 0.2 + h;
+  const h = (lines * fs * 1.45) / 72 + 0.3, row = Math.max(h, minH);
+  y = Math.min(y, H - 0.78 - 0.2 - row); // не заходити на колонтитул
+  const cy = y + 0.2 + (row - h) / 2;
+  ctx.s.addShape("rect", { x: x0, y: cy, w: wIn, h, fill: { color: C.band }, line: { color: C.band } });
+  ctx.s.addShape("rect", { x: x0, y: cy, w: 0.05, h, fill: { color: C.amber }, line: { color: C.amber } });
+  ctx.s.addText(runs(text, {}, { lineSpacingMultiple: ctx.big ? 1.25 : 1 } as TextProps), base({ x: x0 + 0.25, y: cy, w: wIn - 0.4, h, fontFace: SERIF, italic: !ctx.big, fontSize: fs, valign: "middle" }));
+  return y + 0.2 + row;
 }
 
 async function picture(ctx: Ctx, src: string | undefined, x: number, y: number, w: number, h: number, mode: "cover" | "contain" = "cover", circle = false, knockWhite = false, focus?: [number, number]) {
@@ -472,9 +475,15 @@ async function page(ctx: Ctx, p: DeckPage) {
           y += 0.18 + h;
         });
       } else {
-        y = bulletList(ctx, y, items, wIn, 12.5, p.callout ? 0.3 + (Math.ceil((p.callout.length * 13 * ctx.k * 0.57) / ((wIn - 0.5) * 72)) * 13 * ctx.k * 1.45) / 72 + 0.3 : 0);
+        y = bulletList(ctx, y, items, wIn, 12.5, Math.max(p.qr ? QR_S + 0.3 : 0, p.callout ? 0.3 + (Math.ceil((p.callout.length * 13 * ctx.k * 0.57) / ((wIn - 0.5) * 72)) * 13 * ctx.k * 1.45) / 72 + 0.3 : 0));
       }
-      callout(ctx, y, p.callout, wIn);
+      if (p.qr) {
+        // QR-код ліворуч на білій підкладці, виноска — праворуч по центру його висоти (як на сайті)
+        const yq = Math.min(y, H - 0.78 - 0.2 - QR_S) + 0.2;
+        s.addShape("roundRect", { x: M, y: yq, w: QR_S, h: QR_S, fill: { color: C.white }, line: { color: C.line, width: 0.5 }, rectRadius: 0.06 });
+        await picture(ctx, p.qr, M + 0.02, yq + 0.02, QR_S - 0.04, QR_S - 0.04, "contain");
+        callout(ctx, y, p.callout, wIn - QR_S - 0.2, M + QR_S + 0.2, QR_S);
+      } else callout(ctx, y, p.callout, wIn);
       break;
     }
     case "twocol": {

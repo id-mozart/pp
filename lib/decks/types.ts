@@ -16,7 +16,7 @@ export type DeckPage = (
   | { id: string; type: "about"; title: string; titleEm: string; role?: string; quote?: string; stats?: { n: string; t: string }[]; facts: string[]; note: string; image: string; logos: string }
   | { id: string; type: "section"; num: string; title: string; sub: string; image?: string; fit?: "right" | "top"; panel?: boolean }
   | { id: string; type: "text"; title: string; titleEm: string; lead: string; paras: string[]; callout: string; image?: string }
-  | { id: string; type: "bullets"; title: string; titleEm: string; lead: string; items: string[]; callout: string; image?: string; variant?: BulletsVariant }
+  | { id: string; type: "bullets"; title: string; titleEm: string; lead: string; items: string[]; callout: string; image?: string; variant?: BulletsVariant; qr?: string /* QR-код ліворуч від виноски */ }
   | { id: string; type: "twocol"; title: string; titleEm: string; lead: string; cols: { head: string; items: string[] }[]; image?: string; callout?: string }
   | { id: string; type: "steps"; title: string; titleEm: string; lead: string; steps: { head: string; text: string }[]; image?: string }
   | { id: string; type: "table"; title: string; titleEm: string; lead: string; head: string[]; rows: string[][]; callout: string; plain?: boolean; cw?: number[] } // cw — ширини колонок у %; plain — рівні колонки, перша без стилю підписів

@@ -74,7 +74,7 @@ function sanitizePageInner(p: any): DeckPage | null {
     case "text":
       return { id, type: "text", title: s(p.title, 300), titleEm: s(p.titleEm, 300), lead: s(p.lead, 1500), paras: strs(p.paras, 12), callout: s(p.callout, 1000), image: img(p.image) || undefined };
     case "bullets":
-      return { id, type: "bullets", title: s(p.title, 300), titleEm: s(p.titleEm, 300), lead: s(p.lead, 1500), items: strs(p.items, 20), callout: s(p.callout, 1000), image: img(p.image) || undefined, variant: p.variant === "cards" || p.variant === "bubbles" || p.variant === "list" ? p.variant : undefined };
+      return { id, type: "bullets", title: s(p.title, 300), titleEm: s(p.titleEm, 300), lead: s(p.lead, 1500), items: strs(p.items, 20), callout: s(p.callout, 1000), image: img(p.image) || undefined, variant: p.variant === "cards" || p.variant === "bubbles" || p.variant === "list" ? p.variant : undefined, qr: img(p.qr) || undefined };
     case "twocol":
       return { id, type: "twocol", title: s(p.title, 300), titleEm: s(p.titleEm, 300), lead: s(p.lead, 1500), cols: arr(p.cols, 6).map((c: any) => ({ head: s(c?.head, 300), items: strs(c?.items, 20) })), image: img(p.image) || undefined, callout: s(p.callout, 1000) || undefined };
     case "steps":

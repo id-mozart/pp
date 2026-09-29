@@ -52,6 +52,12 @@ const DECK_CSS_BASE = `
   #deck-a4 .lead:empty{ display:none; }
   #deck-a4 h1:has(> [contenteditable]:empty + em > [contenteditable]:empty){ display:none; }
   #deck-a4 .para{ font-size:calc(12.2pt * var(--k,1)); line-height:1.55; color:var(--ink); margin-top:4mm; max-width:175mm; }
+  /* QR-код поруч із виноскою (сторінка-список): код ліворуч на білій підкладці, виноска — праворуч по центру */
+  #deck-a4 .qrrow{ display:flex; align-items:center; gap:5mm; margin-top:6mm; }
+  #deck-a4 .qrrow .qrbox{ position:relative; flex:none; width:38mm; height:38mm; background:#fff; border:1px solid var(--line); border-radius:2mm; padding:.6mm; }
+  #deck-a4 .qrrow img.qr{ display:block; width:100%; height:100%; object-fit:contain; border:0; }
+  #deck-a4 .qrrow .callout{ flex:1 1 0; min-width:0; margin-top:0 !important; margin-bottom:0 !important; }
+  #deck-a4.big .withimg .qrrow{ margin-bottom:6mm; }
   #deck-a4 .callout{ position:relative; margin-top:6mm; max-width:100%; background:var(--band); border-radius:4px; padding:4.5mm 7mm 4.5mm 9mm;
     font-family:var(--font-spectral),serif; font-size:calc(13pt * var(--k,1)); line-height:1.45; }
   #deck-a4 .callout::before{ content:""; position:absolute; left:0; top:0; bottom:0; width:3pt; background:var(--amber); border-radius:4px 0 0 4px; }
@@ -1168,7 +1174,14 @@ function PageBody({ p, set, editable, prev, pick, showNotes = true, logo, big }:
           <Title p={p} set={set} editable={e} />
           <E fk="lead" tag="p" className="lead" value={p.lead} onChange={(v) => set({ lead: v })} editable={e} ph="лід" />
           {body}
-          <E fk="callout" tag="div" className="callout" value={p.callout} onChange={(v) => set({ callout: v })} editable={e} ph="" />
+          {p.qr ? (
+            <div className="qrrow">
+              <span className="qrbox"><img className="qr" src={p.qr} alt="" />{pick ? <ImgBtn pick={pick} current={p.qr} optional onPick={(v) => set({ qr: v || undefined })} /> : null}</span>
+              <E fk="callout" tag="div" className="callout" value={p.callout} onChange={(v) => set({ callout: v })} editable={e} ph="" />
+            </div>
+          ) : (
+            <E fk="callout" tag="div" className="callout" value={p.callout} onChange={(v) => set({ callout: v })} editable={e} ph="" />
+          )}
           {notes}
         </WithImg>
       );
