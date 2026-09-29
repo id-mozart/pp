@@ -107,6 +107,14 @@ const DOWNLOADS = [
   },
 ];
 
+/** QR-коди: SVG — для друку, PNG 2000 px — для презентацій і соцмереж. Файли — public/brand/qr. */
+const QRS = [
+  { file: "qr-site", title: "Сайт", label: "pan-partners.agency", url: "https://pan-partners.agency/" },
+  { file: "qr-site-uz", title: "Сайт · узбецька версія", label: "pan-partners.agency/uz", url: "https://pan-partners.agency/uz" },
+  { file: "qr-instagram-tetiana_pan.sales", title: "Instagram · основний", label: "@tetiana_pan.sales", url: "https://www.instagram.com/tetiana_pan.sales/" },
+  { file: "qr-instagram-tatiana.pan.sales", title: "Instagram · Близький Схід", label: "@tatiana.pan.sales", url: "https://www.instagram.com/tatiana.pan.sales/" },
+];
+
 /* ─── Дрібні елементи ─── */
 
 function DownloadIcon({ className = "h-3.5 w-3.5" }: { className?: string }) {
@@ -290,6 +298,68 @@ export function BrandBook() {
               Вордмарк — Playfair Display Medium у кривих; «&» завжди курсивом
               із градієнтом Ember. Не перефарбовуйте, не розтягуйте й не
               набирайте лого текстом — беріть готові файли з архіву.
+            </p>
+          </Reveal>
+        </div>
+      </section>
+
+      {/* QR-коди */}
+      <section className="relative border-t border-line/50 section-pad">
+        <div className="container-shell">
+          <Reveal className="flex items-center gap-4">
+            <span className="h-[2px] w-16 rounded-full" style={{ background: GRAD_GOLD }} />
+            <span className="font-mono text-[0.65rem] font-medium uppercase tracking-[0.22em] text-faint">
+              QR-коди
+            </span>
+          </Reveal>
+          <RevealGroup className="mt-7 grid grid-cols-2 gap-3 lg:grid-cols-4">
+            {QRS.map((q) => (
+              <RevealItem key={q.file}>
+                <figure className="flex h-full flex-col rounded-[14px] border border-line/60 p-2" style={{ background: CARD_BG }}>
+                  <a
+                    href={q.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center justify-center rounded-[9px] bg-white p-3"
+                    aria-label={`${q.title}: ${q.label}`}
+                  >
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src={`/brand/qr/${q.file}.svg`} alt={`QR-код: ${q.label}`} className="aspect-square w-full" />
+                  </a>
+                  <figcaption className="flex flex-1 flex-col px-3 pb-2 pt-3">
+                    <span className="text-[0.92rem] leading-snug text-ink">{q.title}</span>
+                    <span className="mt-0.5 break-all font-mono text-[0.68rem] text-muted">{q.label}</span>
+                    <span className="mt-auto flex gap-4 pt-3 font-mono text-[0.6rem] uppercase tracking-[0.16em]">
+                      {(["svg", "png"] as const).map((ext) => (
+                        <a
+                          key={ext}
+                          href={`/brand/qr/${q.file}.${ext}`}
+                          download={`${q.file}.${ext}`}
+                          className="inline-flex items-center gap-1.5 text-faint transition-colors hover:text-gold"
+                        >
+                          <DownloadIcon className="h-3 w-3" />
+                          {ext}
+                        </a>
+                      ))}
+                    </span>
+                  </figcaption>
+                </figure>
+              </RevealItem>
+            ))}
+          </RevealGroup>
+          <Reveal delay={0.08}>
+            <p className="mt-5 max-w-2xl text-[0.92rem] leading-relaxed text-muted">
+              SVG — для друку й макетів, PNG 2000 px — для презентацій і
+              соцмереж. Біле поле навколо коду не обрізайте: без нього камера
+              зчитує гірше. Мінімальний розмір у друці — 2 × 2 см.{" "}
+              <a
+                href="/brand/qr/pan-partners-qr.zip"
+                download="pan-partners-qr.zip"
+                className="text-ink underline decoration-gold/50 underline-offset-4 transition-colors hover:text-gold"
+              >
+                Усі коди одним архівом
+              </a>
+              .
             </p>
           </Reveal>
         </div>
