@@ -107,7 +107,7 @@ const DOWNLOADS = [
   },
 ];
 
-/** QR-коди: SVG — для друку, PNG 2000 px — для презентацій і соцмереж. Файли — public/brand/qr. */
+/** QR-коди: SVG — для друку, PNG 2000 px — для презентацій і соцмереж. Файли — public/brand/qr, генерує scripts/brand_qr.py. */
 const QRS = [
   { file: "qr-site", title: "Сайт", label: "pan-partners.agency", url: "https://pan-partners.agency/" },
   { file: "qr-site-uz", title: "Сайт · узбецька версія", label: "pan-partners.agency/uz", url: "https://pan-partners.agency/uz" },
@@ -349,9 +349,11 @@ export function BrandBook() {
           </RevealGroup>
           <Reveal delay={0.08}>
             <p className="mt-5 max-w-2xl text-[0.92rem] leading-relaxed text-muted">
-              SVG — для друку й макетів, PNG 2000 px — для презентацій і
-              соцмереж. Біле поле навколо коду не обрізайте: без нього камера
-              зчитує гірше. Мінімальний розмір у друці — 2 × 2 см.{" "}
+              Фірмові коди: кутові квадрати в градієнті Ember і амперсанд
+              по центру. SVG — для друку й макетів, PNG 2000 px — для
+              презентацій і соцмереж. Біле поле навколо коду не обрізайте, код
+              не перефарбовуйте й не кладіть на темний фон без білої підкладки.
+              Мінімальний розмір у друці — 2,5 × 2,5 см.{" "}
               <a
                 href="/brand/qr/pan-partners-qr.zip"
                 download="pan-partners-qr.zip"
