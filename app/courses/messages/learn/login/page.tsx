@@ -12,6 +12,7 @@ const ERR: Record<string, string> = {
   "1": "Код не підійшов. Перевір, будь ласка, і спробуй ще раз.",
   wait: "Забагато спроб. Зачекай 15 хвилин і спробуй знову.",
   off: "Доступ до курсу ще не відкрито. Напиши нам — допоможемо.",
+  revoked: "Цей код більше не діє. Напиши нам — розберемось.",
 };
 
 export default function CourseLoginPage({ searchParams }: { searchParams?: { e?: string } }) {
@@ -27,7 +28,7 @@ export default function CourseLoginPage({ searchParams }: { searchParams?: { e?:
             <em className="italic" style={gradText(GRAD_ACC)}>відповідають</em>
           </h1>
           <p className="mt-3 text-muted">
-            Введи код доступу з листа після оплати, щоб відкрити уроки.
+            Введи свій персональний код доступу з повідомлення після оплати, щоб відкрити уроки.
           </p>
           <form method="POST" action="/api/course/login" className="mt-8 flex flex-col gap-4 rounded-[14px] border border-line/60 bg-[#131210] p-6">
             <label className="flex flex-col gap-2">

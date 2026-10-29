@@ -14,9 +14,10 @@ type Result = { score: number; max: number; passMin: number; passed: boolean; wr
  * і router.refresh() перемальовує сторінку вже з відкритим наступним днем.
  * Імʼя і телефон просимо один раз — далі вони в cookie.
  */
-export function CourseQuiz({ quiz, student, best, passMin, max, unlocks }: {
+export function CourseQuiz({ quiz, student, fixedStudent, best, passMin, max, unlocks }: {
   quiz: PublicQuiz;
   student: Student | null;
+  fixedStudent?: boolean;
   best: number | null;
   passMin: number;
   max: number;
@@ -86,7 +87,7 @@ export function CourseQuiz({ quiz, student, best, passMin, max, unlocks }: {
 
       {open && (
         <form onSubmit={submit} className="flex flex-col gap-6">
-          {editStudent ? (
+          {fixedStudent ? null : editStudent ? (
             <div className="grid gap-4 sm:grid-cols-2">
               <label className="flex flex-col gap-2">
                 <span className="font-mono text-[0.62rem] uppercase tracking-[0.18em] text-muted">Ваше імʼя</span>

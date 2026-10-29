@@ -40,7 +40,10 @@ export async function middleware(req: NextRequest) {
     const bare = stripLocale(pathname);
     const LEARN = "/courses/messages/learn";
     if (bare === LEARN || bare.startsWith(LEARN + "/")) {
-      if (bare === LEARN + "/login") return NextResponse.rewrite(new URL(bare, req.url));
+      // rewrite через clone(), щоб не загубити query (?e=… на сторінці входу).
+      const target = req.nextUrl.clone();
+      target.pathname = bare;
+      if (bare === LEARN + "/login") return NextResponse.rewrite(target);
       const ok = await isValidCourseToken(req.cookies.get(COURSE_COOKIE)?.value);
       if (!ok) {
         const url = req.nextUrl.clone();
@@ -48,7 +51,7 @@ export async function middleware(req: NextRequest) {
         url.search = "";
         return NextResponse.redirect(url);
       }
-      return NextResponse.rewrite(new URL(bare, req.url));
+      return NextResponse.rewrite(target);
     }
   }
 

@@ -9,7 +9,7 @@ import type { Progress, Student } from "@/lib/courseProgress";
 const prose = "prose-course text-[1.02rem] leading-relaxed text-ink/90";
 
 /** Стан учня з cookie — потрібен блокам «тест» і «бали». */
-export type CourseCtx = { progress: Progress; student: Student | null };
+export type CourseCtx = { progress: Progress; student: Student | null; /** персональний код — імʼя/телефон з картки учня, не редагуються */ fixedStudent: boolean };
 
 function Card({ children, accent }: { children: React.ReactNode; accent?: boolean }) {
   return (
@@ -74,6 +74,7 @@ export function CourseBlock({ b, ctx }: { b: Block; ctx: CourseCtx }) {
           <CourseQuiz
             quiz={publicQuiz(quiz)}
             student={ctx.student}
+            fixedStudent={ctx.fixedStudent}
             best={ctx.progress[b.n] ?? null}
             passMin={PASS_MIN}
             max={QUIZ_MAX}
@@ -106,7 +107,7 @@ export function CourseBlock({ b, ctx }: { b: Block; ctx: CourseCtx }) {
             <span className="text-sm text-muted">Разом за тести</span>
             <span className="font-display text-2xl text-ink">{total} <span className="text-base text-muted">з {QUIZ_SET.length * QUIZ_MAX}</span></span>
           </p>
-          <p className="mt-3 text-xs text-faint">Бали за відгук в Instagram та за запрошених друзів авторка додає вручну — ми звʼяжемось з тобою по телефону з тесту.</p>
+          <p className="mt-3 text-xs text-faint">Бали за відгук в Instagram та за запрошених друзів авторка додає вручну — ми звʼяжемось з тобою.</p>
         </Card>
       );
     }

@@ -1,12 +1,15 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 import { CourseBlock, type CourseCtx } from "@/components/course/CourseBlocks";
 import { Lock } from "@/components/ui/icons";
 import { GRAD_ACC, GRAD_GOLD, CARD_BG, gradText } from "@/lib/ember";
 import { DAYS, type Day } from "@/lib/courses/messages";
 import { PASS_MIN, QUIZ_MAX, QUIZ_SET } from "@/lib/courses/quizzes";
 import { PROGRESS_COOKIE, STUDENT_COOKIE, parseProgress, parseStudent } from "@/lib/courseProgress";
+import { COURSE_COOKIE, courseSession } from "@/lib/courseAuth";
+import { getCourseUser, touchCourseUser, userQuizProgress } from "@/lib/db";
 
 export const metadata: Metadata = {
   title: "Курс — Повідомлення, на які відповідають",
@@ -29,10 +32,21 @@ function requiredQuiz(d: Day): number | null {
  */
 export default async function CourseLearnPage() {
   const jar = cookies();
-  const ctx: CourseCtx = {
-    progress: await parseProgress(jar.get(PROGRESS_COOKIE)?.value),
-    student: parseStudent(jar.get(STUDENT_COOKIE)?.value),
-  };
+  const session = await courseSession(jar.get(COURSE_COOKIE)?.value);
+  let ctx: CourseCtx;
+  if (session?.kind === "user") {
+    // Персональний код: картка і прогрес — у БД; відкликаний або видалений — на вхід.
+    const user = await getCourseUser(session.id);
+    if (!user || user.revoked_at) redirect("/courses/messages/learn/login?e=revoked");
+    await touchCourseUser(user.id);
+    ctx = { progress: await userQuizProgress("messages", user.id), student: { name: user.name, phone: user.phone }, fixedStudent: true };
+  } else {
+    ctx = {
+      progress: await parseProgress(jar.get(PROGRESS_COOKIE)?.value),
+      student: parseStudent(jar.get(STUDENT_COOKIE)?.value),
+      fixedStudent: false,
+    };
+  }
   const isOpen = (d: Day) => {
     const req = requiredQuiz(d);
     return req === null || (ctx.progress[req] ?? -1) >= PASS_MIN;

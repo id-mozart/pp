@@ -96,6 +96,19 @@ async function ensureSchema(p: Pool) {
           created_at  timestamptz NOT NULL DEFAULT now()
         );
         CREATE INDEX IF NOT EXISTS course_quiz_course_idx ON course_quiz (course, created_at DESC);
+        ALTER TABLE course_quiz ADD COLUMN IF NOT EXISTS user_id uuid;
+        CREATE TABLE IF NOT EXISTS course_users (
+          id            uuid PRIMARY KEY,
+          course        text NOT NULL,
+          code          text NOT NULL,
+          name          text NOT NULL,
+          phone         text NOT NULL DEFAULT '',
+          note          text NOT NULL DEFAULT '',
+          created_at    timestamptz NOT NULL DEFAULT now(),
+          last_seen_at  timestamptz,
+          revoked_at    timestamptz
+        );
+        CREATE UNIQUE INDEX IF NOT EXISTS course_users_code_idx ON course_users (course, lower(code));
       `);
     })().catch((e) => {
       // Don't cache a transient cold-start failure forever — let it retry.
@@ -425,6 +438,7 @@ export async function deleteCertificate(id: string): Promise<boolean> {
 export type QuizResult = {
   id: string;
   course: string;
+  user_id: string | null;
   quiz: number;
   name: string;
   phone: string;
@@ -440,9 +454,9 @@ export async function insertQuizResult(r: Omit<QuizResult, "id" | "created_at">)
   return withDb(async (p) => {
     const id = randomUUID();
     await p.query(
-      `INSERT INTO course_quiz (id, course, quiz, name, phone, score, max, passed, answers)
-       VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9)`,
-      [id, r.course, r.quiz, r.name, r.phone, r.score, r.max, r.passed, JSON.stringify(r.answers)],
+      `INSERT INTO course_quiz (id, course, user_id, quiz, name, phone, score, max, passed, answers)
+       VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10)`,
+      [id, r.course, r.user_id, r.quiz, r.name, r.phone, r.score, r.max, r.passed, JSON.stringify(r.answers)],
     );
     return id;
   }, null);
@@ -451,10 +465,92 @@ export async function insertQuizResult(r: Omit<QuizResult, "id" | "created_at">)
 export async function listQuizResults(course: string, limit = 2000): Promise<QuizResult[]> {
   return withDb(async (p) => {
     const { rows } = await p.query(
-      `SELECT id, course, quiz, name, phone, score, max, passed, answers, created_at
+      `SELECT id, course, user_id, quiz, name, phone, score, max, passed, answers, created_at
        FROM course_quiz WHERE course = $1 ORDER BY created_at DESC LIMIT $2`,
       [course, limit],
     );
     return rows.map((r) => ({ ...r, created_at: new Date(r.created_at).toISOString() }));
   }, []);
+}
+
+/** Найкращий складений бал за кожен тест учня — джерело прогресу для персональних кодів. */
+export async function userQuizProgress(course: string, userId: string): Promise<Record<number, number>> {
+  return withDb(async (p) => {
+    const { rows } = await p.query(
+      `SELECT quiz, max(score) AS best FROM course_quiz
+       WHERE course = $1 AND user_id = $2 AND passed GROUP BY quiz`,
+      [course, userId],
+    );
+    const out: Record<number, number> = {};
+    for (const r of rows) out[Number(r.quiz)] = Number(r.best);
+    return out;
+  }, {});
+}
+
+/* ───────────────────────── Онлайн-курс: учні та персональні коди ───────────────────────── */
+
+export type CourseUser = {
+  id: string;
+  course: string;
+  code: string;
+  name: string;
+  phone: string;
+  note: string;
+  created_at: string;
+  last_seen_at: string | null;
+  revoked_at: string | null;
+};
+
+const iso = (v: unknown) => (v ? new Date(v as string).toISOString() : null);
+function userRow(r: Record<string, unknown>): CourseUser {
+  return { ...(r as CourseUser), created_at: iso(r.created_at)!, last_seen_at: iso(r.last_seen_at), revoked_at: iso(r.revoked_at) };
+}
+
+export async function createCourseUser(u: { course: string; code: string; name: string; phone: string; note: string }): Promise<string | null> {
+  return withDb(async (p) => {
+    const id = randomUUID();
+    await p.query(`INSERT INTO course_users (id, course, code, name, phone, note) VALUES ($1,$2,$3,$4,$5,$6)`, [id, u.course, u.code, u.name, u.phone, u.note]);
+    return id;
+  }, null);
+}
+
+export async function listCourseUsers(course: string): Promise<CourseUser[]> {
+  return withDb(async (p) => {
+    const { rows } = await p.query(`SELECT * FROM course_users WHERE course = $1 ORDER BY created_at DESC`, [course]);
+    return rows.map(userRow);
+  }, []);
+}
+
+export async function getCourseUser(id: string): Promise<CourseUser | null> {
+  return withDb(async (p) => {
+    const { rows } = await p.query(`SELECT * FROM course_users WHERE id = $1`, [id]);
+    return rows[0] ? userRow(rows[0]) : null;
+  }, null);
+}
+
+/** Пошук за кодом без урахування регістру (учні вводять з телефону). */
+export async function getCourseUserByCode(course: string, code: string): Promise<CourseUser | null> {
+  return withDb(async (p) => {
+    const { rows } = await p.query(`SELECT * FROM course_users WHERE course = $1 AND lower(code) = lower($2)`, [course, code]);
+    return rows[0] ? userRow(rows[0]) : null;
+  }, null);
+}
+
+export async function touchCourseUser(id: string) {
+  return withDb(async (p) => { await p.query(`UPDATE course_users SET last_seen_at = now() WHERE id = $1`, [id]); return true; }, false);
+}
+
+export async function setCourseUserRevoked(id: string, revoked: boolean) {
+  return withDb(async (p) => {
+    await p.query(`UPDATE course_users SET revoked_at = ${revoked ? "now()" : "NULL"} WHERE id = $1`, [id]);
+    return true;
+  }, false);
+}
+
+export async function deleteCourseUser(id: string) {
+  return withDb(async (p) => {
+    await p.query(`DELETE FROM course_quiz WHERE user_id = $1`, [id]);
+    await p.query(`DELETE FROM course_users WHERE id = $1`, [id]);
+    return true;
+  }, false);
 }
