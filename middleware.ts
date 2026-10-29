@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { ADMIN_COOKIE, authEnabled, isValidToken } from "@/lib/adminAuth";
+import { COURSE_COOKIE, isValidCourseToken } from "@/lib/courseAuth";
 import {
   DEFAULT_LOCALE,
   LOCALE_COOKIE,
@@ -32,6 +33,23 @@ export async function middleware(req: NextRequest) {
   // ---- Other API routes: pass through, no locale handling. ----
   if (pathname.startsWith("/api")) {
     return NextResponse.next();
+  }
+
+  // ---- Закритий розділ курсу: cookie з кодом доступу; вхід і без локалізації. ----
+  {
+    const bare = stripLocale(pathname);
+    const LEARN = "/courses/messages/learn";
+    if (bare === LEARN || bare.startsWith(LEARN + "/")) {
+      if (bare === LEARN + "/login") return NextResponse.rewrite(new URL(bare, req.url));
+      const ok = await isValidCourseToken(req.cookies.get(COURSE_COOKIE)?.value);
+      if (!ok) {
+        const url = req.nextUrl.clone();
+        url.pathname = LEARN + "/login";
+        url.search = "";
+        return NextResponse.redirect(url);
+      }
+      return NextResponse.rewrite(new URL(bare, req.url));
+    }
   }
 
   // ---- Секретні розділи /talk/<slug>: статичний дек, без локалізації. ----

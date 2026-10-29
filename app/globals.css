@@ -1819,3 +1819,13 @@ body:has(#pp-admin) #main {
 .studio-neutral input[type="range"] {
   accent-color: #6b6b70;
 }
+
+/* ---- Закритий розділ курсу: форматування текстів із методички (жирний, списки, нумерація). ---- */
+.prose-course p + p, .prose-course ul + p, .prose-course ol + p, .prose-course p + ul, .prose-course p + ol { margin-top: 0.75em; }
+.prose-course h3 { font-family: var(--font-spectral), Georgia, serif; font-size: 1.35rem; line-height: 1.25; margin: 0 0 0.6em; color: var(--ink); }
+.prose-course strong { color: var(--ink); font-weight: 600; }
+.prose-course ul, .prose-course ol { padding-left: 1.4em; display: flex; flex-direction: column; gap: 0.35em; }
+.prose-course ul { list-style: disc; }
+.prose-course ol { list-style: decimal; }
+.prose-course li::marker { color: #E2A638; }
+.prose-course a { color: #E2A638; text-decoration: underline; text-underline-offset: 4px; }
