@@ -19,11 +19,16 @@ export function normalizeCode(v: string) {
   return v.replace(/\s+/g, "").toLowerCase();
 }
 
-export async function courseToken(code = process.env.COURSE_ACCESS_CODE || ""): Promise<string> {
+/** HMAC-SHA256 (hex) довільного повідомлення, ключ — код доступу. Спільний для cookie входу і прогресу. */
+export async function hmacHex(msg: string, code = process.env.COURSE_ACCESS_CODE || ""): Promise<string> {
   const enc = new TextEncoder();
-  const key = await crypto.subtle.importKey("raw", enc.encode(normalizeCode(code)), { name: "HMAC", hash: "SHA-256" }, false, ["sign"]);
-  const sig = await crypto.subtle.sign("HMAC", key, enc.encode(MSG));
+  const key = await crypto.subtle.importKey("raw", enc.encode(normalizeCode(code) || "-"), { name: "HMAC", hash: "SHA-256" }, false, ["sign"]);
+  const sig = await crypto.subtle.sign("HMAC", key, enc.encode(msg));
   return Array.from(new Uint8Array(sig)).map((b) => b.toString(16).padStart(2, "0")).join("");
+}
+
+export async function courseToken(code = process.env.COURSE_ACCESS_CODE || ""): Promise<string> {
+  return hmacHex(MSG, code);
 }
 
 export async function isValidCourseToken(token?: string | null): Promise<boolean> {

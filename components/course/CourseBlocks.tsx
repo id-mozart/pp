@@ -1,9 +1,15 @@
 import { CourseVideo } from "@/components/course/CourseVideo";
+import { CourseQuiz } from "@/components/course/CourseQuiz";
 import { ArrowUpRight, Download, Check } from "@/components/ui/icons";
 import { GRAD_ACC, GRAD_GOLD, CARD_BG, gradText } from "@/lib/ember";
-import { QUIZZES, QUIZ_HTML, VIDEO_BASE, type Block } from "@/lib/courses/messages";
+import { DAYS, QUIZ_HTML, VIDEO_BASE, type Block } from "@/lib/courses/messages";
+import { PASS_MIN, QUIZ_MAX, QUIZ_SET, getQuiz, publicQuiz } from "@/lib/courses/quizzes";
+import type { Progress, Student } from "@/lib/courseProgress";
 
 const prose = "prose-course text-[1.02rem] leading-relaxed text-ink/90";
+
+/** Стан учня з cookie — потрібен блокам «тест» і «бали». */
+export type CourseCtx = { progress: Progress; student: Student | null };
 
 function Card({ children, accent }: { children: React.ReactNode; accent?: boolean }) {
   return (
@@ -18,7 +24,14 @@ function Label({ children }: { children: React.ReactNode }) {
   return <div className="mb-3 font-mono text-[0.62rem] font-semibold uppercase tracking-[0.2em]" style={gradText(GRAD_ACC)}>{children}</div>;
 }
 
-export function CourseBlock({ b }: { b: Block }) {
+/** Що відкриває тест n: наступний розділ після дня n (для тесту 5 — фінал). */
+function unlocksAfter(n: number) {
+  const i = DAYS.findIndex((d) => d.slug === `day-${n}`);
+  const next = i >= 0 ? DAYS[i + 1] : undefined;
+  return next ? { label: next.n, slug: next.slug } : undefined;
+}
+
+export function CourseBlock({ b, ctx }: { b: Block; ctx: CourseCtx }) {
   switch (b.kind) {
     case "text":
       return <div className={prose} dangerouslySetInnerHTML={{ __html: b.html }} />;
@@ -50,16 +63,53 @@ export function CourseBlock({ b }: { b: Block }) {
           <div className={prose} dangerouslySetInnerHTML={{ __html: b.html }} />
         </Card>
       );
-    case "quiz":
+    case "quiz": {
+      const quiz = getQuiz(b.n);
+      if (!quiz) return null;
       return (
         <Card accent>
-          <Label>Перевір себе · до 7 балів</Label>
-          <div className={prose} dangerouslySetInnerHTML={{ __html: QUIZ_HTML }} />
-          <a href={QUIZZES[b.n - 1]} target="_blank" rel="noopener noreferrer" className="btn btn-primary mt-4">
-            {b.label} <ArrowUpRight className="h-4 w-4" />
-          </a>
+          <Label>Перевір себе · до {QUIZ_MAX} балів</Label>
+          <h3 className="font-display text-xl leading-tight text-ink">{b.label}</h3>
+          <div className={`${prose} mt-3 mb-6`} dangerouslySetInnerHTML={{ __html: QUIZ_HTML }} />
+          <CourseQuiz
+            quiz={publicQuiz(quiz)}
+            student={ctx.student}
+            best={ctx.progress[b.n] ?? null}
+            passMin={PASS_MIN}
+            max={QUIZ_MAX}
+            unlocks={unlocksAfter(b.n)}
+          />
         </Card>
       );
+    }
+    case "scores": {
+      const total = QUIZ_SET.reduce((s, q) => s + (ctx.progress[q.n] ?? 0), 0);
+      return (
+        <Card accent>
+          <Label>Твої бали за тести</Label>
+          <ul className="flex flex-col divide-y divide-line/50">
+            {QUIZ_SET.map((q) => {
+              const s = ctx.progress[q.n];
+              return (
+                <li key={q.n} className="flex items-center justify-between gap-4 py-3 text-sm">
+                  <span className="text-ink/90">Урок {q.n}. {q.title}</span>
+                  {s !== undefined ? (
+                    <span className="flex shrink-0 items-center gap-1.5 font-mono text-gold"><Check className="h-4 w-4" />{s} з {QUIZ_MAX}</span>
+                  ) : (
+                    <a href={`#quiz-${q.n}`} className="shrink-0 font-mono text-[0.62rem] uppercase tracking-[0.18em] text-faint hover:text-gold">пройти →</a>
+                  )}
+                </li>
+              );
+            })}
+          </ul>
+          <p className="mt-4 flex items-baseline justify-between gap-4 border-t border-line/60 pt-4">
+            <span className="text-sm text-muted">Разом за тести</span>
+            <span className="font-display text-2xl text-ink">{total} <span className="text-base text-muted">з {QUIZ_SET.length * QUIZ_MAX}</span></span>
+          </p>
+          <p className="mt-3 text-xs text-faint">Бали за відгук в Instagram та за запрошених друзів авторка додає вручну — ми звʼяжемось з тобою по телефону з тесту.</p>
+        </Card>
+      );
+    }
     case "link":
       return (
         <Card>

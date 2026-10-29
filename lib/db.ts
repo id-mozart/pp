@@ -83,6 +83,19 @@ async function ensureSchema(p: Pool) {
           created_at  timestamptz NOT NULL DEFAULT now(),
           updated_at  timestamptz NOT NULL DEFAULT now()
         );
+        CREATE TABLE IF NOT EXISTS course_quiz (
+          id          uuid PRIMARY KEY,
+          course      text NOT NULL,
+          quiz        int  NOT NULL,
+          name        text NOT NULL,
+          phone       text NOT NULL,
+          score       int  NOT NULL,
+          max         int  NOT NULL,
+          passed      boolean NOT NULL,
+          answers     jsonb NOT NULL,
+          created_at  timestamptz NOT NULL DEFAULT now()
+        );
+        CREATE INDEX IF NOT EXISTS course_quiz_course_idx ON course_quiz (course, created_at DESC);
       `);
     })().catch((e) => {
       // Don't cache a transient cold-start failure forever — let it retry.
@@ -405,4 +418,43 @@ export async function deleteCertificate(id: string): Promise<boolean> {
     await p.query(`DELETE FROM certificates WHERE id = $1`, [id]);
     return true;
   }, false);
+}
+
+/* ───────────────────────── Онлайн-курс: результати тестів ───────────────────────── */
+
+export type QuizResult = {
+  id: string;
+  course: string;
+  quiz: number;
+  name: string;
+  phone: string;
+  score: number;
+  max: number;
+  passed: boolean;
+  answers: unknown;
+  created_at: string;
+};
+
+/** Кожна спроба — окремий рядок; найкращий бал рахує адмінка. */
+export async function insertQuizResult(r: Omit<QuizResult, "id" | "created_at">) {
+  return withDb(async (p) => {
+    const id = randomUUID();
+    await p.query(
+      `INSERT INTO course_quiz (id, course, quiz, name, phone, score, max, passed, answers)
+       VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9)`,
+      [id, r.course, r.quiz, r.name, r.phone, r.score, r.max, r.passed, JSON.stringify(r.answers)],
+    );
+    return id;
+  }, null);
+}
+
+export async function listQuizResults(course: string, limit = 2000): Promise<QuizResult[]> {
+  return withDb(async (p) => {
+    const { rows } = await p.query(
+      `SELECT id, course, quiz, name, phone, score, max, passed, answers, created_at
+       FROM course_quiz WHERE course = $1 ORDER BY created_at DESC LIMIT $2`,
+      [course, limit],
+    );
+    return rows.map((r) => ({ ...r, created_at: new Date(r.created_at).toISOString() }));
+  }, []);
 }

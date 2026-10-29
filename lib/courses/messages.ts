@@ -14,20 +14,13 @@ const I = "/courses/messages/";
 export const INSTAGRAM = "https://www.instagram.com/tetiana_pan.sales?igsh=MWdubHU0MmJiMXVqbQ%3D%3D&utm_source=qr";
 export const TG_CLUB = "https://t.me/+F4UaS15bxKNmNmM6";
 
-export const QUIZZES = [
-  "https://forms.gle/wH1aBckociXfJhEMA",
-  "https://docs.google.com/forms/d/e/1FAIpQLSd4dPx8_K53E__lO2YHi3bMJ68-Q7eo9DEYqVGasHIRFvXeNw/viewform",
-  "https://docs.google.com/forms/d/e/1FAIpQLSeKpLReqk-fq1HuBv4dyuhEKI1-OvNGlFqG5vPWytbck_pxsA/viewform",
-  "https://docs.google.com/forms/d/e/1FAIpQLScGnGFiJN_rJkYMPW5lfi1j6Z7n_ZFBeBpjA9Faaov9VMj3MQ/viewform",
-  "https://docs.google.com/forms/d/e/1FAIpQLSfLFCydTv6l2HSOQLaImw8OCIYvUpquwXv7TbyQQo75L-BDWQ/viewform",
-];
-
 export type Block =
   | { kind: "text"; html: string }
   | { kind: "video"; file: string; poster?: string; caption?: string }
   | { kind: "images"; items: { src: string; alt: string; tall?: boolean }[]; caption?: string }
   | { kind: "homework"; html: string }
   | { kind: "quiz"; n: number; label: string }
+  | { kind: "scores" }
   | { kind: "link"; label: string; href: string; note?: string }
   | { kind: "pdf"; title: string; file: string; html: string; price?: string }
   | { kind: "note"; html: string };
@@ -59,7 +52,7 @@ export const HOWTO_HTML = `
 <p><strong>Шкала балів:</strong> кожен опитувальник - від 1 до 7 балів.<br>Відгук в Instagram та тег <strong>tetiana_pan.sales</strong> - 50 балів.<br>Привів 1 людину на курс - 50 балів.</p>
 <p>⭐️ За 5 днів навчання зі мною ти отримуєш не “бла-бла”, а покроковий алгоритм написання повідомлення, на які будуть відповідати, щоб рухатись до залучення нових клієнтів та збільшення продажів!</p>`;
 
-const QUIZ_HTML = `<p>Пройди маленьке опитування, щоб побачити, наскільки ти зрозумів тему, та взяв з неї максимум користі, щоб використовувати в своїх переписках!</p><p>В тебе є можливість набрати <strong>7 балів</strong>.</p>`;
+const QUIZ_HTML = `<p>Пройди маленьке опитування, щоб побачити, наскільки ти зрозумів тему, та взяв з неї максимум користі, щоб використовувати в своїх переписках!</p><p>В тебе є можливість набрати <strong>7 балів</strong>. Щоб відкрити наступний урок, потрібно щонайменше 4.</p>`;
 const SCENARIOS20 = `<p>Що робити, коли ти не знаєш, що написати клієнту в 1му повідомленні та для тебе це ціла мука, щоб щось “народити”?</p><p>Тримай 20 прикладів 1го повідомлення для В2С та В2В клієнтів (онлайн магазини, стоматологічний, мовні курси, маркетинг, конференції і тп) і отримай сценарії, які допоможуть залучати клієнтів!</p>`;
 
 export const DAYS: Day[] = [
@@ -165,11 +158,7 @@ export const DAYS: Day[] = [
       { kind: "note", html: `<p><strong>Дата зустрічі:</strong> понеділок<br><strong>Час:</strong> 18:00 (за Київським часом)<br><strong>Тривалість:</strong> 1 година</p><p>Слідкуй за новинами — за 1 годину до зустрічі надішлемо посилання!</p>` },
       { kind: "link", label: "Долучитися до Zoom-зустрічі", href: "https://us02web.zoom.us/j/88232196931?pwd=hpbsedVkAT8p10FUIhNcXbZSgeOPIb.1", note: "Посилання відкриється в час зустрічі." },
       { kind: "text", html: `<h3>Нагадування: опитувальники після уроків</h3><p>Памʼятай, що це можливість отримати додаткову впевненість для написання листів та БАЛИ, щоб отримати приз!</p>` },
-      { kind: "quiz", n: 1, label: "Урок 1. Перевір себе" },
-      { kind: "quiz", n: 2, label: "Урок 2. Перевір себе" },
-      { kind: "quiz", n: 3, label: "Урок 3. Перевір себе" },
-      { kind: "quiz", n: 4, label: "Урок 4. Перевір себе" },
-      { kind: "quiz", n: 5, label: "Урок 5. Перевір себе" },
+      { kind: "scores" },
       { kind: "pdf", title: "20 прикладів 1го повідомлення потенційному клієнту, яке чіпляє", file: I + "20-scenariiv-1go-povidomlennia.pdf", html: `<p>Ти знаєш – 1 з моїх сильних сторін, окрім досвіду в продажах – є наполегливість та бажання, щоб мої клієнти отримували результат ;)</p><p>Тут тобі “шпаргалка та допомога” в написанні 1го повідомлення клієнтам.</p>` },
       { kind: "text", html: `<p>Отже, вперед, я тут, поряд, хочу, щоб твої продажі та прибутки зросли 🎯</p>` },
     ],

@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { courseAuthEnabled } from "@/lib/courseAuth";
 import { DAYS, VIDEO_BASE } from "@/lib/courses/messages";
+import { PASS_MIN, QUIZ_MAX, QUIZ_SET } from "@/lib/courses/quizzes";
+import { hasDb, listQuizResults } from "@/lib/db";
 
 export const metadata: Metadata = {
   title: "Онлайн-курс — адмін",
@@ -30,8 +32,26 @@ async function videoStatus(files: string[]): Promise<Record<string, string>> {
   return out;
 }
 
+type StudentRow = { name: string; phone: string; best: Record<number, number>; attempts: number; last: string };
+
+/** Групуємо спроби по телефону: найкращий бал за кожен тест, кількість спроб, остання дата. */
+function groupStudents(rows: Awaited<ReturnType<typeof listQuizResults>>): StudentRow[] {
+  const map = new Map<string, StudentRow>();
+  for (const r of rows) {
+    const key = r.phone.replace(/\D/g, "");
+    const cur = map.get(key) ?? { name: r.name, phone: r.phone, best: {}, attempts: 0, last: r.created_at };
+    cur.attempts++;
+    if (r.created_at > cur.last) { cur.last = r.created_at; cur.name = r.name; }
+    if (r.passed) cur.best[r.quiz] = Math.max(cur.best[r.quiz] ?? 0, r.score);
+    map.set(key, cur);
+  }
+  return [...map.values()].sort((a, b) => (a.last < b.last ? 1 : -1));
+}
+
 export default async function AdminCoursePage() {
   const code = process.env.COURSE_ACCESS_CODE || "";
+  const results = hasDb() ? await listQuizResults("messages") : [];
+  const students = groupStudents(results);
   const videos = DAYS.flatMap((d) => d.blocks.filter((b) => b.kind === "video").map((b) => (b as { file: string; caption?: string }).file));
   const status = await videoStatus(videos);
   return (
@@ -77,7 +97,52 @@ export default async function AdminCoursePage() {
             <li><span className="text-muted">Розділ курсу:</span> <a className="text-gold underline underline-offset-4" href="/courses/messages/learn" target="_blank">{SITE}/courses/messages/learn</a></li>
             <li><span className="text-muted">Лендинг (публічний):</span> <a className="text-gold underline underline-offset-4" href="/courses/messages" target="_blank">{SITE}/courses/messages</a></li>
           </ul>
-          <p className="mt-4 text-xs text-faint">Програма: {DAYS.length} розділів — {DAYS.map((d) => d.n).join(" · ")}. Тексти й файли — у коді (lib/courses/messages.ts, public/courses/messages).</p>
+          <p className="mt-4 text-xs text-faint">Тести — на сайті (без Google Forms): {QUIZ_SET.length} опитувальників по {QUIZ_MAX} балів; наступний день відкривається від {PASS_MIN} балів. Ключі відповідей — lib/courses/quizzes.ts.</p>
+          <p className="mt-2 text-xs text-faint">Програма: {DAYS.length} розділів — {DAYS.map((d) => d.n).join(" · ")}. Тексти й файли — у коді (lib/courses/messages.ts, public/courses/messages).</p>
+        </div>
+
+        <div className="mt-6 rounded-xl border border-line/60 bg-[#131210] p-6">
+          <div className="flex flex-wrap items-baseline justify-between gap-3">
+            <h2 className="font-display text-lg text-ink">Результати тестів</h2>
+            <span className="font-mono text-xs text-faint">{students.length} учнів · {results.length} спроб</span>
+          </div>
+          {!hasDb() ? (
+            <p className="mt-3 text-sm text-muted">База даних не підключена — спроби не зберігаються.</p>
+          ) : students.length === 0 ? (
+            <p className="mt-3 text-sm text-muted">Поки ніхто не проходив тести.</p>
+          ) : (
+            <div className="mt-4 overflow-x-auto">
+              <table className="w-full text-left text-sm">
+                <thead className="font-mono text-[0.6rem] uppercase tracking-[0.16em] text-faint">
+                  <tr>
+                    <th className="py-2 pr-4 font-normal">Учень</th>
+                    <th className="py-2 pr-4 font-normal">Телефон</th>
+                    {QUIZ_SET.map((q) => <th key={q.n} className="py-2 pr-3 text-center font-normal">Т{q.n}</th>)}
+                    <th className="py-2 pr-3 text-right font-normal">Разом</th>
+                    <th className="py-2 pr-3 text-right font-normal">Спроб</th>
+                    <th className="py-2 font-normal">Остання</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-line/40">
+                  {students.map((s) => {
+                    const total = QUIZ_SET.reduce((a, q) => a + (s.best[q.n] ?? 0), 0);
+                    return (
+                      <tr key={s.phone}>
+                        <td className="py-2 pr-4 text-ink">{s.name}</td>
+                        <td className="py-2 pr-4 font-mono text-xs text-muted">{s.phone}</td>
+                        {QUIZ_SET.map((q) => (
+                          <td key={q.n} className={`py-2 pr-3 text-center font-mono ${s.best[q.n] !== undefined ? "text-gold" : "text-faint"}`}>{s.best[q.n] ?? "–"}</td>
+                        ))}
+                        <td className="py-2 pr-3 text-right font-mono text-ink">{total}</td>
+                        <td className="py-2 pr-3 text-right font-mono text-muted">{s.attempts}</td>
+                        <td className="py-2 font-mono text-xs text-faint">{s.last.slice(0, 10)}</td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+          )}
         </div>
       </div>
     </div>
