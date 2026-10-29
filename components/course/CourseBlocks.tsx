@@ -23,7 +23,7 @@ export function CourseBlock({ b }: { b: Block }) {
     case "text":
       return <div className={prose} dangerouslySetInnerHTML={{ __html: b.html }} />;
     case "video":
-      return <CourseVideo src={VIDEO_BASE ? `${VIDEO_BASE.replace(/\/$/, "")}/${b.file}` : ""} caption={b.caption} />;
+      return <CourseVideo src={VIDEO_BASE ? `${VIDEO_BASE.replace(/\/$/, "")}/${b.file}` : ""} poster={`/courses/messages/posters/${b.file.replace(/\.mp4$/, "")}.jpg`} caption={b.caption} />;
     case "images":
       return (
         <figure>

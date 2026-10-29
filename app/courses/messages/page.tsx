@@ -394,6 +394,12 @@ export default function CourseMessagesPage() {
               <p className="text-sm text-faint">
                 Гарантія повернення коштів — 14 днів, якщо курс вам не підійде.
               </p>
+              <p className="text-sm text-muted">
+                Вже оплатили?{" "}
+                <Link href="/courses/messages/learn" className="text-gold underline underline-offset-4 hover:text-ink">
+                  Увійти до курсу за кодом доступу →
+                </Link>
+              </p>
             </div>
           </Reveal>
         </div>

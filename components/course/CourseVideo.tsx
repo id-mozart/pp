@@ -6,11 +6,12 @@ import { CARD_BG } from "@/lib/ember";
 
 /**
  * Плеєр уроку. Відео лежать на окремому хостингу (NEXT_PUBLIC_COURSE_VIDEO_BASE);
- * без нього — акуратна заглушка, щоб розділ можна було показати до викладання відео.
- * Завантаження і PiP вимкнено, контекстне меню заблоковано — за побажанням авторки
- * (повний захист від запису екрана веб не дає, але «зберегти як» прибрано).
+ * поки адресу немає — плейсхолдер з розмитим постером уроку, щоб розділ виглядав
+ * завершеним і його можна було показувати. Завантаження і PiP вимкнено, контекстне
+ * меню заблоковано — за побажанням авторки («зберегти як» прибрано; від запису
+ * екрана веб не захищає).
  */
-export function CourseVideo({ src, caption }: { src: string; caption?: string }) {
+export function CourseVideo({ src, poster, caption }: { src: string; poster?: string; caption?: string }) {
   const [err, setErr] = useState(false);
   const ready = !!src && !err;
   return (
@@ -23,18 +24,22 @@ export function CourseVideo({ src, caption }: { src: string; caption?: string })
           disablePictureInPicture
           playsInline
           preload="metadata"
+          poster={poster}
           onContextMenu={(e) => e.preventDefault()}
           onError={() => setErr(true)}
           src={src}
         />
       ) : (
-        <div className="grid aspect-video w-full place-items-center bg-[#0B0805] text-center">
-          <div className="flex flex-col items-center gap-3 px-6">
-            <span className="grid h-14 w-14 place-items-center rounded-full border border-gold/50 text-gold">
-              <Play className="h-6 w-6" />
+        <div
+          className="relative grid aspect-video w-full place-items-center overflow-hidden bg-[#0B0805] text-center"
+          style={poster ? { backgroundImage: `url(${poster})`, backgroundSize: "cover", backgroundPosition: "center" } : undefined}
+        >
+          <div className="relative flex flex-col items-center gap-3 px-6">
+            <span className="grid h-16 w-16 place-items-center rounded-full border border-gold/60 bg-[rgba(23,16,9,.6)] text-gold backdrop-blur-sm">
+              <Play className="ml-0.5 h-7 w-7" />
             </span>
-            <span className="font-mono text-[0.62rem] uppercase tracking-[0.22em] text-faint">
-              Відео буде доступне найближчим часом
+            <span className="rounded-full bg-[rgba(23,16,9,.7)] px-3 py-1.5 font-mono text-[0.62rem] uppercase tracking-[0.22em] text-ink/80 backdrop-blur-sm">
+              Відео зʼявиться тут найближчим часом
             </span>
           </div>
         </div>

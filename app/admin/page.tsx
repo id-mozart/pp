@@ -16,6 +16,7 @@ const CARDS = [
   { href: "/admin/profile", title: "Профайл", desc: "Друкований профайл тренера (PDF)" },
   { href: "/admin/decks", title: "Презентації", desc: "Усі A4-деки: редактор, показ, PDF" },
   { href: "/admin/certs", title: "Сертифікати", desc: "Генератор сертифікатів учасників, PDF і база" },
+  { href: "/admin/course", title: "Онлайн-курс", desc: "Закритий розділ «Повідомлення, на які відповідають»: код доступу, відео" },
 ];
 
 export default async function AdminDashboard() {
