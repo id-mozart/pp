@@ -12,9 +12,28 @@ export const dynamic = "force-dynamic";
 const SITE = process.env.NEXT_PUBLIC_SITE_URL || "https://pan-partners.agency";
 
 /** Службова сторінка курсу: стан доступу, відео та посилання для учнів. Код і адреса відео задаються змінними Railway. */
-export default function AdminCoursePage() {
+async function videoStatus(files: string[]): Promise<Record<string, string>> {
+  if (!VIDEO_BASE) return {};
+  const base = VIDEO_BASE.replace(/\/$/, "");
+  const out: Record<string, string> = {};
+  await Promise.all(
+    files.map(async (f) => {
+      try {
+        const r = await fetch(`${base}/${f}`, { method: "HEAD", cache: "no-store" });
+        const mb = Number(r.headers.get("content-length") || 0) / 1e6;
+        out[f] = r.ok ? `✓ ${mb.toFixed(0)} МБ` : `✗ ${r.status}`;
+      } catch {
+        out[f] = "✗ немає звʼязку";
+      }
+    }),
+  );
+  return out;
+}
+
+export default async function AdminCoursePage() {
   const code = process.env.COURSE_ACCESS_CODE || "";
   const videos = DAYS.flatMap((d) => d.blocks.filter((b) => b.kind === "video").map((b) => (b as { file: string; caption?: string }).file));
+  const status = await videoStatus(videos);
   return (
     <div id="pp-admin" className="min-h-screen bg-[#0B0A09] px-6 py-10 text-ink">
       <div className="mx-auto max-w-3xl">
@@ -36,12 +55,17 @@ export default function AdminCoursePage() {
           </Card>
           <Card title="Відео-уроки" ok={!!VIDEO_BASE}>
             {VIDEO_BASE ? (
-              <p className="text-sm text-muted">Хостинг: <code className="break-all text-gold">{VIDEO_BASE}</code></p>
+              <p className="text-sm text-muted">Хостинг (Cloudflare R2, бакет pp-course): <code className="break-all text-gold">{VIDEO_BASE}</code></p>
             ) : (
               <p className="text-sm text-muted">Відео ще не викладено — на сторінці показуються плейсхолдери з постерами. Після завантаження на хостинг задайте <code className="text-gold">NEXT_PUBLIC_COURSE_VIDEO_BASE</code> (адреса теки з файлами).</p>
             )}
             <ul className="mt-3 flex flex-col gap-1 font-mono text-xs text-faint">
-              {videos.map((v) => <li key={v}>{v}</li>)}
+              {videos.map((v) => (
+                <li key={v} className="flex justify-between gap-4">
+                  <span>{v}</span>
+                  {status[v] && <span className={status[v].startsWith("✓") ? "text-gold" : "text-[#d98a72]"}>{status[v]}</span>}
+                </li>
+              ))}
             </ul>
           </Card>
         </div>
